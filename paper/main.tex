@@ -25,16 +25,17 @@
 
 % ---- notation macros ----
 \newcommand{\R}{\mathbb{R}}
-\newcommand{\Wten}{\mathcal{W}}          % directional wrench tensor
+\newcommand{\Wten}{\mathcal{W}}          % (legacy alias; use \Wmap = support-capability map)
 \newcommand{\Xwise}{\mathcal{X}_{\mathrm{WISE}}}
 \newcommand{\sigmastar}{\sigma^{\star}}
 \newcommand{\lamtwo}{\lambda_2}
-\newcommand{\Lap}{L}
+\newcommand{\Lap}{\bar L}                       % decision-induced candidate-site Laplacian
+\newcommand{\Lgeo}{L_{\mathrm{geo}}}           % geometric (position-dependent) Laplacian
 \newcommand{\Pot}{\Phi}
 \newcommand{\wdem}{w^{\mathrm{dem}}}
 \newcommand{\mF}{m_F}                     % strong-monotonicity constant
 \newcommand{\PoE}{\mathrm{PoE}}
-\newcommand{\Emanifold}{\mathcal{E}}          % productive (Nash) composition face
+\newcommand{\Emanifold}{\mathcal{E}}          % optimal composition fiber (level set of the aggregate map)
 \newcommand{\Ess}{\mathcal{E}_{\mathrm{ss}}}  % self-sustaining subset
 \newcommand{\Lammax}{\Lambda^{\star}}         % max algebraic connectivity over E
 \newcommand{\vt}{\vartheta}                    % cross-coupling
@@ -58,10 +59,11 @@ estimate the aggregates and payoffs that define their equilibria. We study the
 self-referential case in which the equilibrium's own spatial composition
 determines whether that graph exists. For a heterogeneous multi-robot team we
 show that the productively optimal aggregate is unique but its \emph{composition}
-is degenerate---a positive-dimensional face of equal-payoff profiles---so
+is degenerate---a positive-dimensional fiber of equal-payoff profiles---so
 classical theory fixes how much wrench each load receives, not which robot types
-provide it. On that face we place an endogenous, position-induced Laplacian and
-define the \emph{Wrench- and Information-Self-Sustaining Equilibrium} (WISE): a
+provide it. On that fiber we place an endogenous, decision-induced candidate-site
+Laplacian $\Lap(x)$ and define the \emph{Wrench- and Information-Self-Sustaining
+Equilibrium} (WISE): a
 productively optimal composition that also keeps algebraic connectivity above the
 Nash-seeking threshold $\sigmastar=\vt^2/(c\,\mF)$. We prove (i) composition
 degeneracy, (ii) that a self-sustaining equilibrium exists iff

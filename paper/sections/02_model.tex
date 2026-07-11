@@ -1,39 +1,73 @@
 \section{Population Model and Induced Network}
 \label{sec:model}
 
-\subsection{A constrained potential population game}
-A team of $N$ robots is partitioned into $T$ types $\tau$ (heterogeneous in force
-capacity and communication range) with masses $m_\tau$. Each robot chooses an
-action from $\mathcal A=\{(k,h)\}\cup\{\mathrm{relay},\mathrm{idle}\}$: a
-(load,\,slot) pair, relay, or idle. Following the population-game
-formalism~\cite{sandholm2010population,quijano2017role}, the state is the mass
-distribution $x=(x_{\tau a})$ with $\sum_a x_{\tau a}=m_\tau$, i.e.\
-$x\in\mathcal X=\prod_\tau m_\tau\Delta_{|\mathcal A|}$. We work with this
-\emph{fluid relaxation}; $x_{\tau a}$ is a population mass, not a single robot's
-mixed strategy. Integer assignments are recovered by rounding, which preserves the
-certificates below whenever the feasibility margins exceed a rounding constant
-(Remark~\ref{rem:integer}).
+\subsection{Population state (strategic variable $x$)}
+A team of $N$ robots is partitioned into $T$ types $\tau\in\{1,\dots,T\}$
+(heterogeneous in force capacity and communication range). There are $M$ loads,
+$H$ contact slots per load, and the common action set
+\begin{equation}
+\mathcal A=\underbrace{\{(k,h)\}_{k\le M,\,h\le H}}_{\text{load--slot}}
+\;\cup\;\{\mathrm{relay}\}\cup\{\mathrm{idle}\},
+\label{eq:actions}
+\end{equation}
+so $|\mathcal A|=MH+2$. We use $a\in\mathcal A$ for a generic action, $(k,h)$ for a load--slot action,
+$\mathrm{r}$ for relay and $\mathrm{o}$ for idle, throughout.
+
+The \emph{strategic state} is the population-mass matrix
+$x=(x_{\tau a})\in\R_{\ge0}^{T\times|\mathcal A|}$, where $x_{\tau a}\ge0$ is the
+mass of type-$\tau$ robots committed to action $a$. Masses are \emph{normalised
+capacity fractions}: each type carries a fixed budget $m_\tau>0$ with
+$\sum_\tau m_\tau=1$, and conservation reads
+\begin{equation}
+\textstyle\sum_{a\in\mathcal A} x_{\tau a}=m_\tau\ \ \forall\tau,
+\qquad x_{\tau a}\ge0 ,
+\label{eq:conservation}
+\end{equation}
+so the total mass is $\sum_{\tau,a}x_{\tau a}=1$ and
+$x\in\mathcal X=\prod_\tau m_\tau\Delta_{|\mathcal A|}$ (a product of scaled
+simplices). Following the population-game
+formalism~\cite{sandholm2010population,quijano2017role}, $x_{\tau a}$ is a
+population mass, \emph{not} a probability and \emph{not} a physical force: it is a
+fluid quantity. A finite team of $N$ robots instantiates $x$ by an integer
+assignment; integer recovery is addressed in Remark~\ref{rem:integer}. The
+strategic state $x$ is kept notationally distinct from the physical robot poses
+$q\in(\mathrm{SE}(2))^N$, which enter only the closed-loop simulation
+(Section~\ref{sec:exp}).
+
+\begin{assumption}[Standing hypotheses]\label{as:standing}
+Throughout: \emph{(i)} the relaxed state set $\mathcal X$ is compact and convex
+(product of scaled simplices); \emph{(ii)} the aggregate map $x\mapsto s(x)$ of
+\eqref{eq:cap-dem} is linear, so the wrench-feasible set
+$\mathcal X_{\mathrm f}=\{x\in\mathcal X:s_{k\ell}(x)\ge d_{k\ell}\}$ is a
+polytope; \emph{(iii)} the candidate-site Laplacian $\Lap(x)$ of
+\eqref{eq:laplacian} is affine in $x$ with each elementary $L_e\succeq0$ and each
+coefficient $\mathcal C_{\tau re}\ge0$; \emph{(iv)} the communication graph is
+undirected and weighted, so every $\Lap(x)$ is a symmetric graph Laplacian; and
+\emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$.
+\end{assumption}
 
 \subsection{Directional support-capability map}
 Let $U_\tau\subset\R^2$ be the compact convex admissible-force set of a type-$\tau$
 robot, $A_{kh}\in\R^{3\times2}$ the contact-to-wrench map at slot $h$ of load $k$,
-and $\eta_{k\ell}\in\R^3$ a probing wrench direction. Define the
+and $\eta_{k\ell}\in\R^3$ ($\ell\le P$) a probing wrench direction. Define the
 \emph{directional support-capability map}
+$\Wmap\in\R^{T\times M\times H\times P}$ by
 \begin{equation}
 \Wmap_{\tau,kh\ell}=h_{U_\tau}\!\big(A_{kh}^{\top}\eta_{k\ell}\big),
 \label{eq:tensor}
 \end{equation}
 with $h_{U_\tau}$ the support function of $U_\tau$; each entry is the largest force
-projection a type-$\tau$ robot can supply along the pulled-back direction. (We call
-\eqref{eq:tensor} a \emph{map}, not a tensor: it is a table of support values, not
-a multilinear object.) The population directional capacity and the projected
-demand are, writing $x_{\tau kh}$ for the mass of type $\tau$ on slot $(k,h)$,
+projection a type-$\tau$ robot can supply along the pulled-back direction. It is a
+\emph{map} (a table of support values), not a tensor. The population directional
+capacity and the projected demand are, writing $x_{\tau kh}$ for the mass of type
+$\tau$ on slot $(k,h)$,
 \begin{equation}
 s_{k\ell}(x)=\sum_{\tau,h}\Wmap_{\tau,kh\ell}\,x_{\tau kh},
 \qquad
-d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k .
+d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k\in\R,
 \label{eq:cap-dem}
 \end{equation}
+with $\wdem_k\in\R^3$ the demanded wrench of load $k$.
 
 \begin{proposition}[Support certificate for the relaxation]\label{prop:membership}
 Let $\Wmap(C_k)=\{\sum_{\tau,h}A_{kh}f_{\tau h}:f_{\tau h}\in x_{\tau kh}U_\tau\}$
@@ -55,36 +89,43 @@ $\Wmap(C_k)$ a Minkowski sum of segments, i.e.\ a zonotope with finitely many
 facets.
 \end{proof}
 We call load $k$ \emph{wrench-feasible} at $x$ when $s_{k\ell}(x)\ge d_{k\ell}$ for
-all $\ell$. Unlike a scalar capacity $c_\tau$, \eqref{eq:tensor} separates force
-limit, lever arm, and slot---the channels that distinguish otherwise identical
-types.
+all $\ell$ (Assumption~\ref{as:standing}(ii)). Unlike a scalar capacity $c_\tau$,
+\eqref{eq:tensor} separates force limit, lever arm, and slot---the channels that
+distinguish otherwise identical types.
 
-\subsection{Endogenous, decision-induced Laplacian}
-Only robots that do not lift can relay. Let $\mathcal C_{\tau re}\ge0$ be the
-contribution of a type-$\tau$ mass in role $r$ to communication link $e$; edge
-weights and the induced Laplacian are affine in the decision,
+\subsection{Decision-induced candidate-site Laplacian $\Lap(x)$}
+We deliberately separate two graphs. The \emph{decision-induced candidate-site
+Laplacian} $\Lap(x)$ depends only on the strategic state $x$: a fixed family of
+candidate communication links $e$ over $V$ nodes is switched on by the roles the
+composition assigns. Only robots that do not lift can relay; with
+$\mathcal C_{\tau re}\ge0$ the contribution of a type-$\tau$ mass in role $r$ to
+link $e$,
 \begin{equation}
 a_e(x)=\sum_{\tau,r}\mathcal C_{\tau re}\,x_{\tau r},
 \qquad
-\Lap(x)=\sum_e a_e(x)\,L_e .
+\Lap(x)=\sum_e a_e(x)\,L_e\in\R^{V\times V},
 \label{eq:laplacian}
 \end{equation}
-The coefficients $\mathcal C_{\tau re}$ encode which candidate sites a relaying type
-can bridge, so \eqref{eq:laplacian} is the convex, decision-induced relaxation of
-the position-dependent graph $L(q)$; the continuous-position geometry $L(q(x))$ is
-nonconvex and is exercised only in the closed-loop simulation
-(Section~\ref{sec:exp}). Let $Q\in\R^{V\times(V-1)}$ be an orthonormal basis of
-$\mathbf 1^{\perp}$; the information constraint is the LMI
+which is affine in $x$ (Assumption~\ref{as:standing}(iii)). This is a convex
+\emph{surrogate}: the actual, \emph{geometric} Laplacian $\Lgeo(q)$, whose weights
+depend on inter-robot distances through the physical poses $q$, is nonconvex in
+$q$ and is \emph{not} covered by the convex theory of
+Sections~\ref{sec:wise}--\ref{sec:algorithm}; it is exercised only in the
+closed-loop simulation, where we report the empirical agreement between
+$\Lgeo(q)$ and its surrogate $\Lap(x)$. All theorems below use $\Lap(x)$ only.
+
+Let $Q\in\R^{V\times(V-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
+information constraint is the LMI
 \begin{equation}
 Q^{\top}\Lap(x)\,Q\succeq\sigmastar I
 \;\Longleftrightarrow\;
 \lamtwo(\Lap(x))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $x$, with PSD matrix dual $Z\succeq0$; at a simple minimiser $Z=\pi vv^{\top}$
-recovers a scalar connectivity price $\pi$ (Section~\ref{sec:algorithm}). The
-threshold $\sigmastar$ is \emph{derived}, not assumed, in
-Theorem~\ref{thm:stability}.
+affine in $x$, with PSD matrix dual $Z\succeq0$; at a simple minimiser
+$Z=\pi vv^{\top}$ recovers a scalar connectivity price $\pi$
+(Section~\ref{sec:algorithm}). The threshold $\sigmastar$ is derived, not assumed,
+in Theorem~\ref{thm:stability}.
 
 \begin{lemma}[Convex information set]\label{lem:convex}
 $x\mapsto\lamtwo(\Lap(x))$ is concave, so \eqref{eq:lmi} defines a convex set.
@@ -92,5 +133,6 @@ $x\mapsto\lamtwo(\Lap(x))$ is concave, so \eqref{eq:lmi} defines a convex set.
 \begin{proof}
 $\lamtwo(L)=\min_{\|v\|=1,\,v\perp\mathbf 1}v^{\top}Lv$ is a pointwise minimum of
 functions linear in $L$~\cite{fiedler1973}, hence concave; composed with the affine
-$L(x)$ it stays concave, and its super-level set is convex~\cite{ghosh2006growing}.
+$\Lap(x)$ it stays concave, and its super-level set is
+convex~\cite{ghosh2006growing}.
 \end{proof}

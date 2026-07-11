@@ -4,8 +4,9 @@
 We studied population equilibria whose own spatial composition determines whether
 the communication graph their algorithm requires exists. Three facts make the
 phenomenon tractable and sharp: the productive optimum fixes the aggregate but
-leaves a positive-dimensional composition face (Theorem~\ref{thm:degeneracy}); on
-that face a self-sustaining equilibrium exists iff its best induced connectivity
+leaves a positive-dimensional optimal composition fiber
+(Theorem~\ref{thm:degeneracy}); on that fiber a self-sustaining equilibrium exists
+iff its best induced connectivity
 clears the Nash-seeking threshold (Theorem~\ref{thm:existence}); and that same
 threshold is the exact stability boundary of the coupled estimator
 (Theorem~\ref{thm:stability}), so an infinitesimal information reward selects the
@@ -21,13 +22,14 @@ machinery presupposes.
 \paragraph*{Limitations}
 The analysis is a \emph{fluid relaxation}; integer assignments are recovered by
 rounding under the margin condition of Remark~\ref{rem:integer}. The induced
-Laplacian is affine in the decision (candidate-site relaxation of the
-position-dependent graph); the fully continuous-position geometry $L(q)$ is
-nonconvex and is exercised only in simulation. Nonholonomic wrench realizability is
+Laplacian $\Lap(x)$ is affine in the decision (a candidate-site surrogate); the
+geometric graph $\Lgeo(q)$ is nonconvex in the poses $q$, is not covered by the
+convex theory, and is exercised only in simulation. Nonholonomic wrench
+realizability is
 modelled by the heading-aligned force set, not proved; and validation is in
 simulation.
 
 \paragraph*{Future work}
-A realizability theorem for the nonholonomic contact, the nonconvex
-continuous-position graph, and hardware validation are the natural next steps
-toward a full closed-loop guarantee.
+A realizability theorem for the nonholonomic contact, the nonconvex geometric
+graph $\Lgeo(q)$, and hardware validation are the natural next steps toward a full
+closed-loop guarantee.

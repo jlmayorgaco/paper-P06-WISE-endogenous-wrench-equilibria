@@ -1,0 +1,187 @@
+Rc files read (in order):
+  NONE
+Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
+Latexmk: applying rule 'pdflatex'...
+Rule 'pdflatex':  Reasons for rerun
+Changed files or newly in use/created:
+  sections/02_model.tex
+Category 'changed_user':
+  sections/02_model.tex
+
+------------
+Run number 1 of rule 'pdflatex'
+------------
+------------
+Running 'pdflatex  -interaction=nonstopmode -recorder  "main.tex"'
+------------
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex.fmt)
+ restricted \write18 enabled.
+entering extended mode
+(main.tex
+LaTeX2e <2025-11-01>
+L3 programming layer <2025-12-24>
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/ieeetran\IEEEtran.cls
+Document Class: IEEEtran 2015/08/26 V1.8b by Michael Shell
+-- See the "IEEEtran_HOWTO" manual for usage information.
+-- http://www.michaelshell.org/tex/ieeetran/
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1ptm.fd)
+-- Using 8.5in x 11in (letter) paper.
+-- Using PDF output.
+-- This is a 10 point document.
+)
+** ATTENTION: Overriding command lockouts (line 2).
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/cite\cite.sty)
+(C:\Program Files\MiKTeX\tex/latex/amsmath\amsmath.sty
+For additional information on amsmath, use the `?' option.
+(C:\Program Files\MiKTeX\tex/latex/amsmath\amstext.sty
+(C:\Program Files\MiKTeX\tex/latex/amsmath\amsgen.sty))
+(C:\Program Files\MiKTeX\tex/latex/amsmath\amsbsy.sty)
+(C:\Program Files\MiKTeX\tex/latex/amsmath\amsopn.sty))
+(C:\Program Files\MiKTeX\tex/latex/amsfonts\amssymb.sty
+(C:\Program Files\MiKTeX\tex/latex/amsfonts\amsfonts.sty))
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/amscls\amsthm.sty)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/algorithms\algorithmic.sty
+(C:\Program Files\MiKTeX\tex/latex/base\ifthen.sty)
+(C:\Program Files\MiKTeX\tex/latex/graphics\keyval.sty))
+(C:\Program Files\MiKTeX\tex/latex/graphics\graphicx.sty
+(C:\Program Files\MiKTeX\tex/latex/graphics\graphics.sty
+(C:\Program Files\MiKTeX\tex/latex/graphics\trig.sty)
+(C:\Program Files\MiKTeX\tex/latex/graphics-cfg\graphics.cfg)
+(C:\Program Files\MiKTeX\tex/latex/graphics-def\pdftex.def)))
+(C:\Program Files\MiKTeX\tex/latex/base\textcomp.sty)
+(C:\Program Files\MiKTeX\tex/latex/xcolor\xcolor.sty
+(C:\Program Files\MiKTeX\tex/latex/graphics-cfg\color.cfg)
+(C:\Program Files\MiKTeX\tex/latex/graphics\mathcolor.ltx))
+(C:\Program Files\MiKTeX\tex/latex/tools\bm.sty)
+(C:\Program Files\MiKTeX\tex/latex/hyperref\hyperref.sty
+(C:\Program Files\MiKTeX\tex/generic/iftex\iftex.sty)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/kvsetkeys\kvsetkeys.sty)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/kvdefinekeys\kvdefinekeys.st
+y) (C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/pdfescape\pdfescape.sty
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/ltxcmds\ltxcmds.sty)
+(C:\Program Files\MiKTeX\tex/generic/pdftexcmds\pdftexcmds.sty
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/infwarerr\infwarerr.sty)))
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/hycolor\hycolor.sty)
+(C:\Program Files\MiKTeX\tex/latex/hyperref\nameref.sty
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/refcount\refcount.sty)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/gettitlestring\gettitlestrin
+g.sty (C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/kvoptions\kvoptions.sty)
+)) (C:\Program Files\MiKTeX\tex/latex/etoolbox\etoolbox.sty)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/stringenc\stringenc.sty)
+(C:\Program Files\MiKTeX\tex/latex/hyperref\pd1enc.def)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/intcalc\intcalc.sty)
+(C:\Program Files\MiKTeX\tex/latex/hyperref\puenc.def)
+(C:\Program Files\MiKTeX\tex/latex/url\url.sty)
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/bitset\bitset.sty
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/bigintcalc\bigintcalc.sty)))
+(C:\Program Files\MiKTeX\tex/latex/hyperref\hpdftex.def
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/rerunfilecheck\rerunfilecheck.
+sty
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/generic/uniquecounter\uniquecounter.
+sty))) (C:\Program Files\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def)
+(main.aux)
+-- Lines per column: 56 (exact).
+(C:\Program Files\MiKTeX\tex/context/base/mkii\supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (C:\Program Files\MiKTeX\tex/latex/epstopdf-pkg\epstopdf-base.sty
+(C:\Program Files\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg)) (main.out)
+(main.out) (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd)
+(C:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd)
+(sections/01_introduction.tex) (sections/02_model.tex
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 4.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 4.
+
+[1{C:/Users/walla/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Program 
+Files/MiKTeX/fonts/enc/dvips/base/8r.enc}]
+Underfull \hbox (badness 2393) in paragraph at lines 83--90
+\OT1/ptm/m/n/10 hyperplane the-o-rem $\OML/cmm/m/it/10 w[] \OMS/cmsy/m/n/10 2 W
+\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 C[]\OT1/cmr/m/n/10 )$ \OT1/ptm/m/n/10 iff $\O
+ML/cmm/m/it/10 ^^Q[]w[] \OMS/cmsy/m/n/10 ^^T
+
+Underfull \hbox (badness 5878) in paragraph at lines 83--90
+\OML/cmm/m/it/10 h[]\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^Q\OT1/cmr/m/n/10 )$ \OT
+1/ptm/m/n/10 for all $\OML/cmm/m/it/10 ^^Q$\OT1/ptm/m/n/10 . Sup-port func-tion
+s are ad-di-tive
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 96.
+
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 96.
+
+) (sections/03_wise_equilibrium.tex [2]
+Underfull \hbox (badness 10000) in paragraph at lines 55--56
+[][]\OT1/ptm/b/n/10 Theorem 2 \OT1/ptm/m/n/10 (Ex-is-tence by se-lec-tion)\OT1/
+ptm/b/n/10 . []\OT1/ptm/m/it/10 Let $\OT1/cmr/m/n/10 ^^C[] =
+[3]
+Underfull \hbox (badness 2913) in paragraph at lines 147--151
+\OT1/ptm/m/n/10 the pro-duc-tive value for-gone to re-main self-sustaining.
+) (sections/04_algorithm.tex) (sections/05_experiments.tex [4 <./figures/fig1_s
+cene.pdf>] (C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1pcr.fd)
+Underfull \hbox (badness 1661) in paragraph at lines 76--81
+ []\OT1/ptm/m/it/10 E4 --- Con-straint ab-la-tion (Ta-ble [][]I[][], Fig. [][]5
+[][]a): [] \OT1/ptm/m/n/10 On
+
+Underfull \hbox (badness 4036) in paragraph at lines 76--81
+\OT1/ptm/m/n/10 paired seeds, en-forc-ing ei-ther re-quire-ment alone fails:
+(figures/ablation_table.tex)) (sections/06_conclusion.tex) (main.bbl [5 <./figu
+res/fig2_convergence.pdf> <./figures/fig5_threshold.pdf> <./figures/fig3_phase.
+pdf>])
+
+** Conference Paper **
+Before submitting the final camera ready copy, remember to:
+
+ 1. Manually equalize the lengths of two columns on the last page
+ of your paper;
+
+ 2. Ensure that any PostScript and/or PDF output post-processing
+ uses only Type 1 fonts and that every step in the generation
+ process uses the appropriate paper size.
+
+[6 <./figures/fig4_ablation_roles.pdf>] (main.aux) )
+(see the transcript file for additional information)<C:/Program Files/MiKTeX/fo
+nts/type1/public/amsfonts/cm/cmbx10.pfb><C:/Program Files/MiKTeX/fonts/type1/pu
+blic/amsfonts/cm/cmbx7.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts
+/cm/cmex10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.p
+fb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi5.pfb><C:/Progra
+m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi6.pfb><C:/Program Files/MiKTe
+X/fonts/type1/public/amsfonts/cm/cmmi7.pfb><C:/Program Files/MiKTeX/fonts/type1
+/public/amsfonts/cm/cmmi8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfo
+nts/cm/cmmi9.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.
+pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr5.pfb><C:/Progra
+m Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmr6.pfb><C:/Program Files/MiKTeX
+/fonts/type1/public/amsfonts/cm/cmr7.pfb><C:/Program Files/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmr8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts
+/cm/cmr9.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Program 
+Files/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program Files/MiKTeX/
+fonts/type1/public/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/p
+ublic/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfont
+s/symbols/msbm10.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/courier/ucrr8a.pf
+b><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/M
+iKTeX/fonts/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX/fonts/type1/ur
+w/times/utmr8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (6 pages, 493461 bytes).
+Transcript written on main.log.
+pdflatex: major issue: So far, you have not checked for updates as a MiKTeX user.
+Latexmk: Getting log file 'main.log'
+Latexmk: Examining 'main.fls'
+Latexmk: Examining 'main.log'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Found input bbl file 'main.bbl'
+Latexmk: Log file says output to 'main.pdf'
+Latexmk: Using bibtex to make bibliography file(s).
+  ===Source file 'main.bbl' for 'pdflatex'
+kpsewhich: major issue: So far, you have not checked for updates as a MiKTeX user.
+kpsewhich: major issue: So far, you have not checked for updates as a MiKTeX user.
+Latexmk: Found bibliography file(s):
+  ./references.bib
+Latexmk: All targets (main.pdf) are up-to-date
+
+latexmk: major issue: So far, you have not checked for updates as a MiKTeX user.
