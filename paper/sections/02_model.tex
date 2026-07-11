@@ -1,108 +1,96 @@
-\section{Directional Wrench Tensor and Endogenous Graph}
+\section{Population Model and Induced Network}
 \label{sec:model}
 
-We consider $N$ robots indexed by $i$, $M$ loads indexed by $k$, and $H$ contact
-slots per load indexed by $h$. Each robot $i$ chooses a mixed action
-$x_i\in\Delta_i$ over its load/slot, relay, and idle options; we write $x_{ikh}$
-for the share it commits to slot $h$ of load $k$ and $x_{ir}$ for the share it
-commits to role $r$.
+\subsection{A constrained potential population game}
+A team of $N$ robots is partitioned into $T$ types $\tau$ (heterogeneous in force
+capacity and communication range) with masses $m_\tau$. Each robot chooses an
+action from $\mathcal A=\{(k,h)\}\cup\{\mathrm{relay},\mathrm{idle}\}$: a
+(load,\,slot) pair, relay, or idle. Following the population-game
+formalism~\cite{sandholm2010population,quijano2017role}, the state is the mass
+distribution $x=(x_{\tau a})$ with $\sum_a x_{\tau a}=m_\tau$, i.e.\
+$x\in\mathcal X=\prod_\tau m_\tau\Delta_{|\mathcal A|}$. We work with this
+\emph{fluid relaxation}; $x_{\tau a}$ is a population mass, not a single robot's
+mixed strategy. Integer assignments are recovered by rounding, which preserves the
+certificates below whenever the feasibility margins exceed a rounding constant
+(Remark~\ref{rem:integer}).
 
-\subsection{Directional wrench-capacity tensor}
-Let $U_i\subset\R^2$ be the compact convex set of planar forces robot $i$ can
-exert, $A_{kh}\in\R^{3\times2}$ the map from a contact force to the planar wrench
-(force-$x$, force-$y$, torque) it induces on load $k$, and $\eta_{k\ell}\in\R^3$
-a dual wrench direction. With $h_{U_i}(\cdot)$ the support function of $U_i$,
-define the \emph{directional wrench-capacity tensor}
+\subsection{Directional support-capability map}
+Let $U_\tau\subset\R^2$ be the compact convex admissible-force set of a type-$\tau$
+robot, $A_{kh}\in\R^{3\times2}$ the contact-to-wrench map at slot $h$ of load $k$,
+and $\eta_{k\ell}\in\R^3$ a probing wrench direction. Define the
+\emph{directional support-capability map}
 \begin{equation}
-\Wten_{ikh\ell} \;=\; h_{U_i}\!\big(A_{kh}^{\top}\eta_{k\ell}\big),
-\qquad \Wten\in\R^{N\times M\times H\times P}.
+\Wmap_{\tau,kh\ell}=h_{U_\tau}\!\big(A_{kh}^{\top}\eta_{k\ell}\big),
 \label{eq:tensor}
 \end{equation}
-Each entry is the largest force-projection robot $i$ can supply along the pulled-back
-direction $A_{kh}^{\top}\eta_{k\ell}$ at slot $h$. The aggregated directional
-capacity and the projected demand are
+with $h_{U_\tau}$ the support function of $U_\tau$; each entry is the largest force
+projection a type-$\tau$ robot can supply along the pulled-back direction. (We call
+\eqref{eq:tensor} a \emph{map}, not a tensor: it is a table of support values, not
+a multilinear object.) The population directional capacity and the projected
+demand are, writing $x_{\tau kh}$ for the mass of type $\tau$ on slot $(k,h)$,
 \begin{equation}
-s_{k\ell}(x)=\sum_{i,h}\Wten_{ikh\ell}\,x_{ikh},
+s_{k\ell}(x)=\sum_{\tau,h}\Wmap_{\tau,kh\ell}\,x_{\tau kh},
 \qquad
-d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k ,
+d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k .
 \label{eq:cap-dem}
 \end{equation}
-where $\wdem_k\in\R^3$ is the wrench demanded by load $k$. The coalition is
-\emph{wrench-feasible} for load $k$ when
-\begin{equation}
-s_{k\ell}(x)\ge d_{k\ell}\quad\forall\ell .
-\label{eq:wrench-feasible}
-\end{equation}
 
-\begin{assumption}[Complete facet set]\label{as:facets}
-For each load $k$ the directions $\{\eta_{k\ell}\}_{\ell=1}^{P}$ contain the outer
-normals of every facet of the reachable wrench set
-$\Wten(C_k)=\bigoplus_{i,h}A_{kh}\,U_i$ (a Minkowski sum / zonotope).
-\end{assumption}
-
-\begin{proposition}[Tensorized membership]\label{prop:membership}
-Under Assumption~\ref{as:facets}, \eqref{eq:wrench-feasible} holds for all $\ell$
-iff $\wdem_k\in\Wten(C_k)$.
+\begin{proposition}[Support certificate for the relaxation]\label{prop:membership}
+Let $\Wmap(C_k)=\{\sum_{\tau,h}A_{kh}f_{\tau h}:f_{\tau h}\in x_{\tau kh}U_\tau\}$
+be the reachable population wrench set. For every finite direction set
+$\{\eta_{k\ell}\}$, $s_{k\ell}(x)\ge d_{k\ell}\;\forall\ell$ is \emph{necessary}
+for $\wdem_k\in\Wmap(C_k)$, and \emph{sufficient} when
+$\{\eta_{k\ell}\}$ are the outer normals of $\Wmap(C_k)$. If every $U_\tau$ is a
+polytope, $\Wmap(C_k)$ is a zonotope and finitely many normals suffice; for smooth
+$U_\tau$ (e.g.\ disks) the finite test is an outer relaxation whose gap vanishes as
+the direction set refines.
 \end{proposition}
 \begin{proof}
-$\Wten(C_k)$ is compact convex, so by the supporting-hyperplane theorem
-$\wdem_k\in\Wten(C_k)$ iff $\eta^{\top}\wdem_k\le h_{\Wten(C_k)}(\eta)$ for every
-outer normal $\eta$. Support functions are additive over Minkowski sums and
-positively homogeneous, so
-$h_{\Wten(C_k)}(\eta_{k\ell})=\sum_{i,h}h_{U_i}(A_{kh}^{\top}\eta_{k\ell})
-=\sum_{i,h}\Wten_{ikh\ell}$ at $x\equiv1$, and $s_{k\ell}(x)$ is exactly this sum
-weighted by the committed shares. Assumption~\ref{as:facets} makes the finite set
-$\{\eta_{k\ell}\}$ sufficient.
+$\Wmap(C_k)$ is compact convex, so by the supporting-hyperplane theorem
+$\wdem_k\in\Wmap(C_k)$ iff $\eta^{\top}\wdem_k\le h_{\Wmap(C_k)}(\eta)$ for all
+$\eta$. Support functions are additive over Minkowski sums and positively
+homogeneous, giving $h_{\Wmap(C_k)}(\eta_{k\ell})=s_{k\ell}(x)$. A finite normal
+set yields the stated necessity/sufficiency; a polytopic $U_\tau$ makes
+$\Wmap(C_k)$ a Minkowski sum of segments, i.e.\ a zonotope with finitely many
+facets.
 \end{proof}
-A scalar capacity $c_i$ cannot express differences in force limit, lever arm,
-slot access, or longitudinal/lateral/torque utility that \eqref{eq:tensor} keeps
-in separate channels.
+We call load $k$ \emph{wrench-feasible} at $x$ when $s_{k\ell}(x)\ge d_{k\ell}$ for
+all $\ell$. Unlike a scalar capacity $c_\tau$, \eqref{eq:tensor} separates force
+limit, lever arm, and slot---the channels that distinguish otherwise identical
+types.
 
-\subsection{Endogenous, role-induced communication graph}
-Let $e$ index a potential communication link between regions, and let
-$\mathcal{C}_{ire}\ge0$ be robot $i$'s contribution to link $e$ when it plays role
-$r$ (e.g.\ occupying a relay site). Edge weights and the induced graph Laplacian
-are then affine in the decisions,
+\subsection{Endogenous, decision-induced Laplacian}
+Only robots that do not lift can relay. Let $\mathcal C_{\tau re}\ge0$ be the
+contribution of a type-$\tau$ mass in role $r$ to communication link $e$; edge
+weights and the induced Laplacian are affine in the decision,
 \begin{equation}
-a_e(x)=\sum_{i,r}\mathcal{C}_{ire}\,x_{ir},
+a_e(x)=\sum_{\tau,r}\mathcal C_{\tau re}\,x_{\tau r},
 \qquad
-\Lap(x)=\sum_e a_e(x)\,L_e ,
+\Lap(x)=\sum_e a_e(x)\,L_e .
 \label{eq:laplacian}
 \end{equation}
-with $L_e\succeq0$ the elementary Laplacian of link $e$.
-
-Let $Q\in\R^{V\times(V-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$. The
-information constraint is the linear matrix inequality (LMI)
+The coefficients $\mathcal C_{\tau re}$ encode which candidate sites a relaying type
+can bridge, so \eqref{eq:laplacian} is the convex, decision-induced relaxation of
+the position-dependent graph $L(q)$; the continuous-position geometry $L(q(x))$ is
+nonconvex and is exercised only in the closed-loop simulation
+(Section~\ref{sec:exp}). Let $Q\in\R^{V\times(V-1)}$ be an orthonormal basis of
+$\mathbf 1^{\perp}$; the information constraint is the LMI
 \begin{equation}
-Q^{\top}\Lap(x)\,Q\;\succeq\;\sigmastar I,
-\qquad\Longleftrightarrow\qquad
-\lamtwo(\Lap(x))\ge\sigmastar ,
+Q^{\top}\Lap(x)\,Q\succeq\sigmastar I
+\;\Longleftrightarrow\;
+\lamtwo(\Lap(x))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-which is affine in $x$; its Lagrange dual is a positive-semidefinite matrix
-price $Z\succeq0$. At a point where the active eigenvalue is simple, $Z$ collapses
-to the rank-one $Z=\pi\,v v^{\top}$ with $v$ the unit Fiedler vector, recovering a
-scalar connectivity price $\pi$ (used in the algorithm of
-Section~\ref{sec:algorithm}). Working with \eqref{eq:lmi} rather than $\lamtwo$
-directly avoids the nonsmoothness of the eigenvalue at multiplicity.
+affine in $x$, with PSD matrix dual $Z\succeq0$; at a simple minimiser $Z=\pi vv^{\top}$
+recovers a scalar connectivity price $\pi$ (Section~\ref{sec:algorithm}). The
+threshold $\sigmastar$ is \emph{derived}, not assumed, in
+Theorem~\ref{thm:stability}.
 
 \begin{lemma}[Convex information set]\label{lem:convex}
-$x\mapsto\lamtwo(\Lap(x))$ is concave, hence the LMI region
-$\{x:Q^{\top}\Lap(x)Q\succeq\sigmastar I\}=\{x:\lamtwo(\Lap(x))\ge\sigmastar\}$ is convex.
+$x\mapsto\lamtwo(\Lap(x))$ is concave, so \eqref{eq:lmi} defines a convex set.
 \end{lemma}
 \begin{proof}
-By Fiedler~\cite{fiedler1973},
-$\lamtwo(L)=\min_{\|v\|=1,\,v\perp\mathbf 1} v^{\top}Lv$ is a pointwise minimum of
-functions linear in $L$, so it is concave in $L$; since $L(x)$ is affine in $x$,
-the composition is concave and its super-level set is convex~\cite{ghosh2006growing}.
+$\lamtwo(L)=\min_{\|v\|=1,\,v\perp\mathbf 1}v^{\top}Lv$ is a pointwise minimum of
+functions linear in $L$~\cite{fiedler1973}, hence concave; composed with the affine
+$L(x)$ it stays concave, and its super-level set is convex~\cite{ghosh2006growing}.
 \end{proof}
-
-The information threshold comes from the Nash-seeking dynamics: consensus must
-contract estimation error faster than cross-coupling injects it, giving
-\begin{equation}
-\boxed{\;\sigmastar=\dfrac{\vartheta^{2}}{c\,\mF}\;}
-\label{eq:sigma-star}
-\end{equation}
-with $c$ the consensus gain, $\mF$ the strong-monotonicity constant of the
-pseudo-gradient, and $\vartheta$ the cross-coupling magnitude. We write $\mF$,
-not $\mu$, to keep the monotonicity constant distinct from the wrench price.

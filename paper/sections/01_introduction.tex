@@ -1,64 +1,61 @@
 \section{Introduction}
 \label{sec:intro}
 
-Heterogeneous robot teams form coalitions to move loads that no single agent can
-move alone. Classical coalition and task-allocation models certify such teams by
-cardinality or scalar capacity, and treat communication as an exogenous resource
-that is either present or absent~\cite{gerkey2004taxonomy,choi2009cbba}. Two
-failure modes escape this view.
+Distributed population-game and Nash-seeking methods have become a standard route
+to coordinate large teams: agents adjust their strategies from locally
+communicated aggregates, and the dynamics converge to an equilibrium of a
+constrained potential game~\cite{sandholm2010population,quijano2017role,%
+barreiro2016constrained,martinezpiazuelo2022}. Every one of these methods rests on
+a silent premise: that the communication graph needed to \emph{compute} the
+equilibrium is available while the equilibrium is being reached.
 
-First, a coalition may satisfy every strategic-stability condition yet be unable
-to produce the demanded \emph{wrench}---the coupled force and torque---because a
-scalar capacity discards direction, lever arm, and contact
-complementarity~\cite{murray1994manipulation}. Two robots with identical nominal
-capacity can differ entirely in the force--torque directions they support.
+For a mobile robot team this premise is not innocent, because the agents that
+compute the equilibrium are the same agents whose placement forms the network.
+Consider a heterogeneous team recruited to move a load across a gap. A profile can
+be productively optimal---delivering exactly the demanded wrench (force and
+torque~\cite{murray1994manipulation})---and yet commit every robot to lifting, so
+that no robot remains to relay, algebraic connectivity collapses, and the very
+estimator that produced the profile loses its consensus channel. The equilibrium
+destroys the means of its own computation.
 
-Second, and more subtly, the very spatial arrangement that makes a coalition
-wrench-feasible can fragment the communication graph the team needs to
-\emph{estimate the aggregates and prices that define its own equilibrium}. When
-every robot is committed to lifting, no agent remains to relay, algebraic
-connectivity collapses, and the distributed equilibrium-seeking dynamics lose the
-consensus channel they depend on~\cite{ye2017nash,gadjov2019passivity}. The
-equilibrium destroys the means of its own computation.
+\paragraph*{The self-referential gap}
+The population-games literature treats the interaction graph as \emph{given}: a
+constraint or resource external to the game~\cite{quijano2017role,%
+barreiro2016constrained}. Connectivity-control and multi-robot task-allocation
+work maintains algebraic connectivity $\lamtwo$ as a separate design
+objective~\cite{fiedler1973,ghosh2006growing,zavlanos2011connectivity,%
+choi2009cbba,prorok2017diversity}. Neither addresses the case where the graph is
+an \emph{output} of the equilibrium's spatial composition. We adopt the
+distributed population-game and generalized-Nash machinery of Sandholm and of
+Barreiro-G\'omez, Quijano, and Mart\'inez-Piazuelo~\cite{sandholm2010population,%
+quijano2017role,barreiro2016constrained,martinezpiazuelo2022}, and treat the
+self-referential case in which the decision itself generates the graph that
+machinery presupposes.
 
-We take these two conditions to be jointly, not separately, necessary:
-\begin{quote}
-\emph{A Nash-stable coalition is not operationally meaningful if it cannot
-generate the required wrench, or if its own deployment destroys the network
-needed to compute and maintain that equilibrium.}
-\end{quote}
-
-\paragraph*{Related work}
-Aggregative and potential games give a compact route to distributed equilibria
-when payoffs couple only through population aggregates~%
-\cite{jensen2010aggregative,monderer1996potential,koshal2016aggregative}, and
-generalized Nash / variational equilibria extend this to shared
-constraints~\cite{rosen1965,facchinei2010gnep,facchinei2003fvi}. Distributed
-Nash-seeking over networks is by now well
-understood~\cite{ye2017nash,gadjov2019passivity}. In parallel, connectivity
-control maintains algebraic connectivity $\lambda_2$ as a design
-objective~\cite{fiedler1973,ghosh2006growing,zavlanos2011connectivity,bullo2009distributed},
-and multi-robot task allocation handles heterogeneity and communication
-limits~\cite{gerkey2004taxonomy,choi2009cbba,prorok2017diversity}. In each of
-these lines, however, communication is modeled as a constraint or resource that
-is \emph{given}, and physical force allocation---when present---is decoupled from
-the equilibrium concept. None couples a directional wrench certificate to an
-\emph{endogenous} network inside a single equilibrium.
+\paragraph*{Key observation}
+The productive optimum pins down the aggregate but not the composition. Because
+the team payoff couples only through population
+aggregates~\cite{jensen2010aggregative}, the set of profiles achieving the optimal
+aggregate is a positive-dimensional polytope (Theorem~\ref{thm:degeneracy}):
+classical theory says how much service each task gets, not \emph{which types}
+provide it. That undetermined composition is exactly the freedom we use to keep
+the network alive.
 
 \paragraph*{Contributions}
 \begin{itemize}
-\item We define the \textbf{WISE equilibrium} (Section~\ref{sec:wise}): a
-generalized variational equilibrium that is simultaneously strategically stable,
-wrench-feasible, and information self-sustaining on the induced graph.
-\item We build it from a \textbf{directional wrench tensor} $\Wten$ and an
-\textbf{endogenous Laplacian} $\Lap(x)$ that is affine in the decisions, so the
-information constraint $\lamtwo(\Lap(x))\ge\sigmastar$ defines a convex
-super-level set (Section~\ref{sec:model}).
-\item We give an \textbf{exact tensor-aggregative potential} (Theorem~\ref{thm:potential})
-and prove \textbf{existence and team-optimality} of WISE
-(Theorem~\ref{thm:existence}), yielding two certification prices
-(Corollary~\ref{cor:prices}) and a closed-form critical long-range fraction
-(Proposition~\ref{prop:nu}).
-\item A compact analytical study (Section~\ref{sec:exp}) shows the two constraints
-are jointly necessary and that relay/torque roles emerge from heterogeneity alone.
+\item \textbf{Composition degeneracy} (Theorem~\ref{thm:degeneracy}): the
+productively optimal aggregate is unique, but the equal-payoff composition face
+$\Emanifold$ has dimension $(T\!-\!1)(K\!-\!1)$.
+\item \textbf{Self-sustaining existence} (Theorem~\ref{thm:existence}): with an
+endogenous, position-induced Laplacian on $\Emanifold$, a self-sustaining
+equilibrium exists iff $\Lammax=\max_{x\in\Emanifold}\lamtwo(\Lap(x))\ge\sigmastar$.
+This is \emph{selection within a degenerate Nash face}, not an added constraint.
+\item \textbf{Exact self-defeat threshold} (Theorem~\ref{thm:stability}): the
+coupled strategy/consensus error is locally exponentially stable iff
+$c\,\mF\,\lamtwo>\vt^2$, deriving $\sigmastar=\vt^2/(c\,\mF)$ rather than importing it.
+\item \textbf{Infinitesimal-reward selection} (Prop.~\ref{prop:selection}) and a
+distributed algorithm, validated by closed-loop simulation with rigid-load
+transport and second-order unicycles---including emergent relay roles.
 \end{itemize}
+We name the resulting refinement the WISE equilibrium. \emph{A WISE equilibrium
+can both execute itself and compute itself.}

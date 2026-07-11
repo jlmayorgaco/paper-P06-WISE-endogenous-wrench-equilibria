@@ -1,40 +1,54 @@
 \section{Distributed Algorithm}
 \label{sec:algorithm}
 
-The headline solver is a projected primal--dual flow that realizes the
-certification prices of Corollary~\ref{cor:prices}:
+We seek a WISE by a projected primal--dual flow that couples a population revision
+protocol to the connectivity price of Corollary~\ref{cor:prices}:
 \begin{subequations}\label{eq:pd}
 \begin{align}
-\dot x_i &=\Pi_{T_{\Delta_i}(x_i)}\!\Big[\nabla_{x_i}\Pot(x)+A_i^{\top}\mu
-+\pi\,\nabla_{x_i}\lamtwo(\Lap(x))\Big],\label{eq:pd-x}\\
-\dot\mu  &=\Pi_{\R_+}^{\mu}\!\big[d-s(x)\big],\label{eq:pd-mu}\\
-\dot\pi  &=\Pi_{\R_+}^{\pi}\!\big[\sigmastar-\lamtwo(\Lap(x))\big],\label{eq:pd-pi}
+\dot x_\tau &= \mathcal R_\tau\!\Big(x,\;\nabla_{x_\tau}V(x)
++\pi\,\nabla_{x_\tau}\lamtwo(\Lap(x))\Big),\label{eq:pd-x}\\
+\dot\pi &= \big[\sigmastar-\lamtwo(\Lap(x))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
-where $A_i$ collects the tensor slices $\Wten_{ia,k\ell}$ and
-$\Pi_{T_{\Delta_i}(x_i)}$ is the projection onto the simplex tangent cone. Each
-robot needs only its own slices, the aggregate deficits $d-s(x)$, and the local
-Fiedler sensitivity $v^{\top}L_e v$, all obtainable by consensus over the current
-graph. The reading is economic: a missing wrench direction raises its price
-$\mu$; missing connectivity raises the relay price $\pi$; slack on either
-constraint lets its price fall; robots migrate toward the actions of highest
-marginal contribution~\eqref{eq:marginal}.
+where $\mathcal R_\tau$ is a mass-preserving revision protocol and the wrench price
+$\mu_k=\nabla F_k(s_k)$ is internal to $\nabla V$. Each type needs only its own
+capability rows $\Wmap_{\tau,\cdot}$, the aggregate deficit $d-s(x)$, and the local
+Fiedler sensitivity $v^{\top}L_e v$, all obtained by consensus over the current
+graph. Economically: a missing wrench direction raises $\mu$; missing connectivity
+raises the relay price $\pi$; mass migrates toward the highest type-action value
+\eqref{eq:prices}.
+
+\paragraph*{Choice of revision protocol}
+We use a projected-ascent (Euclidean) protocol, which is Nash-stationary: its rest
+points are exactly the constrained maximisers of $V$~\cite{sandholm2010population}.
+Smith and BNN protocols share this property. We deliberately avoid the replicator
+(multiplicative-weights) map: it is \emph{not} Nash-stationary on the boundary---it
+can rest at support-restricted profiles that leave a profitable but extinct action
+unused, and it never repopulates a mass it has driven to
+zero~\cite{sandholm2010population}. On a face $\Emanifold$ whose self-sustaining
+subset may require re-activating a relay type, replicator can therefore stall short
+of $\Ess$; projected ascent cannot.
 
 \begin{proposition}[Convergence to a WISE]\label{prop:conv}
-Under the hypotheses of Theorem~\ref{thm:existence} with $\Pot$ strictly concave
-in the aggregates and Slater's condition on $\Xwise$, the saddle points of the
-Lagrangian of $\max_{x\in\Xwise}\Pot$ coincide with the WISE profiles, and the
-flow~\eqref{eq:pd} is a projected pseudo-gradient of a monotone saddle operator;
-its trajectories converge to such a saddle point.
+Assume $\Phi_0$ strongly concave, Slater feasibility of $\Ess$, and a
+Nash-stationary revision $\mathcal R$. Then the saddle points of the Lagrangian of
+$\max_{x\in\Ess}V$ coincide with the WISE profiles, and \eqref{eq:pd} is a
+projected monotone flow whose trajectories converge to one, provided the consensus
+gain keeps the estimator above the stability threshold of
+Theorem~\ref{thm:stability} throughout.
 \end{proposition}
 \begin{proof}[Sketch]
-Concavity of $\Pot$ and convexity of the constraints make the Lagrangian
-concave--convex, so its saddle points are exactly the KKT (hence WISE) points by
+Strong concavity of $V$ and convexity of $\Ess$ make the Lagrangian
+concave--convex, so its saddle points are the KKT (hence WISE) points by
 Corollary~\ref{cor:prices}. The map in \eqref{eq:pd} is the projected gradient of
-this saddle function, which is monotone; passivity/monotone-operator arguments for
-primal--dual Nash-seeking then give convergence~\cite{gadjov2019passivity,facchinei2003fvi}.
+this saddle function, which is monotone; passivity arguments for primal--dual
+Nash-seeking give convergence~\cite{gadjov2019passivity,facchinei2003fvi}. The
+proviso is exactly \eqref{eq:threshold}: if the trajectory drops below $\sigmastar$
+the estimator error grows (Theorem~\ref{thm:stability}) and the aggregates fed to
+$\mathcal R$ are no longer trustworthy---the algorithm can only be guaranteed to
+converge where the equilibrium is self-computing.
 \end{proof}
 
-Replacing the projected-gradient primal map \eqref{eq:pd-x} by a replicator
-(multiplicative-weights) map leaves the rest-point set unchanged; we use the
-projected form throughout.
+The proviso is the paper's point in algorithmic form: convergence of the
+distributed method is contingent on the equilibrium it is converging to being
+information self-sustaining.

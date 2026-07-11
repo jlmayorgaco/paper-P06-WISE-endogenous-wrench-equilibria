@@ -21,6 +21,7 @@
 \newtheorem{corollary}{Corollary}
 \newtheorem{definition}{Definition}
 \newtheorem{assumption}{Assumption}
+\newtheorem{remark}{Remark}
 
 % ---- notation macros ----
 \newcommand{\R}{\mathbb{R}}
@@ -33,11 +34,16 @@
 \newcommand{\wdem}{w^{\mathrm{dem}}}
 \newcommand{\mF}{m_F}                     % strong-monotonicity constant
 \newcommand{\PoE}{\mathrm{PoE}}
+\newcommand{\Emanifold}{\mathcal{E}}          % productive (Nash) composition face
+\newcommand{\Ess}{\mathcal{E}_{\mathrm{ss}}}  % self-sustaining subset
+\newcommand{\Lammax}{\Lambda^{\star}}         % max algebraic connectivity over E
+\newcommand{\vt}{\vartheta}                    % cross-coupling
+\newcommand{\Wmap}{\mathcal{W}}                % directional support-capability map
 
 \begin{document}
 
-\title{WISE: Wrench- and Information-Self-Sustaining Equilibria\\
-for Heterogeneous Multi-Robot Coalitions}
+\title{WISE: Self-Sustaining Population Equilibria\\
+over Decision-Induced Robot Networks}
 
 \author{\IEEEauthorblockN{Jorge Luis Mayorga Taborda}
 \IEEEauthorblockA{\textit{Universidad Internacional de Valencia (VIU)}\\
@@ -47,23 +53,27 @@ jl.mayorga236@gmail.com}}
 \maketitle
 
 \begin{abstract}
-A Nash-stable coalition is not operationally meaningful if it cannot generate
-the required wrench, or if its own spatial deployment destroys the communication
-network needed to compute and maintain that equilibrium. We introduce the
-\emph{Wrench-and-Information Self-Sustaining Equilibrium} (WISE), a refinement of
-the generalized variational equilibrium that couples three requirements:
-strategic stability, physical wrench feasibility, and sustainability of the
-\emph{induced} communication graph. The formulation rests on a directional
-wrench-capacity tensor and an endogenous Laplacian that is affine in the team's
-decisions, so the information constraint $\lamtwo(\Lap(x))\ge\sigmastar$ is a
-convex super-level set. We give an exact tensor-aggregative potential, prove
-existence and team-optimality of WISE, and expose two certification prices---one
-for force/torque, one for connectivity. A distributed primal--dual algorithm
-converges to a WISE and, in simulation of heterogeneous robot teams (convergence,
-phase diagram, constraint ablation, emergent roles), shows that wrench feasibility
-and information self-sustainability are jointly, not separately, necessary, and
-that relay roles emerge from radius heterogeneity alone. \emph{A WISE equilibrium
-can both execute itself and compute itself.}
+Distributed population-game dynamics need a connected communication graph to
+estimate the aggregates and payoffs that define their equilibria. We study the
+self-referential case in which the equilibrium's own spatial composition
+determines whether that graph exists. For a heterogeneous multi-robot team we
+show that the productively optimal aggregate is unique but its \emph{composition}
+is degenerate---a positive-dimensional face of equal-payoff profiles---so
+classical theory fixes how much wrench each load receives, not which robot types
+provide it. On that face we place an endogenous, position-induced Laplacian and
+define the \emph{Wrench- and Information-Self-Sustaining Equilibrium} (WISE): a
+productively optimal composition that also keeps algebraic connectivity above the
+Nash-seeking threshold $\sigmastar=\vt^2/(c\,\mF)$. We prove (i) composition
+degeneracy, (ii) that a self-sustaining equilibrium exists iff
+$\Lammax:=\max_{x\in\Emanifold}\lamtwo(\Lap(x))\ge\sigmastar$, (iii) an exact
+local stability threshold $c\,\mF\,\lamtwo>\vt^2$ derived from the coupled
+estimation dynamics, and (iv) that an infinitesimal information reward selects
+the most-connected composition without moving the productive optimum. Closed-loop
+simulation with rigid-load transport and second-order unicycles confirms all
+four, and shows relay roles emerging from radius heterogeneity by comparative
+advantage. \emph{A population equilibrium can produce a configuration that
+destroys the graph its own algorithm requires; composition heterogeneity is
+exactly what lets it select the equilibria that survive.}
 \end{abstract}
 
 \begin{IEEEkeywords}

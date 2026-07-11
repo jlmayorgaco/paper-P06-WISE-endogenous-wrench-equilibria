@@ -55,6 +55,10 @@ def project_simplex_rows(V: np.ndarray) -> np.ndarray:
     return np.maximum(V - theta[:, None], 0.0)
 
 
+# backward-compatible alias
+project_simplex = project_simplex_rows
+
+
 def solve(
     problem: WiseProblem,
     x0: np.ndarray | None = None,

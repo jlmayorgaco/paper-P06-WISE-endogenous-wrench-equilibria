@@ -1,22 +1,33 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-% Budget: ~0.75 page (with references).
-
-We introduced WISE, an equilibrium refinement in which a coalition is
-operationally meaningful only when it is strategically stable, wrench-feasible,
-and able to sustain the induced communication graph that computes and maintains
-it. A directional wrench tensor and an affine, endogenous Laplacian make the
-feasible set convex; an exact tensor-aggregative potential yields existence,
-team-optimality, and two certification prices---one for force/torque, one for
-connectivity. Experiments show wrench feasibility and information
-self-sustainability are jointly necessary, and that relay/torque roles emerge
-from heterogeneity alone.
+We studied population equilibria whose own spatial composition determines whether
+the communication graph their algorithm requires exists. Three facts make the
+phenomenon tractable and sharp: the productive optimum fixes the aggregate but
+leaves a positive-dimensional composition face (Theorem~\ref{thm:degeneracy}); on
+that face a self-sustaining equilibrium exists iff its best induced connectivity
+clears the Nash-seeking threshold (Theorem~\ref{thm:existence}); and that same
+threshold is the exact stability boundary of the coupled estimator
+(Theorem~\ref{thm:stability}), so an infinitesimal information reward selects the
+surviving composition (Proposition~\ref{prop:selection}). Closed-loop simulation
+with rigid-load transport and second-order unicycles confirms all four and shows
+relay roles emerging by comparative advantage. We extend the distributed
+population-game and generalized-Nash machinery of the Sandholm and
+Quijano--Barreiro-G\'omez--Mart\'inez-Piazuelo
+lines~\cite{sandholm2010population,quijano2017role,barreiro2016constrained,%
+martinezpiazuelo2022} to the case where the decision generates the graph that
+machinery presupposes.
 
 \paragraph*{Limitations}
-The role-induced graph is affine rather than fully pairwise-quadratic;
-$\lamtwo$ is assumed simple at the operating point; the study is in simulation.
+The analysis is a \emph{fluid relaxation}; integer assignments are recovered by
+rounding under the margin condition of Remark~\ref{rem:integer}. The induced
+Laplacian is affine in the decision (candidate-site relaxation of the
+position-dependent graph); the fully continuous-position geometry $L(q)$ is
+nonconvex and is exercised only in simulation. Nonholonomic wrench realizability is
+modelled by the heading-aligned force set, not proved; and validation is in
+simulation.
 
 \paragraph*{Future work}
-A Nash--Lagrange treatment with wrench-market prices and a closed-form vGNE with
-explicit sensor-to-motor control are deferred to companion papers.
+A realizability theorem for the nonholonomic contact, the nonconvex
+continuous-position graph, and hardware validation are the natural next steps
+toward a full closed-loop guarantee.
