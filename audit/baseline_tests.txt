@@ -1,0 +1,18 @@
+# Baseline test run
+# command: python -m pytest -v
+# date context: 2026-07-11 (session)
+
+============================= test session starts =============================
+platform win32 -- Python 3.13.14, pytest-8.4.2, pluggy-1.6.0
+rootdir: C:\Users\walla\Documents\Github\paper-P07-WISE-endogenous-wrench-equilibria
+configfile: pyproject.toml
+testpaths: tests
+plugins: anyio-4.13.0, cov-5.0.0, typeguard-4.5.1
+collected 15 items
+
+tests\test_centralized_equivalence.py ss                                 [ 13%]
+tests\test_fiedler_gradient.py ....s                                     [ 46%]
+tests\test_wise_feasibility.py ..s                                       [ 66%]
+tests\test_wrench_tensor.py ....s                                        [100%]
+
+======================== 10 passed, 5 skipped in 1.17s ========================
