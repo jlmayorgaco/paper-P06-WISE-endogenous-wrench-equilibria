@@ -82,7 +82,7 @@ def _panel(ax, prob, relay_idx, bridge, title, good):
     head = np.arctan2(-offs[:, 1], -offs[:, 0])          # face the load
     F = prob.meta["F"][lifters]
     w_cmd = np.array([0.0, 2.0, 0.6])
-    f, _, _ = dyn.realize_wrench(offs, head, F, 0.4, w_cmd)
+    f, _, _ = dyn.realize_wrench(offs, head, F, prob.meta["kappa"], w_cmd)
     for k, i in enumerate(lifters):
         if np.linalg.norm(f[k]) > 1e-2:
             ax.annotate("", xy=pos[i] + 0.6 * f[k] / max(np.linalg.norm(f[k]), 1e-6),

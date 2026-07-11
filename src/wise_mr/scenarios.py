@@ -53,8 +53,18 @@ def two_region(
     c: float = 1.0,
     m_F: float = 1.0,
     bridge_gain: float = 1.6,
+    kappa: float = 0.4,
+    m_sides: int = 8,
 ) -> WiseProblem:
-    """Generate a reproducible two-region WISE instance."""
+    """Generate a reproducible two-region WISE instance.
+
+    ``kappa`` is the lateral/longitudinal ratio of the heading-aligned elliptical
+    force set (nonholonomic penalty). The wrench certificate uses the inner
+    regular ``2*m_sides``-gon inscribed in ``disk(kappa*F)``, so it is
+    conservative w.r.t. the physical ellipse. Longitudinal caps ``F`` are scaled
+    by ``1/kappa`` so the conservative capacity ``kappa*F`` stays comparable
+    across ``kappa``.
+    """
     rng = np.random.default_rng(seed)
     n_long = int(round(nu * N))
 
@@ -64,8 +74,9 @@ def two_region(
         center = LEFT_CENTER if i % 2 == 0 else RIGHT_CENTER
         pos[i] = center + CLUSTER_SPREAD * rng.standard_normal(2)
 
-    # heterogeneity: capacity and communication range
-    F = rng.uniform(0.8, 1.6, size=N)                       # force capacity
+    # heterogeneity: capacity and communication range. F is the *longitudinal*
+    # ellipse semi-axis; the conservative certificate uses kappa*F (see below).
+    F = rng.uniform(0.8, 1.6, size=N) / kappa               # force capacity
     is_long = np.zeros(N, dtype=bool)
     is_long[rng.choice(N, size=n_long, replace=False)] = True
     r = np.where(is_long, rng.uniform(5.5, 7.0, size=N), rng.uniform(1.5, 2.5, size=N))
@@ -77,7 +88,8 @@ def two_region(
     directions = _directions()
     w_dem = np.array([[0.0, lift, tau_d]])                   # (M, 3): lift + torque
 
-    W = wt.build_wrench_tensor(F, A_maps, directions)        # (N, M, H, P)
+    # certificate uses the inner 2m-gon in disk(kappa*F): conservative vs ellipse
+    W = wt.build_wrench_tensor(F, A_maps, directions, kappa=kappa, m_sides=m_sides)
 
     # action costs g[i, a]; A = M*H + 2  (slots, relay, idle)
     A_actions = H + 2
@@ -116,7 +128,8 @@ def two_region(
         g=g, base_laplacian=base_L, relay_laplacians=relay_L, sigma=sigma,
     )
     prob.meta = dict(seed=seed, nu=nu, tau_d=tau_d, lift=lift, pos=pos, F=F, r=r,
-                     is_long=is_long, load=load, slot_world=slot_world)
+                     is_long=is_long, load=load, slot_world=slot_world,
+                     kappa=kappa, m_sides=m_sides)
     return prob
 
 

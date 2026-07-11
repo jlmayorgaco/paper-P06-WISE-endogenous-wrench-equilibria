@@ -37,7 +37,7 @@ $q\in(\mathrm{SE}(2))^N$, which enter only the closed-loop simulation
 \begin{assumption}[Standing hypotheses]\label{as:standing}
 Throughout: \emph{(i)} the relaxed state set $\mathcal X$ is compact and convex
 (product of scaled simplices); \emph{(ii)} the aggregate map $x\mapsto s(x)$ of
-\eqref{eq:cap-dem} is linear, so the wrench-feasible set
+\eqref{eq:tensor} is linear, so the wrench-feasible set
 $\mathcal X_{\mathrm f}=\{x\in\mathcal X:s_{k\ell}(x)\ge d_{k\ell}\}$ is a
 polytope; \emph{(iii)} the candidate-site Laplacian $\Lap(x)$ of
 \eqref{eq:laplacian} is affine in $x$ with each elementary $L_e\succeq0$ and each
@@ -46,52 +46,63 @@ undirected and weighted, so every $\Lap(x)$ is a symmetric graph Laplacian; and
 \emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$.
 \end{assumption}
 
-\subsection{Directional support-capability map}
-Let $U_\tau\subset\R^2$ be the compact convex admissible-force set of a type-$\tau$
-robot, $A_{kh}\in\R^{3\times2}$ the contact-to-wrench map at slot $h$ of load $k$,
-and $\eta_{k\ell}\in\R^3$ ($\ell\le P$) a probing wrench direction. Define the
-\emph{directional support-capability map}
+\subsection{Support-function wrench certificate}
+\emph{Physical force set.} A type-$\tau$ robot with heading $\phi$ exerts contact
+forces in the heading-aligned ellipse $U_\tau(\phi)$ with longitudinal semi-axis
+$F_\tau$ (along $\phi$) and lateral semi-axis $\kappa F_\tau$ ($\kappa\le1$, the
+nonholonomic penalty). \emph{Certificate set.} The strategic layer does not track
+headings, so for the certificate we use the heading-independent, centrally
+symmetric \emph{inner} regular $2m$-gon $U_\tau^{\mathrm{in}}$ inscribed in the
+disk of radius $\kappa F_\tau$. Since $\mathrm{disk}(\kappa F_\tau)\subseteq
+U_\tau(\phi)$ for every $\phi$ (the ellipse's minimum semi-axis is $\kappa
+F_\tau$), we have $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ for all $\phi$;
+feasibility tested against $U_\tau^{\mathrm{in}}$ is therefore \emph{conservative}
+and cannot create a false positive.
+
+Let $A_{kh}\in\R^{3\times2}$ be the contact-to-wrench map at slot $h$ of load $k$,
+$\eta_{k\ell}\in\R^3$ ($\ell\le P$) a probing direction, and $h_{U}$ the support
+function of $U$. Define the \emph{support-capability map}
 $\Wmap\in\R^{T\times M\times H\times P}$ by
 \begin{equation}
-\Wmap_{\tau,kh\ell}=h_{U_\tau}\!\big(A_{kh}^{\top}\eta_{k\ell}\big),
+\Wmap_{\tau,kh\ell}=h_{U_\tau^{\mathrm{in}}}\!\big(A_{kh}^{\top}\eta_{k\ell}\big),
+\qquad
+d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k ,
 \label{eq:tensor}
 \end{equation}
-with $h_{U_\tau}$ the support function of $U_\tau$; each entry is the largest force
-projection a type-$\tau$ robot can supply along the pulled-back direction. It is a
-\emph{map} (a table of support values), not a tensor. The population directional
-capacity and the projected demand are, writing $x_{\tau kh}$ for the mass of type
-$\tau$ on slot $(k,h)$,
-\begin{equation}
-s_{k\ell}(x)=\sum_{\tau,h}\Wmap_{\tau,kh\ell}\,x_{\tau kh},
-\qquad
-d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k\in\R,
-\label{eq:cap-dem}
-\end{equation}
-with $\wdem_k\in\R^3$ the demanded wrench of load $k$.
+with $\wdem_k\in\R^3$ the demanded wrench of load $k$, and the population
+directional capacity $s_{k\ell}(x)=\sum_{\tau,h}\Wmap_{\tau,kh\ell}\,x_{\tau kh}$
+($x_{\tau kh}$ the mass of type $\tau$ on slot $(k,h)$). Let
+$\Wmap(C_k)=\bigoplus_{\tau,h}x_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ be the
+reachable population wrench set.
 
-\begin{proposition}[Support certificate for the relaxation]\label{prop:membership}
-Let $\Wmap(C_k)=\{\sum_{\tau,h}A_{kh}f_{\tau h}:f_{\tau h}\in x_{\tau kh}U_\tau\}$
-be the reachable population wrench set. For every finite direction set
-$\{\eta_{k\ell}\}$, $s_{k\ell}(x)\ge d_{k\ell}\;\forall\ell$ is \emph{necessary}
-for $\wdem_k\in\Wmap(C_k)$, and \emph{sufficient} when
-$\{\eta_{k\ell}\}$ are the outer normals of $\Wmap(C_k)$. If every $U_\tau$ is a
-polytope, $\Wmap(C_k)$ is a zonotope and finitely many normals suffice; for smooth
-$U_\tau$ (e.g.\ disks) the finite test is an outer relaxation whose gap vanishes as
-the direction set refines.
+\begin{proposition}[Support-function wrench certificate]\label{prop:membership}
+\emph{(i)} For every $\eta$,
+$h_{\Wmap(C_k)}(\eta)=\sum_{\tau,h}x_{\tau kh}\,h_{U_\tau^{\mathrm{in}}}(A_{kh}^{\top}\eta)$.
+\emph{(ii)} For any finite direction set $\mathcal D$,
+$\{\eta^{\top}\wdem_k\le h_{\Wmap(C_k)}(\eta):\eta\in\mathcal D\}$ is
+\emph{necessary} for $\wdem_k\in\Wmap(C_k)$. \emph{(iii)} it is \emph{sufficient}
+iff $\mathcal D$ contains a complete set of outward facet normals of
+$\Wmap(C_k)$, or an equivalent exact H-representation is used. \emph{(iv)} If every
+$U_\tau$ is a polytope, $\Wmap(C_k)$ is a polytope. \emph{(v)} If every $U_\tau$ is
+a zonotope, $\Wmap(C_k)$ is a zonotope. In particular each $U_\tau^{\mathrm{in}}$ is
+a zonotope, so $\Wmap(C_k)$ is a zonotope, a complete finite $\mathcal D$ exists,
+and exact membership is a linear program.
 \end{proposition}
 \begin{proof}
-$\Wmap(C_k)$ is compact convex, so by the supporting-hyperplane theorem
-$\wdem_k\in\Wmap(C_k)$ iff $\eta^{\top}\wdem_k\le h_{\Wmap(C_k)}(\eta)$ for all
-$\eta$. Support functions are additive over Minkowski sums and positively
-homogeneous, giving $h_{\Wmap(C_k)}(\eta_{k\ell})=s_{k\ell}(x)$. A finite normal
-set yields the stated necessity/sufficiency; a polytopic $U_\tau$ makes
-$\Wmap(C_k)$ a Minkowski sum of segments, i.e.\ a zonotope with finitely many
-facets.
+\emph{(i)} support functions are additive over Minkowski sums and satisfy the
+linear-image identity $h_{MU}(\eta)=h_U(M^{\top}\eta)$. \emph{(ii)} supporting
+hyperplane. \emph{(iii)} a compact convex body equals the intersection of its
+supporting half-spaces at its outward facet normals; the finite subset $\mathcal D$
+is exact precisely when it contains them. \emph{(iv)--(v)} linear images and
+Minkowski sums of polytopes are polytopes, and of zonotopes are zonotopes; a
+regular $2m$-gon is a zonotope. A general polytope is \emph{not} a zonotope (e.g.\
+a triangle is not centrally symmetric), so we never infer zonotope from polytope.
 \end{proof}
 We call load $k$ \emph{wrench-feasible} at $x$ when $s_{k\ell}(x)\ge d_{k\ell}$ for
-all $\ell$ (Assumption~\ref{as:standing}(ii)). Unlike a scalar capacity $c_\tau$,
-\eqref{eq:tensor} separates force limit, lever arm, and slot---the channels that
-distinguish otherwise identical types.
+all $\ell$ (Assumption~\ref{as:standing}(ii)); by
+$U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ this certificate is conservative---a
+certified wrench is realizable by the physical elliptical forces. Unlike a scalar
+capacity, \eqref{eq:tensor} separates force limit, lever arm, and slot.
 
 \subsection{Decision-induced candidate-site Laplacian $\Lap(x)$}
 We deliberately separate two graphs. The \emph{decision-induced candidate-site
