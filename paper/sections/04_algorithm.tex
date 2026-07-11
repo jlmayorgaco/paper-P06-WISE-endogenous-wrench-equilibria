@@ -1,0 +1,40 @@
+\section{Distributed Algorithm}
+\label{sec:algorithm}
+
+The headline solver is a projected primal--dual flow that realizes the
+certification prices of Corollary~\ref{cor:prices}:
+\begin{subequations}\label{eq:pd}
+\begin{align}
+\dot x_i &=\Pi_{T_{\Delta_i}(x_i)}\!\Big[\nabla_{x_i}\Pot(x)+A_i^{\top}\mu
++\pi\,\nabla_{x_i}\lamtwo(\Lap(x))\Big],\label{eq:pd-x}\\
+\dot\mu  &=\Pi_{\R_+}^{\mu}\!\big[d-s(x)\big],\label{eq:pd-mu}\\
+\dot\pi  &=\Pi_{\R_+}^{\pi}\!\big[\sigmastar-\lamtwo(\Lap(x))\big],\label{eq:pd-pi}
+\end{align}
+\end{subequations}
+where $A_i$ collects the tensor slices $\Wten_{ia,k\ell}$ and
+$\Pi_{T_{\Delta_i}(x_i)}$ is the projection onto the simplex tangent cone. Each
+robot needs only its own slices, the aggregate deficits $d-s(x)$, and the local
+Fiedler sensitivity $v^{\top}L_e v$, all obtainable by consensus over the current
+graph. The reading is economic: a missing wrench direction raises its price
+$\mu$; missing connectivity raises the relay price $\pi$; slack on either
+constraint lets its price fall; robots migrate toward the actions of highest
+marginal contribution~\eqref{eq:marginal}.
+
+\begin{proposition}[Convergence to a WISE]\label{prop:conv}
+Under the hypotheses of Theorem~\ref{thm:existence} with $\Pot$ strictly concave
+in the aggregates and Slater's condition on $\Xwise$, the saddle points of the
+Lagrangian of $\max_{x\in\Xwise}\Pot$ coincide with the WISE profiles, and the
+flow~\eqref{eq:pd} is a projected pseudo-gradient of a monotone saddle operator;
+its trajectories converge to such a saddle point.
+\end{proposition}
+\begin{proof}[Sketch]
+Concavity of $\Pot$ and convexity of the constraints make the Lagrangian
+concave--convex, so its saddle points are exactly the KKT (hence WISE) points by
+Corollary~\ref{cor:prices}. The map in \eqref{eq:pd} is the projected gradient of
+this saddle function, which is monotone; passivity/monotone-operator arguments for
+primal--dual Nash-seeking then give convergence~\cite{gadjov2019passivity,facchinei2003fvi}.
+\end{proof}
+
+Replacing the projected-gradient primal map \eqref{eq:pd-x} by a replicator
+(multiplicative-weights) map leaves the rest-point set unchanged; we use the
+projected form throughout.

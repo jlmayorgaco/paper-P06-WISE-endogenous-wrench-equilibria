@@ -1,0 +1,35 @@
+cff-version: 1.2.0
+message: "If you use this software or the WISE equilibrium concept, please cite the paper below."
+title: "WISE: Wrench- and Information-Self-Sustaining Equilibria for Heterogeneous Multi-Robot Coalitions"
+abstract: >-
+  WISE introduces the Wrench-and-Information Self-Sustaining Equilibrium, a
+  refinement of the generalized variational equilibrium in which a coalition is
+  operationally meaningful only if it is strategically stable, physically
+  wrench-feasible, and able to sustain the induced communication graph needed to
+  compute and maintain the equilibrium. The formulation couples a directional
+  wrench tensor with an endogenous Laplacian under shared constraints, yielding
+  physical and information certification prices.
+type: software
+authors:
+  - family-names: "Mayorga Taborda"
+    given-names: "Jorge Luis"
+    email: jl.mayorga236@gmail.com
+keywords:
+  - multi-robot systems
+  - aggregative games
+  - generalized variational equilibrium
+  - wrench feasibility
+  - algebraic connectivity
+  - coalition formation
+license: MIT
+repository-code: "https://github.com/jlmayorgaco/paper-P07-WISE-endogenous-wrench-equilibria"
+version: "0.1.0"
+date-released: "2026-07-11"
+preferred-citation:
+  type: conference-paper
+  title: "WISE: Wrench- and Information-Self-Sustaining Equilibria for Heterogeneous Multi-Robot Coalitions"
+  authors:
+    - family-names: "Mayorga Taborda"
+      given-names: "Jorge Luis"
+  collection-title: "Latin American Robotics Symposium (LARS)"
+  year: 2026

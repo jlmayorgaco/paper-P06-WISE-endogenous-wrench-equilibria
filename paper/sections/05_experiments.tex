@@ -1,0 +1,92 @@
+\section{Simulation Study}
+\label{sec:exp}
+
+We simulate teams of $N=12$ heterogeneous robots in a two-region world: a load in
+the right cluster demands a planar wrench $\wdem=(0,\text{lift},\tau_d)$, while
+short-range links connect robots only within a cluster, so the inter-cluster gap
+is bridged only when a \emph{long-range} robot commits to the $\mathrm{relay}$
+action---activating its full range. Robots differ in force capacity $F_i$ and
+communication range $r_i$; a fraction $\nu$ are long-range. Each instance yields a
+directional wrench tensor \eqref{eq:tensor} and an endogenous Laplacian
+\eqref{eq:laplacian}, and is solved by the distributed primal--dual flow
+\eqref{eq:pd}. The primary metric is the \emph{certified service rate}: a load
+counts as served only if it is both wrench-feasible and information
+self-sustaining ($\max_\ell[d_\ell-s_\ell]_+\le\epsilon_w$ \emph{and}
+$\lamtwo-\sigmastar\ge-\epsilon_I$). All instances are seeded; the campaign
+reproduces exactly.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{fig1_concept.pdf}
+\caption{The WISE condition. (a) A wrench-feasible coalition commits every robot
+to the load; algebraic connectivity collapses ($\lamtwo<\sigmastar$) and the team
+can no longer compute or maintain its own equilibrium. (b) A WISE profile diverts
+one long-range robot to relay, keeping $\lamtwo\ge\sigmastar$ while still
+delivering the demanded wrench.}
+\label{fig:concept}
+\end{figure}
+
+\paragraph*{Convergence (Fig.~\ref{fig:conv})}
+On a representative instance the distributed dynamics drive $\lamtwo(\Lap(x))$
+onto the threshold $\sigmastar$ and the wrench residual to zero
+simultaneously---the equilibrium becomes both wrench-feasible and self-computing.
+The information price $\pi$ settles at its certification value, and the relay mass
+concentrates entirely on long-range robots: the roles are priced into existence,
+not assigned.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{fig2_convergence.pdf}
+\caption{Distributed primal--dual convergence. (a) $\lamtwo\!\to\!\sigmastar$ and
+the wrench residual $\to0$ together. (b) The information price $\pi$ converges and
+relay mass accrues to long-range robots only (short-range stays at zero).}
+\label{fig:conv}
+\end{figure}
+
+\paragraph*{Phase diagram (Fig.~\ref{fig:phase})}
+Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ (12 seeds per
+cell), the certified service rate collapses in two regimes predicted by the
+theory: at $\nu\!\to\!0$ no robot can bridge the gap, so wrench-feasible
+coalitions are \emph{information self-defeating}; at high $\tau_d$ the fleet is
+wrench-limited. Certification survives only in the interior WISE band, and its
+left edge is exactly the connectivity-limited boundary.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.82\columnwidth]{fig3_phase.pdf}
+\caption{Certified-service-rate phase diagram over $(\nu,\tau_d)$ from simulation
+(12 seeds/cell); dashed line is the $50\%$ contour. Certification fails at
+$\nu\!\to\!0$ (connectivity self-defeat) and at high $\tau_d$ (wrench limit).}
+\label{fig:phase}
+\end{figure}
+
+\paragraph*{Constraint ablation (Table~\ref{tab:ablation})}
+We compare five solvers on paired seeds at a WISE-feasible operating point.
+Enforcing either constraint alone fails: \texttt{scalar\_capacity} and
+\texttt{wrench\_only} build valid coalitions that fragment the network (negative
+margin), while \texttt{connectivity\_only} keeps the network but cannot lift the
+load (large residual). Only the WISE primal--dual solver certifies both, matching
+the centralized oracle---evidence that the distributed equilibrium attains the
+team optimum of Theorem~\ref{thm:existence}.
+
+\begin{table}[t]\centering
+\caption{Constraint ablation on paired seeds ($N=12$, $\nu=0.5$, $\tau_d=3$,
+seed-averaged). Arrows mark the preferred direction.}
+\label{tab:ablation}
+\small
+\input{figures/ablation_table.tex}
+\end{table}
+
+\paragraph*{Emergent roles (Fig.~\ref{fig:roles}b)}
+Pooling the WISE solutions across seeds, relay commitment is drawn
+\emph{exclusively} from long-range robots: no short-range robot ever relays,
+while the long-range robots with the best connectivity-value-to-cost ratio take
+up the relay role. Comparative advantage in radius---not a hand-coded
+assignment---produces the division of labour, exactly as the price system
+\eqref{eq:prices} predicts.
+
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{fig4_ablation_roles.pdf}
+\caption{(a) Certified service rate by method (mean $\pm$ 95\% bootstrap CI):
+single-constraint methods fail; WISE matches the oracle. (b) Relay share vs.\
+communication range at the WISE solution, pooled over seeds---relays are drawn
+only from long-range robots.}
+\label{fig:roles}
+\end{figure}

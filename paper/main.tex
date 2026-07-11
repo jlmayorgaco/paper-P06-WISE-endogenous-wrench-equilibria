@@ -1,0 +1,84 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+% ---- packages ----
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{amsthm}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+\graphicspath{{figures/}}
+
+% ---- theorem environments ----
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{proposition}{Proposition}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\newtheorem{assumption}{Assumption}
+
+% ---- notation macros ----
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Wten}{\mathcal{W}}          % directional wrench tensor
+\newcommand{\Xwise}{\mathcal{X}_{\mathrm{WISE}}}
+\newcommand{\sigmastar}{\sigma^{\star}}
+\newcommand{\lamtwo}{\lambda_2}
+\newcommand{\Lap}{L}
+\newcommand{\Pot}{\Phi}
+\newcommand{\wdem}{w^{\mathrm{dem}}}
+\newcommand{\mF}{m_F}                     % strong-monotonicity constant
+\newcommand{\PoE}{\mathrm{PoE}}
+
+\begin{document}
+
+\title{WISE: Wrench- and Information-Self-Sustaining Equilibria\\
+for Heterogeneous Multi-Robot Coalitions}
+
+\author{\IEEEauthorblockN{Jorge Luis Mayorga Taborda}
+\IEEEauthorblockA{\textit{Universidad Militar Nueva Granada}\\
+Bogot\'a, Colombia\\
+jl.mayorga236@gmail.com}}
+
+\maketitle
+
+\begin{abstract}
+A Nash-stable coalition is not operationally meaningful if it cannot generate
+the required wrench, or if its own spatial deployment destroys the communication
+network needed to compute and maintain that equilibrium. We introduce the
+\emph{Wrench-and-Information Self-Sustaining Equilibrium} (WISE), a refinement of
+the generalized variational equilibrium that couples three requirements:
+strategic stability, physical wrench feasibility, and sustainability of the
+\emph{induced} communication graph. The formulation rests on a directional
+wrench-capacity tensor and an endogenous Laplacian that is affine in the team's
+decisions, so the information constraint $\lamtwo(\Lap(x))\ge\sigmastar$ is a
+convex super-level set. We give an exact tensor-aggregative potential, prove
+existence and team-optimality of WISE, and expose two certification prices---one
+for force/torque, one for connectivity. A distributed primal--dual algorithm
+converges to a WISE and, in simulation of heterogeneous robot teams (convergence,
+phase diagram, constraint ablation, emergent roles), shows that wrench feasibility
+and information self-sustainability are jointly, not separately, necessary, and
+that relay roles emerge from radius heterogeneity alone. \emph{A WISE equilibrium
+can both execute itself and compute itself.}
+\end{abstract}
+
+\begin{IEEEkeywords}
+Multi-robot systems, aggregative games, generalized variational equilibrium,
+wrench feasibility, algebraic connectivity, coalition formation.
+\end{IEEEkeywords}
+
+\input{sections/01_introduction}
+\input{sections/02_model}
+\input{sections/03_wise_equilibrium}
+\input{sections/04_algorithm}
+\input{sections/05_experiments}
+\input{sections/06_conclusion}
+
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+
+\end{document}

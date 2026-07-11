@@ -1,0 +1,27 @@
+# E3 — Role emergence
+experiment: exp03_role_emergence
+seeds:
+  base: 20260711
+  count: 200
+scenario:
+  n_robots: 16
+  n_loads: 3
+  n_clusters: 2
+heterogeneity:
+  capacity:              # mechanical capacity c_i
+    dist: uniform
+    min: 0.5
+    max: 2.0
+  range:                 # communication range r_i
+    dist: uniform
+    min: 0.5
+    max: 3.0
+measure:
+  - relay_fraction
+  - relay_mean_capacity
+  - relay_mean_range
+  - opportunity_cost
+  - info_cost_ratio      # predicted specialization driver
+output:
+  dir: results/summaries
+  figure: results/figures/exp03_roles.pdf

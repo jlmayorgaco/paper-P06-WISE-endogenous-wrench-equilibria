@@ -1,0 +1,31 @@
+# E2 — Constraint ablation  (also drives E4 threshold validation)
+experiment: exp02_constraint_ablation
+seeds:
+  base: 20260711
+  count: 300            # paired seeds per method
+methods:
+  - scalar_capacity
+  - wrench_only
+  - connectivity_only
+  - wise_primal_dual
+  - centralized_wise_oracle
+  # - cbba_wrench        # optional external baseline
+scenario:
+  n_robots: 12
+  n_loads: 3
+  n_clusters: 2
+nash_seeking:
+  c: 1.0
+  m_F: 1.0
+  theta: 0.5
+threshold:                # E4 fine sweep around c*lambda2*m_F = theta^2
+  around: sigma_star
+  span: 0.30
+  steps: 41
+stats:
+  bootstrap: 10000
+  correction: holm
+primary_metric: certified_service_rate
+output:
+  dir: results/summaries
+  table: results/summaries/ablation_table.csv

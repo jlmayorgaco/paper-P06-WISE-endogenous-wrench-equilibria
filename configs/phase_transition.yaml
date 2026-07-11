@@ -1,0 +1,18 @@
+# E1 — WISE phase diagram
+experiment: exp01_phase_transition
+seeds:
+  base: 20260711
+  count: 200            # paired seeds per grid cell
+sweep:
+  nu: {min: 0.0, max: 1.0, steps: 21}        # long-range fraction
+  tau_d: {min: 0.0, max: 3.0, steps: 21}     # torque demand
+  d: {min: 1.0, max: 6.0, steps: 6}          # inter-cluster separation
+nash_seeking:
+  c: 1.0                # consensus gain
+  m_F: 1.0              # strong-monotonicity constant
+  theta: 0.5            # cross-coupling magnitude
+classify:
+  margin_tol: 0.10      # slack to distinguish "WISE" from "WISE with margin"
+output:
+  dir: results/summaries
+  figure: results/figures/exp01_phase_diagram.pdf

@@ -1,0 +1,154 @@
+\section{The WISE Equilibrium}
+\label{sec:wise}
+
+Collect all decisions in $x\in\mathcal X:=\prod_i\Delta_i$ and define the
+\emph{operational set}
+\begin{equation}
+\Xwise=\Big\{x\in\mathcal X:\;
+s_{k\ell}(x)\ge d_{k\ell}\;\forall k,\ell,\;\;
+\lamtwo(\Lap(x))\ge\sigmastar\Big\}.
+\label{eq:xwise}
+\end{equation}
+
+\begin{lemma}[$\Xwise$ is compact convex]\label{lem:xwise}
+$\Xwise$ is compact and convex.
+\end{lemma}
+\begin{proof}
+$\mathcal X$ is a product of simplices, hence compact convex. The wrench
+constraints \eqref{eq:wrench-feasible} are linear in $x$ by \eqref{eq:cap-dem},
+and the information constraint defines a convex super-level set by
+Lemma~\ref{lem:convex}. $\Xwise$ is the intersection of $\mathcal X$ with these
+closed convex sets.
+\end{proof}
+
+\begin{definition}[WISE]\label{def:wise}
+A profile $x^{\star}\in\Xwise$ is a \emph{Wrench-and-Information Self-Sustaining
+Equilibrium} if it is a generalized variational equilibrium of the
+shared-constraint game on $\Xwise$:
+\begin{equation}
+\big\langle-\nabla\Pot(x^{\star}),\,x-x^{\star}\big\rangle\ge0,
+\qquad\forall x\in\Xwise .
+\label{eq:vi}
+\end{equation}
+\end{definition}
+At a WISE no robot can improve by a feasible deviation, every coalition produces
+its demanded wrench, and the graph stays connected enough to estimate the
+aggregates and prices that \eqref{eq:vi} itself refers to: \emph{a WISE
+equilibrium can both execute itself and compute itself.}
+
+\subsection{Tensor-aggregative potential}
+Let each robot's payoff couple to the others only through the shared aggregates
+$s(x)$ and $\lamtwo(\Lap(x))$, via
+\begin{equation}
+\Pot(x)=\sum_k F_k\!\big(s_k(x)\big)-\sum_{i,a}g_{ia}x_{ia}
++\gamma\,\psi\!\big(\lamtwo(\Lap(x))\big),
+\label{eq:potential}
+\end{equation}
+with $F_k$ concave (rewarding closed wrench deficits), $g_{ia}\ge0$ the local
+cost of action $a$ (distance, energy, opportunity), $\psi$ concave
+non-decreasing, and $\gamma\ge0$ the common value of information. The deficit
+penalty $F_k(s_k)=-\tfrac12\|[d_k-s_k]_+\|_{Q_k}^2$ ($Q_k\succ0$) is a canonical
+choice, with gradient $\nabla F_k(s_k)=Q_k[d_k-s_k]_+=:\mu_k$.
+
+\begin{theorem}[Exact tensor-aggregative potential]\label{thm:potential}
+Let $s(x)$ and $\Lap(x)$ be affine (as in \eqref{eq:cap-dem}--\eqref{eq:laplacian}),
+$F_k$ differentiable concave, and $\psi$ differentiable concave non-decreasing. Then
+the game in which robot $i$ maximizes \eqref{eq:potential} over $\Delta_i$ is an
+exact potential game with potential $\Pot$, and its robot-slot marginal payoffs are
+\begin{equation}
+p_{ikh}=\underbrace{\Wten_{ikh:}^{\top}\mu_k}_{\text{wrench value}}
+-\;g_{ikh}
++\underbrace{\gamma\,\psi'(\lamtwo)\,\tfrac{\partial\lamtwo}{\partial x_{ikh}}}
+_{\text{connectivity value}} .
+\label{eq:marginal}
+\end{equation}
+\end{theorem}
+\begin{proof}
+Because $\Pot$ depends on the profile only through the shared aggregates and the
+separable cost $-\sum_{i,a}g_{ia}x_{ia}$, the change in any robot's payoff under a
+unilateral deviation equals the change in $\Pot$; hence $\Pot$ is an exact
+potential~\cite{monderer1996potential,jensen2010aggregative}. Differentiating
+\eqref{eq:potential} and using $\partial s_{k\ell}/\partial x_{ikh}=\Wten_{ikh\ell}$
+from \eqref{eq:cap-dem},
+\[
+\tfrac{\partial\Pot}{\partial x_{ikh}}
+=\sum_\ell \tfrac{\partial F_k}{\partial s_{k\ell}}\,\Wten_{ikh\ell}
+-g_{ikh}
++\gamma\,\psi'(\lamtwo)\,\tfrac{\partial\lamtwo}{\partial x_{ikh}} .
+\]
+With $\nabla F_k(s_k)=\mu_k$ the first term is $\Wten_{ikh:}^{\top}\mu_k$, giving
+\eqref{eq:marginal}. The Fiedler term is well defined wherever $\lamtwo$ is
+simple, with $\partial\lamtwo/\partial x_{ikh}=\sum_e\mathcal C_{ikh,e}\,
+v^{\top}L_e v$ for the unit Fiedler vector $v$.
+\end{proof}
+Cardinality, capacity, force--torque, and connectivity thus appear as four
+channels of a single marginal contribution.
+
+\begin{theorem}[Existence and team-optimality of WISE]\label{thm:existence}
+If $\Xwise\neq\varnothing$, then (i) a WISE exists; (ii) $x^{\star}$ is a WISE iff
+it globally maximizes $\Pot$ over $\Xwise$; and (iii) if $\Pot$ is strictly
+concave in the aggregates $(s,\lamtwo)$, the optimal aggregate is unique.
+\end{theorem}
+\begin{proof}
+$F_k$ is concave and $s$ affine, so $F_k\circ s$ is concave; $\psi$ is concave
+non-decreasing and $\lamtwo(\Lap(\cdot))$ concave (Lemma~\ref{lem:convex}), so
+$\psi\circ\lamtwo\circ\Lap$ is concave; the linear cost term is concave. Hence
+$\Pot$ is concave and, being continuous on the compact convex set $\Xwise$
+(Lemma~\ref{lem:xwise}), attains a maximizer---so (i) holds and $\Xwise\ne\varnothing$
+suffices. For a concave $\Pot$, $x^{\star}$ maximizes $\Pot$ over the convex set
+$\Xwise$ iff $\langle\nabla\Pot(x^{\star}),x-x^{\star}\rangle\le0$ for all
+$x\in\Xwise$, which is exactly \eqref{eq:vi}; this proves (ii), so every
+variational WISE solves the certified \emph{team} problem, not merely a local
+best-response condition. Strict concavity in $(s,\lamtwo)$ makes the maximizing
+aggregate unique, giving (iii).
+\end{proof}
+
+\begin{corollary}[Two certification prices]\label{cor:prices}
+Let $\mu^{\star}_{k\ell}\ge0$ be the wrench price
+(here $\mu^{\star}_k=\nabla F_k(s_k^{\star})$) and let $Z^{\star}\succeq0$ be the
+matrix dual of the information LMI \eqref{eq:lmi}, with scalar reduction
+$\pi^{\star}=\langle Z^{\star},\,vv^{\top}\rangle$ at a simple minimiser so that
+$Z^{\star}=\pi^{\star}vv^{\top}$ and
+$\langle Z^{\star},Q^{\top}L_{ia}Q\rangle=\pi^{\star}\,\partial\lamtwo/\partial x_{ia}$.
+Then at a WISE the certified action value is
+\begin{equation}
+p^{\star}_{ia}=\sum_{k,\ell}\mu^{\star}_{k\ell}\,\Wten_{ia,k\ell}
++\pi^{\star}\,\tfrac{\partial\lamtwo}{\partial x_{ia}}-g_{ia},
+\label{eq:prices}
+\end{equation}
+with complementarity $\mu^{\star}_{k\ell}(s_{k\ell}-d_{k\ell})=0$ and
+$\pi^{\star}(\lamtwo-\sigmastar)=0$.
+\end{corollary}
+\begin{proof}
+Stationarity of the Lagrangian
+$\Pot(x)+\sum_{k,\ell}\mu_{k\ell}(s_{k\ell}(x)-d_{k\ell})
++\pi(\lamtwo(\Lap(x))-\sigmastar)$ over $\Delta_i$, together with dual feasibility
+and complementary slackness, yields \eqref{eq:prices}; KKT is necessary and
+sufficient here by concavity and Slater's condition on the relative interior of
+$\Xwise$.
+\end{proof}
+$\mu^{\star}$ prices force, torque, and lever; $\pi^{\star}$ prices connectivity.
+Each robot then rationally chooses to transport, occupy a critical slot, or act
+as a relay according to \eqref{eq:prices}.
+
+\begin{proposition}[Critical long-range fraction]\label{prop:nu}
+In a two-cluster instance where sustaining the inter-cluster link diverts
+$m_{\min}(\nu)=[m_0-\zeta\nu]_+$ robots to relaying, with $\nu$ the long-range
+fraction, the critical fraction is
+\begin{equation}
+\nu^{\star}=\frac{m_0}{\zeta},
+\qquad \PoE(\nu)=1\ \text{ for } \nu\ge\nu^{\star},
+\label{eq:nu-star}
+\end{equation}
+where $\PoE(\nu)=\Pot^{\mathrm{exo}}/\Pot^{\star}(\nu)$ compares the exogenous-graph
+optimum to the endogenous one.
+\end{proposition}
+\begin{proof}
+$m_{\min}(\nu)=0$ exactly when $m_0-\zeta\nu\le0$, i.e.\ $\nu\ge m_0/\zeta$; there
+the endogenous constraint diverts no robot, so $\Pot^{\star}(\nu)=\Pot^{\mathrm{exo}}$
+and $\PoE=1$. For $\nu<\nu^{\star}$, exactly $m_0-\zeta\nu>0$ productive robots are
+lost to relaying and $\PoE(\nu)=N/(N-(m_0-\zeta\nu))>1$, strictly decreasing to $1$
+at $\nu^{\star}$.
+\end{proof}
+Radius heterogeneity is therefore an economic resource, not a disturbance: above
+$\nu^{\star}$ the network sustains itself for free.

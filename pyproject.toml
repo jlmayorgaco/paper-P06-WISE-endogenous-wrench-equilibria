@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wise-mr"
+version = "0.1.0"
+description = "WISE: Wrench- and Information-Self-Sustaining Equilibria for heterogeneous multi-robot coalitions"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+  { name = "Jorge Luis Mayorga Taborda", email = "jl.mayorga236@gmail.com" },
+]
+keywords = [
+  "multi-robot", "aggregative-games", "variational-equilibrium",
+  "wrench-feasibility", "algebraic-connectivity",
+]
+dependencies = [
+  "numpy>=1.24",
+  "scipy>=1.10",
+  "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+viz = ["matplotlib>=3.7"]
+opt = ["cvxpy>=1.4"]
+dev = [
+  "pytest>=7.4",
+  "pytest-cov>=4.1",
+  "ruff>=0.5",
+  "matplotlib>=3.7",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/wise_mr"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B"]
