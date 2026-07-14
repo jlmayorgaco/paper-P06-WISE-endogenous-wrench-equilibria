@@ -87,7 +87,7 @@ def fig_concept():
 # ===========================================================================
 def fig_convergence():
     prob = scenarios.two_region(seed=3, N=12, nu=0.42, tau_d=3.0, bridge_gain=3.0)
-    res = pd.solve(prob, config=pd.PDConfig(max_iters=6000, record_every=5))
+    res = baselines.wise_primal_dual(prob, max_iters=6000, record_every=5)
     h = res.history
     t = np.arange(len(h["lambda2"])) * 5
 

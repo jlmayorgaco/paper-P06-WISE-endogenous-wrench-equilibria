@@ -19,21 +19,27 @@ import numpy as np
 from . import primal_dual as pd
 from .equilibrium import WiseProblem, uniform_start
 
+# robustness margins: solve s >= d + WM and lambda_2 >= sigma + IM so the fluid
+# optimum has slack and integer rounding retains feasibility.
+WM, IM = 2.5, 0.3
+
 
 def wise_primal_dual(problem: WiseProblem, **kw) -> pd.SolveResult:
-    cfg = pd.PDConfig(enforce_wrench=True, enforce_info=True, **kw)
+    cfg = pd.PDConfig(enforce_wrench=True, enforce_info=True,
+                      wrench_margin=WM, info_margin=IM, **kw)
     return pd.solve(problem, config=cfg)
 
 
 def wrench_only(problem: WiseProblem, **kw) -> pd.SolveResult:
-    cfg = pd.PDConfig(enforce_wrench=True, enforce_info=False, **kw)
+    cfg = pd.PDConfig(enforce_wrench=True, enforce_info=False, wrench_margin=WM, **kw)
     res = pd.solve(problem, config=cfg)
     res.method = "wrench_only"
     return res
 
 
 def connectivity_only(problem: WiseProblem, **kw) -> pd.SolveResult:
-    cfg = pd.PDConfig(enforce_wrench=False, enforce_info=True, **kw)
+    cfg = pd.PDConfig(use_productive=False, enforce_wrench=False, enforce_info=True,
+                      info_margin=IM, **kw)
     res = pd.solve(problem, config=cfg)
     res.method = "connectivity_only"
     return res
@@ -71,7 +77,8 @@ def centralized_wise_oracle(problem: WiseProblem, n_starts: int = 4, **kw) -> pd
     best, best_val = None, -np.inf
     for s in range(n_starts):
         x0 = uniform_start(problem) if s == 0 else _random_start(problem, rng)
-        cfg = pd.PDConfig(enforce_wrench=True, enforce_info=True, max_iters=8000)
+        cfg = pd.PDConfig(enforce_wrench=True, enforce_info=True,
+                          wrench_margin=WM, info_margin=IM, max_iters=8000)
         res = pd.solve(problem, x0=x0, config=cfg)
         val = problem.potential(res.x) - 1e3 * max(0.0, -problem.info_margin(res.x))
         if val > best_val:

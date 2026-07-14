@@ -40,9 +40,20 @@ class WiseProblem:
     base_laplacian: np.ndarray    # (V, V) always-on links
     relay_laplacians: np.ndarray  # (N, V, V) B_i added when robot i relays
     sigma: float                  # information threshold sigma*
-    q: float = 20.0               # wrench-penalty gain
-    eps: float = 1e-2             # strong-concavity regulariser
+    q: float = 20.0               # wrench hard-constraint dual step scale
+    eps: float = 1e-2             # selection regulariser (refinement, not productive)
+    cap: np.ndarray | None = None       # (N,) per-robot served-capacity weight c_i
+    task_value: np.ndarray | None = None  # (M,) v_k  (productive value slope)
+    alpha: float = 1.0            # congestion; productive Hessian H = alpha I (>0)
     meta: dict = field(default_factory=dict)
+
+    def _cap(self) -> np.ndarray:
+        return np.ones(self.N) if self.cap is None else np.asarray(self.cap, float)
+
+    def _value(self) -> np.ndarray:
+        # default productive target y* = v/alpha per load (fallback 6 units)
+        return (self.alpha * 6.0 * np.ones(self.M) if self.task_value is None
+                else np.asarray(self.task_value, float))
 
     # ---- action bookkeeping ------------------------------------------------
     @property
@@ -86,24 +97,61 @@ class WiseProblem:
     def info_margin(self, x: np.ndarray) -> float:
         return self.lambda2(x) - self.sigma
 
-    # ---- potential and gradients -------------------------------------------
+    # ---- productive value B x, and gradients -------------------------------
+    def served_capacity(self, x: np.ndarray) -> np.ndarray:
+        """Productive aggregate ``y_k = B x = sum_{i,h} c_i x_{ikh}``; shape ``(M,)``.
+
+        Distinct from the directional wrench aggregate ``s = H_w x``: ``B`` is the
+        served-capacity map whose nullspace makes the composition degenerate.
+        """
+        slots = self.slots_view(x)                       # (N, M, H)
+        return np.einsum("i,imh->m", self._cap(), slots)
+
+    def productive_value(self, x: np.ndarray) -> float:
+        """Genuinely strictly-concave value ``V(x)=phi(B x)``,
+        ``phi(y)=sum_k (v_k y_k - 0.5 alpha y_k^2)`` (Hessian ``-alpha I prec 0``).
+        Wrench feasibility ``s>=d`` is a *hard constraint* (dual mu), not here.
+        """
+        y = self.served_capacity(x)
+        v = self._value()
+        return float(np.sum(v * y - 0.5 * self.alpha * y**2))
+
     def potential(self, x: np.ndarray) -> float:
-        s, d = self.capacity(x), self.demand()
-        resid = wt.wrench_residual(s, d)
-        wrench = -0.5 * self.q * float(np.sum(resid**2))
+        """Solver objective = productive value + selection refinement (cost, reg)."""
         cost = -float(np.sum(self.g * x))
         reg = -0.5 * self.eps * float(np.sum(x**2))
-        return wrench + cost + reg
+        return self.productive_value(x) + cost + reg
 
     def grad_potential(self, x: np.ndarray) -> np.ndarray:
-        """Gradient of ``Phi`` (excluding the price term) w.r.t. ``x``; shape ``(N, A)``."""
-        mu = self.wrench_price(x)                        # (M, P)
-        # wrench gradient on slot actions: sum_l mu_kl W[i,k,h,l]
+        """Gradient of the solver objective (productive + refinement); ``(N, A)``."""
+        y = self.served_capacity(x)
+        dphi = self._value() - self.alpha * y            # (M,) = grad phi wrt y_k
+        cap = self._cap()                                # (N,)
+        gslot = np.einsum("i,m->im", cap, dphi)          # (N, M) contribution per (i,k)
+        grad = np.zeros((self.N, self.A))
+        # broadcast dphi over the H slots of each load
+        grad[:, : self.M * self.H] = np.repeat(gslot, self.H, axis=1)
+        grad -= self.g
+        grad -= self.eps * np.asarray(x)
+        return grad
+
+    def wrench_matrix(self) -> np.ndarray:
+        """Linear support map ``H_w`` with ``s(x)=H_w vec(x)``; ``(M P, N A)``.
+        Distinct symbol from the objective Hessian ``H=alpha I``.
+        """
+        Hw = np.zeros((self.M * self.P, self.N * self.A))
+        for i in range(self.N):
+            for k in range(self.M):
+                for h in range(self.H):
+                    col = i * self.A + (k * self.H + h)
+                    Hw[k * self.P:(k + 1) * self.P, col] = self.W[i, k, h, :]
+        return Hw
+
+    def wrench_grad(self, x: np.ndarray, mu: np.ndarray) -> np.ndarray:
+        """Gradient contribution of the wrench dual ``mu`` (M,P): ``sum_l mu_kl W``."""
         gw = np.einsum("kl,ikhl->ikh", mu, self.W)       # (N, M, H)
         grad = np.zeros((self.N, self.A))
         grad[:, : self.M * self.H] = gw.reshape(self.N, self.M * self.H)
-        grad -= self.g
-        grad -= self.eps * np.asarray(x)
         return grad
 
     def lambda2_relay_gradient(self, x: np.ndarray) -> np.ndarray:

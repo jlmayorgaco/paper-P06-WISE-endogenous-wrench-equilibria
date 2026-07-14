@@ -17,6 +17,32 @@ def certified(problem: WiseProblem, x, wrench_tol: float = 0.05, info_tol: float
     return problem.is_wise(x, wrench_tol=wrench_tol, info_tol=info_tol)
 
 
+def round_argmax(problem: WiseProblem, x) -> np.ndarray:
+    """Integer assignment: each robot commits to its argmax action (one-hot)."""
+    x = np.asarray(x, dtype=float)
+    xi = np.zeros_like(x)
+    xi[np.arange(problem.N), np.argmax(x, axis=1)] = 1.0
+    return xi
+
+
+def round_randomized(problem: WiseProblem, x, n_draws: int = 30, seed: int = 0):
+    """Randomized rounding: sample each robot's action from its fluid distribution;
+    return the first certified integer assignment (else the last draw). No
+    fractional robot is implied. Returns ``(x_int, certified)``.
+    """
+    rng = np.random.default_rng(seed)
+    x = np.asarray(x, dtype=float)
+    xi = round_argmax(problem, x)
+    for _ in range(n_draws):
+        cand = np.zeros_like(x)
+        for i in range(problem.N):
+            p = x[i] / x[i].sum()
+            cand[i, rng.choice(problem.A, p=p)] = 1.0
+        if certified(problem, cand):
+            return cand, True
+    return xi, certified(problem, xi)
+
+
 def residual_wrench(problem: WiseProblem, x) -> float:
     return problem.max_residual(x)
 

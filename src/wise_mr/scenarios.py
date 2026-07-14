@@ -55,6 +55,7 @@ def two_region(
     bridge_gain: float = 1.6,
     kappa: float = 0.4,
     m_sides: int = 8,
+    y_target: float = 12.0,
 ) -> WiseProblem:
     """Generate a reproducible two-region WISE instance.
 
@@ -123,9 +124,13 @@ def two_region(
 
     sigma = eg.sigma_star(theta, c, m_F)
 
+    # productive served-capacity value: y_k = sum_{i,h} (kappa F_i) x_ikh;
+    # phi(y) = v y - 0.5 alpha y^2 peaks at y* = v/alpha = y_target (recruit target).
+    alpha = 1.0
     prob = WiseProblem(
         N=N, M=1, H=H, P=directions.shape[1], W=W, directions=directions, w_dem=w_dem,
         g=g, base_laplacian=base_L, relay_laplacians=relay_L, sigma=sigma,
+        cap=kappa * F, alpha=alpha, task_value=alpha * y_target * np.ones(1),
     )
     prob.meta = dict(seed=seed, nu=nu, tau_d=tau_d, lift=lift, pos=pos, F=F, r=r,
                      is_long=is_long, load=load, slot_world=slot_world,

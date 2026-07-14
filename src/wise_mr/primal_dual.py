@@ -21,11 +21,15 @@ from .equilibrium import WiseProblem, uniform_start
 @dataclass
 class PDConfig:
     alpha: float = 0.05        # primal step
-    beta: float = 0.10         # dual (connectivity price) step
+    beta: float = 0.10         # connectivity dual (pi) step
+    step_mu: float = 0.05      # wrench dual (mu) step
     max_iters: int = 4000
     tol: float = 1e-7          # movement tolerance for early stop
-    enforce_wrench: bool = True
-    enforce_info: bool = True
+    use_productive: bool = True   # include the productive value phi(Bx)
+    enforce_wrench: bool = True   # hard wrench constraint s >= d via dual mu
+    enforce_info: bool = True     # hard connectivity constraint via dual pi
+    wrench_margin: float = 0.0    # solve s >= d + margin (robust to rounding)
+    info_margin: float = 0.0      # solve lambda_2 >= sigma + margin (robust to rounding)
     primal_map: str = "projection"   # {"projection","replicator"}
     record_every: int = 1
 
@@ -68,6 +72,8 @@ def solve(
     cfg = config or PDConfig()
     x = uniform_start(problem) if x0 is None else np.array(x0, dtype=float)
     pi = 0.0
+    mu = np.zeros((problem.M, problem.P))                 # wrench dual
+    d = problem.demand() + cfg.wrench_margin
     is_long = problem.meta.get("is_long")
     hist = {k: [] for k in
             ("lambda2", "margin", "resid", "welfare", "pi", "relay",
@@ -75,7 +81,9 @@ def solve(
     converged = False
     it = 0
     for it in range(1, cfg.max_iters + 1):
-        grad = problem.grad_potential(x) if cfg.enforce_wrench else _cost_only_grad(problem, x)
+        grad = problem.grad_potential(x) if cfg.use_productive else _cost_only_grad(problem, x)
+        if cfg.enforce_wrench:                            # hard wrench: + H_w^T mu
+            grad += problem.wrench_grad(x, mu)
         if cfg.enforce_info:
             g_relay = problem.lambda2_relay_gradient(x)          # (N,)
             grad[:, problem.relay_index] += pi * g_relay
@@ -85,8 +93,10 @@ def solve(
             x_new = project_simplex_rows(x + cfg.alpha * grad)
 
         lam = problem.lambda2(x_new)
+        if cfg.enforce_wrench:                            # mu_dot = [d - s(x)]_+
+            mu = np.maximum(0.0, mu + cfg.step_mu * (d - problem.capacity(x_new)))
         if cfg.enforce_info:
-            pi = max(0.0, pi + cfg.beta * (problem.sigma - lam))
+            pi = max(0.0, pi + cfg.beta * (problem.sigma + cfg.info_margin - lam))
 
         if it % cfg.record_every == 0:
             resid = float(np.max(problem.wrench_price(x_new) / max(problem.q, 1e-9)))

@@ -7,16 +7,16 @@
   },
   "n_relays": 1,
   "tracking_error_rho": 0.3,
-  "eps_L_max_observed": 0.853465,
+  "eps_L_max_observed": 0.833847,
   "lipschitz_C_L": 44.0,
   "lipschitz_bound_C_L_rho": 13.2,
   "lipschitz_bound_holds": true,
   "weyl_holds_all_samples": true,
   "margin_components": {
-    "eps_L": 0.853465,
+    "eps_L": 0.833847,
     "eps_est": 0.02,
     "delta_num": 0.001
   },
-  "delta_total": 0.874465,
+  "delta_total": 0.854847,
   "margin_exceeds_eps_L": true
 }

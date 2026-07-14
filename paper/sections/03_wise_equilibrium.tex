@@ -2,45 +2,69 @@
 \label{sec:wise}
 
 \subsection{Productive value and the optimal composition fiber}
-The team's productive value couples through aggregates only,
+The team's productive value depends on the composition only through the
+\emph{served-capacity} aggregate $y=Bx$, $y_k=\sum_{\tau,h}c_\tau x_{\tau kh}$ (the
+capacity mass recruited to load $k$):
 \begin{equation}
-V(x)=\sum_k F_k\!\big(s_k(x)\big)-\sum_{\tau,a}g_{\tau a}x_{\tau a},
+V(x)=\phi(Bx),\qquad
+\phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
 \label{eq:value}
 \end{equation}
-with $F_k$ strictly concave and non-decreasing (a canonical choice is the deficit
-value $F_k(s_k)=-\tfrac12\|[d_k-s_k]_+\|_{Q_k}^2$, $Q_k\succ0$) and $g_{\tau a}\ge0$
-the action cost. This is a \emph{constrained potential population game}: the
-type-action payoff is $\partial V/\partial x_{\tau a}$, so $V$ is an exact
-potential by construction~\cite{sandholm2010population,monderer1996potential}. We
-do not claim novelty here---the game is identical-interest---the novelty is what
+so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ with $H=\alpha
+I\succ0$ and $y_{\mathrm{ref}}=v/\alpha$: $\phi$ is \emph{genuinely strictly
+concave} ($\nabla^2\phi=-\alpha I\prec0$), unlike a hinge deficit
+$-\|[d-s]_+\|^2$, which is flat on the feasible set and cannot pin a unique
+aggregate. The game is a constrained potential population game with payoff
+$\partial V/\partial x_{\tau a}$; it is identical-interest---the novelty is what
 $V$ leaves undetermined.
 
-Let $y=Bx$ collect the aggregates $s(x)$ appearing in \eqref{eq:value}, with $B$
-linear, and let $X_{\mathrm f}=\{x\in\mathcal X:s_{k\ell}(x)\ge d_{k\ell}\}$ be the
-wrench-feasible set. Write $V(x)=\Phi_0(Bx)-\langle g,x\rangle$.
+Wrench feasibility is a \emph{hard} shared constraint, its matrix $H_w$ (the
+support map, $s=H_w x$) kept notationally distinct from the objective Hessian $H$:
+\begin{equation}
+X_{\mathrm f}=\{x\in\mathcal X:\;H_w x\ge d\}.
+\label{eq:Xf}
+\end{equation}
+The action cost $g$ enters only as a selection refinement and is \emph{excluded}
+from the degeneracy result; the productive optimum is
+$\arg\max_{x\in X_{\mathrm f}}\phi(Bx)$.
+
+\begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
+If $\phi$ is strictly concave on $BX_{\mathrm f}$ ($H=\alpha I\succ0$) and
+$X_{\mathrm f}$ is nonempty compact convex, the productively optimal aggregate
+$y^{\star}=Bx^{\star}$ is unique. Uniqueness is claimed for the \emph{aggregate},
+not the composition.
+\end{lemma}
+\begin{proof}
+$\phi$ strictly concave on the compact convex $BX_{\mathrm f}$ attains its maximum
+at a unique $y^{\star}$: two distinct optima would have a strictly better midpoint.
+\end{proof}
 
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
-Let $\Phi_0$ be strictly concave and $g$ lie in the row space of $B$
-(cost expressible through aggregates). Then the productively optimal aggregate
+Under Lemma~\ref{lem:uniqueagg} the productively optimal aggregate
 $y^{\star}=Bx^{\star}$ is unique, but the optimal set
 \begin{equation}
 \Emanifold=\{x\in X_{\mathrm f}:Bx=y^{\star}\}
 \label{eq:manifold}
 \end{equation}
-is a polytope of dimension $(T-1)(K_{\mathrm{act}}-1)$, where $K_{\mathrm{act}}$ is
-the number of active (load,\,slot) columns.
+is a nonempty compact convex polytope, and is \emph{positive-dimensional} whenever
+$B$ has a nontrivial productive nullspace on $X_{\mathrm f}$. For the type-blind
+column-sum aggregate (equal weights, complete bipartite support, only row/column
+sums active) it is a transportation polytope of dimension $(T-1)(K_{\mathrm{act}}-1)$;
+in general the exact local dimension is the productive-nullspace rank formula of
+Section~\ref{sec:algorithm}.
 \end{theorem}
 \begin{proof}
-Strict concavity of $\Phi_0$ makes the maximiser $y^{\star}$ of
-$\max_y\{\Phi_0(y)-\text{(aggregate cost)}:y\in B X_{\mathrm f}\}$ unique. $\Emanifold$
-is the preimage $B^{-1}(y^{\star})\cap X_{\mathrm f}$, an affine slice of the product
-of type simplices with fixed row sums $m_\tau$ and fixed column aggregates
-$y^{\star}$---a transportation polytope, whose dimension is
-$(T-1)(K_{\mathrm{act}}-1)$~\cite{sandholm2010population}. Since $g$ acts through
-$B$, every $x\in\Emanifold$ attains the same $V$.
+Uniqueness of $y^{\star}$ is Lemma~\ref{lem:uniqueagg}. $\Emanifold$ is the preimage
+$B^{-1}(y^{\star})\cap X_{\mathrm f}$, an affine slice of a compact convex set, hence
+a nonempty compact convex polytope; it has positive dimension iff
+$\ker B\cap\mathrm{aff}(X_{\mathrm f})\neq\{0\}$. The transportation dimension
+$(T-1)(K_{\mathrm{act}}-1)$ is the special case of equal column-sum weights with only
+row/column sums active~\cite{sandholm2010population}; a general weighted $B$ can pin
+the composition (dimension $0$). Because $V=\phi(Bx)$ depends on $x$ only through
+$Bx$, every $x\in\Emanifold$ attains the same $V$.
 \end{proof}
-Classical theory thus fixes \emph{how much} wrench each load receives, not
-\emph{which types} provide it. The fiber $\Emanifold$ is the freedom we exploit.
+Classical theory thus fixes \emph{how much} each load receives, not \emph{which
+types} provide it. The fiber $\Emanifold$ is the freedom we exploit.
 
 \subsection{The WISE refinement}
 Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.
