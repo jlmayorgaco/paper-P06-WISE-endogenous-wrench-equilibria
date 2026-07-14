@@ -147,3 +147,31 @@ functions linear in $L$~\cite{fiedler1973}, hence concave; composed with the aff
 $\Lap(x)$ it stays concave, and its super-level set is
 convex~\cite{ghosh2006growing}.
 \end{proof}
+
+\begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
+Suppose robots track their intended candidate sites so that
+$\|\Lgeo(q)-\Lap(x)\|_2\le\varepsilon_L$. Then Weyl's inequality gives
+\begin{equation}
+\lamtwo(\Lgeo(q))\;\ge\;\lamtwo(\Lap(x))-\varepsilon_L .
+\label{eq:weyl}
+\end{equation}
+Consequently, with the design margin
+$\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$
+($\varepsilon_L$: geometric/model mismatch; $\varepsilon_{\mathrm{est}}$:
+distributed eigenvalue-estimation error; $\delta_{\mathrm{num}}$: numerical
+margin), $\lamtwo(\Lap(x))\ge\sigmastar+\delta$ implies
+$\lamtwo(\Lgeo(q))\ge\sigmastar$.
+\end{lemma}
+\begin{proof}
+Weyl's inequality for symmetric matrices gives
+$|\lamtwo(\Lgeo)-\lamtwo(\Lap)|\le\|\Lgeo-\Lap\|_2\le\varepsilon_L$, which is
+\eqref{eq:weyl}; subtracting $\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$
+absorbs the estimator and numerical errors.
+\end{proof}
+The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} is stated over
+the affine $\Lap(x)$; the physical guarantee transfers to the geometric $\Lgeo(q)$
+\emph{only} through \eqref{eq:weyl} under the margin $\delta$, and is otherwise
+reported as simulation evidence. The margin's components are not chosen
+arbitrarily: $\varepsilon_L$ is measured (Section~\ref{sec:exp}, bounded by the
+Lipschitz constant $C_L\rho$ of the weight model), and $\varepsilon_{\mathrm{est}}$,
+$\delta_{\mathrm{num}}$ are documented in the generated certificate.

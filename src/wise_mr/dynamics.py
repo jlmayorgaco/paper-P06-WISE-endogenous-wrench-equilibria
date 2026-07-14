@@ -160,13 +160,14 @@ def realize_wrench(offsets, headings, F, kappa, w_cmd, ridge=1e-3):
 # --------------------------------------------------------------------------- #
 
 
-def live_lambda2(pos, ranges, relay_mask, base_range=2.5, scale=1.5,
-                 bridge_gain=1.6, delta=0.03) -> float:
-    """Algebraic connectivity of the graph induced by current positions.
+def geometric_laplacian(pos, ranges, relay_mask, base_range=2.5, scale=1.5,
+                        bridge_gain=1.6, delta=0.03) -> np.ndarray:
+    """Geometric graph Laplacian ``L_geo(q)`` induced by the actual positions.
 
     Short links (<= base_range) always on; a relaying robot additionally links to
     everyone within its full range. A weak background ``delta`` keeps lambda_2
-    simple.
+    simple. This is the *physical* graph; the strategic theory uses the affine
+    candidate-site surrogate ``L_bar(x)``.
     """
     N = pos.shape[0]
     adj = np.zeros((N, N))
@@ -184,5 +185,11 @@ def live_lambda2(pos, ranges, relay_mask, base_range=2.5, scale=1.5,
                 w = bridge_gain * np.exp(-d / 3.0)
                 adj[i, j] = max(adj[i, j], w)
                 adj[j, i] = adj[i, j]
-    L = np.diag(adj.sum(1)) - adj + delta * (np.eye(N) - np.ones((N, N)) / N)
-    return eg.fiedler_value(L)
+    return np.diag(adj.sum(1)) - adj + delta * (np.eye(N) - np.ones((N, N)) / N)
+
+
+def live_lambda2(pos, ranges, relay_mask, base_range=2.5, scale=1.5,
+                 bridge_gain=1.6, delta=0.03) -> float:
+    """Algebraic connectivity ``lambda_2(L_geo(q))`` of the geometric graph."""
+    return eg.fiedler_value(geometric_laplacian(
+        pos, ranges, relay_mask, base_range, scale, bridge_gain, delta))
