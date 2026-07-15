@@ -3,8 +3,8 @@
 PY ?= python
 
 .PHONY: help install test lint fmt \
-        exp01 exp02 exp03 exp04 experiments \
-        reproduce reproduce-fast paper figures clean
+        fiber phase methods physical \
+        reproduce reproduce-fast paper clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -22,19 +22,17 @@ lint: ## Lint with ruff
 fmt: ## Auto-format with ruff
 	ruff check --fix src experiments tests
 
-exp01: ## Phase-transition sweep
-	$(PY) experiments/exp01_phase_transition.py --config configs/phase_transition.yaml
+fiber: ## E-fiber: constant V, varying lambda2 (Example 1)
+	$(PY) experiments/exp_fiber.py
 
-exp02: ## Constraint ablation
-	$(PY) experiments/exp02_constraint_ablation.py --config configs/ablation.yaml
+phase: ## Phase diagram with the exact SDP boundary
+	$(PY) experiments/exp_phase.py
 
-exp03: ## Role emergence
-	$(PY) experiments/exp03_role_emergence.py --config configs/roles.yaml
+methods: ## 7-method comparison, 30 seeds, bootstrap CI
+	$(PY) experiments/exp_methods.py
 
-exp04: ## Self-defeat threshold validation
-	$(PY) experiments/exp04_threshold_validation.py --config configs/ablation.yaml
-
-experiments: exp01 exp02 exp03 exp04 ## Run the full campaign
+physical: ## Closed-loop rigid-load transport
+	$(PY) experiments/exp_physical.py
 
 reproduce: ## Full pipeline: tests -> certificates -> experiments -> paper -> checks
 	$(PY) experiments/reproduce.py
@@ -44,9 +42,6 @@ reproduce-fast: ## Quick smoke test of the pipeline (reduced sweeps)
 
 paper: ## Build the IEEE manuscript
 	cd paper && latexmk -pdf main.tex
-
-figures: ## Regenerate paper figures from results/
-	$(PY) -m wise_mr.metrics --render-figures
 
 clean: ## Remove build/latex artifacts
 	cd paper && latexmk -C || true
