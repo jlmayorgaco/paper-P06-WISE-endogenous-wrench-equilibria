@@ -38,12 +38,8 @@ $z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
 i.e.\ $z^{\star}$ solves $\mathrm{VI}(X_{\mathrm f},F)$. Since $V=\phi(Bz)$ is concave
 on the convex $X_{\mathrm f}$, \eqref{eq:vi} holds iff
 $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is} the
-variational equilibrium~\cite{facchinei2003fvi}. Crucially, $F$ is strongly monotone
-only in the served aggregate $Bz$ ($\phi$ is $\alpha$-strongly concave), \emph{not} in
-the composition $z$: on $\ker B$ it vanishes. Unlike the strongly contractive
-aggregative games of~\cite{martinezpiazuelo2022}, this loss of composition
-monotonicity is exactly the degeneracy WISE exploits---the equilibrium set collapses
-to a fiber rather than a point.
+variational equilibrium~\cite{facchinei2003fvi}. Its composition degeneracy---and its
+precise link to the loss of strong monotonicity---is Proposition~\ref{prop:fibermono}.
 \end{definition}
 
 \begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
@@ -83,28 +79,30 @@ $z$ only through $Bz$, every $z\in\Emanifold$ attains the same $V$; a general we
 $B$ can give $N_p=\{0\}$ (a single composition).
 \end{proof}
 For the representative instance we obtain $\dim\Emanifold=4$ out of $n=72$, with the
-neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$ at machine precision. Classical
-theory thus fixes \emph{how much} each load receives, not \emph{which types} provide it.
+neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$ at machine precision.
 
-\begin{proposition}[Comparative-advantage exchange]\label{prop:cycle}
-A count-preserving four-cycle $d$ (a productively neutral swap, $Bd=0$) can still change
-connectivity: at a simple Fiedler eigenvalue with unit vector $v$,
-$D\lamtwo(\Lap(z))[d]=\sum_{\tau,r}\gamma_{\tau r}\,d_{\tau r}\,v^{\top}L_r v$, improving
-$\lamtwo$ when positive. A long-range type thus trades a lifting role to a short-range
-type at no productive cost while raising $\lamtwo$.
+\begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
+On the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$, the pseudo-gradient
+$F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys
+$\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$ for $d\in\mathcal T_F$, so its
+strong-monotonicity modulus there is
+$\mu_F=\sigma_{\min}^2(H^{1/2}B|_{\mathcal T_F})$ with
+$\ker(B|_{\mathcal T_F})=N_p(\bar z)$. Hence $\dim\Emanifold>0\iff\mu_F=0$: $F$ is
+strongly monotone on $\mathcal T_F$ exactly when the fiber is a point. Strong
+monotonicity survives in the served aggregate ($H\succ0$) and in the quotient
+$\mathcal T_F/N_p$, but is \emph{lost} on the full composition face---this is precisely
+the degeneracy WISE exploits, in contrast to strongly contractive aggregative
+games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
 \begin{example}[A two-type fiber]\label{ex:fiber}
-Take $T=2$ types with \emph{equal lifting capacity} $c_\ell=c_s$, one load of demand
-$y^{\star}$ served through a single slot, and one relay site; both types lift
-identically, but only the long-range type $\ell$ relays effectively
-($\gamma_{\ell r}>\gamma_{s r}\ge0$). Let $z(\alpha)$ move $\alpha$ long-range robots
-from lifting to relay while an equal mass of short-range robots takes the vacated
-lifting role. Because $c_\ell=c_s$ this is productively neutral
-(Prop.~\ref{prop:cycle}), so $Bz(\alpha)=y^{\star}$ and $V(z(\alpha))\equiv V^{\star}$
-for all admissible $\alpha$. Along this arc
-$\lamtwo(\Lap(z(\alpha)))$ is concave and increasing, so the SDP~\eqref{eq:sdp} selects
-the largest feasible $\alpha$ and a WISE exists iff that value clears $\sigmastar$
+With $T=2$ types of \emph{equal lifting capacity} $c_\ell=c_s$ but only the long-range
+type relaying effectively ($\gamma_{\ell r}>\gamma_{s r}$), moving $\alpha$ long-range
+robots from lifting to relay and an equal mass of short-range robots the other way is a
+productively neutral swap ($Bd=0$): $Bz(\alpha)=y^{\star}$, $V\equiv V^{\star}$, while
+$\lamtwo$ rises by the comparative-advantage derivative
+$D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v>0$ (simple $v$). The
+SDP takes the largest feasible $\alpha$; a WISE exists iff it clears $\sigmastar$
 (Fig.~\ref{fig:scene}, block~2).
 \end{example}
 
@@ -135,7 +133,16 @@ z\in X_{\mathrm f},\ \ Bz=y^{\star},\ \ Q^{\top}\Lap(z)\,Q\succeq tI,
 \label{eq:sdp}
 \end{equation}
 convex by Lemma~\ref{lem:convex} (affine constraints, concave $\lamtwo\!\circ\!\Lap$).
-A WISE exists iff the optimal value clears the requirement,
+Since $\lambda_{\min}(A)=\min_{Z\succeq0,\operatorname{tr}Z=1}\langle Z,A\rangle$, it is
+the \emph{spectral saddle}
+\begin{equation}
+\LamE=\max_{z\in\Emanifold}\ \min_{Z\succeq0,\,\operatorname{tr}Z=1}
+\big\langle Z,\,Q^{\top}\Lap(z)Q\big\rangle,
+\label{eq:saddle}
+\end{equation}
+with $\max$ and $\min$ interchangeable (Sion): the populations pick a productively
+equivalent composition while a spectral adversary $Z$ picks the worst disagreement
+mode. A WISE exists iff the value clears the requirement,
 \begin{equation}
 \Ess\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
@@ -157,47 +164,39 @@ strictly inside the range of $\lamtwo$ over $\Emanifold$.
 
 \subsection{Aggregate--estimator stability}
 The decentralized realization~\eqref{eq:pd} couples a served-aggregate revision error
-$\xi$ with a consensus-estimator error $\eta$. We analyse the reduced error model
-associated with the local behaviour of~\eqref{eq:pd} after eliminating the inactive
-duals and projecting onto the active face,
+$\xi$ with a consensus-estimator error $\eta$. To establish the \emph{dynamic
+significance} of the spectral threshold---not to claim a full linearisation
+of~\eqref{eq:pd}---we posit a local optimizer--estimator interconnection model with
+possibly distinct couplings,
 \begin{equation}
-\begin{bmatrix}\dot\xi\\ \dot\eta\end{bmatrix}
-=\mathcal J\begin{bmatrix}\xi\\ \eta\end{bmatrix},\qquad
-\mathcal J=\begin{bmatrix}-M & \Theta\\[1mm] \Theta^{\top} &
--c\,(\bar L_\perp\!\otimes\! I_p)\end{bmatrix},
+\dot\xi=-M\xi+\Theta_1\eta,\qquad
+\dot\eta=\Theta_2\,\xi-c\,(\bar L_\perp\!\otimes\! I_p)\,\eta,
 \label{eq:jac}
 \end{equation}
-with $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$ and $c$ the consensus gain. We take as
-modelling hypotheses that $M=M^{\top}\succeq\mF I$ (the curvature of $V$ in the served
-aggregate along $X_{\mathrm f}$), $\|\Theta\|_2\le\vt$ (the cross-coupling), and that
-the reduced block $\mathcal J$ is symmetric---exact in the isotropic modal reduction;
-we do not claim~\eqref{eq:jac} is the full closed-loop Jacobian.
+$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, under the hypotheses $\tfrac12(M+M^{\top})\succeq
+\mF I$ (optimizer curvature), $\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$.
 
-\begin{theorem}[Aggregate--estimator stability]\label{thm:stability}
-$\mathcal J$ is symmetric; by the Schur complement of its $-M\prec0$ block it is Hurwitz
-iff $c(\bar L_\perp\!\otimes\! I_p)\succ\Theta^{\top}M^{-1}\Theta$. In particular the
-spectral condition
+\begin{theorem}[Optimizer--estimator small gain]\label{thm:stability}
+Under those hypotheses, \eqref{eq:jac} is exponentially stable whenever
 \begin{equation}
-c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt^{2},
+c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,
 \quad\text{i.e.}\quad
-\lamtwo>\sigmadyn:=\frac{\vt^{2}}{c\,\mF},
+\lamtwo>\sigmadyn:=\frac{\vt_1\vt_2}{c\,\mF}.
 \label{eq:threshold}
 \end{equation}
-is \emph{sufficient} for exponential stability of the subsystem, and is also
-\emph{necessary} in the isotropic modal case $M=\mF I$, $\Theta=\vt I$, where it reduces
-to the Fiedler mode.
+The reciprocal isotropic case $\Theta_2=\Theta_1^{\top}$, $\vt_1=\vt_2=\vt$ recovers
+$c\,\mF\,\lamtwo>\vt^2$, which is then also \emph{necessary} on the Fiedler mode.
 \end{theorem}
 \begin{proof}
-Symmetry is structural. With $-M\prec0$ invertible, $\mathcal J\prec0$ iff the Schur
-complement $-c(\bar L_\perp\!\otimes\! I_p)+\Theta^{\top}M^{-1}\Theta\prec0$. Since
-$\bar L_\perp\succeq\lamtwo I$ and
-$\Theta^{\top}M^{-1}\Theta\preceq(\vt^2/\mF)I$, the bound $c\,\mF\,\lamtwo>\vt^2$
-implies it; at $M=\mF I,\Theta=\vt I$ the two bounds coincide on the Fiedler mode, making
-it necessary.
+Take $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$. Then
+$\dot W\le-\mF\|\xi\|^2-\tfrac{\vt_1}{\vt_2}c\lamtwo\|\eta\|^2+2\vt_1\|\xi\|\|\eta\|$,
+a negative-definite quadratic form iff $\mF\cdot\tfrac{\vt_1}{\vt_2}c\lamtwo>\vt_1^2$,
+i.e.\ \eqref{eq:threshold}; the isotropic symmetric case is tight on the Fiedler mode.
 \end{proof}
-This concerns the served-aggregate/estimator subsystem, \emph{not} $z^{\star}$ itself:
-the neutral fiber directions stay marginal unless regularised, and WISE's strict margin
-$\sigmastar=\sigmadyn+\delta$ clears $\sigmadyn$ with room.
+This is a conditional interconnection result, \emph{not} a convergence proof
+for~\eqref{eq:pd}: WISE existence and selection rest on the exact SDP. It links the
+connectivity requirement to a local stability boundary, which WISE's strict margin
+$\sigmastar=\sigmadyn+\delta$ clears with room.
 
 \subsection{Selection, prices, and the cost of endogeneity}
 The lexicographic selector of Theorem~\ref{thm:existence} is exact. A scalarised

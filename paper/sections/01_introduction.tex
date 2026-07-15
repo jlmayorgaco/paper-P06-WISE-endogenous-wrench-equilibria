@@ -42,18 +42,17 @@ contains a composition meeting the robust connectivity requirement $\sigmastar$ 
 the optimal value of a semidefinite program clears it, and a lexicographic selector
 then returns the most-connected productively optimal assignment without moving the
 aggregate.
-\item \textbf{Dynamic relevance and validation} (Theorem~\ref{thm:stability}): the
-spectral condition $c\,\mF\,\lamtwo>\vt^2$ makes the coupled
-served-aggregate/estimator subsystem exponentially stable---sufficient in general,
-necessary in the isotropic modal case---and simulations with heterogeneous
-second-order unicycles evaluate the certificate, the predicted boundary, and a
-decentralized realization.
+\item \textbf{Dynamic relevance and validation} (Theorem~\ref{thm:stability}): a
+small-gain condition $c\,\mF\,\lamtwo>\vt_1\vt_2$ ties the connectivity requirement to
+exponential stability of a local optimizer--estimator interconnection, and simulations
+with heterogeneous second-order unicycles evaluate the SDP certificate, the predicted
+boundary, and a decentralized heuristic realization.
 \end{itemize}
 We call a productively optimal, wrench-feasible assignment whose induced communication
 substrate meets the estimator's stability requirement a \emph{WISE equilibrium}.
 
 \begin{figure*}[t]\centering
-\resizebox{0.8\textwidth}{!}{\input{sections/fig_concept}}
+\resizebox{0.74\textwidth}{!}{\input{sections/fig_concept}}
 \caption{The whole problem in one picture. \textbf{(1)}~A distributed
 equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
 communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the

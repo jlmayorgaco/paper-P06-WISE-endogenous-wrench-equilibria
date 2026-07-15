@@ -4,7 +4,8 @@
 We separate the exact certificate from the online controller: existence and
 selection of a WISE are decided by the semidefinite program of
 Theorem~\ref{thm:existence}, solved centrally; the primal--dual flow below is a
-decentralized realization evaluated empirically, not a convergence guarantee.
+decentralized \emph{heuristic} realization evaluated empirically, not a convergence
+guarantee.
 
 \subsection{Exact certificate (centralized SDP)}
 Stage 1 fixes $y^{\star}$ by maximising $V$ over $X_{\mathrm f}$; the Stage-2
@@ -29,7 +30,10 @@ $d-H_w z$ is tracked by dynamic average consensus and $\mu\ge0$ is the wrench du
 Fiedler sensitivity $v^{\top}L_e v$ needs the connectivity eigenpair; each robot
 estimates $(\lamtwo,v)$ by a deflated power iteration on $\mathbf 1^{\perp}$ over the
 current graph, whose error enters $\varepsilon_{\mathrm{est}}$ in $\delta$ (full
-recursion in the repository). A missing wrench direction raises $\mu$, missing
+recursion in the repository). This is a \emph{preservation}, not a recovery,
+mechanism: it assumes a connected warm start $\lamtwo\ge\sigma_{\mathrm{safe}}>0$ and,
+for the single-vector estimate, a uniform eigengap $\lambda_3-\lamtwo\ge g_{\min}>0$,
+with the assignment on a slower time scale than the estimator. A missing wrench direction raises $\mu$, missing
 connectivity raises the relay price $\pi$, and count migrates toward the highest
 marginal type--action value. We use a projected-ascent (Nash-stationary) revision
 whose rest points are the constrained maximisers of
