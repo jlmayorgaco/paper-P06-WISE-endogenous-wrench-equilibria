@@ -1,62 +1,101 @@
-% The self-defeating equilibrium, two stacked rows for clarity.
+% Full-width figure explaining the whole problem: self-referential loop,
+% composition degeneracy (one wrench, many compositions), and the two outcomes.
 \begin{tikzpicture}[
   font=\footnotesize,
-  short/.style={circle,draw=black,fill=blue!30,minimum size=4.2mm,inner sep=0pt},
-  long/.style={rectangle,draw=black,fill=orange!65,minimum size=4.2mm,inner sep=0pt},
-  rel/.style={diamond,draw=black,fill=green!55!black,minimum size=5.4mm,inner sep=0pt},
+  short/.style={circle,draw=black,fill=blue!30,minimum size=3.4mm,inner sep=0pt},
+  long/.style={rectangle,draw=black,fill=orange!65,minimum size=3.4mm,inner sep=0pt},
+  rel/.style={diamond,draw=black,fill=green!55!black,minimum size=4.4mm,inner sep=0pt},
   ld/.style={rectangle,draw=black,fill=gray!60,text=white,font=\scriptsize,
-             minimum width=9mm,minimum height=5.5mm,inner sep=0.5pt},
-  cl/.style={rounded corners=3pt,draw=gray!45,fill=gray!8,inner sep=0pt},
-  lk/.style={gray!70,line width=0.9pt},
-  brk/.style={red!80,dashed,line width=1.3pt},
-  brg/.style={green!45!black,line width=1.5pt},
-  lab/.style={font=\scriptsize},
+             minimum width=8mm,minimum height=5mm,inner sep=0.5pt},
+  cl/.style={rounded corners=2pt,draw=gray!45,fill=gray!8,inner sep=0pt},
+  bx/.style={rounded corners=2pt,draw=gray!60,fill=blue!5,align=center,inner sep=2.5pt,font=\scriptsize},
+  lk/.style={gray!70,line width=0.8pt},
+  brk/.style={red!80,dashed,line width=1.2pt},
+  brg/.style={green!45!black,line width=1.4pt},
+  ttl/.style={font=\small\bfseries},
   x=1cm,y=1cm]
 
-% ================= Row (a): self-defeating =================
-\begin{scope}[yshift=2.0cm]
-  \node[cl,minimum width=2.0cm,minimum height=1.5cm] at (1.0,0.7){};
-  \node[cl,minimum width=2.0cm,minimum height=1.5cm] at (5.4,0.7){};
-  % left cluster
-  \node[short](a1) at (0.6,0.95){}; \node[long](a2) at (1.5,1.05){};
-  \draw[lk] (a1)--(a2);
-  % right cluster: load + lifters
-  \node[ld](La) at (5.4,0.5){load};
-  \node[short](a4) at (4.9,1.1){}; \node[short](a5) at (5.9,1.1){};
-  \draw[lk] (a4)--(La.north) (a5)--(La.north) (a4)--(a5);
-  \draw[-{Latex[length=1.8mm]},thick] (5.4,0.95)--(5.4,1.65);
-  \node at (5.85,1.5){$\wdem$};
-  % broken inter-cluster link
-  \draw[brk] (a2)--(a4);
-  \node[red!85] at (3.2,1.28){\large$\times$};
-  \node[red!80,lab] at (3.2,0.45){$\lamtwo<\sigmastar$: estimator blind};
-  \node[lab,anchor=west] at (7.0,0.7)
-    {\begin{tabular}{@{}l@{}}(a) every robot lifts;\\ the graph the\\ algorithm needs\\ collapses\end{tabular}};
+% ================================================================
+% PANEL 1 -- the self-referential loop
+% ================================================================
+\begin{scope}[xshift=0cm]
+  \node[ttl] at (2.1,3.7){1.\ The self-referential trap};
+  \node[bx] (asg) at (2.1,3.05){assignment $z$\\{\scriptsize who lifts / relays}};
+  \node[bx] (grf) at (3.75,1.7){graph $\Lap(z)$};
+  \node[bx] (est) at (2.1,0.35){consensus\\estimator};
+  \node[bx] (agg) at (0.35,1.7){aggregates $\hat s$};
+  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (asg) to[bend left=18] node[right,font=\scriptsize]{forms} (grf);
+  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (grf) to[bend left=18] node[below,font=\scriptsize]{carries} (est);
+  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (est) to[bend left=18] node[left,font=\scriptsize]{estimates} (agg);
+  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (agg) to[bend left=18] node[above,font=\scriptsize]{drive} (asg);
+  \node[align=center,red!70!black,font=\scriptsize] at (2.1,-0.55)
+    {the decision builds the graph\\ its own computation needs};
 \end{scope}
 
-% ================= Row (b): self-sustaining (WISE) =================
-\begin{scope}
-  \node[cl,minimum width=2.0cm,minimum height=1.5cm] at (1.0,0.7){};
-  \node[cl,minimum width=2.0cm,minimum height=1.5cm] at (5.4,0.7){};
-  \node[short](b1) at (0.6,0.95){};
-  \node[ld](Lb) at (5.4,0.5){load};
-  \node[short](b4) at (4.9,1.1){}; \node[short](b5) at (5.9,1.1){};
-  \draw[lk] (b4)--(Lb.north) (b5)--(Lb.north) (b4)--(b5);
-  \draw[-{Latex[length=1.8mm]},thick] (5.4,0.95)--(5.4,1.65);
-  \node at (5.85,1.5){$\wdem$};
-  % long-range robot diverted to relay in the gap
-  \node[rel](br) at (3.2,1.05){}; \node[lab] at (3.2,1.55){relay};
-  \draw[brg] (b1)--(br) (br)--(b4);
-  \node[green!45!black,lab] at (3.2,0.45){$\lamtwo\ge\sigmastar$: self-computing};
-  \node[lab,anchor=west] at (7.0,0.7)
-    {\begin{tabular}{@{}l@{}}(b) one long-range\\ robot relays; it\\ executes \emph{and}\\ computes itself\end{tabular}};
+% divider
+\draw[gray!35,line width=0.6pt] (4.95,-0.8)--(4.95,3.9);
+
+% ================================================================
+% PANEL 2 -- degeneracy: one wrench, many compositions
+% ================================================================
+\begin{scope}[xshift=5.35cm]
+  \node[ttl] at (3.05,3.7){2.\ One wrench, a fiber of compositions};
+  % the load and demanded wrench (force + torque)
+  \node[ld] (L) at (1.1,2.55){load};
+  \draw[-{Latex[length=1.6mm]},thick] (1.1,2.8)--(1.1,3.35); \node at (1.45,3.25){$\wdem$};
+  \draw[-{Latex[length=1.3mm]},thick] (1.55,2.55) arc (0:300:0.28); \node at (2.05,2.55){$\tau$};
+  \node[align=center,font=\scriptsize] at (1.1,1.85){same delivered\\ wrench $Bz=y^{\star}$};
+  % fiber of compositions (dots on a segment)
+  \draw[blue!70!black,line width=1.4pt] (0.3,1.25)--(2.0,1.25);
+  \foreach \xx in {0.3,0.72,1.15,1.58,2.0}{\node[circle,fill=blue!70!black,inner sep=1pt] at (\xx,1.25){};}
+  \node[blue!70!black,font=\scriptsize] at (1.15,0.92){fiber $\Emanifold$: all give $V^{\star}$};
+  % inset plot: V flat, lambda2 rising, sigma_req band
+  \begin{scope}[xshift=3.15cm,yshift=0.35cm,x=2.9cm,y=1.05cm]
+    \draw[-{Latex[length=1.2mm]}] (0,0)--(1.08,0) node[right,font=\scriptsize]{$\alpha$};
+    \draw[-{Latex[length=1.2mm]}] (0,0)--(0,1.15);
+    \fill[green!12] (0.55,0) rectangle (1.0,1.1);
+    \draw[blue!70!black,line width=1pt] (0,0.62)--(1.0,0.62) node[right,font=\scriptsize,blue!70!black]{$V{=}V^{\star}$};
+    \draw[green!45!black,line width=1pt] (0,0.12) .. controls (0.5,0.55) and (0.7,0.92) .. (1.0,1.0)
+      node[right,font=\scriptsize,green!45!black]{$\lamtwo$};
+    \draw[red!70,dashed,line width=0.8pt] (0,0.68)--(1.0,0.68) node[left,font=\scriptsize,red!70,pos=0.12,above]{$\sigmastar$};
+    \node[green!45!black,font=\scriptsize] at (0.78,-0.28){WISE};
+  \end{scope}
 \end{scope}
 
-% ================= shared fiber note (between rows) + legend =========
-\node[draw=gray!55,rounded corners=2pt,fill=white,inner sep=2.5pt,lab]
-  at (3.2,1.85){both deliver the same wrench $Bz=y^{\star}$: one fiber $\Emanifold$};
-% legend (top-right)
-\node[short] at (9.0,3.05){}; \node[lab,anchor=west] at (9.2,3.05){short-range};
-\node[long]  at (9.0,2.72){}; \node[lab,anchor=west] at (9.2,2.72){long-range};
-\node[rel]   at (9.0,2.36){}; \node[lab,anchor=west] at (9.2,2.36){relay};
+% divider
+\draw[gray!35,line width=0.6pt] (11.55,-0.8)--(11.55,3.9);
+
+% ================================================================
+% PANEL 3 -- the two outcomes on the same fiber
+% ================================================================
+\begin{scope}[xshift=11.95cm]
+  \node[ttl] at (2.7,3.7){3.\ Two compositions, two fates};
+  % row (a): self-defeating
+  \begin{scope}[yshift=2.05cm]
+    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (0.85,0.55){};
+    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (4.05,0.55){};
+    \node[short](a1) at (0.5,0.75){}; \node[long](a2) at (1.2,0.8){}; \draw[lk](a1)--(a2);
+    \node[ld,minimum width=6mm,minimum height=4mm](La) at (4.05,0.42){load};
+    \node[short](a4) at (3.7,0.85){}; \node[short](a5) at (4.4,0.85){}; \draw[lk](a4)--(La.north)(a5)--(La.north);
+    \draw[brk] (a2)--(a4); \node[red!85] at (2.55,0.82){\large$\times$};
+    \node[red!80,font=\scriptsize] at (2.55,0.15){$\lamtwo<\sigmastar$};
+    \node[anchor=west,font=\scriptsize,align=left] at (5.05,0.55){(a) all lift:\\ graph collapses,\\ estimator blind};
+  \end{scope}
+  % row (b): WISE
+  \begin{scope}
+    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (0.85,0.55){};
+    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (4.05,0.55){};
+    \node[short](b1) at (0.5,0.75){};
+    \node[ld,minimum width=6mm,minimum height=4mm](Lb) at (4.05,0.42){load};
+    \node[short](b4) at (3.7,0.85){}; \node[short](b5) at (4.4,0.85){}; \draw[lk](b4)--(Lb.north)(b5)--(Lb.north);
+    \node[rel](br) at (2.55,0.75){}; \draw[brg](b1)--(br)(br)--(b4);
+    \node[green!45!black,font=\scriptsize] at (2.55,0.15){$\lamtwo\ge\sigmastar$};
+    \node[anchor=west,font=\scriptsize,align=left] at (5.05,0.55){(b) one relays:\\ executes \emph{and}\\ computes itself};
+  \end{scope}
+\end{scope}
+
+% legend (bottom strip)
+\node[short] at (0.4,-1.15){}; \node[anchor=west,font=\scriptsize] at (0.6,-1.15){short-range};
+\node[long]  at (2.4,-1.15){}; \node[anchor=west,font=\scriptsize] at (2.6,-1.15){long-range};
+\node[rel]   at (4.4,-1.15){}; \node[anchor=west,font=\scriptsize] at (4.65,-1.15){relay};
 \end{tikzpicture}
