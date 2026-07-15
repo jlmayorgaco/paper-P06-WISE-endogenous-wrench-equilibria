@@ -46,12 +46,15 @@ def main() -> None:
     # 3. experiments (generated/*.csv + paper/figures/*.pdf)
     step("experiment: fiber", [PY, "experiments/exp_fiber.py"])
     step("experiment: physical", [PY, "experiments/exp_physical.py"])
+    step("experiment: cluster", [PY, "experiments/exp_cluster.py"])
     if args.fast:
         run_call("experiment: phase (fast)", "exp_phase", "grid=4, seeds=2")
         run_call("experiment: methods (fast)", "exp_methods", "seeds=6")
+        run_call("experiment: epsilon (fast)", "exp_epsilon", "seeds=2")
     else:
         step("experiment: phase", [PY, "experiments/exp_phase.py"])
         step("experiment: methods", [PY, "experiments/exp_methods.py"])
+        step("experiment: epsilon", [PY, "experiments/exp_epsilon.py"])
 
     # 4. build the paper
     step("build paper", ["latexmk", "-pdf", "-interaction=nonstopmode",

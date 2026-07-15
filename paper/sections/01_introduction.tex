@@ -52,17 +52,16 @@ We call a productively optimal, wrench-feasible assignment whose induced communi
 substrate meets the estimator's stability requirement a \emph{WISE equilibrium}.
 
 \begin{figure*}[t]\centering
-\resizebox{0.66\textwidth}{!}{\input{sections/fig_concept}}
+\resizebox{0.6\textwidth}{!}{\input{sections/fig_concept}}
 \caption{The whole problem in one picture. \textbf{(1)}~A distributed
 equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
-communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the
-decision builds the graph its own computation needs. \textbf{(2)}~The productive
-optimum fixes the delivered wrench $Bz=y^{\star}$ but not the composition: a whole
-fiber $\Emanifold$ attains the same value $V^{\star}$ while its induced connectivity
-$\lamtwo$ varies, crossing the requirement $\sigmastar$ (inset). \textbf{(3)}~On that
-fiber, one composition severs the graph ($\lamtwo<\sigmastar$: the estimator that
-produced it goes blind), while a WISE composition diverts one long-range robot to
-relay ($\lamtwo\ge\sigmastar$), whose graph meets the estimator's stability
+communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the decision
+builds the graph its own computation needs. \textbf{(2)}~The productive optimum fixes the
+delivered wrench $Bz=y^{\star}$ but not the composition: a whole fiber $\Emanifold$
+attains the same $V^{\star}$ while its connectivity $\lamtwo$ varies, crossing the
+requirement $\sigmastar$ (inset). \textbf{(3)}~On that fiber, one composition severs the
+graph ($\lamtwo<\sigmastar$: the estimator goes blind), while a WISE composition diverts
+one long-range robot to relay ($\lamtwo\ge\sigmastar$), meeting the stability
 requirement.}
 \label{fig:scene}
 \end{figure*}

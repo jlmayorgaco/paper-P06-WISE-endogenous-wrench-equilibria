@@ -2,62 +2,65 @@
 \label{sec:exp}
 
 We validate the main results on heterogeneous teams ($N=12$ unless noted) in a
-two-region world: a rigid load in the right cluster demands a planar wrench, and short
-links connect robots only within a cluster, so the gap is bridged only when a
-long-range type relays. The physical layer integrates a rigid load and second-order
-unicycles whose lifting force is confined to the heading-aligned elliptical set. The
+two-region world: a rigid load in the right cluster demands a planar wrench, short links
+connect robots only within a cluster, and second-order unicycles apply a heading-aligned
+elliptical lifting force, so the gap is bridged only when a long-range type relays. The
 primary metric is the \emph{certified service rate}: a load counts as served only when
 it is wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and
-reproduces exactly.
+reproduces exactly. Consistent with Theorem~\ref{thm:stability}, the decentralized
+heuristic~\eqref{eq:pd} drives $\lamtwo$ above $\sigmastar$ and the wrench residual to
+zero together, and the estimation error decays only once a long-range robot relays, with
+the sign change at $c\,\mF\,\lamtwo=\vt^2$.
 
-
-\paragraph*{E1 --- Empirical attainment and self-defeat (Thm.~\ref{thm:stability})}
-The decentralized heuristic~\eqref{eq:pd} drives $\lamtwo(\Lap(z))$ above
-$\sigmastar$ and the wrench residual to zero together, the price $\pi$ settling on
-long-range relays. Comparing two fiber compositions traces the stability boundary:
-the estimation error $\|e(t)\|$ decays when a long-range robot relays and grows when
-it is withdrawn ($\lamtwo<\sigmastar$), with the sign change at
-$c\,\mF\,\lamtwo=\vt^2$.
-
-\paragraph*{E2 --- Closed-loop transport (Fig.~\ref{fig:physical}, Lem.~\ref{lem:bridge})}
-Four lifters---each force confined to its heading-aligned elliptical set---carry a
-rigid load toward the gap while one long-range robot relays. The load tracks its
-reference pose with a residual the nonholonomic team almost fully delivers, and the
-geometric connectivity $\lamtwo(\Lgeo(q))$ tracks the surrogate $\lamtwo(\Lap)$ with
-the Weyl bound $\lamtwo(\Lap)-\varepsilon_L$ above $\sigmadyn$ throughout: the
-guarantee of Lemma~\ref{lem:bridge} holds along the whole trajectory, not just at the
-plan.
+\paragraph*{E1 --- Spatial clustering and the network effect (Fig.~\ref{fig:cluster})}
+Robots group into two clusters separated by a gap wider than the short-range radius, so
+the geometric graph has two components ($\lamtwo\approx0$) unless a long-range robot
+occupies the gap (Fig.~\ref{fig:cluster}a--b). Sweeping the relay position
+(Fig.~\ref{fig:cluster}c), $\lamtwo(\Lgeo)$ clears $\sigmastar$ only near the gap
+centre: the composition controls exactly this network effect. A closed-loop rigid-load
+transport (repository, \texttt{exp\_physical}) confirms Lemma~\ref{lem:bridge} along a
+trajectory, $\lamtwo(\Lgeo(q))$ staying within $\varepsilon_L$ of $\lamtwo(\Lap)$
+throughout.
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.74\columnwidth]{fig_physical.pdf}
-\caption{Closed-loop rigid-load transport ($8$ robots). (a) The team carries the load
-toward the gap (dashed path) while the relay (\protect\tikz[baseline=-0.4ex]
-\protect\node[diamond,draw,fill=green!55!black,minimum size=1.8mm,inner sep=0pt]{};)
-keeps the clusters linked. (b) Load pose error, (c) undeliverable wrench residual, and
-(d) geometric connectivity $\lamtwo(\Lgeo)$ vs.\ the surrogate $\lamtwo(\Lap)$ and the
-Weyl bound $\lamtwo(\Lap)-\varepsilon_L$, all above $\sigmadyn$
-(Lemma~\ref{lem:bridge}).}
-\label{fig:physical}
+\includegraphics[width=\columnwidth]{fig_cluster.pdf}
+\caption{Spatial clustering and the network effect (real geometry, $11$ robots). (a)
+With the relay idle the two short-range clusters are disconnected, $\lamtwo\approx0$. (b)
+A long-range relay
+(\protect\tikz[baseline=-0.4ex]\protect\node[diamond,draw,fill=green!55!black,%
+minimum size=1.8mm,inner sep=0pt]{};) in the gap bridges them, $\lamtwo\ge\sigmastar$.
+(c) $\lamtwo(\Lgeo)$ vs.\ relay $x$-position: connectivity clears $\sigmastar$ only near
+the gap centre.}
+\label{fig:cluster}
 \end{figure}
+
+\begin{figure}[tb]\centering
+\includegraphics[width=0.66\columnwidth]{fig_phase_sdp.pdf}
+\caption{Regime phase diagram over $(\nu,\tau_d)$ ($4$ seeds/cell). Colour is the
+empirical certified rate of the decentralized flow; the blue curve is the \emph{exact}
+SDP boundary $\LamE=\sigmastar$ of Theorem~\ref{thm:existence}, separating the
+WISE-feasible interior from the existence edge ($\nu\!\to\!0$) and the wrench-limited
+edge (high $\tau_d$).}
+\label{fig:phase}
+\end{figure}
+
+\paragraph*{E2 --- Fiber mechanism vs.\ scalarization}
+Moving along a productive-nullspace direction holds $V\equiv V^{\star}$ and $Bz=y^{\star}$
+at machine precision while $\lamtwo$ crosses $\sigmastar$: the degeneracy is real and the
+safe subset lies strictly inside the optimal fiber (\texttt{exp\_fiber}). Against the
+scalarised $V_\varepsilon=V+\varepsilon\lamtwo$ over $8$ seeds, as $\varepsilon$ grows
+from $10^{-3}$ to $1$ the productive loss $V^{\star}-V$ rises from $0$ to $0.049$
+\emph{and} the aggregate drift $\|Bz-y^{\star}\|$ from $0$ to $0.307$, whereas WISE holds
+both at zero---the exact-optimum preservation a weighted sum cannot match.
 
 \paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Cor.~\ref{thm:trichotomy})}
 Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$, we solve the WISE
 SDP~\eqref{eq:sdp} in every cell and overlay its exact boundary $\LamE=\sigmastar$
-(Fig.~\ref{fig:phase}). The two predicted failure edges appear: existence fails as
-$\nu\!\to\!0$ (no long-range robot can relay) and wrench feasibility fails at high
-$\tau_d$. Against the decentralized flow the SDP verdict has \emph{perfect recall}
-over $144$ runs (no false negatives; $61$ TP, $64$ TN, $19$ FP, $0$ FN): its only
-misses are cells the exact certificate clears but the heuristic flow does not reach.
-
-\begin{figure}[t]\centering
-\includegraphics[width=0.9\columnwidth]{fig_phase_sdp.pdf}
-\caption{Regime phase diagram over $(\nu,\tau_d)$ ($4$ seeds/cell). Colour is the
-empirical certified rate of the decentralized flow; the blue curve is the
-\emph{exact} SDP boundary $\LamE=\sigmastar$ of Theorem~\ref{thm:existence}. It
-separates the WISE-feasible interior from the existence edge ($\nu\!\to\!0$) and the
-wrench-limited edge (high $\tau_d$).}
-\label{fig:phase}
-\end{figure}
+(Fig.~\ref{fig:phase}). Both predicted failure edges appear: existence fails as
+$\nu\!\to\!0$ and wrench feasibility fails at high $\tau_d$. Against the decentralized
+flow the SDP verdict has \emph{perfect recall} over $144$ runs ($61$ TP, $64$ TN, $19$
+FP, $0$ FN); its only misses are cells the certificate clears but the heuristic does not
+reach.
 
 \paragraph*{E4 --- Method comparison (Table~\ref{tab:ablation})}
 At a demanding operating point ($\nu=0.4$, $\tau_d=6.5$), enforcing either requirement
@@ -66,23 +69,21 @@ alone fails: \texttt{scalar\_capacity} and \texttt{wrench\_only} fragment the ne
 (budget/occupancy only) almost never clears the wrench and connectivity tests. The
 \emph{exact} WISE SDP certifies every seed, whereas the decentralized flow
 (\texttt{wise\_pd}, $50\%$) and even a centralized multistart heuristic ($67\%$) fall
-short. The gap between the exact certificate and the heuristic solvers is the honest
-cost of not solving the SDP---evidence for the certificate, not a claim of distributed
-optimality.
+short---the honest cost of not solving the SDP, evidence for the certificate rather than
+a claim of distributed optimality.
 
 \begin{table}[t]\centering
 \caption{Method comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$);
-means, with a Wilson $95\%$ CI on certified success. Wrench deficit is relative to the
-demand. Arrows mark the preferred direction. The exact SDP selector \texttt{wise\_sdp}
-certifies all seeds; the heuristic solvers and single-requirement / random baselines
-fall short.}
+means, with a Wilson $95\%$ CI on certified success and wrench deficit relative to
+demand. The exact SDP selector \texttt{wise\_sdp} certifies all seeds; heuristic solvers
+and single-requirement / random baselines fall short.}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}
 \end{table}
 
 \paragraph*{E5 --- Emergent roles (Ex.~\ref{ex:fiber})}
-Pooled over seeds, relay commitment falls on long-range types by comparative advantage
-(Ex.~\ref{ex:fiber}): a neutral long/short exchange leaves $Bz$ fixed while raising
-$\lamtwo$---the predicted division of labour, not a general theorem.
+Pooled over seeds, relay commitment falls on long-range types by comparative advantage:
+a neutral long/short exchange leaves $Bz$ fixed while raising $\lamtwo$---the predicted
+division of labour, not a general theorem.
 

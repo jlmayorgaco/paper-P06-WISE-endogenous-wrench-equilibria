@@ -3,7 +3,7 @@
 PY ?= python
 
 .PHONY: help install test lint fmt \
-        fiber phase methods physical \
+        fiber phase methods physical cluster epsilon \
         reproduce reproduce-fast paper clean
 
 help: ## Show this help
@@ -33,6 +33,12 @@ methods: ## 7-method comparison, 30 seeds, bootstrap CI
 
 physical: ## Closed-loop rigid-load transport
 	$(PY) experiments/exp_physical.py
+
+cluster: ## Spatial clustering and the network effect (x-y plane)
+	$(PY) experiments/exp_cluster.py
+
+epsilon: ## Lexicographic WISE vs. weighted-sum scalarization
+	$(PY) experiments/exp_epsilon.py
 
 reproduce: ## Full pipeline: tests -> certificates -> experiments -> paper -> checks
 	$(PY) experiments/reproduce.py

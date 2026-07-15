@@ -4,22 +4,19 @@
 We identified composition degeneracy as a resource rather than a nuisance in
 heterogeneous cooperative transport. When the productive optimum fixes the served
 aggregate but not its composition by type (Theorem~\ref{thm:degeneracy}), a secondary
-spectral program can select, among equally productive assignments, one that preserves
-the communication substrate the distributed estimator needs.
-
-WISE existence and selection reduce to a semidefinite program
-(Theorem~\ref{thm:existence}), and a Schur-complement condition ties its connectivity
-requirement to exponential stability of the served-aggregate/estimator subsystem
-(Theorem~\ref{thm:stability}). Simulations with heterogeneous second-order unicycles
-reproduce the predicted feasibility boundary, separate wrench infeasibility from
-communication infeasibility, and show relay allocation tracking each type's spectral
+spectral program selects, among equally productive assignments, one that preserves the
+communication substrate the distributed estimator needs. WISE existence and selection
+reduce to a semidefinite program (Theorem~\ref{thm:existence}), and a Schur-complement
+condition ties the connectivity requirement to exponential stability of the
+optimizer--estimator subsystem (Theorem~\ref{thm:stability}); simulations with
+heterogeneous second-order unicycles reproduce the feasibility boundary, separate wrench
+from communication infeasibility, and show relay allocation tracking each type's spectral
 benefit against its productive opportunity cost.
 
 \paragraph*{Limitations and future work}
-The guarantees hold for the relaxed candidate-site model: the induced Laplacian
-$\Lap(z)$ is an affine surrogate for the nonconvex geometric graph $\Lgeo(q)$, which it
-bounds only through Lemma~\ref{lem:bridge}; integer assignments are re-certified after
-rounding (Remark~\ref{rem:integer}); nonholonomic wrench realizability is modelled by
-the heading-aligned force set, not proved; and validation is in simulation. A
-realizability theorem for the nonholonomic contact, an analysis of the geometric graph
-$\Lgeo(q)$, and hardware validation remain open.
+The guarantees hold for the relaxed candidate-site model: $\Lap(z)$ is an affine
+surrogate bounding the geometric graph $\Lgeo(q)$ through Lemma~\ref{lem:bridge}; integer
+assignments are re-certified after rounding (Remark~\ref{rem:integer}); nonholonomic
+wrench realizability is modelled by the heading-aligned force set, not proved; and
+validation is in simulation. A realizability theorem for the nonholonomic contact and
+hardware validation remain open.
