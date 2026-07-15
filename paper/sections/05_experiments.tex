@@ -57,18 +57,21 @@ wrench-limited edge (high $\tau_d$).}
 \label{fig:phase}
 \end{figure}
 
-\paragraph*{E4 --- Constraint ablation (Table~\ref{tab:ablation})}
-On paired seeds, enforcing either requirement alone fails: \texttt{scalar\_capacity}
-and \texttt{wrench\_only} fragment the network, \texttt{connectivity\_only} keeps the
-network but cannot lift, and only WISE certifies both (Table~\ref{tab:ablation}, run
-count and $95\%$ paired-bootstrap intervals). WISE and the centralized oracle agree
-here---a numerical sanity check, both solving the same relaxed program, not a proof
-of distributed optimality.
+\paragraph*{E4 --- Method comparison (Table~\ref{tab:ablation})}
+At a demanding operating point ($\nu=0.4$, $\tau_d=6.5$), enforcing either requirement
+alone fails: \texttt{scalar\_capacity} and \texttt{wrench\_only} fragment the network,
+\texttt{connectivity\_only} cannot lift, and a random feasible assignment almost never
+clears both. The \emph{exact} WISE SDP certifies every seed, whereas the decentralized
+flow (\texttt{wise\_pd}, $50\%$) and even the centralized multi-start oracle ($67\%$)
+fall short. The gap between the exact certificate and the heuristic solvers is the
+honest cost of not solving the SDP---evidence for the certificate, not a claim of
+distributed optimality.
 
 \begin{table}[t]\centering
-\caption{Constraint ablation on $n=16$ paired seeds ($N=12$, $\nu=0.5$,
-$\tau_d=3$; mean over seeds). Arrows mark the preferred direction; WISE integer
-recovery reaches $100\%$ under randomised rounding.}
+\caption{Method comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$);
+mean with $95\%$ bootstrap CI. Arrows mark the preferred direction. The exact SDP
+selector \texttt{wise\_sdp} certifies all seeds; the heuristic solvers
+(\texttt{wise\_pd}, oracle) and the single-requirement / random baselines fall short.}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}
