@@ -50,8 +50,8 @@
 
 \begin{document}
 
-\title{WISE: Self-Sustaining Population Equilibria\\
-over Decision-Induced Robot Networks}
+\title{WISE: Wrench- and Information-Self-Sustaining\\
+Equilibrium Selection for Heterogeneous Multi-Robot Transport}
 
 \author{\IEEEauthorblockN{Jorge Luis Mayorga Taborda}
 \IEEEauthorblockA{\textit{Universidad Internacional de Valencia (VIU)}\\
@@ -61,35 +61,29 @@ jl.mayorga236@gmail.com}}
 \maketitle
 
 \begin{abstract}
-Distributed population-game dynamics need a connected communication graph to
-estimate the aggregates and payoffs that define their equilibria. We study the
-self-referential case in which the equilibrium's own spatial composition
-determines whether that graph exists. For a heterogeneous multi-robot team we
-show that the productively optimal aggregate is unique but its \emph{composition}
-is degenerate---a positive-dimensional fiber of equal-payoff profiles---so
-classical theory fixes how much wrench each load receives, not which robot types
-provide it. On that fiber we place an endogenous, decision-induced candidate-site
-Laplacian $\Lap(x)$ and define the \emph{Wrench- and Information-Self-Sustaining
-Equilibrium} (WISE): a
-productively optimal composition that also keeps algebraic connectivity above the
-stability threshold $\sigmadyn=\vt^2/(c\,\mF)$ (WISE requires the margin-inflated
-$\sigmastar=\sigmadyn+\delta$). We prove (i) composition degeneracy with a
-productive-nullspace dimension formula, (ii) a \emph{free/costly/impossible}
-trichotomy for information self-sustainability governed by the connectivity maxima
-$\LamE$ over the optimal fiber and $\LamX$ over the feasible set, (iii) a robust
-local self-computation certificate $c\,\mF\,\lamtwo>\vt^2$ derived from the coupled
-strategy--estimator dynamics (worst-case tight in the canonical aligned block), and
-(iv) a safe selector whose productive loss vanishes as the information reward
-$\varepsilon\downarrow0$. Closed-loop simulation with rigid-load transport and
-second-order unicycles---with verified integer recovery---supports the theory;
-relay roles emerge by comparative advantage. \emph{A population equilibrium can produce a configuration that
-destroys the graph its own algorithm requires; composition heterogeneity is
-exactly what lets it select the equilibria that survive.}
+Distributed equilibrium-seeking controllers for multi-robot systems commonly assume
+that the communication graph is available independently of the assignment being
+computed. In cooperative transport, however, committing robots to lifting and relay
+roles changes the graph itself. We formulate a relaxed heterogeneous
+task-assignment model in which the wrench-feasible compositions that produce the same
+optimal served aggregate form an \emph{equilibrium fiber}. A \emph{wrench- and
+information-self-sustaining equilibrium} (WISE) is a point on this fiber whose
+decision-induced candidate-site Laplacian $\Lap(z)$ meets a robust
+algebraic-connectivity requirement. We characterize the fiber dimension on its
+active face, cast WISE existence and selection as a semidefinite program, and derive
+a sufficient spectral condition for exponential stability of the coupled
+served-aggregate/estimator subsystem---also necessary in the isotropic modal case. A
+lexicographic selector preserves the productive optimum exactly while maximizing
+connectivity. Simulations with heterogeneous second-order unicycles evaluate the SDP
+certificate, the predicted stability boundary, and a decentralized numerical
+realization. The results separate wrench infeasibility from communication
+infeasibility and show that relay allocation follows the spectral benefit of each
+robot type relative to its productive opportunity cost.
 \end{abstract}
 
 \begin{IEEEkeywords}
-Multi-robot systems, aggregative games, generalized variational equilibrium,
-wrench feasibility, algebraic connectivity, coalition formation.
+Multi-robot systems, cooperative transport, task allocation, variational equilibria,
+algebraic connectivity, semidefinite programming.
 \end{IEEEkeywords}
 
 \input{sections/01_introduction}

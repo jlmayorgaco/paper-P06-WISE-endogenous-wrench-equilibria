@@ -1,65 +1,53 @@
 \section{Introduction}
 \label{sec:intro}
 
-Distributed population-game and Nash-seeking methods have become a standard route
-to coordinate large teams: agents adjust their strategies from locally
-communicated aggregates, and the dynamics converge to an equilibrium of a
+Cooperative transport by a heterogeneous robot team couples two decisions usually
+studied apart: which robots apply force to a load, and which relay the information
+that lets the team agree on that force. Distributed equilibrium-seeking and
+population-game methods coordinate such teams by having each agent revise its
+strategy from locally communicated aggregates, converging to an equilibrium of a
 constrained potential game~\cite{sandholm2010population,quijano2017role,%
-barreiro2016constrained,martinezpiazuelo2022}. Every one of these methods rests on
-a silent premise: that the communication graph needed to \emph{compute} the
-equilibrium is available while the equilibrium is being reached.
+barreiro2016constrained,martinezpiazuelo2022}. These methods rest on one premise:
+the communication graph needed to \emph{compute} the equilibrium is available while
+the equilibrium is being reached.
 
-For a mobile robot team this premise cannot be taken for granted, because the agents
-that compute the equilibrium are the same agents whose placement forms the network.
-Consider a heterogeneous team recruited to move a load across a gap. A profile can
-be productively optimal---delivering exactly the demanded wrench (force and
-torque~\cite{murray1994manipulation})---and yet commit every robot to lifting, so
-that no robot remains to relay, algebraic connectivity collapses, and the very
-estimator that produced the profile loses its consensus channel. The equilibrium
-destroys the means of its own computation.
+For a mobile team this premise cannot be taken for granted, because the robots that
+compute the equilibrium are the robots whose placement forms the graph. Consider a
+team moving a load across a gap. An assignment can be productively
+optimal---delivering the demanded wrench (force and
+torque~\cite{murray1994manipulation})---yet commit every robot to lifting, leaving
+none to relay: algebraic connectivity collapses and the estimator that produced the
+assignment loses the consensus channel it needs to compute it.
 
-\paragraph*{The self-referential gap}
-Population-game and distributed Nash-seeking methods alike treat the interaction
-graph as \emph{given}---a fixed communication resource external to the
-game~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
-Connectivity-control and multi-robot task-allocation work, in turn, maintains
-algebraic connectivity $\lamtwo$ as a separate design
-objective~\cite{fiedler1973,ghosh2006growing,zavlanos2011connectivity,%
-choi2009cbba,prorok2017diversity}. Neither addresses the case where the graph is
-an \emph{output} of the equilibrium's spatial composition. We adopt the
-distributed population-game and generalized-Nash machinery of Sandholm and of
-Barreiro-G\'omez, Quijano, and Mart\'inez-Piazuelo~\cite{sandholm2010population,%
-quijano2017role,barreiro2016constrained,martinezpiazuelo2022}, and treat the
-self-referential case in which the decision itself generates the graph that
-machinery presupposes.
-
-\paragraph*{Key observation}
-The productive optimum pins down the aggregate but not the composition. Because
-the team payoff couples only through population
-aggregates~\cite{jensen2010aggregative}, the set of profiles achieving the optimal
-aggregate is a positive-dimensional polytope (Theorem~\ref{thm:degeneracy}):
-classical theory says how much service each task gets, not \emph{which types}
-provide it. That undetermined composition is exactly the freedom we use to keep
-the network alive.
+Population-game and distributed Nash-seeking formulations take the interaction graph
+as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}, while
+connectivity-control and task-allocation work maintains algebraic connectivity
+$\lamtwo$ as a separate objective~\cite{fiedler1973,ghosh2006growing,%
+zavlanos2011connectivity,choi2009cbba,prorok2017diversity}; neither treats the graph
+as an \emph{output} of the assignment. Our starting point is that the productive
+optimum fixes the served aggregate but not its composition by type: because the
+payoff couples only through aggregates~\cite{jensen2010aggregative}, the
+wrench-feasible assignments attaining the optimal aggregate form a
+positive-dimensional fiber (Theorem~\ref{thm:degeneracy}). That undetermined
+composition is the freedom we use to keep the network connected.
 
 \paragraph*{Contributions}
 \begin{itemize}
-\item \textbf{Composition degeneracy} (Theorem~\ref{thm:degeneracy}): the
-productively optimal aggregate is unique, but the equal-payoff optimal composition
-fiber $\Emanifold$ is positive-dimensional, its dimension fixed by a
-productive-nullspace rank formula.
-\item \textbf{Self-sustaining existence} (Theorem~\ref{thm:existence}): with an
-endogenous, decision-induced candidate-site Laplacian $\Lap(x)$ on $\Emanifold$, a
-self-sustaining equilibrium exists iff
-$\LamE=\max_{x\in\Emanifold}\lamtwo(\Lap(x))\ge\sigmastar$.
-This is \emph{selection within a degenerate optimal composition fiber}, not an
-added constraint.
-\item \textbf{Exact self-defeat threshold} (Theorem~\ref{thm:stability}): the
-coupled strategy/consensus error is locally exponentially stable iff
-$c\,\mF\,\lamtwo>\vt^2$, deriving $\sigmadyn=\vt^2/(c\,\mF)$ rather than importing it.
-\item \textbf{Infinitesimal-reward selection} (Prop.~\ref{prop:selection}) and a
-distributed algorithm, validated by closed-loop simulation with rigid-load
-transport and second-order unicycles---including emergent relay roles.
+\item \textbf{Equilibrium-fiber geometry} (Theorem~\ref{thm:degeneracy}): the
+productively optimal served aggregate is unique, but the equal-payoff assignments
+form a fiber whose dimension equals the tangent nullspace of its minimal active
+face; the transportation value $(T\!-\!1)(K\!-\!1)$ is one special case.
+\item \textbf{WISE existence and selection} (Theorem~\ref{thm:existence}): the fiber
+contains a composition meeting the robust connectivity requirement $\sigmastar$ iff
+the optimal value of a semidefinite program clears it, and a lexicographic selector
+then returns the most-connected productively optimal assignment without moving the
+aggregate.
+\item \textbf{Dynamic relevance and validation} (Theorem~\ref{thm:stability}): the
+spectral condition $c\,\mF\,\lamtwo>\vt^2$ makes the coupled
+served-aggregate/estimator subsystem exponentially stable---sufficient in general,
+necessary in the isotropic modal case---and simulations with heterogeneous
+second-order unicycles evaluate the certificate, the predicted boundary, and a
+decentralized realization.
 \end{itemize}
-We name the resulting refinement the WISE equilibrium. \emph{A WISE equilibrium
-can both execute itself and compute itself.}
+We call a productively optimal, connectivity-sustaining assignment a \emph{WISE
+equilibrium}: one the team can both execute and compute.
