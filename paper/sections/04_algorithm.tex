@@ -1,8 +1,21 @@
-\section{Distributed Algorithm}
+\section{Certificate and Decentralized Realization}
 \label{sec:algorithm}
 
-We seek a WISE by a projected primal--dual flow with a hard-wrench dual $\mu$ and a
-connectivity dual $\pi$:
+We separate the exact certificate from the online controller: existence and
+selection of a WISE are decided by the semidefinite program of
+Theorem~\ref{thm:existence}, solved centrally; the primal--dual flow below is a
+decentralized realization evaluated empirically, not a convergence guarantee.
+
+\subsection{Exact certificate (centralized SDP)}
+The two-stage program~\eqref{eq:sdp} returns the optimal aggregate $y^{\star}$ and the
+most-connected productively optimal assignment $z^{\star}_{\mathrm{WISE}}$; feasibility
+of its connectivity value against $\sigmastar$ is the WISE existence test
+(Theorem~\ref{thm:existence}). We report this certificate and use it as a relaxed
+oracle for the simulations.
+
+\subsection{Decentralized realization}
+For an online approximation each type runs a projected primal--dual flow with a
+hard-wrench dual $\mu$ and a connectivity dual $\pi$:
 \begin{subequations}\label{eq:pd}
 \begin{align}
 \dot z_\tau &= \mathcal R_\tau\!\Big(z,\;\nabla_{z_\tau}V(z)+H_w^{\top}\mu
@@ -11,42 +24,20 @@ connectivity dual $\pi$:
 \dot\pi = \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
-where $\mathcal R_\tau$ is a mass-preserving revision protocol. The aggregate deficit
-$d-H_w z$ is obtained by dynamic average consensus; $\mu\ge0$ is the wrench-feasibility
-dual. The Fiedler sensitivity $v^{\top}L_e v$ requires the algebraic-connectivity
-eigenpair; in this study it is computed \emph{supervisorily} (a decentralized Fiedler
-estimator would make the certification fully distributed, and its estimation error
-enters $\varepsilon_{\mathrm{est}}$ in $\delta$). A missing wrench direction raises
-$\mu$; missing connectivity raises the relay price $\pi$; mass migrates toward the
-highest marginal type-action value.
+with $\mathcal R_\tau$ a budget-preserving revision protocol. The aggregate deficit
+$d-H_w z$ is tracked by dynamic average consensus and $\mu\ge0$ is the wrench dual. The
+Fiedler sensitivity $v^{\top}L_e v$ needs the connectivity eigenpair; each robot
+estimates $(\lamtwo,v)$ by a deflated power iteration on $\mathbf 1^{\perp}$ over the
+current graph, whose error enters $\varepsilon_{\mathrm{est}}$ in $\delta$ (full
+recursion in the repository). A missing wrench direction raises $\mu$, missing
+connectivity raises the relay price $\pi$, and count migrates toward the highest
+marginal type--action value. We use a projected-ascent (Nash-stationary) revision
+whose rest points are the constrained maximisers of
+$V$~\cite{sandholm2010population}; replicator dynamics are avoided because they cannot
+revive an action driven to zero, stalling short of $\Ess$ when a relay type must be
+reactivated.
 
-We use a projected-ascent (Nash-stationary) revision, whose rest points are the
-constrained maximisers of $V$~\cite{sandholm2010population}. Replicator dynamics are
-avoided: they cannot revive an action driven to zero, so on a fiber whose safe
-subset needs a re-activated relay type they can stall short of $\Ess$.
-
-\begin{proposition}[Safe connectivity-selection flow]\label{prop:conv}
-In the free regime ($\Ess\neq\varnothing$), consider the projection dynamics
-$\dot z=\Pi_{T_{\Emanifold}(z)}\!\big[\nabla\lamtwo(\Lap(z))\big]$ started at
-$z(0)\in\Emanifold$ with $\lamtwo(\Lap(z(0)))\ge\sigmastar$ and $\lamtwo$ simple
-along the arc. Then $\Emanifold$ is forward invariant,
-$\tfrac{d}{dt}\lamtwo=\nabla\lamtwo^{\top}\Pi_{T_{\Emanifold}}\nabla\lamtwo\ge0$
-(the safety margin never decreases), and trajectories converge to the set of
-maximisers of the concave $\lamtwo$ over the convex $\Emanifold$.
-\end{proposition}
-\begin{proof}
-Tangent-cone projection keeps $z\in\Emanifold$. Along differentiable arcs
-$\dot\lamtwo=\|\Pi_{T_{\Emanifold}}\nabla\lamtwo\|^2\ge0$; a rest point satisfies
-$\Pi_{T_{\Emanifold}}\nabla\lamtwo=0$, the optimality condition for the concave
-$\lamtwo$ on the convex $\Emanifold$. LaSalle with $-\lamtwo$ gives convergence to
-the maximiser set (not necessarily a point).
-\end{proof}
-
-This is a \emph{safe selection stage}, not a self-bootstrap: it assumes a connected
-start in $\Emanifold$ and covers neither initialisation outside the safe region nor
-global convergence of the full mobile-robot system. The primal--dual flow
-\eqref{eq:pd} is used as a \emph{numerical solver} for $\max_{z\in\Ess}V$; we make
-no global-convergence claim for it, and the connectivity certification (eigenpair)
-is supervisory rather than fully distributed (Section~\ref{sec:exp}). In the costly
-regime the target is $\max_{z\in X_{\mathrm f}\cap\Cdelta}V$, which the neutral flow
-over $\Emanifold$ cannot reach.
+We make no global-convergence claim for~\eqref{eq:pd}: the induced graph is
+state-dependent, the flow assumes a connected start, and it is evaluated only in
+simulation (Section~\ref{sec:exp}). Existence and selection rest on the exact SDP, not
+on the flow.

@@ -18,15 +18,29 @@ leave the aggregate undetermined. The game is a constrained potential population
 game with payoff $\partial V/\partial z_{\tau a}$, and it is identical-interest:
 the novelty lies in what $V$ leaves undetermined.
 
-Wrench feasibility is a \emph{hard} shared constraint, its matrix $H_w$ (the
-support map, $s=H_w z$) kept notationally distinct from the objective Hessian $H$:
+Wrench feasibility is a \emph{hard} shared constraint, its projected matrix $H_w$
+(the wrench facets of Lemma~\ref{prop:membership}, $H_w z\ge d$) kept notationally
+distinct from the objective Hessian $H$:
 \begin{equation}
 X_{\mathrm f}=\{z\in\mathcal X:\;H_w z\ge d\}.
 \label{eq:Xf}
 \end{equation}
 The action cost $g$ enters only as a selection refinement and is \emph{excluded}
-from the degeneracy result; the productive optimum is
-$\arg\max_{z\in X_{\mathrm f}}\phi(Bz)$.
+from the degeneracy result.
+
+\begin{definition}[Productive variational equilibrium]\label{def:ve}
+With pseudo-gradient $F(z)=-\nabla V(z)=-B^{\top}\nabla\phi(Bz)$, a profile
+$z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
+\begin{equation}
+\langle F(z^{\star}),\,z-z^{\star}\rangle\ge0\quad\forall z\in X_{\mathrm f},
+\label{eq:vi}
+\end{equation}
+i.e.\ $z^{\star}$ solves $\mathrm{VI}(X_{\mathrm f},F)$. Since $V=\phi(Bz)$ is concave
+on the convex $X_{\mathrm f}$, \eqref{eq:vi} holds iff
+$z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is} the
+variational equilibrium, placing it in the generalized-Nash/variational
+setting~\cite{rosen1965,facchinei2010gnep,facchinei2003fvi}.
+\end{definition}
 
 \begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
 If $\phi$ is strictly concave on $BX_{\mathrm f}$ ($H=\alpha I\succ0$) and
@@ -94,101 +108,113 @@ keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and clos
 (super-level set of the concave $\lamtwo\!\circ\!\Lap$, Lemma~\ref{lem:convex}).
 \end{definition}
 
-\begin{theorem}[Existence by selection]\label{thm:existence}
-Let $\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$. Then
+\begin{theorem}[WISE existence and selection as an SDP]\label{thm:existence}
+Fix the unique optimal aggregate $y^{\star}$ (Lemma~\ref{lem:uniqueagg}). The
+lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
+\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is the solution of the semidefinite program
+\begin{equation}
+\LamE=\max_{z,\;t}\ t\quad\text{s.t.}\quad
+z\in X_{\mathrm f},\ \ Bz=y^{\star},\ \ Q^{\top}\Lap(z)\,Q\succeq tI,
+\label{eq:sdp}
+\end{equation}
+convex by Lemma~\ref{lem:convex} (affine constraints, concave $\lamtwo\!\circ\!\Lap$).
+A WISE exists iff the optimal value clears the requirement,
 \begin{equation}
 \Ess\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
 \end{equation}
-and $\Ess$ is convex. When $\dim\Emanifold>0$ and
-$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$, the refinement is \emph{strict}:
-some productively optimal compositions self-sustain and others do not.
+and then $z^{\star}_{\mathrm{WISE}}$ is a WISE that preserves the productive optimum
+exactly, $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$. When
+$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}: some
+optimal compositions self-sustain and others do not.
 \end{theorem}
 \begin{proof}
-$\lamtwo\!\circ\!\Lap$ is concave (Lemma~\ref{lem:convex}) and continuous on the
-compact convex $\Emanifold$, so it attains its maximum $\LamE$; $\Ess$ is
-nonempty iff $\LamE\ge\sigmastar$. $\Ess$ is the intersection of the polytope
-$\Emanifold$ with a convex super-level set, hence convex. Strictness is immediate
-when the threshold falls strictly inside the range of $\lamtwo$ over $\Emanifold$.
+$X_{\mathrm f}$ and $Bz=y^{\star}$ are affine and, by Lemma~\ref{lem:convex},
+$\{(z,t):Q^{\top}\Lap(z)Q\succeq tI\}$ is convex, so \eqref{eq:sdp} is an SDP; its value
+$\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is attained on the compact $\Emanifold$
+(Weierstrass). $\Ess=\Emanifold\cap\Cdelta$ is nonempty iff this maximum reaches
+$\sigmastar$, giving \eqref{eq:exist}; feasibility forces
+$Bz^{\star}_{\mathrm{WISE}}=y^{\star}$. Strictness holds when $\sigmastar$ lies
+strictly inside the range of $\lamtwo$ over $\Emanifold$.
 \end{proof}
 
-\subsection{The self-defeat threshold, derived}
-The distributed dynamics run a strategy-revision loop and a consensus estimator of
-the aggregates over $\Lap(z)$. Linearising about $z^{\star}$, with $m_F$ the
-strong-monotonicity constant of the revision protocol, $c$ the consensus gain, and
-$\vt$ the cross-coupling by which stale aggregate estimates perturb revision, the
-coupled error $e=(e_x,e_\eta)$ obeys
+\subsection{Aggregate--estimator stability, derived}
+The decentralized realization~\eqref{eq:pd} couples a served-aggregate revision error
+$\xi$ with a consensus-estimator error $\eta$. Linearising~\eqref{eq:pd} about
+$z^{\star}$ yields
 \begin{equation}
-\dot e=J\,e,\qquad
-J=\begin{bmatrix}-m_F & \vt\\[1mm] \vt & -c\,\lamtwo(\Lap(z^{\star}))\end{bmatrix}.
+\begin{bmatrix}\dot\xi\\ \dot\eta\end{bmatrix}
+=\mathcal J\begin{bmatrix}\xi\\ \eta\end{bmatrix},\qquad
+\mathcal J=\begin{bmatrix}-M & \Theta\\[1mm] \Theta^{\top} &
+-c\,(\bar L_\perp\!\otimes\! I_p)\end{bmatrix},
 \label{eq:jac}
 \end{equation}
+with $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, $M\succeq\mF I$ the curvature of $V$ in the
+served aggregate along $X_{\mathrm f}$, $\|\Theta\|_2\le\vt$ the cross-coupling, and
+$c$ the consensus gain.
 
-\begin{theorem}[Local self-computation certificate]\label{thm:stability}
-The canonical block \eqref{eq:jac} is Hurwitz iff
+\begin{theorem}[Aggregate--estimator stability]\label{thm:stability}
+$\mathcal J$ is symmetric; by the Schur complement of its $-M\prec0$ block it is Hurwitz
+iff $c(\bar L_\perp\!\otimes\! I_p)\succ\Theta^{\top}M^{-1}\Theta$. In particular the
+spectral condition
 \begin{equation}
-c\,m_F\,\lamtwo(\Lap(z^{\star}))>\vt^{2},
+c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt^{2},
 \quad\text{i.e.}\quad
-\lamtwo>\sigmadyn:=\frac{\vt^{2}}{c\,m_F}.
+\lamtwo>\sigmadyn:=\frac{\vt^{2}}{c\,\mF},
 \label{eq:threshold}
 \end{equation}
-At equality $\det J=0$ (a zero eigenvalue---\emph{not} exponential stability); below
-it $J$ has a positive real eigenvalue.
+is \emph{sufficient} for exponential stability of the subsystem, and is also
+\emph{necessary} in the isotropic modal case $M=\mF I$, $\Theta=\vt I$, where it reduces
+to the Fiedler mode.
 \end{theorem}
 \begin{proof}
-$\operatorname{tr}J=-(m_F+c\lamtwo)<0$ always and $\det J=c\,m_F\,\lamtwo-\vt^{2}$;
-a real $2\times2$ matrix is Hurwitz iff $\operatorname{tr}J<0$ and $\det J>0$, giving
-\eqref{eq:threshold}.
+Symmetry is structural. With $-M\prec0$ invertible, $\mathcal J\prec0$ iff the Schur
+complement $-c(\bar L_\perp\!\otimes\! I_p)+\Theta^{\top}M^{-1}\Theta\prec0$. Since
+$\bar L_\perp\succeq\lamtwo I$ and
+$\Theta^{\top}M^{-1}\Theta\preceq(\vt^2/\mF)I$, the bound $c\,\mF\,\lamtwo>\vt^2$
+implies it; at $M=\mF I,\Theta=\vt I$ the two bounds coincide on the Fiedler mode, making
+it necessary.
 \end{proof}
-This is the worst-mode certificate: the vectored strategy--estimator error
-diagonalises over $Q^{\top}\Lap(z^{\star})Q$ and the tightest block is the Fiedler
-mode $\lamtwo$; we state \eqref{eq:threshold} for that canonical aligned block and
-do \emph{not} claim ``iff'' for the full nonlinear system. WISE uses the strict
-margin $\sigmastar=\sigmadyn+\delta$, so a WISE is exponentially stable, not
-marginal.
+The claim is about the served-aggregate/estimator subsystem, \emph{not} exponential
+stability of $z^{\star}$ itself: on the positive-dimensional fiber $\Emanifold$ the
+neutral composition directions stay marginal unless regularised. Because WISE uses the
+strict margin $\sigmastar=\sigmadyn+\delta$, the subsystem clears $\sigmadyn$ with room.
 
 \subsection{Selection, prices, and the cost of endogeneity}
-\begin{proposition}[Infinitesimal-reward selection]\label{prop:selection}
-For $V_\varepsilon(z)=V(z)+\varepsilon\,\lamtwo(\Lap(z))$, $\varepsilon>0$, every
-maximiser $z_\varepsilon$ over $X_{\mathrm f}$ satisfies $Bz_\varepsilon\to y^{\star}$
-and, along a subsequence, $z_\varepsilon\to\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$
-as $\varepsilon\downarrow0$.
-\end{proposition}
-\begin{proof}
-$V$ is upper bounded on the compact $X_{\mathrm f}$ with optimal set $\Emanifold$
-(Theorem~\ref{thm:degeneracy}); $\lamtwo\!\circ\!\Lap$ is continuous. By the
-Tikhonov/$\Gamma$-selection principle, maximisers of $V+\varepsilon\lamtwo$ converge
-as $\varepsilon\downarrow0$ to maximisers of $\lamtwo$ over $\arg\max V=\Emanifold$.
-\end{proof}
-An infinitesimal information value breaks the composition degeneracy toward the
-most-connected profile, with productive loss \emph{vanishing} as
-$\varepsilon\downarrow0$: quantitatively
-$0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\,\operatorname{osc}(\lamtwo)$ and
-$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\,\operatorname{osc}(\lamtwo)/\alpha}$.
-Only the exact Stage-2 problem $\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ leaves the
-productive optimum unmoved; a finite $\varepsilon$ does not.
+The lexicographic selector of Theorem~\ref{thm:existence} is exact. A scalarised
+alternative $V_\varepsilon(z)=V(z)+\varepsilon\lamtwo(\Lap(z))$ recovers it only in the
+limit: any maximiser $z_\varepsilon$ obeys
+$0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$ and
+$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
+by Tikhonov selection~\cite{facchinei2003fvi}, so a finite $\varepsilon$ perturbs the
+aggregate whereas the lexicographic form does not.
+
+\emph{Prices.} The Lagrangian of \eqref{eq:sdp} carries a wrench dual $\mu\ge0$, an
+aggregate dual $\nu$ enforcing $Bz=y^{\star}$, budget/occupancy duals $\rho$, and a PSD
+spectral dual $Z\succeq0$ with $\operatorname{tr}Z=1$; stationarity in $z$ reads
+$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$, where $\mathcal G^{*}$ is
+the adjoint of $z\mapsto Q^{\top}\Lap(z)Q$, with complementarity
+$\langle Z,\,Q^{\top}\Lap(z^{\star})Q-\LamE I\rangle=0$. Thus $\mu$ prices wrench
+feasibility and $Z$ certifies connectivity; no scalar wrench multiplier is conflated
+with a marginal utility.
 
 \begin{theorem}[Free / costly / impossible]\label{thm:trichotomy}
-With $\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ and
-$\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))$ (both attained), exactly one regime
-holds: \emph{(free)} $\LamE\ge\sigmastar$: an optimal composition is
-information-safe, $\Ess\neq\varnothing$, productive loss $\Ddelta=0$;
-\emph{(costly)} $\LamE<\sigmastar\le\LamX$: no optimal composition is safe but a
-safe feasible one exists, with $\Ddelta=V^{\star}-\max_{z\in X_{\mathrm f}\cap\Cdelta}V(z)>0$;
-\emph{(impossible)} $\LamX<\sigmastar$: $X_{\mathrm f}\cap\Cdelta=\varnothing$ and
-$\Ddelta=+\infty$.
+With $\LamE$ from \eqref{eq:sdp} and $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))$
+(both attained), the endogeneity cost
+$\Ddelta=V^{\star}-\max_{z\in X_{\mathrm f}\cap\Cdelta}V(z)$ falls in exactly one regime:
+\emph{(free)} $\LamE\ge\sigmastar$: an optimal composition is safe, $\Ess\neq\varnothing$,
+$\Ddelta=0$; \emph{(costly)} $\LamE<\sigmastar\le\LamX$: no optimal composition is safe
+but a safe feasible one exists, $\Ddelta>0$; \emph{(impossible)}
+$\LamX<\sigmastar$: $X_{\mathrm f}\cap\Cdelta=\varnothing$, $\Ddelta=+\infty$.
 \end{theorem}
 \begin{proof}
-Both maxima exist by Weierstrass; the cases partition the line by $\sigmastar$
+Both maxima exist by Weierstrass and the cases partition the line by $\sigmastar$
 relative to $\LamE\le\LamX$. In the costly case $X_{\mathrm f}\cap\Cdelta$ is nonempty
-compact convex, so its maximum is attained, and since no point of $\Emanifold$ lies
-in $\Cdelta$ it is strictly below $V^{\star}$.
+compact convex, so its maximum is attained and, as no point of $\Emanifold$ lies in
+$\Cdelta$, strictly below $V^{\star}$. A single gap over $\Ess$ would be uninformative,
+since $V$ is constant on $\Emanifold$; measuring against $X_{\mathrm f}\cap\Cdelta$ is
+what makes $\Ddelta$ nonzero.
 \end{proof}
-A single additive gap would be uninformative here: because $V$ is constant on the
-optimal fiber $\Emanifold$, the quantity $V^{\star}-\max_{\Ess}V$ vanishes whenever a
-WISE exists. The trichotomy instead measures productive loss against the feasible
-margin set $X_{\mathrm f}\cap\Cdelta$, and role prices follow from the
-productive-nullspace directional derivative of Proposition~\ref{prop:cycle}.
 
 \begin{remark}[Finite-population recovery]\label{rem:integer}
 The analysis is a fluid relaxation. Integer assignments (one action per robot) are
