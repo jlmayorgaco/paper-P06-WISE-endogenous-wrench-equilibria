@@ -1,49 +1,50 @@
 \section{Population Model and Induced Network}
 \label{sec:model}
 
-\subsection{Population state (strategic variable $x$)}
-A team of $N$ robots is partitioned into $T$ types $\tau\in\{1,\dots,T\}$
-(heterogeneous in force capacity and communication range). There are $M$ loads,
-$H$ contact slots per load, and the common action set
+\subsection{Assignment state (relaxed robot counts $z$)}
+A team of $N=\sum_\tau n_\tau$ robots is partitioned into $T$ types
+$\tau\in\{1,\dots,T\}$ (heterogeneous in force capacity and communication range),
+with $n_\tau$ robots of type $\tau$. There are $M$ loads with $H$ contact slots
+each, a set $\mathcal R$ of candidate relay sites, and the common action set
 \begin{equation}
 \mathcal A=\underbrace{\{(k,h)\}_{k\le M,\,h\le H}}_{\text{load--slot}}
-\;\cup\;\{\mathrm{relay}\}\cup\{\mathrm{idle}\},
+\;\cup\;\mathcal R\;\cup\;\{\mathrm{o}\},
 \label{eq:actions}
 \end{equation}
-so $|\mathcal A|=MH+2$. We use $a\in\mathcal A$ for a generic action, $(k,h)$ for a load--slot action,
-$\mathrm{r}$ for relay and $\mathrm{o}$ for idle, throughout.
+with $\mathrm o$ idle. We write $a\in\mathcal A$ for a generic action, $(k,h)$ for a
+load--slot, and $r\in\mathcal R$ for a relay site.
 
-The \emph{strategic state} is the population-mass matrix
-$x=(x_{\tau a})\in\R_{\ge0}^{T\times|\mathcal A|}$, where $x_{\tau a}\ge0$ is the
-mass of type-$\tau$ robots committed to action $a$. Masses are \emph{normalised
-capacity fractions}: each type carries a fixed budget $m_\tau>0$ with
-$\sum_\tau m_\tau=1$, and conservation reads
+The \emph{assignment state} is the relaxed-count matrix
+$z=(z_{\tau a})\in\R_{\ge0}^{T\times|\mathcal A|}$: $z_{\tau a}$ is a continuous
+relaxation of the number of type-$\tau$ robots assigned to action $a$---neither a
+probability nor a physical force. Each type spends its budget, and each slot or
+relay site holds at most one robot,
 \begin{equation}
-\textstyle\sum_{a\in\mathcal A} x_{\tau a}=m_\tau\ \ \forall\tau,
-\qquad x_{\tau a}\ge0 ,
+\begin{aligned}
+&\textstyle\sum_{a\in\mathcal A} z_{\tau a}=n_\tau\ \ \forall\tau,
+\qquad z_{\tau a}\ge0,\\[1mm]
+&\textstyle\sum_\tau z_{\tau,kh}\le1\ \ \forall(k,h),
+\qquad \sum_\tau z_{\tau,r}\le1\ \ \forall r.
+\end{aligned}
 \label{eq:conservation}
 \end{equation}
-so the total mass is $\sum_{\tau,a}x_{\tau a}=1$ and
-$x\in\mathcal X=\prod_\tau m_\tau\Delta_{|\mathcal A|}$ (a product of scaled
-simplices). Following the population-game
-formalism~\cite{sandholm2010population,quijano2017role}, $x_{\tau a}$ is a
-population mass, \emph{not} a probability and \emph{not} a physical force: it is a
-fluid quantity. A finite team of $N$ robots instantiates $x$ by an integer
-assignment; integer recovery is addressed in Remark~\ref{rem:integer}. The
-strategic state $x$ is kept notationally distinct from the physical robot poses
-$q\in(\mathrm{SE}(2))^N$, which enter only the closed-loop simulation
-(Section~\ref{sec:exp}).
+The feasible set
+$\mathcal X=\{z\in\R_{\ge0}^{T\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a
+compact convex polytope. A finite team instantiates $z$ by an integer assignment
+(one action per robot); integerization is treated in Remark~\ref{rem:integer}. The
+state $z$ is distinct from the physical poses $q\in(\mathrm{SE}(2))^N$, which enter
+only the closed-loop simulation (Section~\ref{sec:exp}). Multiplying a count
+$z_{\tau kh}$ by a per-robot force yields a total force, so every aggregate below is
+dimensionally a force or torque.
 
 \begin{assumption}[Standing hypotheses]\label{as:standing}
-Throughout: \emph{(i)} the relaxed state set $\mathcal X$ is compact and convex
-(product of scaled simplices); \emph{(ii)} the aggregate map $x\mapsto s(x)$ of
-\eqref{eq:tensor} is linear, so the wrench-feasible set
-$\mathcal X_{\mathrm f}=\{x\in\mathcal X:s_{k\ell}(x)\ge d_{k\ell}\}$ is a
-polytope; \emph{(iii)} the candidate-site Laplacian $\Lap(x)$ of
-\eqref{eq:laplacian} is affine in $x$ with each elementary $L_e\succeq0$ and each
-coefficient $\mathcal C_{\tau re}\ge0$; \emph{(iv)} the communication graph is
-undirected and weighted, so every $\Lap(x)$ is a symmetric graph Laplacian; and
-\emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$.
+Throughout: \emph{(i)} $\mathcal X$ is compact and convex; \emph{(ii)} the aggregate
+map $z\mapsto s(z)$ of \eqref{eq:tensor} is linear, so the wrench-feasible set
+$\mathcal X_{\mathrm f}=\{z\in\mathcal X:s_{k\ell}(z)\ge d_{k\ell}\}$ is a polytope;
+\emph{(iii)} the candidate-site Laplacian $\Lap(z)$ of \eqref{eq:laplacian} is affine
+in $z$ with each elementary $L_e\succeq0$ and each coefficient $\ge0$; \emph{(iv)}
+the communication graph is undirected and weighted, so every $\Lap(z)$ is a symmetric
+graph Laplacian; and \emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$.
 \end{assumption}
 
 \subsection{Support-function wrench certificate}
@@ -70,14 +71,14 @@ d_{k\ell}=\eta_{k\ell}^{\top}\wdem_k ,
 \label{eq:tensor}
 \end{equation}
 with $\wdem_k\in\R^3$ the demanded wrench of load $k$, and the population
-directional capacity $s_{k\ell}(x)=\sum_{\tau,h}\Wmap_{\tau,kh\ell}\,x_{\tau kh}$
-($x_{\tau kh}$ the mass of type $\tau$ on slot $(k,h)$). Let
-$\Wmap(C_k)=\bigoplus_{\tau,h}x_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ be the
+directional capacity $s_{k\ell}(z)=\sum_{\tau,h}\Wmap_{\tau,kh\ell}\,z_{\tau kh}$
+($z_{\tau kh}$ the count of type $\tau$ on slot $(k,h)$). Let
+$\Wmap(C_k)=\bigoplus_{\tau,h}z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ be the
 reachable population wrench set.
 
 \begin{proposition}[Support-function wrench certificate]\label{prop:membership}
 \emph{(i)} For every $\eta$,
-$h_{\Wmap(C_k)}(\eta)=\sum_{\tau,h}x_{\tau kh}\,h_{U_\tau^{\mathrm{in}}}(A_{kh}^{\top}\eta)$.
+$h_{\Wmap(C_k)}(\eta)=\sum_{\tau,h}z_{\tau kh}\,h_{U_\tau^{\mathrm{in}}}(A_{kh}^{\top}\eta)$.
 \emph{(ii)} For any finite direction set $\mathcal D$,
 $\{\eta^{\top}\wdem_k\le h_{\Wmap(C_k)}(\eta):\eta\in\mathcal D\}$ is
 \emph{necessary} for $\wdem_k\in\Wmap(C_k)$. \emph{(iii)} it is \emph{sufficient}
@@ -98,68 +99,68 @@ Minkowski sums of polytopes are polytopes, and of zonotopes are zonotopes; a
 regular $2m$-gon is a zonotope. A general polytope is \emph{not} a zonotope (e.g.\
 a triangle is not centrally symmetric), so we never infer zonotope from polytope.
 \end{proof}
-We call load $k$ \emph{wrench-feasible} at $x$ when $s_{k\ell}(x)\ge d_{k\ell}$ for
+We call load $k$ \emph{wrench-feasible} at $z$ when $s_{k\ell}(z)\ge d_{k\ell}$ for
 all $\ell$ (Assumption~\ref{as:standing}(ii)); by
 $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ this certificate is conservative---a
 certified wrench is realizable by the physical elliptical forces. Unlike a scalar
 capacity, \eqref{eq:tensor} separates force limit, lever arm, and slot.
 
-\subsection{Decision-induced candidate-site Laplacian $\Lap(x)$}
+\subsection{Decision-induced candidate-site Laplacian $\Lap(z)$}
 We separate two graphs throughout. The \emph{decision-induced candidate-site
-Laplacian} $\Lap(x)$ depends only on the strategic state $x$: a fixed family of
+Laplacian} $\Lap(z)$ depends only on the strategic state $z$: a fixed family of
 candidate communication links $e$ over $V$ nodes is switched on by the roles the
 composition assigns. Only robots that do not lift can relay; with
 $\mathcal C_{\tau re}\ge0$ the contribution of a type-$\tau$ mass in role $r$ to
 link $e$,
 \begin{equation}
-a_e(x)=\sum_{\tau,r}\mathcal C_{\tau re}\,x_{\tau r},
+a_e(z)=\sum_{\tau,r}\mathcal C_{\tau re}\,z_{\tau r},
 \qquad
-\Lap(x)=\sum_e a_e(x)\,L_e\in\R^{V\times V},
+\Lap(z)=\sum_e a_e(z)\,L_e\in\R^{V\times V},
 \label{eq:laplacian}
 \end{equation}
-which is affine in $x$ (Assumption~\ref{as:standing}(iii)). This is a convex
+which is affine in $z$ (Assumption~\ref{as:standing}(iii)). This is a convex
 \emph{surrogate}: the actual, \emph{geometric} Laplacian $\Lgeo(q)$, whose weights
 depend on inter-robot distances through the physical poses $q$, is nonconvex in
 $q$ and is \emph{not} covered by the convex theory of
 Sections~\ref{sec:wise}--\ref{sec:algorithm}; it is exercised only in the
 closed-loop simulation, where we report the empirical agreement between
-$\Lgeo(q)$ and its surrogate $\Lap(x)$. All theorems below use $\Lap(x)$ only.
+$\Lgeo(q)$ and its surrogate $\Lap(z)$. All theorems below use $\Lap(z)$ only.
 
 Let $Q\in\R^{V\times(V-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
 \begin{equation}
-Q^{\top}\Lap(x)\,Q\succeq\sigmastar I
+Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \;\Longleftrightarrow\;
-\lamtwo(\Lap(x))\ge\sigmastar,
+\lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $x$, with PSD matrix dual $Z\succeq0$; at a simple minimiser
+affine in $z$, with PSD matrix dual $Z\succeq0$; at a simple minimiser
 $Z=\pi vv^{\top}$ recovers a scalar connectivity price $\pi$
 (Section~\ref{sec:algorithm}). The threshold $\sigmastar$ is derived, not assumed,
 in Theorem~\ref{thm:stability}.
 
 \begin{lemma}[Convex information set]\label{lem:convex}
-$x\mapsto\lamtwo(\Lap(x))$ is concave, so \eqref{eq:lmi} defines a convex set.
+$z\mapsto\lamtwo(\Lap(z))$ is concave, so \eqref{eq:lmi} defines a convex set.
 \end{lemma}
 \begin{proof}
 $\lamtwo(L)=\min_{\|v\|=1,\,v\perp\mathbf 1}v^{\top}Lv$ is a pointwise minimum of
 functions linear in $L$~\cite{fiedler1973}, hence concave; composed with the affine
-$\Lap(x)$ it stays concave, and its super-level set is
+$\Lap(z)$ it stays concave, and its super-level set is
 convex~\cite{ghosh2006growing}.
 \end{proof}
 
 \begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
 Suppose robots track their intended candidate sites so that
-$\|\Lgeo(q)-\Lap(x)\|_2\le\varepsilon_L$. Then Weyl's inequality gives
+$\|\Lgeo(q)-\Lap(z)\|_2\le\varepsilon_L$. Then Weyl's inequality gives
 \begin{equation}
-\lamtwo(\Lgeo(q))\;\ge\;\lamtwo(\Lap(x))-\varepsilon_L .
+\lamtwo(\Lgeo(q))\;\ge\;\lamtwo(\Lap(z))-\varepsilon_L .
 \label{eq:weyl}
 \end{equation}
 Consequently, with the design margin
 $\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$
 ($\varepsilon_L$: geometric/model mismatch; $\varepsilon_{\mathrm{est}}$:
 distributed eigenvalue-estimation error; $\delta_{\mathrm{num}}$: numerical
-margin), the WISE requirement $\lamtwo(\Lap(x))\ge\sigmastar:=\sigmadyn+\delta$
+margin), the WISE requirement $\lamtwo(\Lap(z))\ge\sigmastar:=\sigmadyn+\delta$
 implies $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the physical stability threshold.
 \end{lemma}
 \begin{proof}
@@ -169,7 +170,7 @@ $|\lamtwo(\Lgeo)-\lamtwo(\Lap)|\le\|\Lgeo-\Lap\|_2\le\varepsilon_L$, which is
 absorbs the estimator and numerical errors.
 \end{proof}
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} is stated over
-the affine $\Lap(x)$; the physical guarantee transfers to the geometric $\Lgeo(q)$
+the affine $\Lap(z)$; the physical guarantee transfers to the geometric $\Lgeo(q)$
 \emph{only} through \eqref{eq:weyl} under the margin $\delta$, and is otherwise
 reported as simulation evidence. The margin's components are not chosen
 arbitrarily: $\varepsilon_L$ is measured (Section~\ref{sec:exp}, bounded by the

@@ -5,14 +5,14 @@ We seek a WISE by a projected primal--dual flow with a hard-wrench dual $\mu$ an
 connectivity dual $\pi$:
 \begin{subequations}\label{eq:pd}
 \begin{align}
-\dot x_\tau &= \mathcal R_\tau\!\Big(x,\;\nabla_{x_\tau}V(x)+H_w^{\top}\mu
-+\pi\,\nabla_{x_\tau}\lamtwo(\Lap(x))\Big),\label{eq:pd-x}\\
-\dot\mu &= \big[d-H_w x\big]_+^{\mu},\qquad
-\dot\pi = \big[\sigmastar-\lamtwo(\Lap(x))\big]_+^{\pi},\label{eq:pd-pi}
+\dot z_\tau &= \mathcal R_\tau\!\Big(z,\;\nabla_{z_\tau}V(z)+H_w^{\top}\mu
++\pi\,\nabla_{z_\tau}\lamtwo(\Lap(z))\Big),\label{eq:pd-x}\\
+\dot\mu &= \big[d-H_w z\big]_+^{\mu},\qquad
+\dot\pi = \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
 where $\mathcal R_\tau$ is a mass-preserving revision protocol. The aggregate deficit
-$d-H_w x$ is obtained by dynamic average consensus; $\mu\ge0$ is the wrench-feasibility
+$d-H_w z$ is obtained by dynamic average consensus; $\mu\ge0$ is the wrench-feasibility
 dual. The Fiedler sensitivity $v^{\top}L_e v$ requires the algebraic-connectivity
 eigenpair; in this study it is computed \emph{supervisorily} (a decentralized Fiedler
 estimator would make the certification fully distributed, and its estimation error
@@ -27,15 +27,15 @@ subset needs a re-activated relay type they can stall short of $\Ess$.
 
 \begin{proposition}[Safe connectivity-selection flow]\label{prop:conv}
 In the free regime ($\Ess\neq\varnothing$), consider the projection dynamics
-$\dot x=\Pi_{T_{\Emanifold}(x)}\!\big[\nabla\lamtwo(\Lap(x))\big]$ started at
-$x(0)\in\Emanifold$ with $\lamtwo(\Lap(x(0)))\ge\sigmastar$ and $\lamtwo$ simple
+$\dot z=\Pi_{T_{\Emanifold}(z)}\!\big[\nabla\lamtwo(\Lap(z))\big]$ started at
+$z(0)\in\Emanifold$ with $\lamtwo(\Lap(z(0)))\ge\sigmastar$ and $\lamtwo$ simple
 along the arc. Then $\Emanifold$ is forward invariant,
 $\tfrac{d}{dt}\lamtwo=\nabla\lamtwo^{\top}\Pi_{T_{\Emanifold}}\nabla\lamtwo\ge0$
 (the safety margin never decreases), and trajectories converge to the set of
 maximisers of the concave $\lamtwo$ over the convex $\Emanifold$.
 \end{proposition}
 \begin{proof}
-Tangent-cone projection keeps $x\in\Emanifold$. Along differentiable arcs
+Tangent-cone projection keeps $z\in\Emanifold$. Along differentiable arcs
 $\dot\lamtwo=\|\Pi_{T_{\Emanifold}}\nabla\lamtwo\|^2\ge0$; a rest point satisfies
 $\Pi_{T_{\Emanifold}}\nabla\lamtwo=0$, the optimality condition for the concave
 $\lamtwo$ on the convex $\Emanifold$. LaSalle with $-\lamtwo$ gives convergence to
@@ -45,8 +45,8 @@ the maximiser set (not necessarily a point).
 This is a \emph{safe selection stage}, not a self-bootstrap: it assumes a connected
 start in $\Emanifold$ and covers neither initialisation outside the safe region nor
 global convergence of the full mobile-robot system. The primal--dual flow
-\eqref{eq:pd} is used as a \emph{numerical solver} for $\max_{x\in\Ess}V$; we make
+\eqref{eq:pd} is used as a \emph{numerical solver} for $\max_{z\in\Ess}V$; we make
 no global-convergence claim for it, and the connectivity certification (eigenpair)
 is supervisory rather than fully distributed (Section~\ref{sec:exp}). In the costly
-regime the target is $\max_{x\in X_{\mathrm f}\cap\Cdelta}V$, which the neutral flow
+regime the target is $\max_{z\in X_{\mathrm f}\cap\Cdelta}V$, which the neutral flow
 over $\Emanifold$ cannot reach.

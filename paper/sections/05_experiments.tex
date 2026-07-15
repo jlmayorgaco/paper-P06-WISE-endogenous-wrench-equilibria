@@ -10,10 +10,10 @@ unicycles, with each lifter's contact force confined to a heading-aligned
 elliptical set (nonholonomic: free along the heading, limited laterally), so wrench
 realizability depends on pose. Connectivity in the physical layer is
 evaluated on the geometric Laplacian $\Lgeo(q)$ induced by the realized poses,
-whereas the strategic layer uses only its convex surrogate $\Lap(x)$; the physical
+whereas the strategic layer uses only its convex surrogate $\Lap(z)$; the physical
 guarantee transfers through the mismatch bound of Lemma~\ref{lem:bridge}. For the
 representative instance the maximum observed mismatch
-$\|\Lgeo(q)-\Lap(x)\|_2$ (at candidate-site tracking radius $\rho$) stays within
+$\|\Lgeo(q)-\Lap(z)\|_2$ (at candidate-site tracking radius $\rho$) stays within
 the Lipschitz bound $C_L\rho$ that sizes $\varepsilon_L$, and Weyl's bound
 \eqref{eq:weyl} holds on every sampled state. The primary metric is the
 \emph{certified service rate}: a load counts as served only when it is
@@ -23,9 +23,9 @@ reproduces exactly.
 \begin{figure}[t]\centering
 \input{sections/fig_concept}
 \caption{The self-defeating-equilibrium paradox. Both panels realise the
-\emph{same} productive aggregate $Bx=y^{\star}$, so both are productively optimal
+\emph{same} productive aggregate $Bz=y^{\star}$, so both are productively optimal
 and lie on one composition fiber $\Emanifold$. (a) Committing every robot to lifting
-severs the inter-cluster link: $\lamtwo(\Lap(x))<\sigmastar$, and the estimator that
+severs the inter-cluster link: $\lamtwo(\Lap(z))<\sigmastar$, and the estimator that
 \emph{produced} the composition can no longer compute it. (b) A WISE composition on
 the same fiber diverts one long-range robot
 (\protect\tikz[baseline=-0.5ex]\protect\node[draw,fill=green!55!black,diamond,
@@ -35,17 +35,17 @@ inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$---it executes
 \end{figure}
 
 \paragraph*{E1 --- Convergence (Fig.~\ref{fig:conv})}
-On a representative instance the distributed flow drives $\lamtwo(\Lap(x))$ to at
+On a representative instance the distributed flow drives $\lamtwo(\Lap(z))$ to at
 least $\sigmastar$ (it settles \emph{above} $\sigmastar$, by the robustness margin)
 and the wrench residual to zero together: the equilibrium becomes wrench-feasible
 and self-computing at once. The information price $\pi$ settles at its certification
-value; in these instances the relay mass accrues to long-range types.
+value; in these instances the relay assignment accrues to long-range types.
 
 \begin{figure}[t]\centering
 \includegraphics[width=\columnwidth]{fig2_convergence.pdf}
 \caption{Distributed convergence (single instance, empirical). (a) $\lamtwo$ rises
 \emph{above} $\sigmastar$ (it converges to $\sigmastar+$margin, not onto it) while
-the wrench residual $\to0$. (b) Price $\pi$ converges; relay mass accrues to
+the wrench residual $\to0$. (b) Price $\pi$ converges; relay assignment accrues to
 long-range types, short-range near zero.}
 \label{fig:conv}
 \end{figure}
@@ -103,7 +103,7 @@ recovery reaches $100\%$ under randomised rounding.}
 Pooling WISE solutions across seeds, \emph{in the tested instances} relay
 commitment is drawn from long-range types. This is the comparative-advantage
 mechanism of Proposition~\ref{prop:cycle}: a productively neutral role exchange
-between a long- and a short-range type leaves $Bx$ fixed while raising $\lamtwo$
+between a long- and a short-range type leaves $Bz$ fixed while raising $\lamtwo$
 (positive directional derivative), so the connectivity selector concentrates relays
 on the long-range types---not a general theorem, but the predicted division of
 labour.
