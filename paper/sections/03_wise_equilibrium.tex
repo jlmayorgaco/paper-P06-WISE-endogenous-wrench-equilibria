@@ -11,12 +11,12 @@ V(x)=\phi(Bx),\qquad
 \label{eq:value}
 \end{equation}
 so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ with $H=\alpha
-I\succ0$ and $y_{\mathrm{ref}}=v/\alpha$: $\phi$ is \emph{genuinely strictly
-concave} ($\nabla^2\phi=-\alpha I\prec0$), unlike a hinge deficit
-$-\|[d-s]_+\|^2$, which is flat on the feasible set and cannot pin a unique
-aggregate. The game is a constrained potential population game with payoff
-$\partial V/\partial x_{\tau a}$; it is identical-interest---the novelty is what
-$V$ leaves undetermined.
+I\succ0$ and $y_{\mathrm{ref}}=v/\alpha$. It is strictly concave
+($\nabla^2\phi=-\alpha I\prec0$) and so pins down a unique optimal aggregate; a
+deficit penalty such as $-\|[d-s]_+\|^2$ would be flat on the feasible set and
+leave the aggregate undetermined. The game is a constrained potential population
+game with payoff $\partial V/\partial x_{\tau a}$, and it is identical-interest:
+the novelty lies in what $V$ leaves undetermined.
 
 Wrench feasibility is a \emph{hard} shared constraint, its matrix $H_w$ (the
 support map, $s=H_w x$) kept notationally distinct from the objective Hessian $H$:
@@ -65,10 +65,9 @@ $\bar x+N_p(\bar x)$ and \eqref{eq:dim} is rank--nullity. Since $V=\phi(Bx)$ dep
 $x$ only through $Bx$, every $x\in\Emanifold$ attains the same $V$; a general weighted
 $B$ can give $N_p=\{0\}$ (a single composition).
 \end{proof}
-For the representative instance the generated certificate reports
-$\dim\Emanifold=4$ (of $n=72$), with neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$
-at machine precision. Classical theory thus fixes \emph{how much} each load receives,
-not \emph{which types} provide it.
+For the representative instance we obtain $\dim\Emanifold=4$ out of $n=72$, with the
+neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$ at machine precision. Classical
+theory thus fixes \emph{how much} each load receives, not \emph{which types} provide it.
 
 \begin{proposition}[Comparative-advantage exchange]\label{prop:cycle}
 A mass-preserving four-cycle $d$ ($d_{\tau a}\!=\!+1$, $d_{\tau b}\!=\!-1$,
@@ -76,9 +75,9 @@ $d_{\tau' a}\!=\!-1$, $d_{\tau' b}\!=\!+1$) is productively neutral ($Bd=0$) iff
 $B_{\tau a}-B_{\tau b}=B_{\tau' a}-B_{\tau' b}$. A neutral exchange can still change
 connectivity: at a simple Fiedler eigenvalue with unit vector $v$,
 $D\lamtwo(\Lap(x))[d]=\sum_e(\partial a_e/\partial x)^{\!\top}\!d\,\;v^{\top}L_e v$, and
-the exchange is locally connectivity-improving when this is positive. This is why a
-long-range type can trade a lifting role for a short-range type at no productive cost
-while raising $\lamtwo$.
+the exchange is locally connectivity-improving when this is positive. A long-range
+type can thus trade a lifting role to a short-range type at no productive cost while
+raising $\lamtwo$.
 \end{proposition}
 
 \subsection{The WISE refinement}
@@ -185,17 +184,17 @@ relative to $\LamE\le\LamX$. In the costly case $X_{\mathrm f}\cap\Cdelta$ is no
 compact convex, so its maximum is attained, and since no point of $\Emanifold$ lies
 in $\Cdelta$ it is strictly below $V^{\star}$.
 \end{proof}
-This trichotomy replaces the additive ``$\Delta_{\mathrm{endo}}$'' of an earlier
-draft, which is identically $0$ whenever a WISE exists (since $V$ is constant on the
-optimal fiber $\Emanifold$). Role prices follow from the productive-nullspace
-directional derivative of Proposition~\ref{prop:cycle}, not from an incomplete KKT
-identity.
+A single additive gap would be uninformative here: because $V$ is constant on the
+optimal fiber $\Emanifold$, the quantity $V^{\star}-\max_{\Ess}V$ vanishes whenever a
+WISE exists. The trichotomy instead measures productive loss against the feasible
+margin set $X_{\mathrm f}\cap\Cdelta$, and role prices follow from the
+productive-nullspace directional derivative of Proposition~\ref{prop:cycle}.
 
 \begin{remark}[Finite-population recovery]\label{rem:integer}
 The analysis is a fluid relaxation. Integer assignments (one action per robot) are
-obtained by rounding and \emph{re-certified numerically}; we make no $O(1/N)$ claim.
-Solving with the robustness margins $s\ge d+m_W$, $\lamtwo\ge\sigmastar$
-(itself $=\sigmadyn+\delta$) leaves slack, so on the $N=12$ demonstration the fluid
-certification rate transfers to integer robots ($100\%$ under randomised rounding,
-generated report), whereas naive rounding of a zero-margin optimum does not.
+obtained by rounding and re-certified numerically; we make no $O(1/N)$ claim. Solving
+with the robustness margins $s\ge d+m_W$ and $\lamtwo\ge\sigmastar=\sigmadyn+\delta$
+leaves slack, so on the $N=12$ demonstration the fluid certification rate carries over
+to integer robots---$100\%$ under randomised rounding---whereas naive rounding of a
+zero-margin optimum does not.
 \end{remark}

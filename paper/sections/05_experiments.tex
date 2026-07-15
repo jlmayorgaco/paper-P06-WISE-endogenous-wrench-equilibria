@@ -8,30 +8,28 @@ a long-range type relays. The strategic layer runs the primal--dual flow
 \eqref{eq:pd}; the physical layer integrates a rigid load and second-order
 unicycles, with each lifter's contact force confined to a heading-aligned
 elliptical set (nonholonomic: free along the heading, limited laterally), so wrench
-realizability genuinely depends on pose. Connectivity in the physical layer is
+realizability depends on pose. Connectivity in the physical layer is
 evaluated on the geometric Laplacian $\Lgeo(q)$ induced by the realized poses,
 whereas the strategic layer uses only its convex surrogate $\Lap(x)$; the physical
 guarantee transfers through the mismatch bound of Lemma~\ref{lem:bridge}. For the
 representative instance the maximum observed mismatch
 $\|\Lgeo(q)-\Lap(x)\|_2$ (at candidate-site tracking radius $\rho$) stays within
-the Lipschitz bound $C_L\rho$ and below the design margin
-$\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$; Weyl's
-bound \eqref{eq:weyl} holds on every sampled state (generated certificate).
-The primary metric is the \emph{certified
-service rate}: a load is served only if it is wrench-feasible \emph{and}
-$\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces exactly.
+the Lipschitz bound $C_L\rho$ that sizes $\varepsilon_L$, and Weyl's bound
+\eqref{eq:weyl} holds on every sampled state. The primary metric is the
+\emph{certified service rate}: a load counts as served only when it is
+wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and
+reproduces exactly.
 
 \begin{figure}[t]\centering
 \input{sections/fig_concept}
 \caption{The self-defeating-equilibrium paradox. Both panels realise the
-\emph{same} productive aggregate $Bx=y^{\star}$ (same demanded wrench $\wdem$
-delivered), so both are productively optimal --- they lie on the same composition
-fiber $\Emanifold$. (a) The composition commits every robot to lifting; the
-inter-cluster link is lost, $\lamtwo(\Lap(x))<\sigmastar$, and the consensus
-estimator that \emph{produced} this composition can no longer compute it. (b) A
-WISE composition on the same fiber diverts one long-range robot
+\emph{same} productive aggregate $Bx=y^{\star}$, so both are productively optimal
+and lie on one composition fiber $\Emanifold$. (a) Committing every robot to lifting
+severs the inter-cluster link: $\lamtwo(\Lap(x))<\sigmastar$, and the estimator that
+\emph{produced} the composition can no longer compute it. (b) A WISE composition on
+the same fiber diverts one long-range robot
 (\protect\tikz[baseline=-0.5ex]\protect\node[draw,fill=green!55!black,diamond,
-inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$: it executes
+inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$---it executes
 \emph{and} computes itself.}
 \label{fig:scene}
 \end{figure}
@@ -72,8 +70,7 @@ $c\,\mF\lamtwo>\vt^2$ (Theorem~\ref{thm:stability}); it diverges below the thres
 Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ ($n=12$
 seeds/cell), the empirical certification rate collapses in the two regimes the
 trichotomy predicts: at $\nu\!\to\!0$ no composition reaches $\LamE\ge\sigmastar$
-(impossible/costly), and at high $\tau_d$ the fleet is wrench-limited. We plot the
-empirical rate; the overlaid contour is data, not the theoretical boundary.
+(impossible/costly), and at high $\tau_d$ the fleet is wrench-limited.
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.82\columnwidth]{fig3_phase.pdf}

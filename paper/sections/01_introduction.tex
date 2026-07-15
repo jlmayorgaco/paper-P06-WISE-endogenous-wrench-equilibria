@@ -9,8 +9,8 @@ barreiro2016constrained,martinezpiazuelo2022}. Every one of these methods rests 
 a silent premise: that the communication graph needed to \emph{compute} the
 equilibrium is available while the equilibrium is being reached.
 
-For a mobile robot team this premise is not innocent, because the agents that
-compute the equilibrium are the same agents whose placement forms the network.
+For a mobile robot team this premise cannot be taken for granted, because the agents
+that compute the equilibrium are the same agents whose placement forms the network.
 Consider a heterogeneous team recruited to move a load across a gap. A profile can
 be productively optimal---delivering exactly the demanded wrench (force and
 torque~\cite{murray1994manipulation})---and yet commit every robot to lifting, so
@@ -19,10 +19,11 @@ estimator that produced the profile loses its consensus channel. The equilibrium
 destroys the means of its own computation.
 
 \paragraph*{The self-referential gap}
-The population-games literature treats the interaction graph as \emph{given}: a
-constraint or resource external to the game~\cite{quijano2017role,%
-barreiro2016constrained}. Connectivity-control and multi-robot task-allocation
-work maintains algebraic connectivity $\lamtwo$ as a separate design
+Population-game and distributed Nash-seeking methods alike treat the interaction
+graph as \emph{given}---a fixed communication resource external to the
+game~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
+Connectivity-control and multi-robot task-allocation work, in turn, maintains
+algebraic connectivity $\lamtwo$ as a separate design
 objective~\cite{fiedler1973,ghosh2006growing,zavlanos2011connectivity,%
 choi2009cbba,prorok2017diversity}. Neither addresses the case where the graph is
 an \emph{output} of the equilibrium's spatial composition. We adopt the
@@ -44,17 +45,18 @@ the network alive.
 \paragraph*{Contributions}
 \begin{itemize}
 \item \textbf{Composition degeneracy} (Theorem~\ref{thm:degeneracy}): the
-productively optimal aggregate is unique, but the equal-payoff optimal
-composition fiber $\Emanifold$ has dimension $(T\!-\!1)(K\!-\!1)$.
+productively optimal aggregate is unique, but the equal-payoff optimal composition
+fiber $\Emanifold$ is positive-dimensional, its dimension fixed by a
+productive-nullspace rank formula.
 \item \textbf{Self-sustaining existence} (Theorem~\ref{thm:existence}): with an
 endogenous, decision-induced candidate-site Laplacian $\Lap(x)$ on $\Emanifold$, a
 self-sustaining equilibrium exists iff
-$\Lammax=\max_{x\in\Emanifold}\lamtwo(\Lap(x))\ge\sigmastar$.
+$\LamE=\max_{x\in\Emanifold}\lamtwo(\Lap(x))\ge\sigmastar$.
 This is \emph{selection within a degenerate optimal composition fiber}, not an
 added constraint.
 \item \textbf{Exact self-defeat threshold} (Theorem~\ref{thm:stability}): the
 coupled strategy/consensus error is locally exponentially stable iff
-$c\,\mF\,\lamtwo>\vt^2$, deriving $\sigmastar=\vt^2/(c\,\mF)$ rather than importing it.
+$c\,\mF\,\lamtwo>\vt^2$, deriving $\sigmadyn=\vt^2/(c\,\mF)$ rather than importing it.
 \item \textbf{Infinitesimal-reward selection} (Prop.~\ref{prop:selection}) and a
 distributed algorithm, validated by closed-loop simulation with rigid-load
 transport and second-order unicycles---including emergent relay roles.
