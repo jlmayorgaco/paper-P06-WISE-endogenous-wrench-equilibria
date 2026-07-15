@@ -84,15 +84,27 @@ neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$ at machine precision. Class
 theory thus fixes \emph{how much} each load receives, not \emph{which types} provide it.
 
 \begin{proposition}[Comparative-advantage exchange]\label{prop:cycle}
-A mass-preserving four-cycle $d$ ($d_{\tau a}\!=\!+1$, $d_{\tau b}\!=\!-1$,
+A count-preserving four-cycle $d$ ($d_{\tau a}\!=\!+1$, $d_{\tau b}\!=\!-1$,
 $d_{\tau' a}\!=\!-1$, $d_{\tau' b}\!=\!+1$) is productively neutral ($Bd=0$) iff
 $B_{\tau a}-B_{\tau b}=B_{\tau' a}-B_{\tau' b}$. A neutral exchange can still change
 connectivity: at a simple Fiedler eigenvalue with unit vector $v$,
-$D\lamtwo(\Lap(z))[d]=\sum_e(\partial a_e/\partial z)^{\!\top}\!d\,\;v^{\top}L_e v$, and
-the exchange is locally connectivity-improving when this is positive. A long-range
-type can thus trade a lifting role to a short-range type at no productive cost while
-raising $\lamtwo$.
+$D\lamtwo(\Lap(z))[d]=\sum_{\tau,r}\gamma_{\tau r}\,d_{\tau r}\,v^{\top}L_r v$, and the
+exchange is locally connectivity-improving when this is positive. A long-range type
+can thus trade a lifting role to a short-range type at no productive cost while raising
+$\lamtwo$.
 \end{proposition}
+
+\begin{example}[A two-type fiber]\label{ex:fiber}
+Take $T=2$ types, one load of demand $y^{\star}$ served through a single slot, and one
+relay site; both types can lift, but only the long-range type $\ell$ relays
+effectively ($\gamma_{\ell r}>\gamma_{s r}\ge0$). Let $z(\alpha)$ place $\alpha$
+long-range robots on relay while a short-range robot takes the vacated lifting role, a
+productively neutral exchange (Prop.~\ref{prop:cycle}), so $Bz(\alpha)=y^{\star}$ and
+$V(z(\alpha))\equiv V^{\star}$ for all admissible $\alpha$. Along this arc
+$\lamtwo(\Lap(z(\alpha)))$ is concave and increasing, so the SDP~\eqref{eq:sdp} selects
+the largest feasible $\alpha$ and a WISE exists iff that value clears $\sigmastar$
+(Fig.~\ref{fig:method}a).
+\end{example}
 
 \subsection{The WISE refinement}
 Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.

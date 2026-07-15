@@ -87,18 +87,16 @@ independent contact forces; it does not model frictional grasp or unilateral pus
 
 \subsection{Decision-induced candidate-site Laplacian $\Lap(z)$}
 We separate two graphs throughout. The \emph{decision-induced candidate-site
-Laplacian} $\Lap(z)$ depends only on the strategic state $z$: a fixed family of
-candidate communication links $e$ over $V$ nodes is switched on by the roles the
-composition assigns. Only robots that do not lift can relay; with
-$\mathcal C_{\tau re}\ge0$ the contribution of a type-$\tau$ mass in role $r$ to
-link $e$,
+Laplacian} $\Lap(z)$ depends only on the assignment $z$ over $V$ candidate-site
+nodes. A fixed base graph $L_0\succeq0$ carries the always-on intra-cluster links;
+occupying relay site $r$ with a type-$\tau$ robot switches on the link Laplacian
+$L_r\succeq0$ with effectiveness $\gamma_{\tau r}\ge0$ (long-range types reach across
+the gap, short-range types barely), so
 \begin{equation}
-a_e(z)=\sum_{\tau,r}\mathcal C_{\tau re}\,z_{\tau r},
-\qquad
-\Lap(z)=\sum_e a_e(z)\,L_e\in\R^{V\times V},
+\Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{V\times V},
 \label{eq:laplacian}
 \end{equation}
-which is affine in $z$ (Assumption~\ref{as:standing}(iii)). This is a convex
+affine in $z$ (Assumption~\ref{as:standing}(iii)). This is a convex
 \emph{surrogate}: the actual, \emph{geometric} Laplacian $\Lgeo(q)$, whose weights
 depend on inter-robot distances through the physical poses $q$, is nonconvex in
 $q$ and is \emph{not} covered by the convex theory of
