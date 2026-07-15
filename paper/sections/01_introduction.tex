@@ -51,3 +51,18 @@ decentralized realization.
 \end{itemize}
 We call a productively optimal, connectivity-sustaining assignment a \emph{WISE
 equilibrium}: one the team can both execute and compute.
+
+\begin{figure*}[t]\centering
+\resizebox{\textwidth}{!}{\input{sections/fig_concept}}
+\caption{The whole problem in one picture. \textbf{(1)}~A distributed
+equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
+communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the
+decision builds the graph its own computation needs. \textbf{(2)}~The productive
+optimum fixes the delivered wrench $Bz=y^{\star}$ but not the composition: a whole
+fiber $\Emanifold$ attains the same value $V^{\star}$ while its induced connectivity
+$\lamtwo$ varies, crossing the requirement $\sigmastar$ (inset). \textbf{(3)}~On that
+fiber, one composition severs the graph ($\lamtwo<\sigmastar$: the estimator that
+produced it goes blind), while a WISE composition diverts one long-range robot to
+relay ($\lamtwo\ge\sigmastar$) and both executes \emph{and} computes itself.}
+\label{fig:scene}
+\end{figure*}

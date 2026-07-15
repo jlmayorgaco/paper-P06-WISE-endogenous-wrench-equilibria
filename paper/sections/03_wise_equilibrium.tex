@@ -38,8 +38,8 @@ $z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
 i.e.\ $z^{\star}$ solves $\mathrm{VI}(X_{\mathrm f},F)$. Since $V=\phi(Bz)$ is concave
 on the convex $X_{\mathrm f}$, \eqref{eq:vi} holds iff
 $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is} the
-variational equilibrium, placing it in the generalized-Nash/variational
-setting~\cite{rosen1965,facchinei2010gnep,facchinei2003fvi}.
+variational equilibrium~\cite{facchinei2003fvi}, tying it to the generalized-Nash
+machinery.
 \end{definition}
 
 \begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
@@ -103,23 +103,11 @@ productively neutral exchange (Prop.~\ref{prop:cycle}), so $Bz(\alpha)=y^{\star}
 $V(z(\alpha))\equiv V^{\star}$ for all admissible $\alpha$. Along this arc
 $\lamtwo(\Lap(z(\alpha)))$ is concave and increasing, so the SDP~\eqref{eq:sdp} selects
 the largest feasible $\alpha$ and a WISE exists iff that value clears $\sigmastar$
-(Fig.~\ref{fig:method}a).
+(Fig.~\ref{fig:scene}, block~2).
 \end{example}
 
 \subsection{The WISE refinement}
 Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.
-
-\begin{figure}[t]\centering
-\resizebox{\columnwidth}{!}{\input{sections/fig_method}}
-\caption{How a WISE is selected. (a) The wrench-feasible assignments attaining the
-optimal aggregate $y^{\star}$ form the fiber $\Emanifold$ (bold): all share the
-productive value $V^{\star}$ but differ in induced connectivity, and the
-SDP~\eqref{eq:sdp} returns the point $z^{\star}_{\mathrm{WISE}}$ of maximal $\lamtwo$.
-(b) A WISE exists iff the fiber maximum $\LamE$ clears $\sigmastar$; for
-$\LamE<\sigmastar\le\LamX$ connectivity costs productivity, and beyond $\LamX$ it is
-infeasible (Theorem~\ref{thm:trichotomy}).}
-\label{fig:method}
-\end{figure}
 
 \begin{definition}[WISE]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and
@@ -214,13 +202,11 @@ by Tikhonov selection~\cite{facchinei2003fvi}, so a finite $\varepsilon$ perturb
 aggregate whereas the lexicographic form does not.
 
 \emph{Prices.} The Lagrangian of \eqref{eq:sdp} carries a wrench dual $\mu\ge0$, an
-aggregate dual $\nu$ enforcing $Bz=y^{\star}$, budget/occupancy duals $\rho$, and a PSD
-spectral dual $Z\succeq0$ with $\operatorname{tr}Z=1$; stationarity in $z$ reads
-$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$, where $\mathcal G^{*}$ is
-the adjoint of $z\mapsto Q^{\top}\Lap(z)Q$, with complementarity
-$\langle Z,\,Q^{\top}\Lap(z^{\star})Q-\LamE I\rangle=0$. Thus $\mu$ prices wrench
-feasibility and $Z$ certifies connectivity; no scalar wrench multiplier is conflated
-with a marginal utility.
+aggregate dual $\nu$ ($Bz=y^{\star}$), budget/occupancy duals $\rho$, and a PSD spectral
+dual $Z\succeq0$; stationarity reads
+$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$ with $\mathcal G^{*}$ the
+adjoint of $z\mapsto Q^{\top}\Lap(z)Q$. Thus $\mu$ prices wrench feasibility and $Z$
+certifies connectivity---no scalar multiplier is conflated with a marginal utility.
 
 \begin{theorem}[Free / costly / impossible]\label{thm:trichotomy}
 With $\LamE$ from \eqref{eq:sdp} and $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))$
@@ -235,16 +221,15 @@ $\LamX<\sigmastar$: $X_{\mathrm f}\cap\Cdelta=\varnothing$, $\Ddelta=+\infty$.
 Both maxima exist by Weierstrass and the cases partition the line by $\sigmastar$
 relative to $\LamE\le\LamX$. In the costly case $X_{\mathrm f}\cap\Cdelta$ is nonempty
 compact convex, so its maximum is attained and, as no point of $\Emanifold$ lies in
-$\Cdelta$, strictly below $V^{\star}$. A single gap over $\Ess$ would be uninformative,
-since $V$ is constant on $\Emanifold$; measuring against $X_{\mathrm f}\cap\Cdelta$ is
-what makes $\Ddelta$ nonzero.
+$\Cdelta$, strictly below $V^{\star}$. Measuring the gap against
+$X_{\mathrm f}\cap\Cdelta$ rather than $\Ess$ (where $V\equiv V^{\star}$) is what makes
+$\Ddelta$ informative.
 \end{proof}
 
 \begin{remark}[Finite-population recovery]\label{rem:integer}
-The analysis is a fluid relaxation. Integer assignments (one action per robot) are
-obtained by rounding and re-certified numerically; we make no $O(1/N)$ claim. Solving
-with the robustness margins $s\ge d+m_W$ and $\lamtwo\ge\sigmastar=\sigmadyn+\delta$
-leaves slack, so on the $N=12$ demonstration the fluid certification rate carries over
-to integer robots---$100\%$ under randomised rounding---whereas naive rounding of a
-zero-margin optimum does not.
+The analysis is a fluid relaxation; integer assignments are recovered by rounding and
+re-certified numerically (no $O(1/N)$ claim). The robustness margins $s\ge d+m_W$ and
+$\lamtwo\ge\sigmastar$ leave slack, so on the $N=12$ demonstration the fluid
+certification rate carries over to integer robots ($100\%$ under randomised rounding),
+whereas naive rounding of a zero-margin optimum does not.
 \end{remark}

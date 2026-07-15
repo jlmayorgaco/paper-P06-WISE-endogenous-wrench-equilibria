@@ -15,20 +15,6 @@ $\varepsilon_L$, so Weyl's bound~\eqref{eq:weyl} holds on every sampled state
 load counts as served only when it is wrench-feasible \emph{and}
 $\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces exactly.
 
-\begin{figure*}[t]\centering
-\resizebox{\textwidth}{!}{\input{sections/fig_concept}}
-\caption{The whole problem in one picture. \textbf{(1)}~A distributed
-equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
-communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the
-decision builds the graph its own computation needs. \textbf{(2)}~The productive
-optimum fixes the delivered wrench $Bz=y^{\star}$ but not the composition: a whole
-fiber $\Emanifold$ attains the same value $V^{\star}$ while its induced connectivity
-$\lamtwo$ varies, crossing the requirement $\sigmastar$ (inset). \textbf{(3)}~On that
-fiber, one composition severs the graph ($\lamtwo<\sigmastar$: the estimator that
-produced it goes blind), while a WISE composition diverts one long-range robot to
-relay ($\lamtwo\ge\sigmastar$) and both executes \emph{and} computes itself.}
-\label{fig:scene}
-\end{figure*}
 
 \begin{figure}[t]\centering
 \resizebox{0.82\columnwidth}{!}{\input{sections/fig_scenario}}
@@ -52,12 +38,24 @@ error $\|e(t)\|$ decays, and when it is withdrawn ($\lamtwo<\sigmastar$) it
 grows---the subsystem defeats its own estimator, with the sign change at
 $c\,\mF\,\lamtwo=\vt^2$ (a dedicated sweep is built in the extended study).
 
-\paragraph*{E3 --- Regime phase diagram (Thm.~\ref{thm:trichotomy})}
-Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ ($n=12$
-seeds/cell), the empirical certification rate collapses in the two regimes the
-trichotomy predicts: at $\nu\!\to\!0$ no composition reaches $\LamE\ge\sigmastar$
-(impossible/costly), and at high $\tau_d$ the fleet is wrench-limited. The extended
-study overlays the SDP boundary $\LamE=\sigmastar$ on this map.
+\paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:trichotomy})}
+Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$, we solve the WISE
+SDP~\eqref{eq:sdp} in every cell and overlay its exact boundary $\LamE=\sigmastar$
+(Fig.~\ref{fig:phase}). The two predicted failure edges appear: existence fails as
+$\nu\!\to\!0$ (no long-range robot can relay) and wrench feasibility fails at high
+$\tau_d$. Against the decentralized flow the SDP verdict has \emph{perfect recall}
+over $144$ runs (no false negatives; $61$ TP, $64$ TN, $19$ FP, $0$ FN): its only
+misses are cells the exact certificate clears but the heuristic flow does not reach.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.9\columnwidth]{fig_phase_sdp.pdf}
+\caption{Regime phase diagram over $(\nu,\tau_d)$ ($4$ seeds/cell). Colour is the
+empirical certified rate of the decentralized flow; the blue curve is the
+\emph{exact} SDP boundary $\LamE=\sigmastar$ of Theorem~\ref{thm:existence}. It
+separates the WISE-feasible interior from the existence edge ($\nu\!\to\!0$) and the
+wrench-limited edge (high $\tau_d$).}
+\label{fig:phase}
+\end{figure}
 
 \paragraph*{E4 --- Constraint ablation (Table~\ref{tab:ablation})}
 On paired seeds, enforcing either requirement alone fails: \texttt{scalar\_capacity}
@@ -77,8 +75,8 @@ recovery reaches $100\%$ under randomised rounding.}
 \end{table}
 
 \paragraph*{E5 --- Emergent roles (Prop.~\ref{prop:cycle})}
-Pooled over seeds, relay commitment is drawn from long-range types, as
+Pooled over seeds, relay commitment falls on long-range types, as
 Proposition~\ref{prop:cycle} predicts: a neutral long/short exchange leaves $Bz$ fixed
-while raising $\lamtwo$, so the selector concentrates relays on long-range types---the
-predicted division of labour in the tested instances, not a general theorem.
+while raising $\lamtwo$. This is the predicted division of labour in the tested
+instances, not a general theorem.
 
