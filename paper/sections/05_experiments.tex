@@ -20,19 +20,17 @@ the Lipschitz bound $C_L\rho$ that sizes $\varepsilon_L$, and Weyl's bound
 wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and
 reproduces exactly.
 
-\begin{figure}[t]\centering
+\begin{figure*}[t]\centering
 \input{sections/fig_concept}
-\caption{The self-defeating-equilibrium paradox. Both panels realise the
-\emph{same} productive aggregate $Bz=y^{\star}$, so both are productively optimal
-and lie on one composition fiber $\Emanifold$. (a) Committing every robot to lifting
-severs the inter-cluster link: $\lamtwo(\Lap(z))<\sigmastar$, and the estimator that
-\emph{produced} the composition can no longer compute it. (b) A WISE composition on
-the same fiber diverts one long-range robot
-(\protect\tikz[baseline=-0.5ex]\protect\node[draw,fill=green!55!black,diamond,
-inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$---it executes
-\emph{and} computes itself.}
+\caption{The self-defeating-equilibrium paradox. Both rows deliver the \emph{same}
+demanded wrench $Bz=y^{\star}$ and so lie on one productively optimal fiber
+$\Emanifold$. (a) When every robot lifts, the inter-cluster link is lost,
+$\lamtwo(\Lap(z))<\sigmastar$, and the consensus estimator that produced the
+composition can no longer compute it. (b) Diverting one long-range robot to relay
+restores $\lamtwo\ge\sigmastar$: the same productive outcome now executes \emph{and}
+computes itself.}
 \label{fig:scene}
-\end{figure}
+\end{figure*}
 
 \paragraph*{E1 --- Convergence}
 On a representative instance the decentralized realization~\eqref{eq:pd} drives
@@ -40,21 +38,12 @@ $\lamtwo(\Lap(z))$ above $\sigmastar$ and the wrench residual to zero together, 
 connectivity price $\pi$ settles at its certification value with relay assignment on
 long-range types.
 
-\paragraph*{E2 --- Self-defeat threshold (Fig.~\ref{fig:thresh}, Thm.~\ref{thm:stability})}
+\paragraph*{E2 --- Self-defeat threshold (Thm.~\ref{thm:stability})}
 On one instance we compare two compositions from the same fiber $\Emanifold$. When a
 long-range robot relays, the induced $\lamtwo(t)$ rises above $\sigmastar$ and the
 coupled estimation error $\|e(t)\|$ decays; when it is withdrawn, $\lamtwo(t)$ stays
-below and $\|e(t)\|$ grows---the equilibrium defeats its own estimator. The sign
-change occurs exactly at $c\,\mF\,\lamtwo=\vt^2$, the derived threshold, not a
-fitted curve.
-
-\begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{fig5_threshold.pdf}
-\caption{Closed-loop self-defeat. (a) Induced connectivity for a self-sustaining
-(B) vs.\ self-defeating (A) composition. (b) Estimation error decays iff
-$c\,\mF\lamtwo>\vt^2$ (Theorem~\ref{thm:stability}); it diverges below the threshold.}
-\label{fig:thresh}
-\end{figure}
+below and $\|e(t)\|$ grows---the subsystem defeats its own estimator, with the sign
+change at $c\,\mF\,\lamtwo=\vt^2$ (a dedicated sweep is built in the extended study).
 
 \paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:trichotomy})}
 Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ ($n=12$
