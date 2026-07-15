@@ -111,6 +111,8 @@ def _write(rows):
 def _figure(rows, pos, load, path, ranges, relay_mask, lifters, sigma_dyn, lam_bar):
     import matplotlib
     matplotlib.use("Agg")
+    matplotlib.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 (IEEE)
+    matplotlib.rcParams["ps.fonttype"] = 42
     import matplotlib.patches as mp
     import matplotlib.pyplot as plt
 

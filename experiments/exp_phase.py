@@ -132,6 +132,8 @@ def run(grid=6, seeds=4, out_csv=True):
 def _figure(nus, taus, cells, grid):
     import matplotlib
     matplotlib.use("Agg")
+    matplotlib.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 (IEEE)
+    matplotlib.rcParams["ps.fonttype"] = 42
     import matplotlib.pyplot as plt
 
     emp = np.full((grid, grid), np.nan)

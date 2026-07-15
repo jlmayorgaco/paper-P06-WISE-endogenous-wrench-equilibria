@@ -93,6 +93,8 @@ def run(seed: int = 3, N: int = 12, nu: float = 0.5, tau_d: float = 3.0):
     # ---- figure ----
     import matplotlib
     matplotlib.use("Agg")
+    matplotlib.rcParams["pdf.fonttype"] = 42  # TrueType, not Type 3 (IEEE)
+    matplotlib.rcParams["ps.fonttype"] = 42
     import matplotlib.pyplot as plt
 
     fig, ax = plt.subplots(figsize=(3.4, 2.2))
