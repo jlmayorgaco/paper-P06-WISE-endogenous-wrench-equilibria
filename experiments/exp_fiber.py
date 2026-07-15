@@ -111,7 +111,7 @@ def run(seed: int = 3, N: int = 12, nu: float = 0.5, tau_d: float = 3.0):
     ax.set_title("one payoff, varying connectivity", fontsize=9)
     ax.legend(handles=[l1, l2], loc="center left", fontsize=7, frameon=False)
     fig.tight_layout()
-    fig.savefig(FIG / "fig_fiber.pdf")
+    fig.savefig(FIG / "fig_fiber.pdf", metadata={"CreationDate": None})  # reproducible bytes
     plt.close(fig)
 
     print(f"fiber sweep: dim E={info['dim_E']}, V flat (ptp={np.ptp(V):.1e}), "

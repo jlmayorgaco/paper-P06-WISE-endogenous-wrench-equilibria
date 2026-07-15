@@ -52,35 +52,35 @@ built from      =  directional wrench tensor   W[i,k,h,l]
 
 ```
 paper/          IEEE conference manuscript (main.tex + sections/)
-src/wise_mr/    core library (tensor, endogenous graph, equilibrium, prices)
-experiments/    exp01..exp04 — phase diagram, ablation, roles, threshold
-configs/        YAML sweep definitions
-tests/          unit + property tests (tensor, Fiedler gradient, feasibility)
-results/        raw/, summaries/, figures/, manifests/  (regenerable)
+src/wise_mr/    core library (wrench lifting, endogenous graph, equilibrium, SDP)
+experiments/    reproduce.py + certificates and experiments (fiber, phase, methods)
+generated/      regenerated certificates (*.json) and experiment data (*.csv)
+tests/          unit + property tests (lifting, SDP, Fiedler gradient, feasibility)
+paper/          IEEEtran manuscript and figures
 ```
 
-## Quickstart
+## Reproduce
 
 ```bash
-pip install -e ".[dev]"     # or: make install
-make test                   # run the test suite
-make exp01                  # phase-transition sweep (once implemented)
-make paper                  # build paper/main.pdf
+pip install -e ".[dev,opt,viz]"   # numpy/scipy + cvxpy (SDP) + matplotlib
+make reproduce                    # tests -> certificates -> experiments -> paper -> checks
 ```
 
-> **Status:** Day-1 scaffold. Module signatures and the mathematical contracts
-> are in place; the physics/optimization bodies are stubbed
-> (`NotImplementedError`) and tracked per the development plan.
+`make reproduce` runs the test suite, regenerates every certificate
+(`generated/*.json`) and experiment (`generated/*.csv`, `paper/figures/*.pdf`),
+rebuilds `paper/main.pdf`, and asserts the paper is exactly six pages with no
+undefined references or overfull boxes. `make reproduce-fast` runs the same
+pipeline with smaller sweeps for a quick smoke test.
 
-## Development plan (5 days)
+Individual pieces:
 
-| Day | Gate |
-| --- | --- |
-| 1 — math freeze        | model + proofs fit in 2 IEEE pages; tensor & centralized certificate implemented |
-| 2 — algorithm & scenes | centralized and WISE primal-dual agree on aggregates in convex cases |
-| 3 — campaign           | at least two theoretical predictions show a visible, reproducible effect |
-| 4 — writing            | full 7-page draft cut to 6; vector figures; hostile math review |
-| 5 — audit & submit     | clean-room regeneration; every abstract number checked; early submission |
+```bash
+make test                              # unit + property tests
+python experiments/exp_fiber.py        # E-fiber: V flat, lambda2 varying (Example 1)
+python experiments/exp_phase.py        # phase diagram with the exact SDP boundary
+python experiments/exp_methods.py      # 7-method comparison, 30 seeds, bootstrap CI
+make paper                             # build paper/main.pdf
+```
 
 ## License
 

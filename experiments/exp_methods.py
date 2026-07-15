@@ -117,11 +117,13 @@ def run(seeds=30):
             for k in data[m]:
                 data[m][k].append(met[k])
 
+    import zlib
     rows = []
     for m in METHODS:
         row = {"method": m}
         for k in ("wrench_res", "info_margin", "cert"):
-            mean, lo, hi = _boot_ci(data[m][k], seed=hash(m + k) % 2**32)
+            seed = zlib.crc32((m + "|" + k).encode())      # stable across runs
+            mean, lo, hi = _boot_ci(data[m][k], seed=seed)
             row[f"{k}_mean"], row[f"{k}_lo"], row[f"{k}_hi"] = mean, lo, hi
         rows.append(row)
 

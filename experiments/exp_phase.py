@@ -156,7 +156,7 @@ def _figure(nus, taus, cells, grid):
     cb = fig.colorbar(im, ax=ax, fraction=0.046, pad=0.04)
     cb.set_label("empirical certified rate", fontsize=8)
     fig.tight_layout()
-    fig.savefig(FIG / "fig_phase_sdp.pdf")
+    fig.savefig(FIG / "fig_phase_sdp.pdf", metadata={"CreationDate": None})  # reproducible bytes
     plt.close(fig)
 
 

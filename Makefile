@@ -4,7 +4,7 @@ PY ?= python
 
 .PHONY: help install test lint fmt \
         exp01 exp02 exp03 exp04 experiments \
-        paper figures clean
+        reproduce reproduce-fast paper figures clean
 
 help: ## Show this help
 	@grep -E '^[a-zA-Z0-9_-]+:.*?## .*$$' $(MAKEFILE_LIST) \
@@ -35,6 +35,12 @@ exp04: ## Self-defeat threshold validation
 	$(PY) experiments/exp04_threshold_validation.py --config configs/ablation.yaml
 
 experiments: exp01 exp02 exp03 exp04 ## Run the full campaign
+
+reproduce: ## Full pipeline: tests -> certificates -> experiments -> paper -> checks
+	$(PY) experiments/reproduce.py
+
+reproduce-fast: ## Quick smoke test of the pipeline (reduced sweeps)
+	$(PY) experiments/reproduce.py --fast
 
 paper: ## Build the IEEE manuscript
 	cd paper && latexmk -pdf main.tex
