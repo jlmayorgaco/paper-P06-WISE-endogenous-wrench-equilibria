@@ -22,13 +22,17 @@ service rate}: a load is served only if it is wrench-feasible \emph{and}
 $\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces exactly.
 
 \begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{fig1_scene.pdf}
-\caption{The paradox, physically. (a) A productively optimal composition commits
-long-range types to their clusters; short links leave the gap open,
-$\lamtwo<\sigmastar$, and the estimator that produced the composition loses
-consensus. (b) A WISE composition on the same fiber routes one long-range robot to
-relay, restoring $\lamtwo\ge\sigmastar$ while the lifters still realise the demanded
-wrench (red contact forces).}
+\input{sections/fig_concept}
+\caption{The self-defeating-equilibrium paradox. Both panels realise the
+\emph{same} productive aggregate $Bx=y^{\star}$ (same demanded wrench $\wdem$
+delivered), so both are productively optimal --- they lie on the same composition
+fiber $\Emanifold$. (a) The composition commits every robot to lifting; the
+inter-cluster link is lost, $\lamtwo(\Lap(x))<\sigmastar$, and the consensus
+estimator that \emph{produced} this composition can no longer compute it. (b) A
+WISE composition on the same fiber diverts one long-range robot
+(\protect\tikz[baseline=-0.5ex]\protect\node[draw,fill=green!55!black,diamond,
+inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$: it executes
+\emph{and} computes itself.}
 \label{fig:scene}
 \end{figure}
 
