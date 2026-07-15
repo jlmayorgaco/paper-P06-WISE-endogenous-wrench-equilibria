@@ -1,0 +1,22 @@
+{
+  "seed": 3,
+  "N": 12,
+  "nu": 0.5,
+  "tau_d": 3.0,
+  "dim_E": 59,
+  "n_active_ineq": 0,
+  "solver_status": "optimal/optimal",
+  "res_Ad": 3.0554779340419277e-16,
+  "res_Bd": 6.106226635438361e-16,
+  "res_GId": 0.0,
+  "max_abs_V_minus_Vstar": 1.4210854715202004e-14,
+  "max_agg_drift": 7.105427357601002e-15,
+  "lambda2_min": 0.295140322622653,
+  "lambda2_max": 0.5527308958722379,
+  "sigma_req": 0.42393560924744544,
+  "V_star": 72.0,
+  "y_star": [
+    12.000000000000014
+  ],
+  "fiber_crosses_sigma": true
+}

@@ -37,7 +37,7 @@ def test_unique_optimal_aggregate_across_starts():
     prob = scenarios.two_region(seed=2, N=12, nu=0.5, tau_d=3.0)
     aggs = []
     for st in range(4):
-        r = baselines.centralized_wise_oracle(prob, n_starts=1)
+        r = baselines.centralized_wise(prob, n_starts=1)
         # perturb start via seed in centralized (uses meta seed); recompute directly
         res = baselines.wise_primal_dual(prob, max_iters=4000)
         aggs.append(prob.served_capacity(res.x))

@@ -1,0 +1,24 @@
+{
+  "seed": 0,
+  "relay_robot": 10,
+  "relay_is_long": true,
+  "y_star": [
+    4.499999999999998
+  ],
+  "y_wise": [
+    7.548499047230457
+  ],
+  "y_unsafe": [
+    7.548499047230457
+  ],
+  "aggregate_identical": true,
+  "V_wise": 5.4783267795174915,
+  "V_unsafe": 5.4783267795174915,
+  "wrench_res_wise": 0.0,
+  "wrench_res_unsafe": 0.0,
+  "wrench_feasible_wise": true,
+  "wrench_feasible_unsafe": true,
+  "lambda2_geo_wise": 0.8806469743854506,
+  "lambda2_geo_unsafe": 0.03000000000000009,
+  "sigma_req": 0.25
+}

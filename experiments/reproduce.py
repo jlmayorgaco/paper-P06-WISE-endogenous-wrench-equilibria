@@ -43,10 +43,10 @@ def main() -> None:
     for s in ("nullspace_certificate", "integer_recovery", "geometric_certificate"):
         step(f"certificate: {s}", [PY, f"experiments/{s}.py"])
 
-    # 3. experiments (generated/*.csv + paper/figures/*.pdf)
+    # 3. experiments (generated/*.csv,*.json + paper/figures/*.pdf)
     step("experiment: fiber", [PY, "experiments/exp_fiber.py"])
+    step("experiment: spatial", [PY, "experiments/exp_spatial.py"])
     step("experiment: physical", [PY, "experiments/exp_physical.py"])
-    step("experiment: cluster", [PY, "experiments/exp_cluster.py"])
     if args.fast:
         run_call("experiment: phase (fast)", "exp_phase", "grid=4, seeds=2")
         run_call("experiment: methods (fast)", "exp_methods", "seeds=6")
@@ -55,12 +55,26 @@ def main() -> None:
         step("experiment: phase", [PY, "experiments/exp_phase.py"])
         step("experiment: methods", [PY, "experiments/exp_methods.py"])
         step("experiment: epsilon", [PY, "experiments/exp_epsilon.py"])
+    # central paper figure (needs fiber + spatial outputs)
+    step("figure: central", [PY, "experiments/make_central_fig.py"])
 
     # 4. build the paper
     step("build paper", ["latexmk", "-pdf", "-interaction=nonstopmode",
                          "-halt-on-error", "main.tex"], cwd=ROOT / "paper")
 
-    # 5. checks: page count, undefined refs, overfull boxes, embedded fonts
+    # 5. manifest: SHA-256 of every regenerated artifact (frozen provenance)
+    import hashlib
+    import json
+    manifest = {}
+    for sub in ("generated", "paper/figures"):
+        for p in sorted((ROOT / sub).rglob("*")):
+            if p.suffix.lower() in (".csv", ".json", ".pdf", ".tex") and p.name != "manifest.json":
+                manifest[str(p.relative_to(ROOT)).replace("\\", "/")] = \
+                    hashlib.sha256(p.read_bytes()).hexdigest()
+    (ROOT / "generated" / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True), encoding="utf-8")
+
+    # 6. checks: page count, undefined refs, overfull boxes, embedded fonts
     log = (ROOT / "paper" / "main.log").read_text(encoding="utf8", errors="ignore")
     import re
     m = re.search(r"Output written on main\.pdf \((\d+) pages", log)
@@ -68,19 +82,19 @@ def main() -> None:
     problems = []
     if pages != 6:
         problems.append(f"page count is {pages}, expected 6")
-    if "LaTeX Warning: Reference" in log and "undefined" in log:
-        if re.search(r"Reference `[^']+' on page \d+ undefined", log):
-            problems.append("undefined references present")
-    if "Citation" in log and re.search(r"Citation `[^']+' .*undefined", log):
+    if re.search(r"Reference `[^']+' on page \d+ undefined", log):
+        problems.append("undefined references present")
+    if re.search(r"Citation `[^']+' .*undefined", log):
         problems.append("undefined citations present")
     if "Overfull \\hbox" in log:
         problems.append("overfull hbox present")
 
     print("\n=== SUMMARY ===")
-    print(f"pages: {pages}")
+    print(f"pages: {pages}; manifest entries: {len(manifest)}")
     if problems:
         sys.exit("REPRODUCE FAILED:\n  - " + "\n  - ".join(problems))
-    print("REPRODUCE OK: tests green, artifacts regenerated, paper builds at 6 pages.")
+    print("REPRODUCE OK: tests green, artifacts regenerated, manifest written, "
+          "paper builds at 6 pages.")
 
 
 if __name__ == "__main__":

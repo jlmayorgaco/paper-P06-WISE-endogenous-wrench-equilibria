@@ -6,7 +6,7 @@ scalar_capacity      no      no            physical false positives
 wrench_only          yes     no            valid coalition that breaks the net
 connectivity_only    no      yes           connected net, incapable load
 wise_primal_dual     yes     yes           certified execution  (headline)
-centralized_wise     yes     yes           team-optimal upper bound (multi-start)
+centralized_wise     yes     yes           centralized multistart heuristic (reference)
 
 All solvers return a :class:`~wise_mr.primal_dual.SolveResult`-compatible record
 via :func:`run`, so the drivers treat them uniformly.
@@ -71,8 +71,9 @@ def scalar_capacity(problem: WiseProblem, **kw) -> pd.SolveResult:
                           converged=True, history={"mu_final": problem.wrench_price(x)})
 
 
-def centralized_wise_oracle(problem: WiseProblem, n_starts: int = 4, **kw) -> pd.SolveResult:
-    """Team-optimal reference: best certified welfare over several warm starts."""
+def centralized_wise(problem: WiseProblem, n_starts: int = 4, **kw) -> pd.SolveResult:
+    """Centralized multistart heuristic: best certified welfare over several warm starts.
+    A strong (non-exact) reference for the decentralized flow -- not an oracle."""
     rng = np.random.default_rng(problem.meta.get("seed", 0) + 777)
     best, best_val = None, -np.inf
     for s in range(n_starts):
@@ -97,7 +98,7 @@ REGISTRY = {
     "wrench_only": wrench_only,
     "connectivity_only": connectivity_only,
     "wise_primal_dual": wise_primal_dual,
-    "centralized_wise": centralized_wise_oracle,
+    "centralized_wise": centralized_wise,
 }
 
 

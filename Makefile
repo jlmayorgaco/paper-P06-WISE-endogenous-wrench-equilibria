@@ -3,7 +3,7 @@
 PY ?= python
 
 .PHONY: help install test lint fmt \
-        fiber phase methods physical cluster epsilon \
+        fiber spatial central phase methods physical epsilon \
         reproduce reproduce-fast paper clean
 
 help: ## Show this help
@@ -22,22 +22,25 @@ lint: ## Lint with ruff
 fmt: ## Auto-format with ruff
 	ruff check --fix src experiments tests
 
-fiber: ## E-fiber: constant V, varying lambda2 (Example 1)
+fiber: ## E-fiber: certified fiber direction, V/aggregate neutral, lambda2 crossing
 	$(PY) experiments/exp_fiber.py
+
+spatial: ## Same-fiber unsafe vs. WISE compositions in the x-y plane
+	$(PY) experiments/exp_spatial.py
+
+central: ## Compose the central paper figure (needs fiber + spatial first)
+	$(PY) experiments/make_central_fig.py
 
 phase: ## Phase diagram with the exact SDP boundary
 	$(PY) experiments/exp_phase.py
 
-methods: ## 7-method comparison, 30 seeds, bootstrap CI
+methods: ## 7-method comparison, 30 seeds, Wilson CI
 	$(PY) experiments/exp_methods.py
 
 physical: ## Closed-loop rigid-load transport
 	$(PY) experiments/exp_physical.py
 
-cluster: ## Spatial clustering and the network effect (x-y plane)
-	$(PY) experiments/exp_cluster.py
-
-epsilon: ## Lexicographic WISE vs. weighted-sum scalarization
+epsilon: ## Lexicographic WISE vs. weighted-sum scalarization (Tikhonov bounds)
 	$(PY) experiments/exp_epsilon.py
 
 reproduce: ## Full pipeline: tests -> certificates -> experiments -> paper -> checks
