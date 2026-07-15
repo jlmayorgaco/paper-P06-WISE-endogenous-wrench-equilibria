@@ -7,11 +7,11 @@ Theorem~\ref{thm:existence}, solved centrally; the primal--dual flow below is a
 decentralized realization evaluated empirically, not a convergence guarantee.
 
 \subsection{Exact certificate (centralized SDP)}
-The two-stage program~\eqref{eq:sdp} returns the optimal aggregate $y^{\star}$ and the
-most-connected productively optimal assignment $z^{\star}_{\mathrm{WISE}}$; feasibility
-of its connectivity value against $\sigmastar$ is the WISE existence test
-(Theorem~\ref{thm:existence}). We report this certificate and use it as a relaxed
-oracle for the simulations.
+Stage 1 fixes $y^{\star}$ by maximising $V$ over $X_{\mathrm f}$; the Stage-2
+SDP~\eqref{eq:sdp} then returns $\LamE$ and the most-connected productively optimal
+assignment $z^{\star}_{\mathrm{WISE}}$, and $\LamE\ge\sigmastar$ is the WISE existence
+test (Theorem~\ref{thm:existence}). We report this certificate and use it as a relaxed
+reference for the simulations.
 
 \subsection{Decentralized realization}
 For an online approximation each type runs a projected primal--dual flow with a

@@ -20,16 +20,16 @@ none to relay: algebraic connectivity collapses and the estimator that produced 
 assignment loses the consensus channel it needs to compute it.
 
 Population-game and distributed Nash-seeking formulations take the interaction graph
-as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}, while
-connectivity-control and task-allocation work maintains algebraic connectivity
-$\lamtwo$ as a separate objective~\cite{fiedler1973,ghosh2006growing,%
-zavlanos2011connectivity,choi2009cbba,prorok2017diversity}; neither treats the graph
-as an \emph{output} of the assignment. Our starting point is that the productive
-optimum fixes the served aggregate but not its composition by type: because the
-payoff couples only through aggregates~\cite{jensen2010aggregative}, the
-wrench-feasible assignments attaining the optimal aggregate form a
-positive-dimensional fiber (Theorem~\ref{thm:degeneracy}). That undetermined
-composition is the freedom we use to keep the network connected.
+as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
+Communication-aware task allocation does couple the two, jointly trading task utility
+against the connectivity induced by the chosen
+assignment~\cite{williams2017matroid,lin2021connectivity,zavlanos2011connectivity,%
+ghosh2006growing,prorok2017diversity}. Our distinction is sharper: because the payoff
+couples only through aggregates~\cite{jensen2010aggregative}, the productive optimum
+fixes the served aggregate but leaves an \emph{aggregate-invariant} fiber of
+wrench-feasible compositions (Theorem~\ref{thm:degeneracy}); we select connectivity
+\emph{lexicographically} over that fiber---without moving the productive
+aggregate---which yields an SDP existence certificate under hard wrench constraints.
 
 \paragraph*{Contributions}
 \begin{itemize}
@@ -49,11 +49,11 @@ necessary in the isotropic modal case---and simulations with heterogeneous
 second-order unicycles evaluate the certificate, the predicted boundary, and a
 decentralized realization.
 \end{itemize}
-We call a productively optimal, connectivity-sustaining assignment a \emph{WISE
-equilibrium}: one the team can both execute and compute.
+We call a productively optimal, wrench-feasible assignment whose induced communication
+substrate meets the estimator's stability requirement a \emph{WISE equilibrium}.
 
 \begin{figure*}[t]\centering
-\resizebox{\textwidth}{!}{\input{sections/fig_concept}}
+\resizebox{0.8\textwidth}{!}{\input{sections/fig_concept}}
 \caption{The whole problem in one picture. \textbf{(1)}~A distributed
 equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
 communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the
@@ -63,6 +63,7 @@ fiber $\Emanifold$ attains the same value $V^{\star}$ while its induced connecti
 $\lamtwo$ varies, crossing the requirement $\sigmastar$ (inset). \textbf{(3)}~On that
 fiber, one composition severs the graph ($\lamtwo<\sigmastar$: the estimator that
 produced it goes blind), while a WISE composition diverts one long-range robot to
-relay ($\lamtwo\ge\sigmastar$) and both executes \emph{and} computes itself.}
+relay ($\lamtwo\ge\sigmastar$), whose graph meets the estimator's stability
+requirement.}
 \label{fig:scene}
 \end{figure*}

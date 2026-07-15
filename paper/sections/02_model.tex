@@ -44,7 +44,11 @@ polytope;
 \emph{(iii)} the candidate-site Laplacian $\Lap(z)$ of \eqref{eq:laplacian} is affine
 in $z$ with each elementary $L_e\succeq0$ and each coefficient $\ge0$; \emph{(iv)}
 the communication graph is undirected and weighted, so every $\Lap(z)$ is a symmetric
-graph Laplacian; and \emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$.
+graph Laplacian; \emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$; and \emph{(vi)}
+wherever the gradient $\nabla\lamtwo$ is used, $\lamtwo(\Lap(z))$ is a \emph{simple}
+eigenvalue (a weak background regulariser $\delta_0(I-\tfrac1N\mathbf 1\mathbf 1^{\top})$
+enforces this in practice); at multiplicity the Fiedler gradient is replaced by the
+PSD matrix dual $Z\succeq0$ of the LMI~\eqref{eq:lmi}.
 \end{assumption}
 
 \subsection{Exact wrench feasibility}
@@ -86,9 +90,12 @@ physical elliptical forces. The certificate is quasi-static and assumes bilatera
 independent contact forces; it does not model frictional grasp or unilateral pushing.
 
 \subsection{Decision-induced candidate-site Laplacian $\Lap(z)$}
-We separate two graphs throughout. The \emph{decision-induced candidate-site
-Laplacian} $\Lap(z)$ depends only on the assignment $z$ over $V$ candidate-site
-nodes. A fixed base graph $L_0\succeq0$ carries the always-on intra-cluster links;
+We separate two graphs throughout, both on the \emph{same} node set: each of the $N$
+robots is a candidate-site node ($V=N$), and $\Lap(z)$ and $\Lgeo(q)$ index it
+identically, so the mismatch $\|\Lgeo(q)-\Lap(z)\|_2$ of Lemma~\ref{lem:bridge} is
+well defined. The \emph{decision-induced candidate-site Laplacian} $\Lap(z)$ depends
+only on the assignment $z$. A fixed base graph $L_0\succeq0$ carries the always-on
+intra-cluster links;
 occupying relay site $r$ with a type-$\tau$ robot switches on the link Laplacian
 $L_r\succeq0$ with effectiveness $\gamma_{\tau r}\ge0$ (long-range types reach across
 the gap, short-range types barely), so
@@ -104,7 +111,7 @@ Sections~\ref{sec:wise}--\ref{sec:algorithm}; it is exercised only in the
 closed-loop simulation, where we report the empirical agreement between
 $\Lgeo(q)$ and its surrogate $\Lap(z)$. All theorems below use $\Lap(z)$ only.
 
-Let $Q\in\R^{V\times(V-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
+Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
 \begin{equation}
 Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
@@ -112,9 +119,8 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $z$, with PSD matrix dual $Z\succeq0$; at a simple minimiser
-$Z=\pi vv^{\top}$ recovers a scalar connectivity price $\pi$
-(Section~\ref{sec:algorithm}). The requirement $\sigmastar=\sigmadyn+\delta$ pairs the
+affine in $z$, with PSD matrix dual $Z\succeq0$ (a scalar connectivity price
+$\pi$ when $\lamtwo$ is simple). The requirement $\sigmastar=\sigmadyn+\delta$ pairs the
 derived stability boundary $\sigmadyn$ (Theorem~\ref{thm:stability}) with the robust
 margin $\delta$ of Lemma~\ref{lem:bridge}.
 

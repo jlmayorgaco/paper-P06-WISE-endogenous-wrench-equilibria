@@ -2,18 +2,13 @@
 \label{sec:exp}
 
 We validate the main results on heterogeneous teams ($N=12$ unless noted) in a
-two-region world: a rigid load in the right cluster demands a planar wrench, and
-short links connect robots only within a cluster, so the gap is bridged only when a
-long-range type relays. The strategic layer runs~\eqref{eq:pd}; the physical layer
-integrates a rigid load and second-order unicycles whose lifting force is confined to
-the heading-aligned elliptical set, so wrench realizability depends on pose.
-Connectivity is measured on the geometric Laplacian $\Lgeo(q)$ of the realized poses
-while the strategic layer uses the surrogate $\Lap(z)$; the maximum observed mismatch
-$\|\Lgeo(q)-\Lap(z)\|_2$ stays within the Lipschitz bound $C_L\rho$ that sizes
-$\varepsilon_L$, so Weyl's bound~\eqref{eq:weyl} holds on every sampled state
-(Lemma~\ref{lem:bridge}). The primary metric is the \emph{certified service rate}: a
-load counts as served only when it is wrench-feasible \emph{and}
-$\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces exactly.
+two-region world: a rigid load in the right cluster demands a planar wrench, and short
+links connect robots only within a cluster, so the gap is bridged only when a
+long-range type relays. The physical layer integrates a rigid load and second-order
+unicycles whose lifting force is confined to the heading-aligned elliptical set. The
+primary metric is the \emph{certified service rate}: a load counts as served only when
+it is wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and
+reproduces exactly.
 
 
 \paragraph*{E1 --- Convergence and self-defeat (Thm.~\ref{thm:stability})}
@@ -45,7 +40,7 @@ Weyl bound $\lamtwo(\Lap)-\varepsilon_L$, all above $\sigmadyn$
 \label{fig:physical}
 \end{figure}
 
-\paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:trichotomy})}
+\paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Cor.~\ref{thm:trichotomy})}
 Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$, we solve the WISE
 SDP~\eqref{eq:sdp} in every cell and overlay its exact boundary $\LamE=\sigmastar$
 (Fig.~\ref{fig:phase}). The two predicted failure edges appear: existence fails as
@@ -67,18 +62,20 @@ wrench-limited edge (high $\tau_d$).}
 \paragraph*{E4 --- Method comparison (Table~\ref{tab:ablation})}
 At a demanding operating point ($\nu=0.4$, $\tau_d=6.5$), enforcing either requirement
 alone fails: \texttt{scalar\_capacity} and \texttt{wrench\_only} fragment the network,
-\texttt{connectivity\_only} cannot lift, and a random feasible assignment almost never
-clears both. The \emph{exact} WISE SDP certifies every seed, whereas the decentralized
-flow (\texttt{wise\_pd}, $50\%$) and even the centralized multi-start oracle ($67\%$)
-fall short. The gap between the exact certificate and the heuristic solvers is the
-honest cost of not solving the SDP---evidence for the certificate, not a claim of
-distributed optimality.
+\texttt{connectivity\_only} cannot lift, and a random $\mathcal X$-feasible assignment
+(budget/occupancy only) almost never clears the wrench and connectivity tests. The
+\emph{exact} WISE SDP certifies every seed, whereas the decentralized flow
+(\texttt{wise\_pd}, $50\%$) and even a centralized multistart heuristic ($67\%$) fall
+short. The gap between the exact certificate and the heuristic solvers is the honest
+cost of not solving the SDP---evidence for the certificate, not a claim of distributed
+optimality.
 
 \begin{table}[t]\centering
 \caption{Method comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$);
-mean with $95\%$ bootstrap CI. Arrows mark the preferred direction. The exact SDP
-selector \texttt{wise\_sdp} certifies all seeds; the heuristic solvers
-(\texttt{wise\_pd}, oracle) and the single-requirement / random baselines fall short.}
+means, with a Wilson $95\%$ CI on certified success. Wrench deficit is relative to the
+demand. Arrows mark the preferred direction. The exact SDP selector \texttt{wise\_sdp}
+certifies all seeds; the heuristic solvers and single-requirement / random baselines
+fall short.}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}

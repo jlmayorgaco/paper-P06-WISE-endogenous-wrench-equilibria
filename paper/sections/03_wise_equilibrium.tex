@@ -38,8 +38,12 @@ $z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
 i.e.\ $z^{\star}$ solves $\mathrm{VI}(X_{\mathrm f},F)$. Since $V=\phi(Bz)$ is concave
 on the convex $X_{\mathrm f}$, \eqref{eq:vi} holds iff
 $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is} the
-variational equilibrium~\cite{facchinei2003fvi}, tying it to the generalized-Nash
-machinery.
+variational equilibrium~\cite{facchinei2003fvi}. Crucially, $F$ is strongly monotone
+only in the served aggregate $Bz$ ($\phi$ is $\alpha$-strongly concave), \emph{not} in
+the composition $z$: on $\ker B$ it vanishes. Unlike the strongly contractive
+aggregative games of~\cite{martinezpiazuelo2022}, this loss of composition
+monotonicity is exactly the degeneracy WISE exploits---the equilibrium set collapses
+to a fiber rather than a point.
 \end{definition}
 
 \begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
@@ -63,12 +67,11 @@ convex polytope whose local dimension at a relative-interior point $\bar z$ is
 \label{eq:dim}
 \end{equation}
 where $Az=b$ is budget conservation, $Bz=y^{\star}$ the served aggregate, $G_Iz=h_I$
-the inequalities of $X_{\mathrm f}$ active at $\bar z$ (nonnegativity, occupancy, active wrench),
-and $n=\dim z$; equivalently $\dim\Emanifold=\dim F-\operatorname{rank}(B|_{\mathrm{lin}F})$
-for the minimal face $F\supseteq\Emanifold$. Thus $\Emanifold$ is positive-dimensional
-iff the \emph{productive neutral space} $N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is
-nontrivial. The transportation value $(T-1)(K_{\mathrm{act}}-1)$ is the special case
-of equal column-sum weights with only row/column sums active.
+the inequalities of $X_{\mathrm f}$ active at $\bar z$ (nonnegativity, occupancy, active
+wrench), and $n=\dim z$. Thus $\Emanifold$ is positive-dimensional iff the
+\emph{productive neutral space} $N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is nontrivial;
+the transportation value $(T-1)(K_{\mathrm{act}}-1)$ is the special case of equal
+column-sum weights.
 \end{theorem}
 \begin{proof}
 Uniqueness of $y^{\star}$ is Lemma~\ref{lem:uniqueagg}. At
@@ -84,23 +87,22 @@ neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$ at machine precision. Class
 theory thus fixes \emph{how much} each load receives, not \emph{which types} provide it.
 
 \begin{proposition}[Comparative-advantage exchange]\label{prop:cycle}
-A count-preserving four-cycle $d$ ($d_{\tau a}\!=\!+1$, $d_{\tau b}\!=\!-1$,
-$d_{\tau' a}\!=\!-1$, $d_{\tau' b}\!=\!+1$) is productively neutral ($Bd=0$) iff
-$B_{\tau a}-B_{\tau b}=B_{\tau' a}-B_{\tau' b}$. A neutral exchange can still change
+A count-preserving four-cycle $d$ (a productively neutral swap, $Bd=0$) can still change
 connectivity: at a simple Fiedler eigenvalue with unit vector $v$,
-$D\lamtwo(\Lap(z))[d]=\sum_{\tau,r}\gamma_{\tau r}\,d_{\tau r}\,v^{\top}L_r v$, and the
-exchange is locally connectivity-improving when this is positive. A long-range type
-can thus trade a lifting role to a short-range type at no productive cost while raising
-$\lamtwo$.
+$D\lamtwo(\Lap(z))[d]=\sum_{\tau,r}\gamma_{\tau r}\,d_{\tau r}\,v^{\top}L_r v$, improving
+$\lamtwo$ when positive. A long-range type thus trades a lifting role to a short-range
+type at no productive cost while raising $\lamtwo$.
 \end{proposition}
 
 \begin{example}[A two-type fiber]\label{ex:fiber}
-Take $T=2$ types, one load of demand $y^{\star}$ served through a single slot, and one
-relay site; both types can lift, but only the long-range type $\ell$ relays
-effectively ($\gamma_{\ell r}>\gamma_{s r}\ge0$). Let $z(\alpha)$ place $\alpha$
-long-range robots on relay while a short-range robot takes the vacated lifting role, a
-productively neutral exchange (Prop.~\ref{prop:cycle}), so $Bz(\alpha)=y^{\star}$ and
-$V(z(\alpha))\equiv V^{\star}$ for all admissible $\alpha$. Along this arc
+Take $T=2$ types with \emph{equal lifting capacity} $c_\ell=c_s$, one load of demand
+$y^{\star}$ served through a single slot, and one relay site; both types lift
+identically, but only the long-range type $\ell$ relays effectively
+($\gamma_{\ell r}>\gamma_{s r}\ge0$). Let $z(\alpha)$ move $\alpha$ long-range robots
+from lifting to relay while an equal mass of short-range robots takes the vacated
+lifting role. Because $c_\ell=c_s$ this is productively neutral
+(Prop.~\ref{prop:cycle}), so $Bz(\alpha)=y^{\star}$ and $V(z(\alpha))\equiv V^{\star}$
+for all admissible $\alpha$. Along this arc
 $\lamtwo(\Lap(z(\alpha)))$ is concave and increasing, so the SDP~\eqref{eq:sdp} selects
 the largest feasible $\alpha$ and a WISE exists iff that value clears $\sigmastar$
 (Fig.~\ref{fig:scene}, block~2).
@@ -121,9 +123,12 @@ keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and clos
 \end{definition}
 
 \begin{theorem}[WISE existence and selection as an SDP]\label{thm:existence}
-Fix the unique optimal aggregate $y^{\star}$ (Lemma~\ref{lem:uniqueagg}). The
-lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
-\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is the solution of the semidefinite program
+\emph{Stage 1} fixes the unique optimal aggregate
+$y^{\star}=Bz^{\star}$, $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$
+(Lemma~\ref{lem:uniqueagg}); \emph{Stage 2} selects connectivity on the resulting
+fiber. The lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
+\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is the solution of the Stage-2 semidefinite
+program
 \begin{equation}
 \LamE=\max_{z,\;t}\ t\quad\text{s.t.}\quad
 z\in X_{\mathrm f},\ \ Bz=y^{\star},\ \ Q^{\top}\Lap(z)\,Q\succeq tI,
@@ -150,10 +155,11 @@ $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$. Strictness holds when $\sigmastar$ lies
 strictly inside the range of $\lamtwo$ over $\Emanifold$.
 \end{proof}
 
-\subsection{Aggregate--estimator stability, derived}
+\subsection{Aggregate--estimator stability}
 The decentralized realization~\eqref{eq:pd} couples a served-aggregate revision error
-$\xi$ with a consensus-estimator error $\eta$. Linearising~\eqref{eq:pd} about
-$z^{\star}$ yields
+$\xi$ with a consensus-estimator error $\eta$. We analyse the reduced error model
+associated with the local behaviour of~\eqref{eq:pd} after eliminating the inactive
+duals and projecting onto the active face,
 \begin{equation}
 \begin{bmatrix}\dot\xi\\ \dot\eta\end{bmatrix}
 =\mathcal J\begin{bmatrix}\xi\\ \eta\end{bmatrix},\qquad
@@ -161,9 +167,11 @@ $z^{\star}$ yields
 -c\,(\bar L_\perp\!\otimes\! I_p)\end{bmatrix},
 \label{eq:jac}
 \end{equation}
-with $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, $M\succeq\mF I$ the curvature of $V$ in the
-served aggregate along $X_{\mathrm f}$, $\|\Theta\|_2\le\vt$ the cross-coupling, and
-$c$ the consensus gain.
+with $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$ and $c$ the consensus gain. We take as
+modelling hypotheses that $M=M^{\top}\succeq\mF I$ (the curvature of $V$ in the served
+aggregate along $X_{\mathrm f}$), $\|\Theta\|_2\le\vt$ (the cross-coupling), and that
+the reduced block $\mathcal J$ is symmetric---exact in the isotropic modal reduction;
+we do not claim~\eqref{eq:jac} is the full closed-loop Jacobian.
 
 \begin{theorem}[Aggregate--estimator stability]\label{thm:stability}
 $\mathcal J$ is symmetric; by the Schur complement of its $-M\prec0$ block it is Hurwitz
@@ -187,44 +195,33 @@ $\Theta^{\top}M^{-1}\Theta\preceq(\vt^2/\mF)I$, the bound $c\,\mF\,\lamtwo>\vt^2
 implies it; at $M=\mF I,\Theta=\vt I$ the two bounds coincide on the Fiedler mode, making
 it necessary.
 \end{proof}
-The claim is about the served-aggregate/estimator subsystem, \emph{not} exponential
-stability of $z^{\star}$ itself: on the positive-dimensional fiber $\Emanifold$ the
-neutral composition directions stay marginal unless regularised. Because WISE uses the
-strict margin $\sigmastar=\sigmadyn+\delta$, the subsystem clears $\sigmadyn$ with room.
+This concerns the served-aggregate/estimator subsystem, \emph{not} $z^{\star}$ itself:
+the neutral fiber directions stay marginal unless regularised, and WISE's strict margin
+$\sigmastar=\sigmadyn+\delta$ clears $\sigmadyn$ with room.
 
 \subsection{Selection, prices, and the cost of endogeneity}
 The lexicographic selector of Theorem~\ref{thm:existence} is exact. A scalarised
-alternative $V_\varepsilon(z)=V(z)+\varepsilon\lamtwo(\Lap(z))$ recovers it only in the
-limit: any maximiser $z_\varepsilon$ obeys
-$0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$ and
-$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
-by Tikhonov selection~\cite{facchinei2003fvi}, so a finite $\varepsilon$ perturbs the
-aggregate whereas the lexicographic form does not.
+alternative $V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only in the limit: any
+maximiser obeys $0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$
+and $\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
+(Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ perturbs the aggregate
+whereas the lexicographic form does not. The Lagrangian of \eqref{eq:sdp} carries duals
+$\mu\ge0$ (wrench), $\nu$ (aggregate), $\rho$ (budget/occupancy), and PSD $Z\succeq0$
+(spectral); stationarity
+$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$ prices wrench feasibility
+through $\mu$ and certifies connectivity through $Z$, conflating no multiplier with a
+marginal utility.
 
-\emph{Prices.} The Lagrangian of \eqref{eq:sdp} carries a wrench dual $\mu\ge0$, an
-aggregate dual $\nu$ ($Bz=y^{\star}$), budget/occupancy duals $\rho$, and a PSD spectral
-dual $Z\succeq0$; stationarity reads
-$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$ with $\mathcal G^{*}$ the
-adjoint of $z\mapsto Q^{\top}\Lap(z)Q$. Thus $\mu$ prices wrench feasibility and $Z$
-certifies connectivity---no scalar multiplier is conflated with a marginal utility.
-
-\begin{theorem}[Free / costly / impossible]\label{thm:trichotomy}
+\begin{corollary}[Free / costly / impossible]\label{thm:trichotomy}
 With $\LamE$ from \eqref{eq:sdp} and $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))$
-(both attained), the endogeneity cost
-$\Ddelta=V^{\star}-\max_{z\in X_{\mathrm f}\cap\Cdelta}V(z)$ falls in exactly one regime:
-\emph{(free)} $\LamE\ge\sigmastar$: an optimal composition is safe, $\Ess\neq\varnothing$,
-$\Ddelta=0$; \emph{(costly)} $\LamE<\sigmastar\le\LamX$: no optimal composition is safe
-but a safe feasible one exists, $\Ddelta>0$; \emph{(impossible)}
-$\LamX<\sigmastar$: $X_{\mathrm f}\cap\Cdelta=\varnothing$, $\Ddelta=+\infty$.
-\end{theorem}
-\begin{proof}
-Both maxima exist by Weierstrass and the cases partition the line by $\sigmastar$
-relative to $\LamE\le\LamX$. In the costly case $X_{\mathrm f}\cap\Cdelta$ is nonempty
-compact convex, so its maximum is attained and, as no point of $\Emanifold$ lies in
-$\Cdelta$, strictly below $V^{\star}$. Measuring the gap against
-$X_{\mathrm f}\cap\Cdelta$ rather than $\Ess$ (where $V\equiv V^{\star}$) is what makes
-$\Ddelta$ informative.
-\end{proof}
+(both attained by Weierstrass), the endogeneity cost
+$\Ddelta=V^{\star}-\max_{z\in X_{\mathrm f}\cap\Cdelta}V(z)$ partitions by $\sigmastar$
+relative to $\LamE\le\LamX$: \emph{(free)} $\LamE\ge\sigmastar$ gives
+$\Ess\neq\varnothing$, $\Ddelta=0$; \emph{(costly)} $\LamE<\sigmastar\le\LamX$ has no
+safe optimal composition but a safe feasible one, $\Ddelta>0$ (measured against
+$X_{\mathrm f}\cap\Cdelta$, not $\Ess$ where $V\equiv V^{\star}$); \emph{(impossible)}
+$\LamX<\sigmastar$ gives $X_{\mathrm f}\cap\Cdelta=\varnothing$, $\Ddelta=+\infty$.
+\end{corollary}
 
 \begin{remark}[Finite-population recovery]\label{rem:integer}
 The analysis is a fluid relaxation; integer assignments are recovered by rounding and
