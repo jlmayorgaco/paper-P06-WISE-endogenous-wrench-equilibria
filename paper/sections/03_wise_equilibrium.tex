@@ -2,9 +2,10 @@
 \label{sec:wise}
 
 \subsection{Productive value and the optimal composition fiber}
-The team's productive value depends on the composition only through the
-\emph{served-capacity} aggregate $y=Bz$, $y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$ (the
-capacity recruited to load $k$):
+The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each
+load its minimum physical service, and the productive value allocates \emph{reserve}
+capacity---served capacity beyond that minimum---among the admitted loads through the
+\emph{served-capacity} aggregate $y=Bz$, $y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$:
 \begin{equation}
 V(z)=\phi(Bz),\qquad
 \phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
@@ -126,13 +127,15 @@ $y^{\star}=Bz^{\star}$, $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$
 (Lemma~\ref{lem:uniqueagg}); \emph{Stage 2} selects connectivity on the resulting
 fiber. The lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
 \arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is the solution of the Stage-2 semidefinite
-program
+program, stated in the \emph{lifted} wrench variables of Lemma~\ref{prop:membership}
+(so no facet enumeration of $X_{\mathrm f}$ is needed),
 \begin{equation}
-\LamE=\max_{z,\;t}\ t\quad\text{s.t.}\quad
-z\in X_{\mathrm f},\ \ Bz=y^{\star},\ \ Q^{\top}\Lap(z)\,Q\succeq tI,
+\LamE=\max_{z,\,\xi,\,t}\ t\quad\text{s.t.}\quad
+z\in\mathcal X,\ Bz=y^{\star},\ \eqref{eq:tensor},\ Q^{\top}\Lap(z)\,Q\succeq tI,
 \label{eq:sdp}
 \end{equation}
-convex by Lemma~\ref{lem:convex} (affine constraints, concave $\lamtwo\!\circ\!\Lap$).
+convex by Lemma~\ref{lem:convex} (affine constraints in $(z,\xi)$, concave
+$\lamtwo\!\circ\!\Lap$).
 Since $\lambda_{\min}(A)=\min_{Z\succeq0,\operatorname{tr}Z=1}\langle Z,A\rangle$, it is
 the \emph{spectral saddle}
 \begin{equation}
@@ -147,10 +150,12 @@ mode. A WISE exists iff the value clears the requirement,
 \Ess\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
 \end{equation}
-and then $z^{\star}_{\mathrm{WISE}}$ is a WISE that preserves the productive optimum
-exactly, $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$. When
-$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}: some
-optimal compositions self-sustain and others do not.
+and any maximiser $z^{\star}_{\mathrm{WISE}}$ preserves the productive optimum exactly,
+$Bz^{\star}_{\mathrm{WISE}}=y^{\star}$, hence is itself a variational equilibrium
+(Def.~\ref{def:ve}) with $V=V^{\star}$. When
+$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}. The
+argmax set $\Emanifold^{\star}$ may be non-singleton; a lexicographic tie-break
+$\min_{z\in\Emanifold^{\star}}g^{\top}z$ (least role change) fixes a unique selector.
 \end{theorem}
 \begin{proof}
 $X_{\mathrm f}$ and $Bz=y^{\star}$ are affine and, by Lemma~\ref{lem:convex},

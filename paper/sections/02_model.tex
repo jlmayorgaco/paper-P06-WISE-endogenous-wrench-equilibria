@@ -51,15 +51,15 @@ enforces this in practice); at multiplicity the Fiedler gradient is replaced by 
 PSD matrix dual $Z\succeq0$ of the LMI~\eqref{eq:lmi}.
 \end{assumption}
 
-\subsection{Exact wrench feasibility}
+\subsection{Wrench feasibility}
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned
-ellipse $U_\tau(\phi)$ with semi-axes $F_\tau$ (along $\phi$) and $\kappa F_\tau$
-($\kappa\le1$, the nonholonomic penalty). The strategic layer does not track headings,
-so we certify against the heading-independent \emph{inner zonotope}
-$U_\tau^{\mathrm{in}}=\{G_\tau u:\|u\|_\infty\le1\}$ (generator matrix $G_\tau$)
-inscribed in the disk of radius $\kappa F_\tau$. Since
-$\mathrm{disk}(\kappa F_\tau)\subseteq U_\tau(\phi)$ for every $\phi$, we have
-$U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$, so feasibility tested against
+ellipse $U_\tau(\phi)$ with semi-axes $F_\tau$, $\kappa F_\tau$ ($\kappa\le1$,
+nonholonomic penalty). The strategic layer does not track headings, so we certify
+against the heading-independent \emph{inner zonotope}
+$U_\tau^{\mathrm{in}}=\{G_\tau u:\|u\|_\infty\le1\}$ (generators $G_\tau$) inscribed in
+the disk of radius $\kappa F_\tau$. Since $\mathrm{disk}(\kappa F_\tau)\subseteq
+U_\tau(\phi)$, $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$, so feasibility tested
+against
 $U_\tau^{\mathrm{in}}$ is \emph{conservative} and creates no false positive.
 
 Let $A_{kh}\in\R^{3\times2}$ be the contact-to-wrench map at slot $(k,h)$ and
@@ -67,7 +67,7 @@ $\wdem_k\in\R^3$ the demanded wrench of load $k$. The reachable population wrenc
 the scaled Minkowski sum
 $\Wmap(C_k)=\bigoplus_{\tau,h}z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$.
 
-\begin{lemma}[Exact relaxed wrench feasibility]\label{prop:membership}
+\begin{lemma}[Exact feasibility of the inner-zonotope relaxation]\label{prop:membership}
 $\wdem_k\in\Wmap(C_k)$ iff there exist generator coefficients $\xi_{\tau kh}$ with
 \begin{equation}
 \sum_{\tau,h}A_{kh}G_\tau\,\xi_{\tau kh}=\wdem_k,
@@ -100,12 +100,15 @@ occupying relay site $r$ with a type-$\tau$ robot switches on the link Laplacian
 $L_r\succeq0$ with effectiveness $\gamma_{\tau r}\ge0$ (long-range types reach across
 the gap, short-range types barely), so
 \begin{equation}
-\Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{V\times V},
+\Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{N\times N},
 \label{eq:laplacian}
 \end{equation}
-affine in $z$ (Assumption~\ref{as:standing}(iii)). This is a convex
-\emph{surrogate}: the actual, \emph{geometric} Laplacian $\Lgeo(q)$, whose weights
-depend on inter-robot distances through the physical poses $q$, is nonconvex in
+affine in $z$ (Assumption~\ref{as:standing}(iii)). The convex theory covers exactly
+this class---graphs whose edge Laplacian is affine in \emph{site occupancy} over a
+fixed candidate-site backbone (relay activation), not a general geometric graph whose
+edge weights depend bilinearly on both endpoints. It is a convex \emph{surrogate}: the
+actual, \emph{geometric} Laplacian $\Lgeo(q)$, whose weights depend on inter-robot
+distances through the physical poses $q$, is nonconvex in
 $q$ and is \emph{not} covered by the convex theory of
 Sections~\ref{sec:wise}--\ref{sec:algorithm}; it is exercised only in the
 closed-loop simulation, where we report the empirical agreement between
@@ -119,8 +122,10 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $z$, with PSD matrix dual $Z\succeq0$ (a scalar connectivity price
-$\pi$ when $\lamtwo$ is simple). The requirement $\sigmastar=\sigmadyn+\delta$ pairs the
+affine in $z$, with PSD dual $Y\succeq0$. Writing $Y=\pi Z$ with $\pi=\operatorname{tr}Y$
+and $\operatorname{tr}Z=1$ separates the scalar connectivity \emph{price} $\pi$ from the
+critical modal \emph{direction} $Z$ (a single $vv^{\top}$ when $\lamtwo$ is simple). The
+requirement $\sigmastar=\sigmadyn+\delta$ pairs the
 derived stability boundary $\sigmadyn$ (Theorem~\ref{thm:stability}) with the robust
 margin $\delta$ of Lemma~\ref{lem:bridge}.
 

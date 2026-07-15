@@ -25,21 +25,15 @@ hard-wrench dual $\mu$ and a connectivity dual $\pi$:
 \dot\pi = \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
-with $\mathcal R_\tau$ a budget-preserving revision protocol. The aggregate deficit
-$d-H_w z$ is tracked by dynamic average consensus and $\mu\ge0$ is the wrench dual. The
-Fiedler sensitivity $v^{\top}L_e v$ needs the connectivity eigenpair; each robot
-estimates $(\lamtwo,v)$ by a deflated power iteration on $\mathbf 1^{\perp}$ over the
-current graph, whose error enters $\varepsilon_{\mathrm{est}}$ in $\delta$ (full
-recursion in the repository). This is a \emph{preservation}, not a recovery,
-mechanism: it assumes a connected warm start $\lamtwo\ge\sigma_{\mathrm{safe}}>0$ and,
-for the single-vector estimate, a uniform eigengap $\lambda_3-\lamtwo\ge g_{\min}>0$,
-with the assignment on a slower time scale than the estimator. A missing wrench direction raises $\mu$, missing
-connectivity raises the relay price $\pi$, and count migrates toward the highest
-marginal type--action value. We use a projected-ascent (Nash-stationary) revision
-whose rest points are the constrained maximisers of
-$V$~\cite{sandholm2010population}; replicator dynamics are avoided because they cannot
-revive an action driven to zero, stalling short of $\Ess$ when a relay type must be
-reactivated.
+with $\mathcal R_\tau$ a budget-preserving projected-ascent revision whose rest points
+maximise $V$~\cite{sandholm2010population}. Each robot estimates $(\lamtwo,v)$ by a
+deflated power iteration on $\mathbf 1^{\perp}$ over the current graph
+($\varepsilon_{\mathrm{est}}$ in $\delta$; full recursion in the repository). This is a
+\emph{preservation}, not a recovery, mechanism: it assumes a connected warm start
+$\lamtwo\ge\sigma_{\mathrm{safe}}>0$ and, for the single-vector estimate, a uniform
+eigengap $\lambda_3-\lamtwo\ge g_{\min}>0$, with the assignment on a slower time scale.
+A missing wrench direction raises $\mu$ and missing connectivity raises the relay price
+$\pi$; replicator dynamics are avoided as they cannot revive a zeroed action.
 
 We make no global-convergence claim for~\eqref{eq:pd}: the induced graph is
 state-dependent, the flow assumes a connected start, and it is evaluated only in
