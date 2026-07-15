@@ -16,27 +16,34 @@ load counts as served only when it is wrench-feasible \emph{and}
 $\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces exactly.
 
 
-\begin{figure}[t]\centering
-\resizebox{0.82\columnwidth}{!}{\input{sections/fig_scenario}}
-\caption{The two-region scenario. Short-range robots (\protect\tikz[baseline=-0.4ex]
-\protect\node[circle,draw,fill=blue!35,minimum size=1.8mm,inner sep=0pt]{};) have a
-small communication radius that stays within a cluster; a long-range robot
-(\protect\tikz[baseline=-0.4ex]\protect\node[rectangle,draw,fill=orange!70,
-minimum size=1.8mm,inner sep=0pt]{};) placed in the gap uses its range $r_\ell$ to
-bridge the two clusters. The load demands a planar wrench $\wdem$, and each lifter's
-force lives in the heading-aligned elliptical set $U_\tau(\phi)$. Wrench feasibility
-and connectivity thus compete for the same robots.}
-\label{fig:scenario}
-\end{figure}
-
 \paragraph*{E1 --- Convergence and self-defeat (Thm.~\ref{thm:stability})}
 The decentralized realization~\eqref{eq:pd} drives $\lamtwo(\Lap(z))$ above
-$\sigmastar$ and the wrench residual to zero together, with the connectivity price
-$\pi$ settling on long-range relays. Comparing two fiber compositions traces the
-boundary of Theorem~\ref{thm:stability}: when a long-range robot relays the estimation
-error $\|e(t)\|$ decays, and when it is withdrawn ($\lamtwo<\sigmastar$) it
-grows---the subsystem defeats its own estimator, with the sign change at
-$c\,\mF\,\lamtwo=\vt^2$ (a dedicated sweep is built in the extended study).
+$\sigmastar$ and the wrench residual to zero together, the price $\pi$ settling on
+long-range relays. Comparing two fiber compositions traces the stability boundary:
+the estimation error $\|e(t)\|$ decays when a long-range robot relays and grows when
+it is withdrawn ($\lamtwo<\sigmastar$), with the sign change at
+$c\,\mF\,\lamtwo=\vt^2$.
+
+\paragraph*{E2 --- Closed-loop transport (Fig.~\ref{fig:physical}, Lem.~\ref{lem:bridge})}
+Four lifters---each force confined to its heading-aligned elliptical set---carry a
+rigid load toward the gap while one long-range robot relays. The load tracks its
+reference pose with a residual the nonholonomic team almost fully delivers, and the
+geometric connectivity $\lamtwo(\Lgeo(q))$ tracks the surrogate $\lamtwo(\Lap)$ with
+the Weyl bound $\lamtwo(\Lap)-\varepsilon_L$ above $\sigmadyn$ throughout: the
+guarantee of Lemma~\ref{lem:bridge} holds along the whole trajectory, not just at the
+plan.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.98\columnwidth]{fig_physical.pdf}
+\caption{Closed-loop rigid-load transport ($8$ robots). (a) The team carries the load
+toward the gap (dashed path) while the relay (\protect\tikz[baseline=-0.4ex]
+\protect\node[diamond,draw,fill=green!55!black,minimum size=1.8mm,inner sep=0pt]{};)
+keeps the clusters linked. (b) Load pose error, (c) undeliverable wrench residual, and
+(d) geometric connectivity $\lamtwo(\Lgeo)$ vs.\ the surrogate $\lamtwo(\Lap)$ and the
+Weyl bound $\lamtwo(\Lap)-\varepsilon_L$, all above $\sigmadyn$
+(Lemma~\ref{lem:bridge}).}
+\label{fig:physical}
+\end{figure}
 
 \paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:trichotomy})}
 Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$, we solve the WISE
@@ -78,8 +85,7 @@ selector \texttt{wise\_sdp} certifies all seeds; the heuristic solvers
 \end{table}
 
 \paragraph*{E5 --- Emergent roles (Prop.~\ref{prop:cycle})}
-Pooled over seeds, relay commitment falls on long-range types, as
-Proposition~\ref{prop:cycle} predicts: a neutral long/short exchange leaves $Bz$ fixed
-while raising $\lamtwo$. This is the predicted division of labour in the tested
-instances, not a general theorem.
+Pooled over seeds, relay commitment falls on long-range types
+(Prop.~\ref{prop:cycle}): a neutral long/short exchange leaves $Bz$ fixed while raising
+$\lamtwo$---the predicted division of labour, not a general theorem.
 

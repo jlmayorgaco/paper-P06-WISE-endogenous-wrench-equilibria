@@ -45,6 +45,7 @@ def main() -> None:
 
     # 3. experiments (generated/*.csv + paper/figures/*.pdf)
     step("experiment: fiber", [PY, "experiments/exp_fiber.py"])
+    step("experiment: physical", [PY, "experiments/exp_physical.py"])
     if args.fast:
         run_call("experiment: phase (fast)", "exp_phase", "grid=4, seeds=2")
         run_call("experiment: methods (fast)", "exp_methods", "seeds=6")
