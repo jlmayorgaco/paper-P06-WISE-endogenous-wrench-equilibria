@@ -1,0 +1,17 @@
+{
+  "instance": {
+    "seed": 3,
+    "N": 12,
+    "nu": 0.5,
+    "tau_d": 3.0
+  },
+  "n_decision": 72,
+  "rank_ABGI": 68,
+  "n_active_inequalities": 55,
+  "dim_E_fiber": 4,
+  "Np_basis_dim": 4,
+  "max_neutral_residual": 1.182475841926666e-15,
+  "formula": "dim E = n - rank([A; B; G_I]) at a relative-interior point",
+  "tolerance": 1e-08,
+  "positive_dimensional": true
+}

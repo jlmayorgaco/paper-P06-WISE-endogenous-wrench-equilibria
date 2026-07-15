@@ -40,31 +40,46 @@ at a unique $y^{\star}$: two distinct optima would have a strictly better midpoi
 \end{proof}
 
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
-Under Lemma~\ref{lem:uniqueagg} the productively optimal aggregate
-$y^{\star}=Bx^{\star}$ is unique, but the optimal set
+Under Lemma~\ref{lem:uniqueagg} the aggregate $y^{\star}=Bx^{\star}$ is unique, but
+the optimal set $\Emanifold=\{x\in X_{\mathrm f}:Bx=y^{\star}\}$ is a nonempty compact
+convex polytope whose local dimension at a relative-interior point $\bar x$ is
 \begin{equation}
-\Emanifold=\{x\in X_{\mathrm f}:Bx=y^{\star}\}
-\label{eq:manifold}
+\dim\Emanifold=\dim\!\big(\ker A\cap\ker B\cap\ker G_I\big)
+=n-\operatorname{rank}[A;B;G_I],
+\label{eq:dim}
 \end{equation}
-is a nonempty compact convex polytope, and is \emph{positive-dimensional} whenever
-$B$ has a nontrivial productive nullspace on $X_{\mathrm f}$. For the type-blind
-column-sum aggregate (equal weights, complete bipartite support, only row/column
-sums active) it is a transportation polytope of dimension $(T-1)(K_{\mathrm{act}}-1)$;
-in general the exact local dimension is the productive-nullspace rank formula of
-Section~\ref{sec:algorithm}.
+where $Ax=b$ is mass conservation, $Bx=y^{\star}$ the served aggregate, $G_Ix=h_I$
+the inequalities of $X_{\mathrm f}$ active at $\bar x$ (nonnegativity, active wrench),
+and $n=\dim x$; equivalently $\dim\Emanifold=\dim F-\operatorname{rank}(B|_{\mathrm{lin}F})$
+for the minimal face $F\supseteq\Emanifold$. Thus $\Emanifold$ is positive-dimensional
+iff the \emph{productive neutral space} $N_p(\bar x)=\ker A\cap\ker B\cap\ker G_I$ is
+nontrivial. The transportation value $(T-1)(K_{\mathrm{act}}-1)$ is the special case
+of equal column-sum weights with only row/column sums active.
 \end{theorem}
 \begin{proof}
-Uniqueness of $y^{\star}$ is Lemma~\ref{lem:uniqueagg}. $\Emanifold$ is the preimage
-$B^{-1}(y^{\star})\cap X_{\mathrm f}$, an affine slice of a compact convex set, hence
-a nonempty compact convex polytope; it has positive dimension iff
-$\ker B\cap\mathrm{aff}(X_{\mathrm f})\neq\{0\}$. The transportation dimension
-$(T-1)(K_{\mathrm{act}}-1)$ is the special case of equal column-sum weights with only
-row/column sums active~\cite{sandholm2010population}; a general weighted $B$ can pin
-the composition (dimension $0$). Because $V=\phi(Bx)$ depends on $x$ only through
-$Bx$, every $x\in\Emanifold$ attains the same $V$.
+Uniqueness of $y^{\star}$ is Lemma~\ref{lem:uniqueagg}. At
+$\bar x\in\operatorname{relint}\Emanifold$ the minimal face $F$ fixes exactly the
+active constraints, so the feasible perturbations are
+$\{d:Ad=0,\,Bd=0,\,G_Id=0\}=N_p(\bar x)$; hence $\Emanifold$ locally coincides with
+$\bar x+N_p(\bar x)$ and \eqref{eq:dim} is rank--nullity. Since $V=\phi(Bx)$ depends on
+$x$ only through $Bx$, every $x\in\Emanifold$ attains the same $V$; a general weighted
+$B$ can give $N_p=\{0\}$ (a single composition).
 \end{proof}
-Classical theory thus fixes \emph{how much} each load receives, not \emph{which
-types} provide it. The fiber $\Emanifold$ is the freedom we exploit.
+For the representative instance the generated certificate reports
+$\dim\Emanifold=4$ (of $n=72$), with neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$
+at machine precision. Classical theory thus fixes \emph{how much} each load receives,
+not \emph{which types} provide it.
+
+\begin{proposition}[Comparative-advantage exchange]\label{prop:cycle}
+A mass-preserving four-cycle $d$ ($d_{\tau a}\!=\!+1$, $d_{\tau b}\!=\!-1$,
+$d_{\tau' a}\!=\!-1$, $d_{\tau' b}\!=\!+1$) is productively neutral ($Bd=0$) iff
+$B_{\tau a}-B_{\tau b}=B_{\tau' a}-B_{\tau' b}$. A neutral exchange can still change
+connectivity: at a simple Fiedler eigenvalue with unit vector $v$,
+$D\lamtwo(\Lap(x))[d]=\sum_e(\partial a_e/\partial x)^{\!\top}\!d\,\;v^{\top}L_e v$, and
+the exchange is locally connectivity-improving when this is positive. This is why a
+long-range type can trade a lifting role for a short-range type at no productive cost
+while raising $\lamtwo$.
+\end{proposition}
 
 \subsection{The WISE refinement}
 Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.
