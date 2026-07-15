@@ -29,7 +29,6 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Wten}{\mathcal{W}}          % (legacy alias; use \Wmap = support-capability map)
 \newcommand{\Xwise}{\mathcal{X}_{\mathrm{WISE}}}
-\newcommand{\sigmastar}{\sigma^{\star}}
 \newcommand{\lamtwo}{\lambda_2}
 \newcommand{\Lap}{\bar L}                       % decision-induced candidate-site Laplacian
 \newcommand{\Lgeo}{L_{\mathrm{geo}}}           % geometric (position-dependent) Laplacian
@@ -40,6 +39,12 @@
 \newcommand{\Emanifold}{\mathcal{E}}          % optimal composition fiber (level set of the aggregate map)
 \newcommand{\Ess}{\mathcal{E}_{\mathrm{ss}}}  % self-sustaining subset
 \newcommand{\Lammax}{\Lambda^{\star}}         % max algebraic connectivity over E
+\newcommand{\LamE}{\Lambda_{\Emanifold}}      % max lambda_2 over the optimal fiber E
+\newcommand{\LamX}{\Lambda_{X}}               % max lambda_2 over the feasible set X_f
+\newcommand{\Cdelta}{\mathcal{C}_{\delta}}    % safe information set {lambda_2 >= sigma_req}
+\newcommand{\Ddelta}{\Delta_{\delta}}         % productive loss in the costly regime
+\newcommand{\sigmadyn}{\sigma_{\mathrm{dyn}}} % dynamic stability threshold = theta^2/(c m_F)
+\newcommand{\sigmastar}{\sigma_{\mathrm{req}}}% WISE-required threshold = sigma_dyn + delta
 \newcommand{\vt}{\vartheta}                    % cross-coupling
 \newcommand{\Wmap}{\mathcal{W}}                % directional support-capability map
 
@@ -67,15 +72,17 @@ provide it. On that fiber we place an endogenous, decision-induced candidate-sit
 Laplacian $\Lap(x)$ and define the \emph{Wrench- and Information-Self-Sustaining
 Equilibrium} (WISE): a
 productively optimal composition that also keeps algebraic connectivity above the
-Nash-seeking threshold $\sigmastar=\vt^2/(c\,\mF)$. We prove (i) composition
-degeneracy, (ii) that a self-sustaining equilibrium exists iff
-$\Lammax:=\max_{x\in\Emanifold}\lamtwo(\Lap(x))\ge\sigmastar$, (iii) an exact
-local stability threshold $c\,\mF\,\lamtwo>\vt^2$ derived from the coupled
-estimation dynamics, and (iv) that an infinitesimal information reward selects
-the most-connected composition without moving the productive optimum. Closed-loop
-simulation with rigid-load transport and second-order unicycles confirms all
-four, and shows relay roles emerging from radius heterogeneity by comparative
-advantage. \emph{A population equilibrium can produce a configuration that
+stability threshold $\sigmadyn=\vt^2/(c\,\mF)$ (WISE requires the margin-inflated
+$\sigmastar=\sigmadyn+\delta$). We prove (i) composition degeneracy with a
+productive-nullspace dimension formula, (ii) a \emph{free/costly/impossible}
+trichotomy for information self-sustainability governed by the connectivity maxima
+$\LamE$ over the optimal fiber and $\LamX$ over the feasible set, (iii) a robust
+local self-computation certificate $c\,\mF\,\lamtwo>\vt^2$ derived from the coupled
+strategy--estimator dynamics (worst-case tight in the canonical aligned block), and
+(iv) a safe selector whose productive loss vanishes as the information reward
+$\varepsilon\downarrow0$. Closed-loop simulation with rigid-load transport and
+second-order unicycles---with verified integer recovery---supports the theory;
+relay roles emerge by comparative advantage. \emph{A population equilibrium can produce a configuration that
 destroys the graph its own algorithm requires; composition heterogeneity is
 exactly what lets it select the equilibria that survive.}
 \end{abstract}

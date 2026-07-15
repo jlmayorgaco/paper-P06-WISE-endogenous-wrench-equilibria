@@ -87,29 +87,31 @@ Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.
 \begin{definition}[WISE]\label{def:wise}
 A profile $x^{\star}\in\Emanifold$ is a \emph{Wrench- and
 Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(x^{\star}))\ge\sigmastar$,
-i.e.\ $x^{\star}\in\Ess:=\Emanifold\cap\{x:\lamtwo(\Lap(x))\ge\sigmastar\}$.
+i.e.\ $x^{\star}\in\Ess:=\Emanifold\cap\Cdelta$, where
+$\Cdelta=\{x\in X_{\mathrm f}:\lamtwo(\Lap(x))\ge\sigmastar\}$. Since
+$\sigmastar=\sigmadyn+\delta>\sigmadyn$, a WISE clears the stability threshold of
+Theorem~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge},
+keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and closed
+(super-level set of the concave $\lamtwo\!\circ\!\Lap$, Lemma~\ref{lem:convex}).
 \end{definition}
 
 \begin{theorem}[Existence by selection]\label{thm:existence}
-Let $\Lammax=\max_{x\in\Emanifold}\lamtwo(\Lap(x))$. Then
+Let $\LamE=\max_{x\in\Emanifold}\lamtwo(\Lap(x))$. Then
 \begin{equation}
-\Ess\neq\varnothing\iff\Lammax\ge\sigmastar,
+\Ess\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
 \end{equation}
 and $\Ess$ is convex. When $\dim\Emanifold>0$ and
-$\min_{\Emanifold}\lamtwo<\sigmastar\le\Lammax$, the refinement is \emph{strict}:
+$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$, the refinement is \emph{strict}:
 some productively optimal compositions self-sustain and others do not.
 \end{theorem}
 \begin{proof}
 $\lamtwo\!\circ\!\Lap$ is concave (Lemma~\ref{lem:convex}) and continuous on the
-compact convex $\Emanifold$, so it attains its maximum $\Lammax$; $\Ess$ is
-nonempty iff $\Lammax\ge\sigmastar$. $\Ess$ is the intersection of the polytope
+compact convex $\Emanifold$, so it attains its maximum $\LamE$; $\Ess$ is
+nonempty iff $\LamE\ge\sigmastar$. $\Ess$ is the intersection of the polytope
 $\Emanifold$ with a convex super-level set, hence convex. Strictness is immediate
 when the threshold falls strictly inside the range of $\lamtwo$ over $\Emanifold$.
 \end{proof}
-Selection within a degenerate optimal composition fiber is stronger than appending a constraint to
-a strictly concave program: without Theorem~\ref{thm:degeneracy} there would be a
-single composition and nothing to select.
 
 \subsection{The self-defeat threshold, derived}
 The distributed dynamics run a strategy-revision loop and a consensus estimator of
@@ -123,27 +125,28 @@ J=\begin{bmatrix}-m_F & \vt\\[1mm] \vt & -c\,\lamtwo(\Lap(x^{\star}))\end{bmatri
 \label{eq:jac}
 \end{equation}
 
-\begin{theorem}[Exact stability threshold]\label{thm:stability}
-$x^{\star}$ is locally exponentially stable under \eqref{eq:jac} iff
+\begin{theorem}[Local self-computation certificate]\label{thm:stability}
+The canonical block \eqref{eq:jac} is Hurwitz iff
 \begin{equation}
 c\,m_F\,\lamtwo(\Lap(x^{\star}))>\vt^{2},
 \quad\text{i.e.}\quad
-\lamtwo>\sigmastar:=\frac{\vt^{2}}{c\,m_F}.
+\lamtwo>\sigmadyn:=\frac{\vt^{2}}{c\,m_F}.
 \label{eq:threshold}
 \end{equation}
-Below the threshold $J$ has a positive real eigenvalue and $x^{\star}$ is unstable.
+At equality $\det J=0$ (a zero eigenvalue---\emph{not} exponential stability); below
+it $J$ has a positive real eigenvalue.
 \end{theorem}
 \begin{proof}
-$\operatorname{tr}J=-(m_F+c\lamtwo)<0$ always, and
-$\det J=c\,m_F\,\lamtwo-\vt^{2}$. A real $2\times2$ matrix is Hurwitz iff
-$\operatorname{tr}J<0$ and $\det J>0$; thus stability $\Leftrightarrow\det J>0
-\Leftrightarrow$ \eqref{eq:threshold}. If $\det J<0$ the eigenvalues are real of
-opposite sign, giving an unstable manifold.
+$\operatorname{tr}J=-(m_F+c\lamtwo)<0$ always and $\det J=c\,m_F\,\lamtwo-\vt^{2}$;
+a real $2\times2$ matrix is Hurwitz iff $\operatorname{tr}J<0$ and $\det J>0$, giving
+\eqref{eq:threshold}.
 \end{proof}
-This grounds $\sigmastar$ in the dynamics of the very estimator that computes the
-equilibrium, and matches the existence condition~\eqref{eq:exist}: a productively
-optimal composition is dynamically viable iff its induced connectivity clears the
-same $\sigmastar$.
+This is the worst-mode certificate: the vectored strategy--estimator error
+diagonalises over $Q^{\top}\Lap(x^{\star})Q$ and the tightest block is the Fiedler
+mode $\lamtwo$; we state \eqref{eq:threshold} for that canonical aligned block and
+do \emph{not} claim ``iff'' for the full nonlinear system. WISE uses the strict
+margin $\sigmastar=\sigmadyn+\delta$, so a WISE is exponentially stable, not
+marginal.
 
 \subsection{Selection, prices, and the cost of endogeneity}
 \begin{proposition}[Infinitesimal-reward selection]\label{prop:selection}
@@ -159,38 +162,40 @@ Tikhonov/$\Gamma$-selection principle, maximisers of $V+\varepsilon\lamtwo$ conv
 as $\varepsilon\downarrow0$ to maximisers of $\lamtwo$ over $\arg\max V=\Emanifold$.
 \end{proof}
 An infinitesimal information value breaks the composition degeneracy toward the
-most-connected profile without moving the productive optimum---an exact
-equilibrium refinement.
+most-connected profile, with productive loss \emph{vanishing} as
+$\varepsilon\downarrow0$: quantitatively
+$0\le V^{\star}-V(x_\varepsilon)\le\varepsilon\,\operatorname{osc}(\lamtwo)$ and
+$\|Bx_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\,\operatorname{osc}(\lamtwo)/\alpha}$.
+Only the exact Stage-2 problem $\max_{x\in\Emanifold}\lamtwo(\Lap(x))$ leaves the
+productive optimum unmoved; a finite $\varepsilon$ does not.
 
-\begin{corollary}[Two certification prices]\label{cor:prices}
-At a WISE solving $\max_{x\in\Ess}V$, let $\mu^{\star}_k=\nabla F_k(s_k^{\star})$ be
-the wrench price and $Z^{\star}\succeq0$ the dual of the LMI~\eqref{eq:lmi}, with
-$Z^{\star}=\pi^{\star}vv^{\top}$ at a simple minimiser. Stationarity gives the
-type-action value
-\begin{equation}
-q^{\star}_{\tau a}=\underbrace{\textstyle\sum_{k,\ell}\mu^{\star}_{k\ell}\Wmap_{\tau a,k\ell}}_{\text{wrench}}
--\,g_{\tau a}
-+\underbrace{\pi^{\star}\,\partial\lamtwo/\partial x_{\tau a}}_{\text{connectivity}},
-\label{eq:prices}
-\end{equation}
-with $\pi^{\star}(\lamtwo-\sigmastar)=0$. All terms of $\nabla V$ are present:
-$\mu^{\star}=\nabla F_k$ is the single wrench price, not a separate multiplier.
-\end{corollary}
+\begin{theorem}[Free / costly / impossible]\label{thm:trichotomy}
+With $\LamE=\max_{x\in\Emanifold}\lamtwo(\Lap(x))$ and
+$\LamX=\max_{x\in X_{\mathrm f}}\lamtwo(\Lap(x))$ (both attained), exactly one regime
+holds: \emph{(free)} $\LamE\ge\sigmastar$: an optimal composition is
+information-safe, $\Ess\neq\varnothing$, productive loss $\Ddelta=0$;
+\emph{(costly)} $\LamE<\sigmastar\le\LamX$: no optimal composition is safe but a
+safe feasible one exists, with $\Ddelta=V^{\star}-\max_{x\in X_{\mathrm f}\cap\Cdelta}V(x)>0$;
+\emph{(impossible)} $\LamX<\sigmastar$: $X_{\mathrm f}\cap\Cdelta=\varnothing$ and
+$\Ddelta=+\infty$.
+\end{theorem}
+\begin{proof}
+Both maxima exist by Weierstrass; the cases partition the line by $\sigmastar$
+relative to $\LamE\le\LamX$. In the costly case $X_{\mathrm f}\cap\Cdelta$ is nonempty
+compact convex, so its maximum is attained, and since no point of $\Emanifold$ lies
+in $\Cdelta$ it is strictly below $V^{\star}$.
+\end{proof}
+This trichotomy replaces the additive ``$\Delta_{\mathrm{endo}}$'' of an earlier
+draft, which is identically $0$ whenever a WISE exists (since $V$ is constant on the
+optimal fiber $\Emanifold$). Role prices follow from the productive-nullspace
+directional derivative of Proposition~\ref{prop:cycle}, not from an incomplete KKT
+identity.
 
-We measure the price of endogeneity \emph{additively}, avoiding the pathologies of
-a potential ratio:
-\begin{equation}
-\Delta_{\mathrm{endo}}
-= V(x^{\star}_{\mathrm{exo}})-\max_{x\in\Ess}V(x)\;\ge0,
-\label{eq:gap}
-\end{equation}
-the productive value forgone to remain self-sustaining. $\Delta_{\mathrm{endo}}=0$
-exactly when $\Lammax$ is attained at a productively optimal composition---when
-radius heterogeneity suffices to bridge the gap for free.
-
-\begin{remark}[Integer recovery]\label{rem:integer}
-Rounding the fluid optimum $x^{\star}$ to integer assignments preserves wrench
-feasibility and $\lamtwo\ge\sigmastar$ whenever the margins
-$m_W=\min_{k,\ell}(s_{k\ell}-d_{k\ell})$ and $m_I=\lamtwo-\sigmastar$ exceed
-rounding constants $\kappa_W,\kappa_I=O(1/N)$ set by the granularity.
+\begin{remark}[Finite-population recovery]\label{rem:integer}
+The analysis is a fluid relaxation. Integer assignments (one action per robot) are
+obtained by rounding and \emph{re-certified numerically}; we make no $O(1/N)$ claim.
+Solving with the robustness margins $s\ge d+m_W$, $\lamtwo\ge\sigmastar$
+(itself $=\sigmadyn+\delta$) leaves slack, so on the $N=12$ demonstration the fluid
+certification rate transfers to integer robots ($100\%$ under randomised rounding,
+generated report), whereas naive rounding of a zero-margin optimum does not.
 \end{remark}

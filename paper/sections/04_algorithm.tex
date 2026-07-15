@@ -1,54 +1,52 @@
 \section{Distributed Algorithm}
 \label{sec:algorithm}
 
-We seek a WISE by a projected primal--dual flow that couples a population revision
-protocol to the connectivity price of Corollary~\ref{cor:prices}:
+We seek a WISE by a projected primal--dual flow with a hard-wrench dual $\mu$ and a
+connectivity dual $\pi$:
 \begin{subequations}\label{eq:pd}
 \begin{align}
-\dot x_\tau &= \mathcal R_\tau\!\Big(x,\;\nabla_{x_\tau}V(x)
+\dot x_\tau &= \mathcal R_\tau\!\Big(x,\;\nabla_{x_\tau}V(x)+H_w^{\top}\mu
 +\pi\,\nabla_{x_\tau}\lamtwo(\Lap(x))\Big),\label{eq:pd-x}\\
-\dot\pi &= \big[\sigmastar-\lamtwo(\Lap(x))\big]_+^{\pi},\label{eq:pd-pi}
+\dot\mu &= \big[d-H_w x\big]_+^{\mu},\qquad
+\dot\pi = \big[\sigmastar-\lamtwo(\Lap(x))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
-where $\mathcal R_\tau$ is a mass-preserving revision protocol and the wrench price
-$\mu_k=\nabla F_k(s_k)$ is internal to $\nabla V$. Each type needs only its own
-capability rows $\Wmap_{\tau,\cdot}$, the aggregate deficit $d-s(x)$, and the local
-Fiedler sensitivity $v^{\top}L_e v$, all obtained by consensus over the current
-graph. Economically: a missing wrench direction raises $\mu$; missing connectivity
-raises the relay price $\pi$; mass migrates toward the highest type-action value
-\eqref{eq:prices}.
+where $\mathcal R_\tau$ is a mass-preserving revision protocol. The aggregate deficit
+$d-H_w x$ is obtained by dynamic average consensus; $\mu\ge0$ is the wrench-feasibility
+dual. The Fiedler sensitivity $v^{\top}L_e v$ requires the algebraic-connectivity
+eigenpair; in this study it is computed \emph{supervisorily} (a decentralized Fiedler
+estimator would make the certification fully distributed, and its estimation error
+enters $\varepsilon_{\mathrm{est}}$ in $\delta$). A missing wrench direction raises
+$\mu$; missing connectivity raises the relay price $\pi$; mass migrates toward the
+highest marginal type-action value.
 
-\paragraph*{Choice of revision protocol}
-We use a projected-ascent (Euclidean) protocol, which is Nash-stationary: its rest
-points are exactly the constrained maximisers of $V$~\cite{sandholm2010population}.
-Smith and BNN protocols share this property. We deliberately avoid the replicator
-(multiplicative-weights) map: it is \emph{not} Nash-stationary on the boundary---it
-can rest at support-restricted profiles that leave a profitable but extinct action
-unused, and it never repopulates a mass it has driven to
-zero~\cite{sandholm2010population}. On a fiber $\Emanifold$ whose self-sustaining
-subset may require re-activating a relay type, replicator can therefore stall short
-of $\Ess$; projected ascent cannot.
+We use a projected-ascent (Nash-stationary) revision, whose rest points are the
+constrained maximisers of $V$~\cite{sandholm2010population}. Replicator dynamics are
+avoided: they cannot revive an action driven to zero, so on a fiber whose safe
+subset needs a re-activated relay type they can stall short of $\Ess$.
 
-\begin{proposition}[Convergence to a WISE]\label{prop:conv}
-Assume $\Phi_0$ strongly concave, Slater feasibility of $\Ess$, and a
-Nash-stationary revision $\mathcal R$. Then the saddle points of the Lagrangian of
-$\max_{x\in\Ess}V$ coincide with the WISE profiles, and \eqref{eq:pd} is a
-projected monotone flow whose trajectories converge to one, provided the consensus
-gain keeps the estimator above the stability threshold of
-Theorem~\ref{thm:stability} throughout.
+\begin{proposition}[Safe connectivity-selection flow]\label{prop:conv}
+In the free regime ($\Ess\neq\varnothing$), consider the projection dynamics
+$\dot x=\Pi_{T_{\Emanifold}(x)}\!\big[\nabla\lamtwo(\Lap(x))\big]$ started at
+$x(0)\in\Emanifold$ with $\lamtwo(\Lap(x(0)))\ge\sigmastar$ and $\lamtwo$ simple
+along the arc. Then $\Emanifold$ is forward invariant,
+$\tfrac{d}{dt}\lamtwo=\nabla\lamtwo^{\top}\Pi_{T_{\Emanifold}}\nabla\lamtwo\ge0$
+(the safety margin never decreases), and trajectories converge to the set of
+maximisers of the concave $\lamtwo$ over the convex $\Emanifold$.
 \end{proposition}
-\begin{proof}[Sketch]
-Strong concavity of $V$ and convexity of $\Ess$ make the Lagrangian
-concave--convex, so its saddle points are the KKT (hence WISE) points by
-Corollary~\ref{cor:prices}. The map in \eqref{eq:pd} is the projected gradient of
-this saddle function, which is monotone; passivity arguments for primal--dual
-Nash-seeking give convergence~\cite{gadjov2019passivity,facchinei2003fvi}. The
-proviso is exactly \eqref{eq:threshold}: if the trajectory drops below $\sigmastar$
-the estimator error grows (Theorem~\ref{thm:stability}) and the aggregates fed to
-$\mathcal R$ are no longer trustworthy---the algorithm can only be guaranteed to
-converge where the equilibrium is self-computing.
+\begin{proof}
+Tangent-cone projection keeps $x\in\Emanifold$. Along differentiable arcs
+$\dot\lamtwo=\|\Pi_{T_{\Emanifold}}\nabla\lamtwo\|^2\ge0$; a rest point satisfies
+$\Pi_{T_{\Emanifold}}\nabla\lamtwo=0$, the optimality condition for the concave
+$\lamtwo$ on the convex $\Emanifold$. LaSalle with $-\lamtwo$ gives convergence to
+the maximiser set (not necessarily a point).
 \end{proof}
 
-The proviso is the paper's point in algorithmic form: convergence of the
-distributed method is contingent on the equilibrium it is converging to being
-information self-sustaining.
+This is a \emph{safe selection stage}, not a self-bootstrap: it assumes a connected
+start in $\Emanifold$ and covers neither initialisation outside the safe region nor
+global convergence of the full mobile-robot system. The primal--dual flow
+\eqref{eq:pd} is used as a \emph{numerical solver} for $\max_{x\in\Ess}V$; we make
+no global-convergence claim for it, and the connectivity certification (eigenpair)
+is supervisory rather than fully distributed (Section~\ref{sec:exp}). In the costly
+regime the target is $\max_{x\in X_{\mathrm f}\cap\Cdelta}V$, which the neutral flow
+over $\Emanifold$ cannot reach.

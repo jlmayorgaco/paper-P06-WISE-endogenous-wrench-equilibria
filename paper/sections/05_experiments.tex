@@ -37,16 +37,18 @@ inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$: it executes
 \end{figure}
 
 \paragraph*{E1 --- Convergence (Fig.~\ref{fig:conv})}
-On a representative instance the distributed flow drives $\lamtwo(\Lap(x))$ onto
-$\sigmastar$ and the wrench residual to zero together: the equilibrium becomes
-wrench-feasible and self-computing at once. The information price $\pi$ settles at
-its certification value and the relay mass accrues \emph{only} to long-range types.
+On a representative instance the distributed flow drives $\lamtwo(\Lap(x))$ to at
+least $\sigmastar$ (it settles \emph{above} $\sigmastar$, by the robustness margin)
+and the wrench residual to zero together: the equilibrium becomes wrench-feasible
+and self-computing at once. The information price $\pi$ settles at its certification
+value; in these instances the relay mass accrues to long-range types.
 
 \begin{figure}[t]\centering
 \includegraphics[width=\columnwidth]{fig2_convergence.pdf}
-\caption{Distributed convergence. (a) $\lamtwo\!\to\!\sigmastar$ and wrench residual
-$\to0$ together. (b) Price $\pi$ converges; relay mass accrues to long-range types
-only (short-range stays at zero).}
+\caption{Distributed convergence (single instance, empirical). (a) $\lamtwo$ rises
+\emph{above} $\sigmastar$ (it converges to $\sigmastar+$margin, not onto it) while
+the wrench residual $\to0$. (b) Price $\pi$ converges; relay mass accrues to
+long-range types, short-range near zero.}
 \label{fig:conv}
 \end{figure}
 
@@ -66,18 +68,19 @@ $c\,\mF\lamtwo>\vt^2$ (Theorem~\ref{thm:stability}); it diverges below the thres
 \label{fig:thresh}
 \end{figure}
 
-\paragraph*{E3 --- Existence phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:existence})}
-Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ (12 seeds/cell),
-certification collapses exactly where predicted: at $\nu\!\to\!0$ no composition on
-$\Emanifold$ reaches $\Lammax\ge\sigmastar$ (existence fails), and at high $\tau_d$
-the fleet is wrench-limited. The certified band is the region where
-$\Lammax\ge\sigmastar$.
+\paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:trichotomy})}
+Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ ($n=12$
+seeds/cell), the empirical certification rate collapses in the two regimes the
+trichotomy predicts: at $\nu\!\to\!0$ no composition reaches $\LamE\ge\sigmastar$
+(impossible/costly), and at high $\tau_d$ the fleet is wrench-limited. We plot the
+empirical rate; the overlaid contour is data, not the theoretical boundary.
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.82\columnwidth]{fig3_phase.pdf}
-\caption{Certified-service-rate phase diagram over $(\nu,\tau_d)$ (12 seeds/cell;
-dashed $=50\%$ contour). Certification requires $\Lammax\ge\sigmastar$ (fails at
-$\nu\!\to\!0$) and wrench feasibility (fails at high $\tau_d$).}
+\caption{Empirical certified-service-rate phase diagram over $(\nu,\tau_d)$
+($n=12$ seeds/cell). The dashed line is the \emph{empirical} $50\%$ contour, not
+the theoretical $\LamE=\sigmastar$ boundary. The trichotomy attributes the two
+failure edges to existence ($\nu\!\to\!0$) and wrench feasibility (high $\tau_d$).}
 \label{fig:phase}
 \end{figure}
 
@@ -85,25 +88,28 @@ $\nu\!\to\!0$) and wrench feasibility (fails at high $\tau_d$).}
 On paired seeds, enforcing either requirement alone fails: \texttt{scalar\_capacity}
 and \texttt{wrench\_only} build valid coalitions that fragment the network,
 \texttt{connectivity\_only} keeps the network but cannot lift, and only WISE
-certifies both---matching the centralized oracle, evidence that the distributed
-selection attains $\max_{x\in\Ess}V$.
+certifies both. WISE and the centralized oracle agree on this operating point,
+which is a numerical sanity check (both solve the same relaxed program), not a
+proof of distributed optimality. Table~\ref{tab:ablation} reports the run count and
+$95\%$ paired-bootstrap intervals.
 
 \begin{table}[t]\centering
-\caption{Constraint ablation on paired seeds ($N=12$, $\nu=0.5$, $\tau_d=3$,
-seed-averaged). Arrows mark the preferred direction.}
+\caption{Constraint ablation on $n=16$ paired seeds ($N=12$, $\nu=0.5$,
+$\tau_d=3$; mean over seeds). Arrows mark the preferred direction; WISE integer
+recovery reaches $100\%$ under randomised rounding.}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}
 \end{table}
 
-\paragraph*{E5 --- Emergent roles (Fig.~\ref{fig:roles}b, Prop.~\ref{prop:selection})}
-Pooling WISE solutions across seeds, relay commitment is drawn \emph{exclusively}
-from long-range types: no short-range robot ever relays. The price system
-\eqref{eq:prices} selects, within the degenerate optimal composition fiber
-$\Emanifold$, the composition
-that maximises connectivity---comparative advantage in radius produces the division
-of labour, exactly the infinitesimal-reward selection of
-Proposition~\ref{prop:selection}.
+\paragraph*{E5 --- Emergent roles (Fig.~\ref{fig:roles}b, Prop.~\ref{prop:cycle})}
+Pooling WISE solutions across seeds, \emph{in the tested instances} relay
+commitment is drawn from long-range types. This is the comparative-advantage
+mechanism of Proposition~\ref{prop:cycle}: a productively neutral role exchange
+between a long- and a short-range type leaves $Bx$ fixed while raising $\lamtwo$
+(positive directional derivative), so the connectivity selector concentrates relays
+on the long-range types---not a general theorem, but the predicted division of
+labour.
 
 \begin{figure}[t]\centering
 \includegraphics[width=\columnwidth]{fig4_ablation_roles.pdf}

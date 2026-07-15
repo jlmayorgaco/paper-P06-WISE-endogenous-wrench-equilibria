@@ -1,0 +1,9 @@
+{
+  "n_runs": 16,
+  "N_robots": 12,
+  "note": "N=12 physical demonstration; each robot is integer (one action).",
+  "fluid_certified_rate": 1.0,
+  "integer_argmax_rate": 0.75,
+  "integer_randomized_rate": 1.0,
+  "integrality_gap_welfare_mean": -0.0087
+}
