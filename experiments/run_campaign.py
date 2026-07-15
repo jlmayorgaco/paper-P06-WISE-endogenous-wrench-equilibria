@@ -33,6 +33,7 @@ plt.rcParams.update({
     "axes.labelsize": 9, "legend.fontsize": 7.5, "xtick.labelsize": 8,
     "ytick.labelsize": 8, "figure.dpi": 200, "savefig.bbox": "tight",
     "savefig.pad_inches": 0.02, "axes.linewidth": 0.7,
+    "pdf.fonttype": 42, "ps.fonttype": 42,   # embed TrueType, not Type 3 (IEEE)
 })
 
 C_NOPHYS, C_PHYS, C_WISE, C_ACCENT = "#d1495b", "#edae49", "#66a182", "#2e4057"
