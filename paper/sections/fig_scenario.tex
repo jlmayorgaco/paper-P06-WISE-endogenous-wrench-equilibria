@@ -1,0 +1,59 @@
+% Concrete two-region multi-robot scenario: communication / sensing radii, the
+% load and its demanded wrench, and the long-range robot that bridges the gap.
+\begin{tikzpicture}[
+  font=\scriptsize,
+  short/.style={circle,draw=black,fill=blue!35,minimum size=3.4mm,inner sep=0pt},
+  long/.style={rectangle,draw=black,fill=orange!70,minimum size=3.6mm,inner sep=0pt},
+  ld/.style={rectangle,draw=black,fill=gray!60,text=white,font=\scriptsize,
+             minimum width=7mm,minimum height=5mm,inner sep=0.5pt},
+  comm/.style={draw=blue!55,dashed,fill=blue!8,line width=0.6pt},
+  commL/.style={draw=orange!75!black,dashed,fill=orange!10,line width=0.8pt},
+  sens/.style={draw=gray!55,dotted,line width=0.6pt},
+  reg/.style={rounded corners=4pt,draw=gray!35,fill=gray!5},
+  x=1cm,y=1cm]
+
+% arena
+\draw[reg,fill=gray!3] (0,0) rectangle (7,7);
+% two cluster regions
+\node[reg,minimum width=2.6cm,minimum height=4.4cm,fill=blue!4] at (1.6,3.5){};
+\node[reg,minimum width=2.6cm,minimum height=4.4cm,fill=green!4] at (5.4,3.5){};
+\node[gray!60] at (1.6,6.2){left cluster};
+\node[gray!60] at (5.4,6.2){right cluster};
+\node[gray!55] at (3.5,0.45){gap (short links do not cross)};
+
+% ---- left cluster: short-range robots + small comm radii ----
+\draw[comm] (1.2,4.4) circle (1.0);
+\draw[comm] (2.1,2.7) circle (1.0);
+\node[short](s1) at (1.2,4.4){};
+\node[short](s2) at (2.1,2.7){};
+\draw[gray!70,semithick] (s1)--(s2);
+
+% ---- right cluster: load, lifters, demanded wrench ----
+\node[ld](L) at (5.4,3.0){load};
+\draw[-{Latex[length=1.8mm]},thick] (5.4,3.28)--(5.4,4.05); \node at (5.78,3.95){$\wdem$};
+\draw[-{Latex[length=1.3mm]},thick] (5.9,3.0) arc (0:300:0.32); \node at (6.45,3.0){$\tau$};
+\draw[comm] (4.8,4.3) circle (1.0);
+\draw[comm] (6.0,4.2) circle (1.0);
+\node[short](r1) at (4.8,4.3){};
+\node[short](r2) at (6.0,4.2){};
+\draw[gray!70,semithick] (r1)--(r2) (r1)--(L.north) (r2)--(L.north);
+% one lifter carries a heading-aligned force ellipse (nonholonomic)
+\draw[red!60,rotate around={25:(4.8,4.3)}] (4.8,4.3) ellipse (0.55 and 0.24);
+\node[red!65] at (4.35,5.0){$U_\tau(\phi)$: $F_\tau,\ \kappa F_\tau$};
+
+% ---- long-range robot in the gap: large comm radius bridges both clusters ----
+\draw[sens] (3.5,3.5) circle (2.4);
+\draw[commL] (3.5,3.5) circle (1.9);
+\node[long](Lr) at (3.5,3.5){};
+\draw[green!45!black,line width=1.1pt] (s2)--(Lr) (Lr)--(r1);
+\node[orange!80!black,align=center] at (3.5,1.15)
+  {long-range robot relays:\\ range $r_\ell$ bridges the gap};
+
+% ---- radius annotations ----
+\draw[-{Latex[length=1mm]},blue!60] (1.2,4.4)--++(-35:1.0);
+\node[blue!60] at (2.15,4.05){$r_{\rm short}$};
+\draw[-{Latex[length=1mm]},orange!75!black] (3.5,3.5)--++(200:1.9);
+\node[orange!75!black] at (2.15,2.55){$r_\ell$};
+\node[gray!60] at (5.35,5.55){\footnotesize sensing $R_s$};
+\draw[sens] (5.05,5.35) circle (0.18);
+\end{tikzpicture}

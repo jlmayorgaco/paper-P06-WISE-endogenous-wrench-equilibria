@@ -30,6 +30,19 @@ relay ($\lamtwo\ge\sigmastar$) and both executes \emph{and} computes itself.}
 \label{fig:scene}
 \end{figure*}
 
+\begin{figure}[t]\centering
+\resizebox{0.82\columnwidth}{!}{\input{sections/fig_scenario}}
+\caption{The two-region scenario. Short-range robots (\protect\tikz[baseline=-0.4ex]
+\protect\node[circle,draw,fill=blue!35,minimum size=1.8mm,inner sep=0pt]{};) have a
+small communication radius that stays within a cluster; a long-range robot
+(\protect\tikz[baseline=-0.4ex]\protect\node[rectangle,draw,fill=orange!70,
+minimum size=1.8mm,inner sep=0pt]{};) placed in the gap uses its range $r_\ell$ to
+bridge the two clusters. The load demands a planar wrench $\wdem$, and each lifter's
+force lives in the heading-aligned elliptical set $U_\tau(\phi)$. Wrench feasibility
+and connectivity thus compete for the same robots.}
+\label{fig:scenario}
+\end{figure}
+
 \paragraph*{E1 --- Convergence and self-defeat (Thm.~\ref{thm:stability})}
 The decentralized realization~\eqref{eq:pd} drives $\lamtwo(\Lap(z))$ above
 $\sigmastar$ and the wrench residual to zero together, with the connectivity price
@@ -39,29 +52,20 @@ error $\|e(t)\|$ decays, and when it is withdrawn ($\lamtwo<\sigmastar$) it
 grows---the subsystem defeats its own estimator, with the sign change at
 $c\,\mF\,\lamtwo=\vt^2$ (a dedicated sweep is built in the extended study).
 
-\paragraph*{E3 --- Regime phase diagram (Fig.~\ref{fig:phase}, Thm.~\ref{thm:trichotomy})}
+\paragraph*{E3 --- Regime phase diagram (Thm.~\ref{thm:trichotomy})}
 Sweeping the long-range fraction $\nu$ and torque demand $\tau_d$ ($n=12$
 seeds/cell), the empirical certification rate collapses in the two regimes the
 trichotomy predicts: at $\nu\!\to\!0$ no composition reaches $\LamE\ge\sigmastar$
-(impossible/costly), and at high $\tau_d$ the fleet is wrench-limited.
+(impossible/costly), and at high $\tau_d$ the fleet is wrench-limited. The extended
+study overlays the SDP boundary $\LamE=\sigmastar$ on this map.
 
-\begin{figure}[t]\centering
-\includegraphics[width=0.82\columnwidth]{fig3_phase.pdf}
-\caption{Empirical certified-service-rate phase diagram over $(\nu,\tau_d)$
-($n=12$ seeds/cell). The dashed line is the \emph{empirical} $50\%$ contour, not
-the theoretical $\LamE=\sigmastar$ boundary. The trichotomy attributes the two
-failure edges to existence ($\nu\!\to\!0$) and wrench feasibility (high $\tau_d$).}
-\label{fig:phase}
-\end{figure}
-
-\paragraph*{E4 --- Constraint ablation (Table~\ref{tab:ablation}, Fig.~\ref{fig:roles}a)}
+\paragraph*{E4 --- Constraint ablation (Table~\ref{tab:ablation})}
 On paired seeds, enforcing either requirement alone fails: \texttt{scalar\_capacity}
-and \texttt{wrench\_only} build valid coalitions that fragment the network,
-\texttt{connectivity\_only} keeps the network but cannot lift, and only WISE
-certifies both. WISE and the centralized oracle agree on this operating point,
-which is a numerical sanity check (both solve the same relaxed program), not a
-proof of distributed optimality. Table~\ref{tab:ablation} reports the run count and
-$95\%$ paired-bootstrap intervals.
+and \texttt{wrench\_only} fragment the network, \texttt{connectivity\_only} keeps the
+network but cannot lift, and only WISE certifies both (Table~\ref{tab:ablation}, run
+count and $95\%$ paired-bootstrap intervals). WISE and the centralized oracle agree
+here---a numerical sanity check, both solving the same relaxed program, not a proof
+of distributed optimality.
 
 \begin{table}[t]\centering
 \caption{Constraint ablation on $n=16$ paired seeds ($N=12$, $\nu=0.5$,
@@ -72,17 +76,9 @@ recovery reaches $100\%$ under randomised rounding.}
 \input{figures/ablation_table.tex}
 \end{table}
 
-\paragraph*{E5 --- Emergent roles (Fig.~\ref{fig:roles}b, Prop.~\ref{prop:cycle})}
+\paragraph*{E5 --- Emergent roles (Prop.~\ref{prop:cycle})}
 Pooled over seeds, relay commitment is drawn from long-range types, as
 Proposition~\ref{prop:cycle} predicts: a neutral long/short exchange leaves $Bz$ fixed
 while raising $\lamtwo$, so the selector concentrates relays on long-range types---the
 predicted division of labour in the tested instances, not a general theorem.
 
-\begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{fig4_ablation_roles.pdf}
-\caption{(a) Certified service rate by method (mean $\pm$ 95\% bootstrap CI):
-single-requirement methods fail; WISE matches the oracle. (b) Relay share vs.\
-communication range at the WISE solution, pooled over seeds---relays are drawn only
-from long-range types.}
-\label{fig:roles}
-\end{figure}
