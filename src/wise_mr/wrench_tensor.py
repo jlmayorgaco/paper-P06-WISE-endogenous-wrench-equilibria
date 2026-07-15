@@ -88,6 +88,21 @@ def inner_polygon(radius: float, m_sides: int = 8) -> np.ndarray:
     return float(radius) * np.stack([np.cos(ang), np.sin(ang)], axis=1)
 
 
+def inner_zonotope_generators(radius: float, m_sides: int = 8) -> np.ndarray:
+    """Generator matrix ``(2, m_sides)`` of the regular ``2*m_sides``-gon in disk(radius).
+
+    A centrally symmetric ``2m``-gon is a zonotope; its generators are half the edge
+    vectors of ``m`` consecutive edges. Columns are generators, so the zonotope is
+    ``{G @ u : ||u||_inf <= 1}`` and equals the inner certificate polygon.
+    """
+    V = inner_polygon(radius, m_sides)                   # (2m, 2) vertices
+    m = int(m_sides)
+    G = np.zeros((2, m))
+    for j in range(m):
+        G[:, j] = 0.5 * (V[(j + 1) % (2 * m)] - V[j])    # half edge vector
+    return G
+
+
 def polygon_facets(m_sides: int) -> tuple[np.ndarray, float]:
     """Outward facet normals (unit) and apothem of the *unit-circumradius* 2m-gon.
 
@@ -173,6 +188,36 @@ def certify_membership_lp(force_caps: np.ndarray, contact_maps: np.ndarray,
         ub_b.append(kappa * F[i] * apothem * np.ones(normals.shape[0]))
     res = linprog(c=np.zeros(2 * N), A_ub=np.vstack(ub_rows), b_ub=np.concatenate(ub_b),
                   A_eq=A_eq, b_eq=w, bounds=[(None, None)] * (2 * N), method="highs")
+    return bool(res.success)
+
+
+def certify_membership_lift(force_caps: np.ndarray, contact_maps: np.ndarray,
+                            w_dem: np.ndarray, counts: np.ndarray | None = None,
+                            kappa: float = 1.0, m_sides: int = 8) -> bool:
+    r"""Exact membership via the zonotopic lifting of paper Lemma 1.
+
+    ``w_dem in (+)_i z_i A_i (kappa F_i * inner-2m-gon)`` iff there exist generator
+    coefficients ``xi_i`` with ``sum_i A_i G_i xi_i = w_dem`` and
+    ``|xi_i| <= z_i`` (elementwise), where ``G_i`` are the inner-zonotope generators.
+    This is the G-representation LP; it must agree with the facet-normal
+    :func:`certify_membership_lp` (both exact for the inner zonotope).
+
+    ``contact_maps`` has shape ``(N,3,2)`` (one slot per robot); ``counts`` are the
+    relaxed occupancies ``z_i`` (default all ones).
+    """
+    F = np.asarray(force_caps, dtype=float)              # (N,)
+    A = np.asarray(contact_maps, dtype=float)            # (N,3,2)
+    w = np.asarray(w_dem, dtype=float)                   # (3,)
+    N = F.shape[0]
+    z = np.ones(N) if counts is None else np.asarray(counts, dtype=float)
+    m = int(m_sides)
+    blocks, bounds = [], []
+    for i in range(N):
+        G = inner_zonotope_generators(kappa * F[i], m)   # (2, m)
+        blocks.append(A[i] @ G)                          # (3, m)
+        bounds.extend([(-z[i], z[i])] * m)
+    A_eq = np.hstack(blocks)                             # (3, N*m)
+    res = linprog(c=np.zeros(N * m), A_eq=A_eq, b_eq=w, bounds=bounds, method="highs")
     return bool(res.success)
 
 
