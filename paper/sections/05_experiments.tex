@@ -1,7 +1,7 @@
 \section{Simulation Study}
 \label{sec:exp}
 
-We validate the four results on heterogeneous teams ($N=12$ unless noted) in a
+We validate the main results on heterogeneous teams ($N=12$ unless noted) in a
 two-region world: a rigid load in the right cluster demands a planar wrench, and
 short links connect robots only within a cluster, so the gap is bridged only when
 a long-range type relays. The strategic layer runs the primal--dual flow
@@ -34,21 +34,11 @@ inner sep=1.3pt]{};) to relay, restoring $\lamtwo\ge\sigmastar$---it executes
 \label{fig:scene}
 \end{figure}
 
-\paragraph*{E1 --- Convergence (Fig.~\ref{fig:conv})}
-On a representative instance the distributed flow drives $\lamtwo(\Lap(z))$ to at
-least $\sigmastar$ (it settles \emph{above} $\sigmastar$, by the robustness margin)
-and the wrench residual to zero together: the equilibrium becomes wrench-feasible
-and self-computing at once. The information price $\pi$ settles at its certification
-value; in these instances the relay assignment accrues to long-range types.
-
-\begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{fig2_convergence.pdf}
-\caption{Distributed convergence (single instance, empirical). (a) $\lamtwo$ rises
-\emph{above} $\sigmastar$ (it converges to $\sigmastar+$margin, not onto it) while
-the wrench residual $\to0$. (b) Price $\pi$ converges; relay assignment accrues to
-long-range types, short-range near zero.}
-\label{fig:conv}
-\end{figure}
+\paragraph*{E1 --- Convergence}
+On a representative instance the decentralized realization~\eqref{eq:pd} drives
+$\lamtwo(\Lap(z))$ above $\sigmastar$ and the wrench residual to zero together, and the
+connectivity price $\pi$ settles at its certification value with relay assignment on
+long-range types.
 
 \paragraph*{E2 --- Self-defeat threshold (Fig.~\ref{fig:thresh}, Thm.~\ref{thm:stability})}
 On one instance we compare two compositions from the same fiber $\Emanifold$. When a

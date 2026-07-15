@@ -97,6 +97,18 @@ raising $\lamtwo$.
 \subsection{The WISE refinement}
 Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.
 
+\begin{figure}[t]\centering
+\resizebox{\columnwidth}{!}{\input{sections/fig_method}}
+\caption{How a WISE is selected. (a) The wrench-feasible assignments attaining the
+optimal aggregate $y^{\star}$ form the fiber $\Emanifold$ (bold): all share the
+productive value $V^{\star}$ but differ in induced connectivity, and the
+SDP~\eqref{eq:sdp} returns the point $z^{\star}_{\mathrm{WISE}}$ of maximal $\lamtwo$.
+(b) A WISE exists iff the fiber maximum $\LamE$ clears $\sigmastar$; for
+$\LamE<\sigmastar\le\LamX$ connectivity costs productivity, and beyond $\LamX$ it is
+infeasible (Theorem~\ref{thm:trichotomy}).}
+\label{fig:method}
+\end{figure}
+
 \begin{definition}[WISE]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and
 Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$,

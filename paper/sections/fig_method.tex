@@ -1,0 +1,48 @@
+% How WISE works: degenerate fiber -> SDP selection -> existence trichotomy.
+\begin{tikzpicture}[
+  font=\scriptsize,
+  box/.style={rounded corners=2pt,draw=gray!55,fill=gray!7,inner sep=3pt},
+  node distance=3mm,
+  dot/.style={circle,fill=#1,inner sep=1.3pt},
+  x=1cm,y=1cm]
+
+% ============ Panel (a): degeneracy + selection ============
+\begin{scope}
+  % feasible polytope X_f
+  \fill[gray!12,draw=gray!50] (0,0)--(2.5,-0.15)--(2.9,1.15)--(1.5,1.75)--(0.15,1.15)--cycle;
+  \node[gray!60] at (0.55,0.35){$X_{\mathrm f}$};
+  % the fiber E (bold edge): all Bz=y^star
+  \draw[blue!70!black,line width=1.4pt] (0.55,1.42)--(2.35,0.92);
+  \node[blue!70!black] at (1.9,1.5){$\Emanifold:\ Bz=y^{\star}$};
+  % endpoints: disconnected vs connected micro-graphs
+  \node[dot=red!75] (p0) at (0.55,1.42){};
+  \node[dot=green!55!black] (pw) at (2.05,1.0){};
+  \node[red!75,below=0pt] at (0.35,1.42){\,$\lamtwo{<}\sigmastar$};
+  \node[green!45!black] at (2.55,1.02){$z^{\star}_{\mathrm{WISE}}$};
+  % SDP arrow to peak
+  \draw[-{Latex[length=1.3mm]},green!45!black,thick] (1.2,0.55) to[out=25,in=210] (pw);
+  \node[green!45!black,align=center] at (1.15,0.35){SDP:\ $\max_{z\in\Emanifold}\lamtwo$};
+  \node[align=center] at (1.5,-0.5){(a) one payoff, many compositions;\\ select the most connected};
+\end{scope}
+
+% ============ Panel (b): existence trichotomy ============
+\begin{scope}[xshift=4.9cm]
+  % axis
+  \draw[-{Latex[length=1.3mm]}] (0,0)--(3.5,0) node[right]{$\lamtwo$};
+  % region ticks
+  \def\Le{1.55}\def\Lx{2.75}
+  \draw[thick] (\Le,0.06)--(\Le,-0.06) node[below]{$\LamE$};
+  \draw[thick] (\Lx,0.06)--(\Lx,-0.06) node[below]{$\LamX$};
+  % three shaded regimes on a stacked bar
+  \fill[green!22]  (0,0.35) rectangle (\Le,0.75);
+  \fill[orange!25] (\Le,0.35) rectangle (\Lx,0.75);
+  \fill[red!20]    (\Lx,0.35) rectangle (3.4,0.75);
+  \node[green!45!black] at (\Le/2,0.55){\emph{free}};
+  \node[orange!70!black] at ({(\Le+\Lx)/2},0.55){\emph{costly}};
+  \node[red!70!black] at ({(\Lx+3.4)/2},0.55){\emph{imp.}};
+  % sigma_req threshold marker (movable)
+  \draw[blue!70!black,line width=1pt,-{Latex[length=1.1mm]}] (1.1,1.35)--(1.1,0.8);
+  \node[blue!70!black] at (1.1,1.55){$\sigmastar$};
+  \node[align=center] at (1.7,-0.6){(b) exists iff $\LamE\ge\sigmastar$;\\ otherwise costly or impossible};
+\end{scope}
+\end{tikzpicture}

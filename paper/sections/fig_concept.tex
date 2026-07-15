@@ -1,52 +1,61 @@
-% Conceptual TikZ diagram of the self-defeating-equilibrium paradox.
+% The self-defeating equilibrium: same delivered wrench, two compositions.
 \begin{tikzpicture}[
   font=\scriptsize,
-  rob/.style={circle,draw=black,fill=blue!25,minimum size=2.8mm,inner sep=0pt},
-  lrob/.style={rectangle,draw=black,fill=orange!55,minimum size=2.8mm,inner sep=0pt},
-  rel/.style={diamond,draw=black,fill=green!55!black,minimum size=3.6mm,inner sep=0pt},
-  ld/.style={rectangle,draw=black,fill=gray!65,text=white,font=\tiny,
-             minimum width=6mm,minimum height=3.6mm,inner sep=0.5pt},
-  lk/.style={gray,semithick},
-  brk/.style={red!80,dashed,very thick},
-  brg/.style={green!45!black,very thick},
-  cl/.style={rounded corners=2pt,draw=gray!45,fill=gray!7,inner sep=0pt},
+  short/.style={circle,draw=black,fill=blue!30,minimum size=3mm,inner sep=0pt},
+  long/.style={rectangle,draw=black,fill=orange!60,minimum size=3mm,inner sep=0pt},
+  rel/.style={diamond,draw=black,fill=green!55!black,minimum size=4mm,inner sep=0pt},
+  ld/.style={rectangle,draw=black,fill=gray!60,text=white,font=\tiny,
+             minimum width=6.5mm,minimum height=4mm,inner sep=0.5pt},
+  cl/.style={rounded corners=2pt,draw=gray!45,fill=gray!8,inner sep=0pt},
+  lk/.style={gray!70,semithick},
+  brk/.style={red!80,dashed,line width=1pt},
+  brg/.style={green!45!black,line width=1.1pt},
   x=1cm,y=1cm]
 
-% ================= Panel (a): self-defeating =================
-\node[cl,minimum width=1.35cm,minimum height=1.45cm] at (0.68,0.75){};
-\node[cl,minimum width=1.35cm,minimum height=1.45cm] at (3.02,0.75){};
-\node[rob] (a1) at (0.42,1.08){}; \node[rob] (a2) at (0.98,1.14){};
-\node[lrob](a3) at (0.68,0.52){};
-\draw[lk] (a1)--(a2) (a1)--(a3) (a2)--(a3);
-\node[ld] (La) at (3.02,0.58){load};
-\node[rob](a4) at (2.68,1.12){}; \node[rob](a5) at (3.36,1.12){};
-\draw[lk] (a4)--(a5) (a4)--(La.north) (a5)--(La.north);
-\draw[-{Latex[length=1.2mm]},thick] (3.02,0.94)--(3.02,1.44);
-\node at (3.32,1.36){$\wdem$};
-\draw[brk] (a2)--(a4); \node[red!85] at (1.83,1.16){$\bm{\times}$};
-\node[red!80] at (1.83,0.40){$\lamtwo<\sigmastar$};
-\node[align=center] at (1.83,0.02){(a) self-defeating:\\ estimator loses consensus};
-
-% ================= Panel (b): self-sustaining (WISE) =========
-\begin{scope}[xshift=4.35cm]
-\node[cl,minimum width=1.35cm,minimum height=1.45cm] at (0.68,0.75){};
-\node[cl,minimum width=1.35cm,minimum height=1.45cm] at (3.02,0.75){};
-\node[rob] (b1) at (0.42,1.08){}; \node[rob] (b2) at (0.98,1.14){};
-\draw[lk] (b1)--(b2);
-\node[ld] (Lb) at (3.02,0.58){load};
-\node[rob](b4) at (2.68,1.12){}; \node[rob](b5) at (3.36,1.12){};
-\draw[lk] (b4)--(b5) (b4)--(Lb.north) (b5)--(Lb.north);
-\draw[-{Latex[length=1.2mm]},thick] (3.02,0.94)--(3.02,1.44);
-\node at (3.32,1.36){$\wdem$};
-\node[rel](br) at (1.83,1.0){}; \node at (1.83,1.42){relay};
-\draw[brg] (b2)--(br) (br)--(b4);
-\node[green!45!black] at (1.83,0.40){$\lamtwo\ge\sigmastar$};
-\node[align=center] at (1.83,0.02){(b) WISE: executes \\ \emph{and} computes itself};
+% ---------------- Panel (a): self-defeating ----------------
+\begin{scope}
+  \node[cl,minimum width=1.3cm,minimum height=1.2cm] at (0.6,0.55){};
+  \node[cl,minimum width=1.3cm,minimum height=1.2cm] at (3.0,0.55){};
+  % left cluster: two short-range
+  \node[short](a1) at (0.35,0.75){}; \node[long](a2) at (0.9,0.85){};
+  \draw[lk] (a1)--(a2);
+  % right cluster: load + lifters, wrench arrow
+  \node[ld](La) at (3.0,0.42){load};
+  \node[short](a4) at (2.7,0.85){}; \node[short](a5) at (3.35,0.85){};
+  \draw[lk] (a4)--(La.north) (a5)--(La.north) (a4)--(a5);
+  \draw[-{Latex[length=1.4mm]},thick] (3.0,0.78)--(3.0,1.28);
+  \node at (3.28,1.2){$\wdem$};
+  % broken inter-cluster link
+  \draw[brk] (a2)--(a4);
+  \node[red!85] at (1.8,0.9){\bfseries $\times$};
+  \node[red!80,align=center] at (1.8,0.2){$\lamtwo<\sigmastar$\\ estimator blind};
+  \node[align=center] at (1.8,-0.35){(a) all robots lift:\\ the graph its algorithm needs collapses};
 \end{scope}
 
-% ================= shared-fiber annotation ===================
-\node[draw=gray!55,rounded corners=1.5pt,fill=white,inner sep=1.5pt,font=\scriptsize]
-  (fib) at (4.03,-0.5){same productive aggregate $Bx=y^{\star}$ (fiber $\Emanifold$)};
-\draw[gray,-{Latex[length=1mm]}] (fib) to[out=160,in=-90] (1.83,-0.15);
-\draw[gray,-{Latex[length=1mm]}] (fib) to[out=20,in=-90] (6.18,-0.15);
+% ---------------- Panel (b): WISE ----------------
+\begin{scope}[xshift=4.55cm]
+  \node[cl,minimum width=1.3cm,minimum height=1.2cm] at (0.6,0.55){};
+  \node[cl,minimum width=1.3cm,minimum height=1.2cm] at (3.0,0.55){};
+  \node[short](b1) at (0.35,0.75){};
+  \node[ld](Lb) at (3.0,0.42){load};
+  \node[short](b4) at (2.7,0.85){}; \node[short](b5) at (3.35,0.85){};
+  \draw[lk] (b4)--(Lb.north) (b5)--(Lb.north) (b4)--(b5);
+  \draw[-{Latex[length=1.4mm]},thick] (3.0,0.78)--(3.0,1.28);
+  \node at (3.28,1.2){$\wdem$};
+  % long-range robot diverted to relay in the gap
+  \node[rel](br) at (1.8,0.85){}; \node at (1.8,1.2){relay};
+  \draw[brg] (b1)--(br) (br)--(b4);
+  \node[green!45!black,align=center] at (1.8,0.2){$\lamtwo\ge\sigmastar$\\ self-computing};
+  \node[align=center] at (1.8,-0.35){(b) one long-range robot relays:\\ executes \emph{and} computes itself};
+\end{scope}
+
+% ---------------- shared fiber annotation + legend ----------------
+\node[draw=gray!55,rounded corners=1.5pt,fill=white,inner sep=2pt]
+  (fib) at (3.9,-1.0){same delivered wrench $Bz=y^{\star}$: one fiber $\Emanifold$};
+\draw[gray,-{Latex[length=1mm]}] (fib) to[out=160,in=-90] (1.8,-0.62);
+\draw[gray,-{Latex[length=1mm]}] (fib) to[out=20,in=-90] (6.35,-0.62);
+% legend
+\node[short] at (6.7,1.35){}; \node[right] at (6.85,1.35){short-range};
+\node[long] at (6.7,1.05){}; \node[right] at (6.85,1.05){long-range};
+\node[rel] at (6.7,0.72){}; \node[right] at (6.85,0.72){relay};
 \end{tikzpicture}
