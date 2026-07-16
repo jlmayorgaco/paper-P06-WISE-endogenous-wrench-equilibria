@@ -66,9 +66,9 @@ def main():
 
     # (b,c) comparative-advantage exchange on the same fiber
     sp._draw(b, ctx["prob"], ctx["role_u"], ctx["pos_u"], ctx["mask_u"],
-             "(b) long lifts", rec["lambda2_geo_unsafe"], sig)
+             "(b) long lifts", rec["lambda2_geo_unsafe"], sig, ctx["pair"])
     sp._draw(c, ctx["prob"], ctx["role_w"], ctx["pos_w"], ctx["mask_w"],
-             "(c) WISE: long relays", rec["lambda2_geo_wise"], sig)
+             "(c) WISE: long relays", rec["lambda2_geo_wise"], sig, ctx["pair"])
     from matplotlib.lines import Line2D
     handles = [
         Line2D([], [], marker="^", ls="", mfc="w", mec="k", label="long-range"),

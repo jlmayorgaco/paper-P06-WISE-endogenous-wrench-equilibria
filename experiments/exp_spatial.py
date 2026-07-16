@@ -65,17 +65,28 @@ def _roles(prob, x_int):
     return role, slot
 
 
-def _positions(prob, role, slot):
-    """Final poses from roles: lifters spread on a ring around the load, the relay at
-    the gap site, idle robots at their home cluster position (candidate site)."""
+def _positions(prob, role, slot, pair):
+    """Poses laid out so the two panels are identical except the L/S swap: the pair member
+    that lifts sits at a FIXED load-ring slot; the one that relays sits at the gap; the base
+    lifters (excluding the pair) keep index-sorted ring slots common to both panels; idle
+    robots stay at home. This makes the role exchange the only visible difference."""
+    L, S = pair
     meta = prob.meta
     out = np.array(meta["pos"], float).copy()
     load = np.array(meta["load"], float)
-    lifters = np.where(role == "lift")[0]
-    for r, i in enumerate(lifters):                    # ring around the load
-        ang = 2 * np.pi * r / max(len(lifters), 1) + 0.3
-        out[i] = load + 1.5 * np.array([np.cos(ang), np.sin(ang)])
-    for i in np.where(role == "relay")[0]:
+
+    def ring(k, nslots):
+        ang = 2 * np.pi * k / max(nslots, 1) + 0.35
+        return load + 1.6 * np.array([np.cos(ang), np.sin(ang)])
+
+    base = sorted(i for i in np.where(role == "lift")[0] if i not in (L, S))
+    n = len(base) + 1                                   # +1 for the swing lifter at slot 0
+    for r, i in enumerate(base):
+        out[i] = ring(r + 1, n)
+    for i in np.where(role == "lift")[0]:               # the swing lifter (L or S) -> slot 0
+        if i in (L, S):
+            out[i] = ring(0, n)
+    for i in np.where(role == "relay")[0]:              # the swing relay -> gap
         out[i] = GAP_CENTER.copy()
     return out
 
@@ -128,8 +139,8 @@ def build_pair(seed, y_target=4.5, tau_d=2.5, nu=0.35):
     role_u, slot_u = _roles(prob, x_unsafe)
     role_w, slot_w = _roles(prob, x_wise)
 
-    pos_w = _positions(prob, role_w, slot_w)
-    pos_u = _positions(prob, role_u, slot_u)
+    pos_w = _positions(prob, role_w, slot_w, (L, S))
+    pos_u = _positions(prob, role_u, slot_u, (L, S))
     mask_w = role_w == "relay"
     mask_u = role_u == "relay"                # empty
 
@@ -203,46 +214,79 @@ def run():
     return rec
 
 
-def _draw(ax, prob, role, pos, mask, title, lam, sigma):
+def _draw(ax, prob, role, pos, mask, title, lam, sigma, pair=None):
     meta = prob.meta
     is_long = np.array(meta["is_long"])
     ranges = np.array(meta["r"], float)
     load = np.array(meta["load"], float)
-    slot_world = np.array(meta["slot_world"], float)
     N = prob.N
 
-    # communication edges of L_geo (short links + relay bridge)
+    # connected components of L_geo, to shade the isolated cluster
+    def _component_of(seed_i):
+        adj = [[] for _ in range(N)]
+        for i in range(N):
+            for k in range(i + 1, N):
+                dik = np.linalg.norm(pos[i] - pos[k])
+                on = dik <= BASE_RANGE or (mask[i] and dik <= ranges[i]) \
+                    or (mask[k] and dik <= ranges[k])
+                if on:
+                    adj[i].append(k); adj[k].append(i)
+        seen, stack = set(), [seed_i]
+        while stack:
+            u = stack.pop()
+            if u in seen:
+                continue
+            seen.add(u); stack.extend(adj[u])
+        return seen
+    comp_load = _component_of(int(np.argmin(np.linalg.norm(pos - load, axis=1))))
+    isolated = [i for i in range(N) if i not in comp_load]
+
+    # communication edges (short links) + relay bridge
     for i in range(N):
         for k in range(i + 1, N):
-            dik = np.linalg.norm(pos[i] - pos[k])
-            if dik <= BASE_RANGE:
+            if np.linalg.norm(pos[i] - pos[k]) <= BASE_RANGE:
                 ax.plot([pos[i, 0], pos[k, 0]], [pos[i, 1], pos[k, 1]],
-                        color="#c4c4c4", lw=0.6, zorder=1)
+                        color="#c4c4c4", lw=0.7, zorder=1)
     for i in np.where(mask)[0]:
         ax.add_patch(plt_circle(pos[i], ranges[i], "#2e8b57"))
         for k in range(N):
             if k != i and np.linalg.norm(pos[i] - pos[k]) <= ranges[i]:
                 ax.plot([pos[i, 0], pos[k, 0]], [pos[i, 1], pos[k, 1]],
-                        color="#2e8b57", lw=1.1, zorder=1)
+                        color="#2e8b57", lw=1.3, zorder=1)
+
+    # shade + label the isolated cluster when the graph is split
+    if isolated:
+        pi = pos[isolated]
+        cx, cy = pi[:, 0].mean(), pi[:, 1].mean()
+        rr = max(0.9, 1.25 * np.max(np.linalg.norm(pi - [cx, cy], axis=1)))
+        ax.add_patch(_soft_circle([cx, cy], rr))
+        ax.text(cx, cy - rr - 0.15, "cut off", color="#c0392b", fontsize=6.5,
+                ha="center", va="top", style="italic")
 
     # relay site (diamond frame, behind), load, contact slots
-    ax.scatter(*GAP_CENTER, s=150, marker="D", facecolors="none", edgecolors="#2e8b57",
-               linewidths=0.9, zorder=1)
-    ax.scatter(*load, s=120, marker="s", c="#f0d000", edgecolors="k", linewidths=0.6,
-               zorder=2)
-    ax.scatter(slot_world[:, 0], slot_world[:, 1], s=12, marker="x", c="#b06000", zorder=3)
+    ax.scatter(*GAP_CENTER, s=170, marker="D", facecolors="none", edgecolors="#2e8b57",
+               linewidths=1.0, zorder=1)
+    ax.scatter(*load, s=120, marker="s", c="#f0d000", edgecolors="k", linewidths=0.6, zorder=2)
 
-    # robots by type (marker) and role (colour)
+    # robots by type (marker) and role (colour); highlight + label the swapped pair
     rolecol = {"lift": "#c0392b", "relay": "#2e8b57", "idle": "#8a8a8a"}
+    pairset = set(pair) if pair else set()
     for i in range(N):
         mk = "^" if is_long[i] else "o"
-        ax.scatter(pos[i, 0], pos[i, 1], s=52, marker=mk, c=rolecol[role[i]],
-                   edgecolors="k", linewidths=0.4, zorder=4)
+        hi = i in pairset
+        ax.scatter(pos[i, 0], pos[i, 1], s=90 if hi else 52, marker=mk, c=rolecol[role[i]],
+                   edgecolors="k", linewidths=1.4 if hi else 0.4, zorder=5 if hi else 4)
+    if pair:
+        L, S = pair
+        ax.annotate("L", pos[L] + [0.0, 0.55], color="k", fontsize=7.5, weight="bold",
+                    ha="center", va="bottom", zorder=6)
+        ax.annotate("S", pos[S] + [0.0, 0.55], color="k", fontsize=7.5, weight="bold",
+                    ha="center", va="bottom", zorder=6)
 
     col = "#2e8b57" if lam >= sigma else "#c0392b"
     lam_s = r"<10^{-8}" if lam < 1e-8 else rf"={lam:.2f}"
     ax.set_title(rf"{title} ($\lambda_2{lam_s}$)", fontsize=7.8, color=col)
-    ax.set_xlim(-0.5, 10.5); ax.set_ylim(1.5, 8.5); ax.set_aspect("equal")
+    ax.set_xlim(-0.5, 10.5); ax.set_ylim(1.3, 8.7); ax.set_aspect("equal")
     ax.set_xticks([]); ax.set_yticks([])
 
 
@@ -250,6 +294,12 @@ def plt_circle(center, radius, color):
     from matplotlib.patches import Circle
     return Circle(center, radius, fill=False, ls=":", lw=0.7, ec=color, alpha=0.5,
                   zorder=0)
+
+
+def _soft_circle(center, radius):
+    from matplotlib.patches import Circle
+    return Circle(center, radius, fill=True, fc="#c0392b", ec="#c0392b", alpha=0.07,
+                  lw=0.8, ls="--", zorder=0)
 
 
 def _figure(rec, ctx):
@@ -262,9 +312,9 @@ def _figure(rec, ctx):
     prob, sigma = ctx["prob"], rec["sigma_req"]
     fig, (a, b) = plt.subplots(1, 2, figsize=(7.0, 3.0))
     _draw(a, prob, ctx["role_u"], ctx["pos_u"], ctx["mask_u"],
-          "(a) productive-optimal, unsafe", rec["lambda2_geo_unsafe"], sigma)
+          "(a) productive-optimal, unsafe", rec["lambda2_geo_unsafe"], sigma, ctx["pair"])
     _draw(b, prob, ctx["role_w"], ctx["pos_w"], ctx["mask_w"],
-          "(b) WISE", rec["lambda2_geo_wise"], sigma)
+          "(b) WISE", rec["lambda2_geo_wise"], sigma, ctx["pair"])
     from matplotlib.lines import Line2D
     handles = [
         Line2D([], [], marker="^", ls="", mfc="w", mec="k", label="long-range"),
