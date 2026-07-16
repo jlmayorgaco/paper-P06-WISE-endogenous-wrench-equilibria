@@ -23,7 +23,7 @@
   "wrench_res_unsafe": 0.0,
   "wrench_feasible_wise": true,
   "wrench_feasible_unsafe": true,
-  "lambda2_geo_wise": 0.8301389004247971,
-  "lambda2_geo_unsafe": 2.4030793189259104e-16,
+  "lambda2_geo_wise": 0.7887840826949416,
+  "lambda2_geo_unsafe": 8.88275692235909e-16,
   "sigma_req": 0.25
 }

@@ -52,14 +52,13 @@ stability requirement is a \emph{WISE equilibrium}.
 \resizebox{0.55\textwidth}{!}{\input{sections/fig_concept}}
 \caption{Assignment-induced connectivity and WISE selection. \textbf{(1)}~A distributed
 equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
-communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the decision
-builds the graph its own computation needs. \textbf{(2)}~The productive optimum fixes the
-served-capacity aggregate $Bz=y^{\star}$ (with the demanded wrench realizable,
-$w_k^{\mathrm{dem}}\in\mathcal W(C_k)$ for all $z\in\Emanifold$) but not the composition:
-a whole fiber $\Emanifold$ attains the same $V^{\star}$ while its connectivity $\lamtwo$
-varies, crossing the requirement $\sigmastar$ (inset). \textbf{(3)}~On that fiber, one
-composition drops $\lamtwo$ below $\sigmastar$ (the information-layer stability condition
-is violated), while a WISE composition diverts one long-range robot to relay
-($\lamtwo\ge\sigmastar$), meeting it.}
+communication graph---but that graph is $\Lap(z)$, formed by $z$ itself. \textbf{(2)}~The
+productive optimum fixes the served aggregate $Bz=y^{\star}$ (demanded wrench realizable
+throughout) but not the composition: a whole fiber $\Emanifold$ attains the same $V^{\star}$
+while its connectivity $\lamtwo$ varies, crossing $\sigmastar$ (inset). \textbf{(3)}~A
+comparative-advantage exchange between a matched long/short pair of equal capacity, which
+keeps $Bz=y^{\star}$ and $V^{\star}$: (a) the long-range robot lifts and the short one
+relays (too short to bridge), $\lamtwo<\sigmastar$; (b) the short robot lifts and the long
+one relays, bridging the gap, $\lamtwo\ge\sigmastar$.}
 \label{fig:scene}
 \end{figure*}

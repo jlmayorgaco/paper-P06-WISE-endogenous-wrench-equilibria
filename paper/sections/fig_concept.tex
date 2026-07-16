@@ -1,101 +1,114 @@
-% Full-width figure explaining the whole problem: self-referential loop,
-% composition degeneracy (one wrench, many compositions), and the two outcomes.
+% Full-width concept figure: (1) the self-referential loop, (2) one served aggregate /
+% a fiber of compositions, (3) the comparative-advantage role exchange (matches Fig. 2).
+% Encoding matches Fig. 2: shape = type (circle short, triangle long), colour = role
+% (red lift, green relay, gray idle).
 \begin{tikzpicture}[
-  font=\footnotesize,
-  short/.style={circle,draw=black,fill=blue!30,minimum size=3.4mm,inner sep=0pt},
-  long/.style={rectangle,draw=black,fill=orange!65,minimum size=3.4mm,inner sep=0pt},
-  rel/.style={diamond,draw=black,fill=green!55!black,minimum size=4.4mm,inner sep=0pt},
-  ld/.style={rectangle,draw=black,fill=gray!60,text=white,font=\scriptsize,
-             minimum width=8mm,minimum height=5mm,inner sep=0.5pt},
+  font=\small,
+  short/.style={circle,draw=black,minimum size=3.3mm,inner sep=0pt,line width=0.4pt},
+  long/.style={regular polygon,regular polygon sides=3,draw=black,minimum size=4.0mm,
+               inner sep=0pt,line width=0.4pt},
+  lift/.style={fill=red!75!black},
+  relay/.style={fill=green!55!black},
+  idle/.style={fill=gray!45},
+  ld/.style={rectangle,draw=black,fill=yellow!75!orange,minimum width=6mm,minimum height=4mm,
+             inner sep=0.5pt},
   cl/.style={rounded corners=2pt,draw=gray!45,fill=gray!8,inner sep=0pt},
-  bx/.style={rounded corners=2pt,draw=gray!60,fill=blue!5,align=center,inner sep=2.5pt,font=\scriptsize},
-  lk/.style={gray!70,line width=0.8pt},
+  bx/.style={rounded corners=2pt,draw=gray!60,fill=blue!5,align=center,inner sep=2.6pt},
+  lk/.style={gray!65,line width=0.7pt},
   brk/.style={red!80,dashed,line width=1.2pt},
-  brg/.style={green!45!black,line width=1.4pt},
-  ttl/.style={font=\small\bfseries},
+  brg/.style={green!45!black,line width=1.5pt},
+  ttl/.style={font=\normalsize\bfseries},
   x=1cm,y=1cm]
 
 % ================================================================
 % PANEL 1 -- the self-referential loop
 % ================================================================
 \begin{scope}[xshift=0cm]
-  \node[ttl] at (2.1,3.7){1.\ The self-referential trap};
-  \node[bx] (asg) at (2.1,3.05){assignment $z$\\{\scriptsize who lifts / relays}};
-  \node[bx] (grf) at (3.75,1.7){graph $\Lap(z)$};
-  \node[bx] (est) at (2.1,0.35){consensus\\estimator};
-  \node[bx] (agg) at (0.35,1.7){aggregates $\hat s$};
-  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (asg) to[bend left=18] node[right,font=\scriptsize]{forms} (grf);
-  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (grf) to[bend left=18] node[below,font=\scriptsize]{carries} (est);
-  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (est) to[bend left=18] node[left,font=\scriptsize]{estimates} (agg);
-  \draw[-{Latex[length=1.5mm]},blue!55!black,line width=0.9pt] (agg) to[bend left=18] node[above,font=\scriptsize]{drive} (asg);
-  \node[align=center,red!70!black,font=\scriptsize] at (2.1,-0.55)
+  \node[ttl] at (2.1,3.75){1.\ The self-referential loop};
+  \node[bx] (asg) at (2.1,3.0){assignment $z$};
+  \node[bx] (grf) at (3.85,1.7){graph $\Lap(z)$};
+  \node[bx] (est) at (2.1,0.4){estimator};
+  \node[bx] (agg) at (0.35,1.7){aggregate $\hat y$};
+  \draw[-{Latex[length=1.6mm]},blue!55!black,line width=1pt] (asg) to[bend left=16] node[right,font=\footnotesize]{forms} (grf);
+  \draw[-{Latex[length=1.6mm]},blue!55!black,line width=1pt] (grf) to[bend left=16] node[below,font=\footnotesize]{carries} (est);
+  \draw[-{Latex[length=1.6mm]},blue!55!black,line width=1pt] (est) to[bend left=16] node[left,font=\footnotesize]{estimates} (agg);
+  \draw[-{Latex[length=1.6mm]},blue!55!black,line width=1pt] (agg) to[bend left=16] node[above,font=\footnotesize]{selects} (asg);
+  \node[align=center,red!70!black,font=\footnotesize] at (2.1,-0.6)
     {the decision builds the graph\\ its own computation needs};
 \end{scope}
 
-% divider
-\draw[gray!35,line width=0.6pt] (4.95,-0.8)--(4.95,3.9);
+\draw[gray!35,line width=0.6pt] (5.0,-0.9)--(5.0,4.0);
 
 % ================================================================
-% PANEL 2 -- degeneracy: one wrench, many compositions
+% PANEL 2 -- one served aggregate, a fiber of compositions
 % ================================================================
-\begin{scope}[xshift=5.35cm]
-  \node[ttl] at (3.05,3.7){2.\ One wrench, a fiber of compositions};
-  % the load and demanded wrench (force + torque)
-  \node[ld] (L) at (1.1,2.55){load};
-  \draw[-{Latex[length=1.6mm]},thick] (1.1,2.8)--(1.1,3.35); \node at (1.45,3.25){$\wdem$};
-  \draw[-{Latex[length=1.3mm]},thick] (1.55,2.55) arc (0:300:0.28); \node at (2.05,2.55){$\tau$};
-  \node[align=center,font=\scriptsize] at (1.1,1.85){same delivered\\ wrench $Bz=y^{\star}$};
-  % fiber of compositions (dots on a segment)
-  \draw[blue!70!black,line width=1.4pt] (0.3,1.25)--(2.0,1.25);
-  \foreach \xx in {0.3,0.72,1.15,1.58,2.0}{\node[circle,fill=blue!70!black,inner sep=1pt] at (\xx,1.25){};}
-  \node[blue!70!black,font=\scriptsize] at (1.15,0.92){fiber $\Emanifold$: all give $V^{\star}$};
-  % inset plot: V flat, lambda2 rising, sigma_req band
-  \begin{scope}[xshift=3.15cm,yshift=0.35cm,x=2.9cm,y=1.05cm]
-    \draw[-{Latex[length=1.2mm]}] (0,0)--(1.08,0) node[right,font=\scriptsize]{$\alpha$};
-    \draw[-{Latex[length=1.2mm]}] (0,0)--(0,1.15);
-    \fill[green!12] (0.55,0) rectangle (1.0,1.1);
-    \draw[blue!70!black,line width=1pt] (0,0.62)--(1.0,0.62) node[right,font=\scriptsize,blue!70!black]{$V{=}V^{\star}$};
-    \draw[green!45!black,line width=1pt] (0,0.12) .. controls (0.5,0.55) and (0.7,0.92) .. (1.0,1.0)
-      node[right,font=\scriptsize,green!45!black]{$\lamtwo$};
-    \draw[red!70,dashed,line width=0.8pt] (0,0.68)--(1.0,0.68) node[left,font=\scriptsize,red!70,pos=0.12,above]{$\sigmastar$};
-    \node[green!45!black,font=\scriptsize] at (0.78,-0.28){WISE};
+\begin{scope}[xshift=5.4cm]
+  \node[ttl] at (3.05,3.75){2.\ One optimum, a fiber};
+  \node[ld] (L) at (1.05,2.6){load};
+  \draw[-{Latex[length=1.7mm]},thick] (1.05,2.85)--(1.05,3.4); \node at (1.42,3.28){$\wdem$};
+  \draw[-{Latex[length=1.4mm]},thick] (1.5,2.6) arc (0:300:0.26); \node at (1.98,2.6){$\tau$};
+  \node[align=center,font=\footnotesize] at (1.05,1.95){same served aggregate\\ $Bz=y^{\star}$ (wrench feasible)};
+  \draw[blue!70!black,line width=1.5pt] (0.25,1.35)--(1.95,1.35);
+  \foreach \xx in {0.25,0.67,1.1,1.53,1.95}{\node[circle,fill=blue!70!black,inner sep=1.1pt] at (\xx,1.35){};}
+  \node[blue!70!black,font=\footnotesize] at (1.1,1.02){fiber $\Emanifold$: all give $V^{\star}$};
+  % inset: V flat, lambda2 crossing sigma_req
+  \begin{scope}[xshift=3.15cm,yshift=0.4cm,x=2.9cm,y=1.05cm]
+    \draw[-{Latex[length=1.3mm]}] (0,0)--(1.08,0) node[right,font=\footnotesize]{$s$};
+    \draw[-{Latex[length=1.3mm]}] (0,0)--(0,1.18);
+    \fill[green!14] (0.52,0) rectangle (1.0,1.12);
+    \draw[blue!70!black,line width=1.1pt] (0,0.6)--(1.0,0.6) node[right,font=\footnotesize,blue!70!black]{$V{=}V^{\star}$};
+    \draw[green!45!black,line width=1.2pt] (0,0.14) .. controls (0.5,0.5) and (0.72,0.95) .. (1.0,1.02)
+      node[right,font=\footnotesize,green!45!black]{$\lamtwo$};
+    \draw[red!70,dashed,line width=0.9pt] (0,0.66)--(1.0,0.66); \node[red!70,font=\footnotesize] at (0.16,0.78){$\sigmastar$};
+    \node[green!45!black,font=\footnotesize] at (0.76,-0.3){WISE};
   \end{scope}
 \end{scope}
 
-% divider
-\draw[gray!35,line width=0.6pt] (11.55,-0.8)--(11.55,3.9);
+\draw[gray!35,line width=0.6pt] (11.6,-0.9)--(11.6,4.0);
 
 % ================================================================
-% PANEL 3 -- the two outcomes on the same fiber
+% PANEL 3 -- comparative-advantage role exchange (same Bz=y*, V*)
 % ================================================================
-\begin{scope}[xshift=11.95cm]
-  \node[ttl] at (2.7,3.7){3.\ Two compositions, two fates};
-  % row (a): self-defeating
-  \begin{scope}[yshift=2.05cm]
-    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (0.85,0.55){};
-    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (4.05,0.55){};
-    \node[short](a1) at (0.5,0.75){}; \node[long](a2) at (1.2,0.8){}; \draw[lk](a1)--(a2);
-    \node[ld,minimum width=6mm,minimum height=4mm](La) at (4.05,0.42){load};
-    \node[short](a4) at (3.7,0.85){}; \node[short](a5) at (4.4,0.85){}; \draw[lk](a4)--(La.north)(a5)--(La.north);
-    \draw[brk] (a2)--(a4); \node[red!85] at (2.55,0.82){\large$\times$};
-    \node[red!80,font=\scriptsize] at (2.55,0.15){$\lamtwo<\sigmastar$};
-    \node[anchor=west,font=\scriptsize,align=left] at (5.05,0.55){(a) all lift:\\ graph collapses,\\ estimator blind};
+\begin{scope}[xshift=12.0cm]
+  \node[ttl] at (2.9,3.75){3.\ Comparative-advantage exchange};
+  \node[font=\footnotesize,gray!60!black] at (2.9,3.3){same $Bz=y^{\star}$, $V^{\star}$; only $\lamtwo$ differs};
+  % --- row (a): long lifts, short relays -> disconnected ---
+  \begin{scope}[yshift=1.95cm]
+    \node[cl,minimum width=1.35cm,minimum height=1.15cm] at (0.7,0.55){};
+    \node[short,idle](a1) at (0.45,0.75){}; \node[short,idle](a2) at (0.9,0.5){}; \draw[lk](a1)--(a2);
+    \node[ld](La) at (3.95,0.45){load};
+    \node[long,lift](aL) at (3.55,0.75){};          % long-range LIFTS
+    \node[short,idle](as) at (4.35,0.75){}; \draw[lk](aL)--(La.north)(as)--(La.north);
+    \node[short,relay](ar) at (2.35,0.6){};          % short-range RELAYS (short reach)
+    \draw[gray!45,dotted,line width=0.7pt] (ar) circle (0.5);
+    \draw[brk] (a2)--(ar); \node[red!85,font=\small] at (1.6,0.62){$\times$};
+    \node[anchor=west,font=\footnotesize,red!75!black,align=left] at (4.75,0.55)
+      {(a) long lifts,\\ short relays\\ $\lamtwo<\sigmastar$};
   \end{scope}
-  % row (b): WISE
-  \begin{scope}
-    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (0.85,0.55){};
-    \node[cl,minimum width=1.5cm,minimum height=1.1cm] at (4.05,0.55){};
-    \node[short](b1) at (0.5,0.75){};
-    \node[ld,minimum width=6mm,minimum height=4mm](Lb) at (4.05,0.42){load};
-    \node[short](b4) at (3.7,0.85){}; \node[short](b5) at (4.4,0.85){}; \draw[lk](b4)--(Lb.north)(b5)--(Lb.north);
-    \node[rel](br) at (2.55,0.75){}; \draw[brg](b1)--(br)(br)--(b4);
-    \node[green!45!black,font=\scriptsize] at (2.55,0.15){$\lamtwo\ge\sigmastar$};
-    \node[anchor=west,font=\scriptsize,align=left] at (5.05,0.55){(b) one relays:\\ graph supports\\ the estimator};
+  % swap arrows
+  \draw[-{Latex[length=1.4mm]},gray!55,line width=0.8pt] (3.55,1.75) to[bend left=25] (3.55,1.35);
+  \draw[-{Latex[length=1.4mm]},gray!55,line width=0.8pt] (2.35,1.35) to[bend left=25] (2.35,1.75);
+  \node[font=\scriptsize,gray!60!black] at (2.95,1.55){swap roles};
+  % --- row (b): short lifts, long relays -> connected ---
+  \begin{scope}[yshift=0cm]
+    \node[cl,minimum width=1.35cm,minimum height=1.15cm] at (0.7,0.55){};
+    \node[short,idle](b1) at (0.45,0.75){}; \node[short,idle](b2) at (0.9,0.5){}; \draw[lk](b1)--(b2);
+    \node[ld](Lb) at (3.95,0.45){load};
+    \node[short,lift](bs) at (3.55,0.75){};          % short-range LIFTS
+    \node[short,idle](bx) at (4.35,0.75){}; \draw[lk](bs)--(Lb.north)(bx)--(Lb.north);
+    \node[long,relay](br) at (2.35,0.6){};            % long-range RELAYS (bridges)
+    \draw[brg](b2)--(br)(br)--(bs);
+    \node[anchor=west,font=\footnotesize,green!45!black,align=left] at (4.75,0.55)
+      {(b) short lifts,\\ long relays\\ $\lamtwo\ge\sigmastar$};
   \end{scope}
 \end{scope}
 
-% legend (bottom strip)
-\node[short] at (0.4,-1.15){}; \node[anchor=west,font=\scriptsize] at (0.6,-1.15){short-range};
-\node[long]  at (2.4,-1.15){}; \node[anchor=west,font=\scriptsize] at (2.6,-1.15){long-range};
-\node[rel]   at (4.4,-1.15){}; \node[anchor=west,font=\scriptsize] at (4.65,-1.15){relay};
+% ================================================================
+% legend
+% ================================================================
+\node[short,idle] at (0.4,-1.25){}; \node[anchor=west,font=\footnotesize] at (0.65,-1.25){short-range};
+\node[long,idle]  at (2.5,-1.25){}; \node[anchor=west,font=\footnotesize] at (2.8,-1.25){long-range};
+\node[short,lift] at (4.7,-1.25){}; \node[anchor=west,font=\footnotesize] at (4.95,-1.25){lift};
+\node[short,relay] at (6.0,-1.25){}; \node[anchor=west,font=\footnotesize] at (6.25,-1.25){relay};
+\node[short,idle] at (7.4,-1.25){}; \node[anchor=west,font=\footnotesize] at (7.65,-1.25){idle};
 \end{tikzpicture}

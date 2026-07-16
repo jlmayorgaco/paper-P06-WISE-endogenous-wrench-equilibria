@@ -71,14 +71,17 @@ def main():
              "(c) WISE: long relays", rec["lambda2_geo_wise"], sig)
     from matplotlib.lines import Line2D
     handles = [
-        Line2D([], [], marker="^", ls="", mfc="w", mec="k", label="long"),
-        Line2D([], [], marker="o", ls="", mfc="w", mec="k", label="short"),
+        Line2D([], [], marker="^", ls="", mfc="w", mec="k", label="long-range"),
+        Line2D([], [], marker="o", ls="", mfc="w", mec="k", label="short-range"),
         Line2D([], [], marker="s", ls="", mfc="#c0392b", mec="k", label="lift"),
         Line2D([], [], marker="s", ls="", mfc="#2e8b57", mec="k", label="relay"),
+        Line2D([], [], marker="s", ls="", mfc="#8a8a8a", mec="k", label="idle"),
+        Line2D([], [], marker="D", ls="", mfc="none", mec="#2e8b57", label="relay site"),
     ]
-    c.legend(handles=handles, fontsize=5.6, frameon=False, loc="upper right",
-             handletextpad=0.2, borderpad=0.15, labelspacing=0.2)
+    fig.legend(handles=handles, loc="lower center", ncol=6, fontsize=6.5, frameon=False,
+               handletextpad=0.25, columnspacing=1.0, bbox_to_anchor=(0.5, -0.02))
     a.tick_params(labelsize=7)
+    fig.subplots_adjust(bottom=0.22)
     fig.savefig(FIG / "fig_central.pdf", metadata={"CreationDate": None}, bbox_inches="tight")
     plt.close(fig)
     print(f"wrote fig_central.pdf (dim E={fib['dim_E']}, "

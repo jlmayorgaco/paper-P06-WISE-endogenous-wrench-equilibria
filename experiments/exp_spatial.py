@@ -74,7 +74,7 @@ def _positions(prob, role, slot):
     lifters = np.where(role == "lift")[0]
     for r, i in enumerate(lifters):                    # ring around the load
         ang = 2 * np.pi * r / max(len(lifters), 1) + 0.3
-        out[i] = load + 1.15 * np.array([np.cos(ang), np.sin(ang)])
+        out[i] = load + 1.5 * np.array([np.cos(ang), np.sin(ang)])
     for i in np.where(role == "relay")[0]:
         out[i] = GAP_CENTER.copy()
     return out
@@ -225,19 +225,18 @@ def _draw(ax, prob, role, pos, mask, title, lam, sigma):
                 ax.plot([pos[i, 0], pos[k, 0]], [pos[i, 1], pos[k, 1]],
                         color="#2e8b57", lw=1.1, zorder=1)
 
-    # load and contact slots
-    ax.scatter(*load, s=150, marker="s", c="#f0d000", edgecolors="k", linewidths=0.6,
-               zorder=2, label="load")
-    ax.scatter(slot_world[:, 0], slot_world[:, 1], s=14, marker="x", c="#b06000",
-               zorder=3)
-    ax.scatter(*GAP_CENTER, s=90, marker="*", facecolors="none", edgecolors="#2e8b57",
-               linewidths=1.0, zorder=2)
+    # relay site (diamond frame, behind), load, contact slots
+    ax.scatter(*GAP_CENTER, s=150, marker="D", facecolors="none", edgecolors="#2e8b57",
+               linewidths=0.9, zorder=1)
+    ax.scatter(*load, s=120, marker="s", c="#f0d000", edgecolors="k", linewidths=0.6,
+               zorder=2)
+    ax.scatter(slot_world[:, 0], slot_world[:, 1], s=12, marker="x", c="#b06000", zorder=3)
 
     # robots by type (marker) and role (colour)
     rolecol = {"lift": "#c0392b", "relay": "#2e8b57", "idle": "#8a8a8a"}
     for i in range(N):
         mk = "^" if is_long[i] else "o"
-        ax.scatter(pos[i, 0], pos[i, 1], s=46, marker=mk, c=rolecol[role[i]],
+        ax.scatter(pos[i, 0], pos[i, 1], s=52, marker=mk, c=rolecol[role[i]],
                    edgecolors="k", linewidths=0.4, zorder=4)
 
     col = "#2e8b57" if lam >= sigma else "#c0392b"
