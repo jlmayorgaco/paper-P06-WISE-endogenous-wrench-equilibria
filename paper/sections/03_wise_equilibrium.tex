@@ -194,29 +194,96 @@ unicycle/load dynamics. It links the connectivity requirement to the information
 stability boundary $\sigmadyn$, which the WISE margin
 $\sigmastar=\sigmadyn+\delta$ satisfies by construction.
 
-\subsection{Selection cost and prices}
-The lexicographic selector of Theorem~\ref{thm:existence} is exact. A scalarised
-alternative $V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only in the limit: any
-maximiser obeys $0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$
-and $\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
-(Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ carries no exact-preservation
-guarantee and can move the aggregate (measurably so in Section~\ref{sec:exp}), whereas the
-lexicographic form preserves it exactly. The exact certificate is solved in the lifted
-variables $(z,\xi)$ of~\eqref{eq:sdp}; the decentralized heuristic of
-Section~\ref{sec:algorithm} instead uses a projected wrench-separation oracle on
-$X_{\mathrm f}=\{H_wz\ge d\}$.
+\subsection{The price of self-sustainability}
+\label{sec:price}
+The lexicographic selector of Theorem~\ref{thm:existence} is exact; a scalarised
+$V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only as $\varepsilon\to0$: any maximiser
+obeys $0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$ and
+$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
+(Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ moves the aggregate
+(measurably, Section~\ref{sec:exp}); it is a Pareto scalarisation, not an equivalent of the
+lexicographic form.
 
-With $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))\ge\LamE$, the requirement partitions
-instances into three regimes: \emph{free} ($\LamE\ge\sigmastar$: connectivity at no
-productive cost), \emph{costly} ($\LamE<\sigmastar\le\LamX$: a connectivity-feasible
-assignment exists but not a productively optimal one), and \emph{impossible}
-($\LamX<\sigmastar$).
+Beyond the free fiber the requirement carries a productive cost. Define the
+\emph{price of self-sustainability}
+\begin{equation}
+\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\ \lamtwo(\Lap(z))\ge\sigma\}
+\label{eq:price}
+\end{equation}
+($\Price(\sigma)=+\infty$ when the set is empty), and the two spectral capacities
+$\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ and
+$\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))\ge\LamE$.
 
-\begin{remark}[Finite-population recovery]\label{rem:integer}
-The analysis is a fluid relaxation; integer assignments are recovered by rounding and
-re-certified numerically (no $O(1/N)$ claim, and best-of-$R$ rounding is a search, not a
-certificate). The wrench and connectivity margins $H_wz\ge d+m_W$ and $\lamtwo\ge\sigmastar$
-leave slack, so on the $N=12$ demonstration a single randomized-rounding draw re-certifies
-$66\%$ of the seeds and up to $30$ independent draws re-certify all $30$ (argmax rounding
-$67\%$); naive rounding of a zero-margin optimum does not.
+\begin{theorem}[Price and the free/costly/impossible trichotomy]\label{thm:price}
+$\Price$ is nondecreasing and convex on its domain, and
+\begin{equation}
+\Price(\sigma)=
+\begin{cases}
+0, & \sigma\le\LamE\ \ (\text{free}),\\[1pt]
+\text{finite}>0, & \LamE<\sigma\le\LamX\ \ (\text{costly}),\\[1pt]
++\infty, & \sigma>\LamX\ \ (\text{impossible}).
+\end{cases}
+\label{eq:trichotomy}
+\end{equation}
+Under a Slater point of $\{z\in X_{\mathrm f}:\lamtwo\ge\sigma\}$, the optimal multiplier
+$\pi^{\star}$ of the connectivity constraint satisfies
+$\pi^{\star}\in\partial\Price(\sigma)$: the marginal productive price of one unit of
+connectivity, in the units of $V$.
+\end{theorem}
+\begin{proof}
+The set $\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigma\}$ is a super-level set of the
+concave $\lamtwo\!\circ\!\Lap$ (Lemma~\ref{lem:convex}), hence convex and shrinking in
+$\sigma$; so the constrained maximum is nonincreasing and $\Price$ nondecreasing. As
+$\sigma$ enters the single concave inequality $\lamtwo\ge\sigma$ linearly, $\Price$ is the
+perturbation value of a convex program, so it is convex and, under Slater, its
+subdifferential is the set of optimal multipliers $\pi^{\star}$ of that
+constraint~\cite{boyd2004convex}. For $\sigma\le\LamE$ some $z\in\Emanifold$ attains
+$\lamtwo\ge\sigma$ with $V=V^{\star}$, so $\Price=0$; for $\sigma>\LamX$ no wrench-feasible
+$z$ reaches $\sigma$ and $\Price=+\infty$; for $\LamE<\sigma\le\LamX$ a feasible $z$ exists
+but none in $\Emanifold$, so $0<\Price<\infty$.
+\end{proof}
+This makes the trichotomy a certificate (Section~\ref{sec:exp}: $\Price\equiv0$ up to
+$\LamE$, a strictly positive branch on $(\LamE,\LamX]$, then infeasibility), with
+$\pi^{\star}$ pricing connectivity in the same units as $V$.
+
+\subsection{Finite-team recovery}
+The relaxed certificate transfers to an integer team through explicit margins. Let
+$z^{\star}$ be a relaxed WISE and define the wrench and connectivity slacks and the
+sensitivity constants
+\begin{equation}
+\begin{aligned}
+&m_w=\min_j\big((H_wz^{\star})_j-d_j\big),\quad
+m_\lambda=\lamtwo(\Lap(z^{\star}))-\sigmastar,\\
+&\kappa_w=\|H_w\|_{2\to\infty},\qquad
+\kappa_L=\sup_{\|d\|=1}\|D\Lap[d]\|_2 .
+\end{aligned}
+\label{eq:margins}
+\end{equation}
+\begin{proposition}[Margin-based integer preservation]\label{prop:integer}
+Let $\hat z$ be any integer assignment meeting budgets, integrality and occupancy exactly
+with $\|\hat z-z^{\star}\|_2\le r$. If
+\begin{equation}
+r<\min\!\Big\{\tfrac{m_w}{\kappa_w},\ \tfrac{m_\lambda}{\kappa_L}\Big\},
+\label{eq:intmargin}
+\end{equation}
+then $\hat z\in X_{\mathrm f}$ and $\lamtwo(\Lap(\hat z))\ge\sigmastar$: the rounded team is
+both wrench- and connectivity-feasible.
+\end{proposition}
+\begin{proof}
+Row-wise, $(H_w\hat z)_j\ge(H_wz^{\star})_j-\|(H_w)_j\|_2\,r\ge d_j+m_w-\kappa_w r>d_j$ by
+$r<m_w/\kappa_w$, so $\hat z\in X_{\mathrm f}$. As $\Lap$ is affine in $z$,
+$\|\Lap(\hat z)-\Lap(z^{\star})\|_2\le\kappa_L r$, and Weyl's inequality on
+$Q^{\top}\Lap Q$ gives
+$\lamtwo(\Lap(\hat z))\ge\lamtwo(\Lap(z^{\star}))-\kappa_L r=\sigmastar+m_\lambda-\kappa_L r
+>\sigmastar$ by $r<m_\lambda/\kappa_L$.
+\end{proof}
+
+\begin{remark}[Rounding as a search]\label{rem:integer}
+Proposition~\ref{prop:integer} is a checkable sufficient condition, not an existence
+guarantee: it does not assert an integer $\hat z$ within radius $r$ exists. Best-of-$R$
+rounding \emph{searches} for one and re-certifies it against~\eqref{eq:margins} (a search,
+not a proof; no $O(1/N)$ claim). On the $N=12$ demonstration a single randomized-rounding
+draw re-certifies $66\%$ of seeds and $30$ draws re-certify all $30$ (argmax rounding
+$67\%$); an exact integer oracle bounds the residual integrality gap
+(Section~\ref{sec:exp}).
 \end{remark}

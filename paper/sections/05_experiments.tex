@@ -71,7 +71,24 @@ but WISE attains the larger margin. The last block certifies the \emph{relaxed} 
 \input{figures/ablation_table.tex}
 \end{table}
 
-\paragraph*{E6 --- Self-defeat vs.\ self-sustenance in transport (Fig.~\ref{fig:transport})}
+\paragraph*{E6 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
+Sweeping the requirement $\sigma$ traces $\Price(\sigma)$ over six seeds: identically zero up
+to $\LamE$ (free---connectivity at no productive cost), strictly positive and finite on
+$(\LamE,\LamX]$ (costly), and infeasible beyond $\LamX$ (impossible), matching
+\eqref{eq:trichotomy} on every seed ($\LamE<\LamX$ throughout, so the costly branch is
+nonempty). The subgradient $\pi^{\star}\in\partial\Price$ is the productive cost of one unit
+of connectivity.
+
+\begin{figure}[t]\centering
+\includegraphics[width=0.74\columnwidth]{fig_price.pdf}
+\caption{Price of self-sustainability $\Price(\sigma)$ (six seeds). Zero-cost plateau up to
+$\LamE$ (green), a strictly positive costly branch on $(\LamE,\LamX]$ (orange), and
+infeasibility beyond $\LamX$ (red)---the certified free/costly/impossible trichotomy of
+Theorem~\ref{thm:price}.}
+\label{fig:price}
+\end{figure}
+
+\paragraph*{E7 --- Self-defeat vs.\ self-sustenance in transport (Fig.~\ref{fig:transport})}
 During transport WISE holds $\lamtwo(\Lgeo^{\pi})$ above $\sigmastar$ (min $0.58$), so the
 optimizer--estimator error \emph{decays} and the load is delivered; withdrawing the relay
 drops $\lamtwo$ below $\sigmadyn=\vt_1\vt_2/(c\,\mF)=0.2$ and the \emph{same} error
