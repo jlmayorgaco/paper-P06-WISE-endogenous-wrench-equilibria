@@ -33,13 +33,49 @@ FIG = ROOT / "paper" / "figures"
 GEN.mkdir(exist_ok=True)
 FIG.mkdir(exist_ok=True)
 
-METHODS = ["random_feasible", "scalar_capacity", "wrench_only",
-           "connectivity_only", "wise_pd", "wise_sdp", "centralized"]
+METHODS = ["scalar_capacity", "wrench_only", "connectivity_only",
+           "hard_conn", "centralized", "wise_pd", "wise_sdp"]
 
 
 def _random_feasible(prob, rng):
     x = rng.random((prob.N, prob.A))
     return x / x.sum(axis=1, keepdims=True)
+
+
+def _prod_opt_value(prob):
+    """Unconstrained (connectivity-blind) productive optimum V* = max_{z in X_f} V(z)."""
+    import cvxpy as cp
+    n = prob.N * prob.A
+    A = ns.mass_matrix(prob); B = ns.served_matrix(prob)
+    Hw = prob.wrench_matrix(); d = prob.demand().ravel(); v = prob._value()
+    z = cp.Variable(n, nonneg=True); y = B @ z
+    cp.Problem(cp.Maximize(cp.sum(cp.multiply(v, y) - 0.5 * prob.alpha * cp.square(y))),
+               [A @ z == np.ones(prob.N), Hw @ z >= d]).solve()
+    return float(prob.productive_value(np.asarray(z.value, float).reshape(prob.N, prob.A)))
+
+
+def _hard_conn_assignment(prob):
+    """Hard connectivity-constrained optimum: max V(z) s.t. z in X_f and
+    lambda_2(Lbar(z)) >= sigma_req (a single convex SDP). Unlike WISE it does not maximise
+    the spectral margin among productive optima; in the free regime both reach V*, but WISE
+    attains the larger margin. Returns the assignment x (or None)."""
+    import cvxpy as cp
+    n = prob.N * prob.A
+    A = ns.mass_matrix(prob); B = ns.served_matrix(prob)
+    Hw = prob.wrench_matrix(); d = prob.demand().ravel()
+    v = prob._value(); Q = complement_basis(prob.N)
+    z = cp.Variable(n, nonneg=True); y = B @ z
+    L = cp.Constant(np.asarray(prob.base_laplacian, float))
+    ridx = prob.relay_index
+    for i in range(prob.N):
+        L = L + z[i * prob.A + ridx] * np.asarray(prob.relay_laplacians[i], float)
+    V = cp.sum(cp.multiply(v, y) - 0.5 * prob.alpha * cp.square(y))
+    cons = [A @ z == np.ones(prob.N), Hw @ z >= d,
+            Q.T @ L @ Q >> prob.sigma * np.eye(prob.N - 1)]
+    p = cp.Problem(cp.Maximize(V), cons); p.solve()
+    if z.value is None:
+        return None
+    return np.maximum(z.value.reshape(prob.N, prob.A), 0.0)
 
 
 def _wise_sdp_assignment(prob):
@@ -71,8 +107,8 @@ def _wise_sdp_assignment(prob):
 
 
 def _assignment(method, prob, rng):
-    if method == "random_feasible":
-        return _random_feasible(prob, rng)
+    if method == "hard_conn":
+        return _hard_conn_assignment(prob)
     if method == "wise_sdp":
         return _wise_sdp_assignment(prob)
     if method == "wise_pd":
@@ -116,9 +152,7 @@ def run(seeds=30):
             for m in METHODS}
     for s in range(seeds):
         prob = scenarios.two_region(seed=s, N=12, nu=0.4, tau_d=6.5, bridge_gain=3.0)
-        # productive optimum value for the gap metric (via the SDP stage-1 QP proxy)
-        central_x = baselines.centralized_wise(prob).x
-        v_star = prob.productive_value(central_x)
+        v_star = _prod_opt_value(prob)              # true productive optimum over X_f
         for m in METHODS:
             met = _metrics(prob, _assignment(m, prob, rng0), v_star)
             for k in data[m]:
@@ -128,7 +162,7 @@ def run(seeds=30):
     for m in METHODS:
         row = {"method": m}
         # continuous metrics: report the mean
-        for k in ("wrench_res", "info_margin"):
+        for k in ("wrench_res", "info_margin", "prod_gap"):
             vals = [v for v in data[m][k] if np.isfinite(v)]
             row[f"{k}_mean"] = float(np.mean(vals)) if vals else float("nan")
         # certified success is binomial: Wilson score 95% CI (not degenerate bootstrap)
@@ -150,33 +184,33 @@ def run(seeds=30):
 
 
 def _write_table(rows, seeds):
-    disp = {"random_feasible": r"random ($\mathcal X$-feas.)",
-            "scalar_capacity": r"scalar-capacity",
+    disp = {"scalar_capacity": r"scalar-capacity",
             "wrench_only": r"wrench-only", "connectivity_only": r"connectivity-only",
-            "wise_pd": r"\textbf{WISE-PD}", "wise_sdp": r"\textbf{WISE-SDP}",
-            "centralized": r"centralized multistart"}
+            "hard_conn": r"hard-connectivity", "centralized": r"centralized multistart",
+            "wise_pd": r"\textbf{WISE-PD}", "wise_sdp": r"\textbf{WISE-SDP}"}
     by = {r["method"]: r for r in rows}
     groups = [(r"\emph{Single-criterion (attainment)}",
-               ["random_feasible", "scalar_capacity", "wrench_only", "connectivity_only"]),
-              (r"\emph{Heuristic joint solvers (attainment)}", ["wise_pd", "centralized"]),
+               ["scalar_capacity", "wrench_only", "connectivity_only"]),
+              (r"\emph{Joint solvers (attainment)}",
+               ["hard_conn", "centralized", "wise_pd"]),
               (r"\emph{Exact relaxed existence certificate}", ["wise_sdp"])]
 
     def _row(m):
         r = by[m]
-        cert = r"%.0f\%%\,\tiny[%.0f,%.0f]" % (100 * r["cert_mean"], 100 * r["cert_lo"],
-                                               100 * r["cert_hi"])
-        return r"%s & %.2f & %+.2f & %s \\" % (
-            disp[m], r["wrench_res_mean"], r["info_margin_mean"], cert)
+        cert = r"%.0f\%%\tiny[%.0f,%.0f]" % (100 * r["cert_mean"], 100 * r["cert_lo"],
+                                             100 * r["cert_hi"])
+        return r"%s & %.2f & %.2f & %+.2f & %s \\" % (
+            disp[m], r["prod_gap_mean"], r["wrench_res_mean"], r["info_margin_mean"], cert)
 
     lines = [r"% Auto-generated by experiments/exp_methods.py -- do not edit by hand.",
              f"% Real simulation, 12 robots, nu=0.4, tau_d=6.5; {seeds} paired seeds.",
-             r"\setlength{\tabcolsep}{4pt}",
-             r"\begin{tabular}{lccc}", r"\hline",
-             r"Method & rel.\ wr.\ def.\ $\downarrow$ & "
-             r"$\lambda_2\!-\!\sigma_{\mathrm{req}}$ $\uparrow$ "
-             r"& Success $\uparrow$\\", r"\hline"]
+             r"\setlength{\tabcolsep}{3pt}",
+             r"\begin{tabular}{lcccc}", r"\hline",
+             r"Method & $V^\star\!-\!V$ $\downarrow$ & wr.\ def.\ $\downarrow$ & "
+             r"$\lambda_2\!-\!\sigma_{\mathrm{req}}$ $\uparrow$ & Succ.\ $\uparrow$\\",
+             r"\hline"]
     for title, methods in groups:
-        lines.append(r"\multicolumn{4}{l}{%s}\\" % title)
+        lines.append(r"\multicolumn{5}{l}{%s}\\" % title)
         lines += [_row(m) for m in methods]
         lines.append(r"\hline")
     lines.append(r"\end{tabular}")

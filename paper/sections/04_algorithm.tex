@@ -15,12 +15,13 @@ test (Theorem~\ref{thm:existence}). We report this certificate and use it as a r
 reference for the simulations.
 
 \subsection{Decentralized realization}
-For an online approximation we realize the flow at the robot level: robot $i$ of type
-$\tau$ revises its own action $x_{ia}$ ($z_{\tau a}=\sum_{i\in\tau}x_{ia}$), and the shared
-per-site occupancy $\sum_\tau z_{\tau,kh}\le1$ is held by a local occupancy price
-$\rho_{kh}$ (one-at-a-time exclusion, so two robots cannot seize a slot). On the projected
-representation $X_{\mathrm f}$ the flow uses a hard-wrench dual $\mu$ and a connectivity
-dual $\pi$:
+We write the online approximation as a \emph{type-population} flow: $z_{\tau a}=\sum_{i\in
+\tau}x_{ia}$ is the type aggregate of individual assignments $x_{ia}$, and each robot
+samples its own action from the type distribution, so~\eqref{eq:pd} is the aggregate of the
+per-robot revisions rather than a controller run by a coordinator. Shared per-site
+occupancy $\sum_\tau z_{\tau,kh}\le1$ is priced by $\rho_{kh}\ge0$ (a soft penalty; strict
+exclusivity requires a separate one-at-a-time arbitration). The flow carries a hard-wrench
+dual $\mu$ and a connectivity dual $\pi$:
 \begin{subequations}\label{eq:pd}
 \begin{align}
 \dot z_\tau &= \mathcal R_\tau\!\Big(z,\;\nabla_{z_\tau}V(z)+H_w^{\top}\mu
@@ -39,6 +40,8 @@ $\|Pv-\widehat\mu v\|\le\tau_{\mathrm{eig}}$ (the eigengap sets the rate;
 $\varepsilon_{\mathrm{est}}$ in $\delta$; recursion in the repository). This
 \emph{preserves} rather than recovers connectivity: it assumes a connected warm start
 $\lamtwo\ge\sigma_{\mathrm{safe}}$ and gap $\lambda_3-\lamtwo\ge g_{\min}>0$, on a slower
-scale than the estimator; in simulation it is integrated by projected forward Euler
-$z^{k+1}=\Pi_{\mathcal X}[z^k+h\,\dot z^k]$. We make no global-convergence claim; existence
-and selection rest on the exact SDP.
+scale than the estimator; in simulation it is integrated by forward Euler
+$z^{k+1}=\Pi_{\mathcal X_0}[z^k+h\,\dot z^k]$ with $\Pi_{\mathcal X_0}$ the projection onto
+the \emph{local} per-type budget simplices $\{z\ge0:\sum_a z_{\tau a}=n_\tau\}$ (occupancy
+handled by $\rho$, not by a global projection). We make no global-convergence claim;
+existence and selection rest on the exact SDP.

@@ -38,17 +38,13 @@ $z_{\tau kh}$ by a per-robot force yields a total force, so every aggregate belo
 dimensionally a force or torque.
 
 \begin{assumption}[Standing hypotheses]\label{as:standing}
-Throughout: \emph{(i)} $\mathcal X$ is compact and convex; \emph{(ii)} the
-wrench-feasible set $\mathcal X_{\mathrm f}$ of Lemma~\ref{prop:membership} is a
-polytope;
-\emph{(iii)} the candidate-site Laplacian $\Lap(z)$ of \eqref{eq:laplacian} is affine
-in $z$ with each elementary $L_e\succeq0$ and each coefficient $\ge0$; \emph{(iv)}
-the communication graph is undirected and weighted, so every $\Lap(z)$ is a symmetric
-graph Laplacian; \emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$; and \emph{(vi)}
-the single-Fiedler-vector gradient $\nabla\lamtwo$ is used only where $\lamtwo(\Lap(z))$
-is simple with gap $\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the
-PSD eigenspace supergradient $Z\succeq0$, $\operatorname{tr}Z=1$ of the LMI~\eqref{eq:lmi},
-which the exact SDP uses throughout (no spectral genericity assumed).
+Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f}\neq
+\varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
+$L_e\succeq0$ and coefficient $\ge0$, undirected (symmetric); \emph{(iii)} the
+single-Fiedler gradient $\nabla\lamtwo$ is used only where $\lamtwo$ is simple with gap
+$\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the PSD eigenspace
+supergradient $Z\succeq0,\operatorname{tr}Z=1$ of~\eqref{eq:lmi}, used throughout by the
+exact SDP (no spectral genericity assumed).
 \end{assumption}
 
 \subsection{Wrench feasibility}

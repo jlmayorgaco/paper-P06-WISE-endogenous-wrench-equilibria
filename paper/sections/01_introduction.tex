@@ -32,23 +32,20 @@ relaxed SDP existence certificate under hard wrench constraints.
 
 \paragraph*{Contributions}
 \begin{itemize}
-\item \textbf{Equilibrium-fiber geometry} (Theorem~\ref{thm:degeneracy}): the productively
-optimal served aggregate is unique, but the equal-payoff assignments form a fiber whose
-dimension is the tangent nullspace of its minimal active face, coinciding with the loss of
-strong monotonicity.
-\item \textbf{WISE existence and selection} (Theorem~\ref{thm:existence}): the fiber
-contains a composition meeting the robust connectivity requirement $\sigmastar$ iff
-the optimal value of a semidefinite program clears it, and a lexicographic selector
-then returns the most-connected productively optimal assignment without moving the
-aggregate.
+\item \textbf{Equilibrium-fiber geometry} (Theorem~\ref{thm:degeneracy}): the optimal served
+aggregate is unique, but the equal-payoff assignments form a fiber whose dimension is the
+tangent nullspace of its minimal active face---exactly the loss of strong monotonicity.
+\item \textbf{WISE certificate and selection} (Theorem~\ref{thm:existence}): the fiber
+contains a composition meeting the connectivity requirement $\sigmastar$ iff a semidefinite
+program clears it, and a lexicographic selector returns the most-connected productive
+optimum without moving the aggregate.
 \item \textbf{Information-layer relevance and validation} (Proposition~\ref{thm:stability}):
-a small-gain condition $c\,\mF\,\lamtwo>\vt_1\vt_2$ ties the connectivity requirement to
-exponential stability of the optimizer--estimator (information) layer, and simulations
-quantify the connectivity margin, integer recovery, and the heuristic attainment gap
-against the exact certificate.
+a small-gain condition $c\,\mF\,\lamtwo>\vt_1\vt_2$ ties the requirement to
+optimizer--estimator stability, and simulations quantify the margin, integer recovery, and
+the heuristic attainment gap.
 \end{itemize}
-We call a productively optimal, wrench-feasible assignment whose induced communication
-substrate meets the estimator's stability requirement a \emph{WISE equilibrium}.
+A productively optimal, wrench-feasible assignment whose induced graph meets the estimator's
+stability requirement is a \emph{WISE equilibrium}.
 
 \begin{figure*}[t]\centering
 \resizebox{0.55\textwidth}{!}{\input{sections/fig_concept}}

@@ -241,7 +241,8 @@ def _draw(ax, prob, role, pos, mask, title, lam, sigma):
                    edgecolors="k", linewidths=0.4, zorder=4)
 
     col = "#2e8b57" if lam >= sigma else "#c0392b"
-    ax.set_title(rf"{title} ($\lambda_2={lam:.2f}$)", fontsize=7.8, color=col)
+    lam_s = r"<10^{-8}" if lam < 1e-8 else rf"={lam:.2f}"
+    ax.set_title(rf"{title} ($\lambda_2{lam_s}$)", fontsize=7.8, color=col)
     ax.set_xlim(-0.5, 10.5); ax.set_ylim(1.5, 8.5); ax.set_aspect("equal")
     ax.set_xticks([]); ax.set_yticks([])
 

@@ -105,10 +105,25 @@ boundary claims), promotional phrases removed; Sion reference added.
   λ2(L_geo^π)/λ2(L̄)/λ̂2 all above σ_dyn=0.2 (min 0.58); distributed estimator tracks
   within 0.011. 3-figure layout (concept, Fig 2 = certificate+exchange, Fig 3 = transport).
 
-## Still open (design/strategy) — scoped, not yet done
-- **Derive Prop 2 (M,Θ1,Θ2) from the actual primal-dual/consensus dynamics** (journal-level;
-  demoted to Proposition per decision).
-- **Hard-connectivity baseline** (`max V s.t. λ2≥σ_req`) in Table I.
-- **Notation deduplication** (H, M, V, F, ξ, ν, α, ρ, A, d, Z collisions) — to run after
-  content/figures freeze.
-- **Fiber Refinement Principle** generalization of Theorem 1; **Zenodo/DOI archival**.
+## Round 4 (hard-connectivity baseline + consistency + visual) — done, in PDF
+- **Hard-connectivity baseline** `max V s.t. λ2≥σ_req` (`_hard_conn_assignment`, exact SDP)
+  added to Table I with a productive-gap column: both it and WISE-SDP reach V* in the free
+  regime, but WISE attains margin +0.99 vs +0.15 — the value of the lexicographic order.
+  Removed the weak `random` baseline; representative SDP runtime (30–60 ms, N=12) in E5.
+- **Robot-level vs type-level**: (15) declared a type-population flow (aggregate of
+  per-robot revisions), not a coordinator; `Π_X0` = local per-type budget simplices,
+  occupancy via ρ; dropped the "two robots cannot seize a slot" over-claim.
+- **Projected-KKT paragraph removed** (kept one sentence: exact = lifted, heuristic =
+  projected separation oracle).
+- **Unicycle + load dynamics equation** added to §V.
+- **Fig 3 restacked** vertically (shared time axis), + σ_req, σ_dyn, and the Weyl bound
+  λ2(L̄)−ε_L, with pose/wrench tolerance bands.
+- Fig 2 λ2 shown as `<10⁻⁸`; abstract "66% of the 30 seeds"; promotional phrases removed;
+  Lemma (unique aggregate) folded into Theorem 1; quotient clause dropped.
+
+## Still open — scoped, not yet done
+- **Fig 1 (concept TikZ) regeneration** to the comparative exchange (still shows the old
+  "two fates / same delivered wrench" content) — the one remaining visual inconsistency.
+- **Notation deduplication** (H, M, V, F, ξ, ν, α, ρ, A, d, Z) — post-freeze.
+- **Derive Prop 2 from the implemented dynamics** (journal-level); **Fiber Refinement
+  Principle** generalization; **Zenodo/DOI archival** replacing script names.

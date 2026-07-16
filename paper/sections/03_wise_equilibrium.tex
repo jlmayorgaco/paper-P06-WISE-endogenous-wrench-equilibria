@@ -25,33 +25,22 @@ objective Hessian $H$:
 X_{\mathrm f}=\{z\in\mathcal X:\;H_w z\ge d\}.
 \label{eq:Xf}
 \end{equation}
-The action cost $g$ enters only as a selection refinement and is \emph{excluded}
-from the degeneracy result.
+The action cost $g$ enters only as a selection refinement, \emph{excluded} from the
+degeneracy result.
 
 \begin{definition}[Productive variational equilibrium]\label{def:ve}
-With pseudo-gradient $F(z)=-\nabla V(z)=-B^{\top}\nabla\phi(Bz)$, a profile
-$z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
-\begin{equation}
-\langle F(z^{\star}),\,z-z^{\star}\rangle\ge0\quad\forall z\in X_{\mathrm f},
-\label{eq:vi}
-\end{equation}
-i.e.\ $z^{\star}$ solves $\mathrm{VI}(X_{\mathrm f},F)$. Since $V=\phi(Bz)$ is concave
-on the convex $X_{\mathrm f}$, \eqref{eq:vi} holds iff
-$z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is} the
-variational equilibrium~\cite{facchinei2003fvi}. Its composition degeneracy---and its
-precise link to the loss of strong monotonicity---is Proposition~\ref{prop:fibermono}.
+With $F(z)=-\nabla V(z)=-B^{\top}\nabla\phi(Bz)$, a profile $z^{\star}\in X_{\mathrm f}$ is a
+\emph{productive variational equilibrium} if $\langle F(z^{\star}),z-z^{\star}\rangle\ge0$
+for all $z\in X_{\mathrm f}$. As $V=\phi(Bz)$ is concave on the convex $X_{\mathrm f}$, this
+holds iff $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is}
+the variational equilibrium~\cite{facchinei2003fvi}, and its degeneracy is
+Proposition~\ref{prop:fibermono}.
 \end{definition}
 
-\begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
-If $\phi$ is strictly concave on $BX_{\mathrm f}$ ($H=\alpha I\succ0$) and $X_{\mathrm f}$
-is nonempty compact convex, the productively optimal aggregate $y^{\star}=Bz^{\star}$ is
-unique (a strictly concave maximum over a compact convex set); uniqueness is of the
-\emph{aggregate}, not the composition.
-\end{lemma}
-
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
-Under Lemma~\ref{lem:uniqueagg} the aggregate $y^{\star}=Bz^{\star}$ is unique, but
-the optimal set $\Emanifold=\{z\in X_{\mathrm f}:Bz=y^{\star}\}$ is a nonempty compact
+Since $\phi$ is strictly concave on the compact convex $BX_{\mathrm f}$
+($H=\alpha I\succ0$), the productively optimal aggregate $y^{\star}=Bz^{\star}$ is unique;
+but the optimal set $\Emanifold=\{z\in X_{\mathrm f}:Bz=y^{\star}\}$ is a nonempty compact
 convex polytope whose local dimension at a relative-interior point $\bar z$ is
 \begin{equation}
 \dim\Emanifold=\dim\!\big(\ker A\cap\ker B\cap\ker G_I\big)
@@ -66,7 +55,7 @@ the transportation value $(T-1)(K_{\mathrm{act}}-1)$ is the special case of equa
 column-sum weights.
 \end{theorem}
 \begin{proof}
-Uniqueness of $y^{\star}$ is Lemma~\ref{lem:uniqueagg}. At
+Uniqueness of $y^{\star}$ is strict concavity of $\phi$. At
 $\bar z\in\operatorname{relint}\Emanifold$ the minimal face $F$ fixes exactly the
 active constraints, so the feasible perturbations are
 $\{d:Ad=0,\,Bd=0,\,G_Id=0\}=N_p(\bar z)$; hence $\Emanifold$ locally coincides with
@@ -83,16 +72,12 @@ facets $H_w$; \texttt{exp\_fiber}). At a boundary optimum where wrench facets bi
 same formula gives a smaller fiber.
 
 \begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
-On the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$, the pseudo-gradient
-$F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys
-$\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$ for $d\in\mathcal T_F$, so its
-strong-monotonicity modulus there is
-$\mu_F=\sigma_{\min}^2(H^{1/2}B|_{\mathcal T_F})$ with
-$\ker(B|_{\mathcal T_F})=N_p(\bar z)$. Hence $\dim\Emanifold>0\iff\mu_F=0$: $F$ is
-strongly monotone on $\mathcal T_F$ exactly when the fiber is a point. Strong
-monotonicity survives in the served aggregate ($H\succ0$) and in the quotient
-$\mathcal T_F/N_p$, but is \emph{lost} on the full composition face---this is precisely
-the degeneracy WISE exploits, in contrast to strongly contractive aggregative
+On the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$ the pseudo-gradient
+$F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys $\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$,
+so its strong-monotonicity modulus is $\mu_F=\sigma_{\min}^2(H^{1/2}B|_{\mathcal T_F})$ with
+$\ker(B|_{\mathcal T_F})=N_p(\bar z)$. Hence $\dim\Emanifold>0\iff\mu_F=0$: strong
+monotonicity holds in the served aggregate ($H\succ0$) but is \emph{lost} on the
+composition face---the degeneracy WISE exploits, unlike strongly contractive aggregative
 games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
@@ -100,7 +85,7 @@ A comparative-advantage exchange makes this concrete (Fig.~\ref{fig:central}b,c)
 types of equal lifting capacity $c_\ell=c_s$, swapping which type lifts and which relays is
 productively neutral ($Bd=0$, $V\equiv V^{\star}$) with spectral effect
 $D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v$; $\lamtwo$ rises when this
-directional derivative is positive, which the SDP verifies rather than assumes.
+directional derivative is positive, a condition the SDP checks numerically.
 
 \subsection{The WISE refinement}
 \begin{definition}[WISE]\label{def:wise}
@@ -117,7 +102,7 @@ keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and clos
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
 Over the fluid relaxation, \emph{Stage 1} fixes the unique optimal aggregate
 $y^{\star}=Bz^{\star}$, $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$
-(Lemma~\ref{lem:uniqueagg}); \emph{Stage 2} selects connectivity on the resulting
+(Theorem~\ref{thm:degeneracy}); \emph{Stage 2} selects connectivity on the resulting
 fiber. The lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
 \arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is the solution of the Stage-2 semidefinite
 program, stated in the \emph{lifted} wrench variables of Lemma~\ref{prop:membership}
@@ -208,13 +193,10 @@ maximiser obeys $0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}
 and $\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
 (Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ carries no exact-preservation
 guarantee and can move the aggregate (measurably so in Section~\ref{sec:exp}), whereas the
-lexicographic form preserves it exactly. On the projected representation
-$X_{\mathrm f}=\{H_wz\ge d\}$ (equivalent to the lifted set by
-Lemma~\ref{prop:membership}), the selection Lagrangian carries duals $\mu\ge0$ (wrench),
-$\nu$ (aggregate), $\rho$ (budget/occupancy), and PSD $Z\succeq0$ (spectral), with
-$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$; the lifted multipliers
-of~\eqref{eq:sdp} aggregate into $\mu$, and the distributed flow of
-Section~\ref{sec:algorithm} uses this projected form via a wrench separation oracle.
+lexicographic form preserves it exactly. The exact certificate is solved in the lifted
+variables $(z,\xi)$ of~\eqref{eq:sdp}; the decentralized heuristic of
+Section~\ref{sec:algorithm} instead uses a projected wrench-separation oracle on
+$X_{\mathrm f}=\{H_wz\ge d\}$.
 
 With $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))\ge\LamE$, the requirement partitions
 instances into three regimes: \emph{free} ($\LamE\ge\sigmastar$: connectivity at no

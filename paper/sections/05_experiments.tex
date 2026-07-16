@@ -3,13 +3,20 @@
 
 We validate the main results on heterogeneous teams ($N=12$ unless noted) in a two-region
 world: a rigid load demands a planar wrench, short links connect robots only within a
-cluster, and second-order unicycles apply a heading-aligned elliptical force, so the gap
-is bridged only when a long-range type relays. The primary metric is the \emph{certified
-service rate}: served only when wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every
-instance is seeded, reproduces exactly, and is backed by a numerical certificate.
+cluster, and the gap is bridged only when a long-range type relays. The lifters are
+second-order unicycles and the load a planar rigid body,
+\begin{equation}
+\dot p_i=v_i[\cos\theta_i,\sin\theta_i]^{\!\top},\;\;
+m_i\dot v_i=u_{v,i}-d_iv_i,\;\;J_i\dot\omega_i=u_{\omega,i}-d_{\omega i}\omega_i,
+\label{eq:unicycle}
+\end{equation}
+with load wrench $\sum_{k,h}A_{kh}f_{i}$ from the admissible contact forces $f_i\in
+U_\tau(\theta_i)$. The primary metric is the \emph{certified service rate}: served only
+when wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and
+reproduces exactly.
 
 \begin{figure*}[t]\centering
-\includegraphics[width=0.88\textwidth]{fig_central.pdf}
+\includegraphics[width=0.82\textwidth]{fig_central.pdf}
 \caption{Productively equivalent compositions with different information feasibility.
 \textbf{(a)} Along one certified productive-nullspace direction ($\|Ad\|,\|Bd\|,\|G_Id\|
 <10^{-15}$, $\dim\Emanifold=59$), the productive value and the served aggregate are
@@ -47,23 +54,25 @@ at zero.
 \paragraph*{E4 --- Integer recovery (Rem.~\ref{rem:integer})}
 Over $30$ seeds a single randomized-rounding draw re-certifies $66\%$ of the fluid optima,
 best-of-$30$ all $30$ (argmax $67\%$), with a relative welfare gap
-$V_{\mathrm{relax}}-V_{\mathrm{int}}$ of $+1.8\%$ (mean, $+4.5\%$ worst). Robots are integer
-throughout; the SDP certifies the relaxation, integers are re-certified.
+$V_{\mathrm{relax}}-V_{\mathrm{int}}$ of $+1.8\%$ (mean, $+4.5\%$ worst); all robots are
+integer.
 
 \paragraph*{E5 --- Method comparison (Table~\ref{tab:ablation})}
-At a demanding operating point ($\nu=0.4$, $\tau_d=6.5$), single-requirement and random
-$\mathcal X$-feasible assignments almost never clear both tests, while the decentralized
-flow (WISE-PD, $50\%$) and a centralized multistart heuristic ($67\%$) fall short of the
-exact relaxed certificate. Over the $(\nu,\tau_d)$ sweep every attained solution lay inside
-the SDP-feasible region (flow success $\Rightarrow$ WISE existence); certified-but-unattained
-cells quantify the attainment gap.
+Single-criterion baselines rarely clear both tests. The natural strong comparator, the hard
+connectivity-constrained optimum $\max_{z\in X_{\mathrm f}}V(z)$ s.t.\ $\lamtwo\ge\sigmastar$,
+reaches $V^{\star}$ and certifies every seed in this free regime but only \emph{satisfies}
+the requirement (margin $+0.15$), whereas WISE maximizes the margin among productive optima
+($+0.99$)---the value of the lexicographic order. The decentralized flow (WISE-PD, $50\%$)
+and centralized multistart ($67\%$) attain less than the certificate. Both SDPs solve in
+$30$--$60$\,ms at $N=12$.
 
-\begin{table}[t]\centering
-\caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$). Relative
-wrench deficit $\max_{k,\ell}[d-s]_+/\max d$ and margin $\lamtwo-\sigmastar$ are means;
-success (wrench-feasible \emph{and} $\lamtwo\ge\sigmastar$) carries a Wilson $95\%$ CI
-(proportion only). The last block is a \emph{relaxed existence} certificate, not an
-attained integer controller; integer re-certification is reported separately (E4).}
+\begin{table}[b]\centering
+\caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$). Productive gap
+$V^{\star}-V$, relative wrench deficit, and margin $\lamtwo-\sigmastar$ are means; success
+(wrench-feasible \emph{and} $\lamtwo\ge\sigmastar$) carries a Wilson $95\%$ CI (proportion
+only). Hard-connectivity and WISE-SDP both reach $V^{\star}$, but WISE attains the larger
+spectral margin. The last block is a \emph{relaxed existence} certificate, not an attained
+integer controller; integer re-certification is reported separately (E4).}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}
@@ -72,8 +81,8 @@ attained integer controller; integer re-certification is reported separately (E4
 \paragraph*{E6 --- Closed-loop transport (Fig.~\ref{fig:transport})}
 Under the WISE composition the load tracks its reference, the normalized wrench residual
 stays near zero, and $\lamtwo(\Lgeo^{\pi}(q(t)))$ holds above $\sigmadyn=0.2$ (min $0.58$),
-with the distributed estimate $\widehat\lamtwo$ tracking within $0.011$---the margin of
-Lemma~\ref{lem:bridge} in action.
+with the distributed estimate $\widehat\lamtwo$ tracking within $0.011$ (the margin of
+Lemma~\ref{lem:bridge}).
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.98\columnwidth]{fig_transport.pdf}
