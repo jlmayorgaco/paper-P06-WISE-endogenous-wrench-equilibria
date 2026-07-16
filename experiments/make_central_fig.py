@@ -48,7 +48,7 @@ def main():
     import matplotlib.pyplot as plt
 
     sig = rec["sigma_req"]
-    fig = plt.figure(figsize=(7.2, 2.0))
+    fig = plt.figure(figsize=(7.2, 2.75))
     gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1], wspace=0.42)
     a = fig.add_subplot(gs[0]); b = fig.add_subplot(gs[1]); c = fig.add_subplot(gs[2])
 

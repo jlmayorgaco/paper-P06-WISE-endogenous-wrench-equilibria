@@ -154,7 +154,7 @@ def _figure_transport(rows, sigma_dyn, sigma_req, e_w, e_u, dt):
 
     t = np.array([r["t"] for r in rows])
     te = np.arange(len(e_w)) * dt
-    fig, (a, b) = plt.subplots(2, 1, figsize=(3.4, 2.6))
+    fig, (a, b) = plt.subplots(2, 1, figsize=(3.4, 3.5))
 
     # (a) connectivity: WISE stays above sigma_req; relay-withdrawn falls below sigma_dyn
     a.axhspan(0, sigma_dyn, color="#c0392b", alpha=0.08)
