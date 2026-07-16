@@ -80,30 +80,28 @@ the Minkowski sum superposes independent generators, giving \eqref{eq:tensor}, a
 eliminating $\xi$ yields the polytope $X_{\mathrm f}$.
 \end{proof}
 By $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ a certified wrench is feasible in this
-heading-robust actuation-set model; it is quasi-static and assumes bilateral independent
-contact forces (not frictional grasp or unilateral pushing), and full physical
-realizability would couple wheel torques, headings, and contact kinematics.
+heading-robust actuation-set model. We assume the lifters are \emph{rigidly or articulately
+coupled} to the load (attached grippers/tow bars), which is what admits bilateral
+independent contact forces; the model is quasi-static, and free-standing unilateral pushing
+(friction cones) or the full wheel-torque--heading--contact chain would need a separate
+realization layer.
 
 \subsection{Decision-induced candidate-site Laplacian $\Lap(z)$}
-We separate two graphs. The \emph{decision-induced candidate-site Laplacian} $\Lap(z)$ is
-indexed by the $N$ candidate sites ($V=N$) and depends only on $z$; the geometric
-$\Lgeo(q)$ is indexed by robots. They are compared \emph{after integer recovery}, whose
-bijection $\pi$ (robot $\mapsto$ occupied site) with permutation $P_\pi$ aligns them as
-$\Lgeo^{\pi}(q)=P_\pi^{\top}\Lgeo(q)P_\pi$, so the mismatch of Lemma~\ref{lem:bridge} is in
-one site order (a fractional occupancy has no such bijection). A fixed base graph $L_0\succeq0$ carries the always-on
-intra-cluster links;
-occupying relay site $r$ with a type-$\tau$ robot switches on the link Laplacian
-$L_r\succeq0$ with effectiveness $\gamma_{\tau r}\ge0$ (long-range types reach across
-the gap, short-range types barely), so
+We work with a \emph{surrogate conductance network} on a \emph{fixed} node set
+$\mathcal V=\{1,\dots,N\}$, one node per robot candidate site; nodes are not created or
+removed by the assignment. A fixed base graph $L_0\succeq0$ carries the always-on
+conductances; committing a type-$\tau$ robot to relay site $r$ \emph{gates on} a predefined
+link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), so
 \begin{equation}
-\Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{N\times N},
+\Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{N\times N}
 \label{eq:laplacian}
 \end{equation}
-affine in $z$ (Assumption~\ref{as:standing}(iii)). The convex theory covers exactly this
-class---edge Laplacians affine in site occupancy over a fixed candidate-site backbone---and
-is a \emph{surrogate} for the geometric $\Lgeo(q)$, whose weights depend nonconvexly on the
-poses $q$; the two are related only through Lemma~\ref{lem:bridge}, and all theorems below
-use $\Lap(z)$.
+is affine in $z$ (Assumption~\ref{as:standing}(ii)) because only relay occupancies gate
+edges---not a general pairwise geometric graph, whose weights would be bilinear in both
+endpoints' decisions. Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0\preceq
+\Lap(z)$), a surrogate for the physical $\Lgeo(q)$; the two are compared only \emph{after
+integer recovery}, whose bijection $\pi$ aligns them as $\Lgeo^{\pi}(q)=P_\pi^{\top}
+\Lgeo(q)P_\pi$ through Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI

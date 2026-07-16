@@ -79,10 +79,11 @@ integer controller; integer re-certification is reported separately (E4).}
 \end{table}
 
 \paragraph*{E6 --- Closed-loop transport (Fig.~\ref{fig:transport})}
-Under the WISE composition the load tracks its reference, the normalized wrench residual
-stays near zero, and $\lamtwo(\Lgeo^{\pi}(q(t)))$ holds above $\sigmadyn=0.2$ (min $0.58$),
-with the distributed estimate $\widehat\lamtwo$ tracking within $0.011$ (the margin of
-Lemma~\ref{lem:bridge}).
+Under the WISE composition the load pose error stays within a bounded tracking band
+$\varepsilon_q$ under the moving reference, the normalized wrench residual stays near zero,
+and $\lamtwo(\Lgeo^{\pi}(q(t)))$ holds above $\sigmadyn=0.2$ (min $0.58$; here $\sigmadyn=
+\vt_1\vt_2/(c\,\mF)$ for representative gains) with the distributed estimate
+$\widehat\lamtwo$ tracking within $0.011$ (the margin of Lemma~\ref{lem:bridge}).
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.98\columnwidth]{fig_transport.pdf}
