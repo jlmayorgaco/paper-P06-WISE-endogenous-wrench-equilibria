@@ -112,7 +112,7 @@ Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmast
 i.e.\ $z^{\star}\in\Ess:=\Emanifold\cap\Cdelta$, where
 $\Cdelta=\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigmastar\}$. Since
 $\sigmastar=\sigmadyn+\delta>\sigmadyn$, a WISE clears the stability threshold of
-Theorem~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge},
+Proposition~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge},
 keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and closed
 (super-level set of the concave $\lamtwo\!\circ\!\Lap$, Lemma~\ref{lem:convex}).
 \end{definition}
@@ -183,7 +183,7 @@ $\Theta_2\in\R^{(N-1)p\times p}$, $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, under
 hypotheses $\tfrac12(M+M^{\top})\succeq\mF I$ (optimizer curvature),
 $\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$, with $\mF,\vt_1,\vt_2>0$.
 
-\begin{theorem}[Optimizer--estimator small gain]\label{thm:stability}
+\begin{proposition}[Information-layer stability interpretation]\label{thm:stability}
 Under those hypotheses, \eqref{eq:jac} is exponentially stable whenever
 \begin{equation}
 c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,
@@ -191,15 +191,16 @@ c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,
 \lamtwo>\sigmadyn:=\frac{\vt_1\vt_2}{c\,\mF}.
 \label{eq:threshold}
 \end{equation}
-In the fully isotropic, mode-aligned case $M=\mF I$, $\Theta_1=\Theta_2=\vt I$ the
-condition $c\,\mF\,\lamtwo>\vt^2$ is necessary and sufficient on the Fiedler mode; the
-decoupled case $\vt_1\vt_2=0$ is trivially stable.
-\end{theorem}
-\begin{proof}
-Take $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$. Then
-$\dot W\le-\mF\|\xi\|^2-\tfrac{\vt_1}{\vt_2}c\lamtwo\|\eta\|^2+2\vt_1\|\xi\|\|\eta\|$,
-a negative-definite quadratic form iff $\mF\cdot\tfrac{\vt_1}{\vt_2}c\lamtwo>\vt_1^2$,
-i.e.\ \eqref{eq:threshold}; the isotropic mode-aligned case is tight on the Fiedler mode.
+Restricted to a single Fiedler mode, \eqref{eq:jac} reduces to the scalar block
+$\dot a=-\mF a+\vt_1 b$, $\dot b=\vt_2 a-c\lamtwo b$, on which $c\,\mF\,\lamtwo>\vt_1\vt_2$
+is necessary and sufficient (trace $<0$, determinant $>0$); the decoupled case
+$\vt_1\vt_2=0$ is trivially stable.
+\end{proposition}
+\begin{proof}[Proof sketch]
+With $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$,
+$\dot W\le-\mF\|\xi\|^2-\tfrac{\vt_1}{\vt_2}c\lamtwo\|\eta\|^2+2\vt_1\|\xi\|\|\eta\|$ is
+negative definite iff $\mF\,\tfrac{\vt_1}{\vt_2}c\lamtwo>\vt_1^2$, i.e.\
+\eqref{eq:threshold}; the scalar Fiedler block gives the converse.
 \end{proof}
 This is a conditional interconnection result, \emph{not} a convergence proof
 for~\eqref{eq:pd}; it concerns the optimizer--estimator (information) layer only, not the
@@ -231,7 +232,8 @@ assignment exists but not a productively optimal one), and \emph{impossible}
 \begin{remark}[Finite-population recovery]\label{rem:integer}
 The analysis is a fluid relaxation; integer assignments are recovered by rounding and
 re-certified numerically (no $O(1/N)$ claim). The robustness margins $s\ge d+m_W$ and
-$\lamtwo\ge\sigmastar$ leave slack, so on the $N=12$ demonstration the fluid
-certification rate carries over to integer robots ($100\%$ under randomised rounding),
-whereas naive rounding of a zero-margin optimum does not.
+$\lamtwo\ge\sigmastar$ leave slack, so on the $N=12$ demonstration a single
+randomized-rounding draw re-certifies $66\%$ of the seeds and up to $30$ independent draws
+re-certify all $30$ (argmax rounding $67\%$); naive rounding of a zero-margin optimum does
+not.
 \end{remark}

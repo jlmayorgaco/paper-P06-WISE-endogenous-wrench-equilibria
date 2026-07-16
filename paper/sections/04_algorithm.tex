@@ -24,16 +24,20 @@ dual $\pi$:
 \begin{subequations}\label{eq:pd}
 \begin{align}
 \dot z_\tau &= \mathcal R_\tau\!\Big(z,\;\nabla_{z_\tau}V(z)+H_w^{\top}\mu
-+\pi\,\nabla_{z_\tau}\lamtwo(\Lap(z))\Big),\label{eq:pd-x}\\
+-O_\tau^{\top}\rho+\pi\,\nabla_{z_\tau}\lamtwo(\Lap(z))\Big),\label{eq:pd-x}\\
 \dot\mu &= \big[d-H_w z\big]_+^{\mu},\qquad
-\dot\pi = \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
+\dot\rho = \big[Oz-\mathbf 1\big]_+^{\rho},\label{eq:pd-mu}\\
+\dot\pi &= \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
+where $(Oz)_{kh}=\sum_\tau z_{\tau,kh}$ collects the shared slot- and relay-occupancy so
+$\rho\ge0$ prices exclusivity.
 with $\mathcal R_\tau$ a budget-preserving projected-ascent revision whose rest points
 maximise $V$~\cite{sandholm2010population}. Each robot estimates $(\lamtwo,v)$ by power
 iteration on the deflated, shifted operator $P=I-\beta\Lap(z)-\tfrac1N\mathbf1\mathbf1^{\top}$
 ($0<\beta<1/\lambda_{\max}$, so the Fiedler pair is dominant on $\mathbf1^{\perp}$),
-sign-fixed by a reference index and stopped at the eigengap
+sign-fixed by a reference index; the eigengap $\lambda_3-\lamtwo$ sets the convergence rate
+and iteration stops when the eigen-residual $\|Pv-\widehat\mu v\|\le\tau_{\mathrm{eig}}$
 ($\varepsilon_{\mathrm{est}}$ in $\delta$; recursion and message schedule in the
 repository). This is a \emph{preservation}, not a recovery, mechanism: it assumes a
 connected warm start $\lamtwo\ge\sigma_{\mathrm{safe}}>0$ and eigengap

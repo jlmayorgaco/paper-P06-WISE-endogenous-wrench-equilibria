@@ -26,53 +26,45 @@ relay site, restoring the spectral margin ($\lamtwo(\Lgeo)=0.85\ge\sigmastar$).}
 \end{figure*}
 
 \paragraph*{E1 --- Fiber neutrality, certified (Fig.~\ref{fig:central}a,b)}
-At an interior productive optimum the neutral space $\mathcal N_p=\ker A\cap\ker B\cap
-\ker G_I$ has dimension $72-\operatorname{rank}[A;B]=59$ (no inequality active there);
-moving along it holds $V$ and $Bz$ at machine precision (residuals $<10^{-8}$) while
-$\lamtwo$ crosses $\sigmastar$, so the connectivity-feasible subset lies strictly inside
-the optimal fiber.
+At an interior productive optimum $\mathcal N_p=\ker A\cap\ker B$ has dimension
+$72-13=59$; moving along it holds $V$ and $Bz$ at machine precision (residuals $<10^{-8}$)
+while $\lamtwo$ crosses $\sigmastar$, so the connectivity-feasible subset lies strictly
+inside the optimal fiber.
 
 \paragraph*{E2 --- Same fiber, different connectivity (Fig.~\ref{fig:central}c,d)}
 Because the relay action carries no served capacity, flipping one long-range robot between
 \emph{idle} and \emph{relay} moves along the optimal fiber exactly: both integer
 compositions share $Bz=y^{\star}$, $V^{\star}$, and zero wrench residual, yet
-$\lamtwo(\Lgeo)$ rises from $\approx0$ (disconnected) to $0.85$ (connected with margin)
-across $\sigmastar=0.25$. Poses come from the actual pipeline, not placed by hand; a
-closed-loop transport (repository, \texttt{exp\_physical}) confirms Lemma~\ref{lem:bridge}
-along a trajectory.
+$\lamtwo(\Lgeo)$ rises from $\approx0$ (disconnected) to $0.85$ across $\sigmastar=0.25$.
+Poses come from the pipeline, not placed by hand.
 
 \paragraph*{E3 --- Lexicographic vs.\ scalarized selection}
 On free-regime seeds ($\LamE\ge\sigmastar$, classified per seed by the exact SDP), the
 scalarised $V_\varepsilon=V+\varepsilon\lamtwo$ trades productive value for connectivity:
-as $\varepsilon$ grows from $10^{-3}$ to $1$ its productive loss $V^{\star}-V$ rises from
-$0$ to $0.049$ \emph{and} its aggregate drift $\|Bz-y^{\star}\|$ from $0$ to $0.307$, both
-under the Tikhonov envelopes $\varepsilon\,\mathrm{osc}(\lamtwo)$ and
-$\sqrt{2\varepsilon\,\mathrm{osc}(\lamtwo)/\alpha}$ (repository, \texttt{exp\_epsilon}),
-whereas the lexicographic WISE selector holds both at zero.
+as $\varepsilon$ grows from $10^{-3}$ to $1$ the productive loss $V^{\star}-V$ rises from
+$0$ to $0.049$ and the aggregate drift $\|Bz-y^{\star}\|$ from $0$ to $0.307$, both under
+the Tikhonov envelopes, whereas the lexicographic selector holds both at zero.
 
 \paragraph*{E4 --- Integer recovery (Rem.~\ref{rem:integer})}
-Over $30$ seeds the fluid optimum is WISE-certified $100\%$ of the time; a single
-randomized-rounding draw certifies $66\%$, best-of-$30$ draws $100\%$, and one-hot argmax
-$67\%$. The relative welfare gap $V_{\mathrm{relax}}-V_{\mathrm{int}}$ is $+1.8\%$ on
-average ($+4.5\%$ worst). Every robot is integer; the SDP certifies the relaxation and
-integer candidates are independently re-certified.
+Over $30$ seeds a single randomized-rounding draw re-certifies $66\%$ of the fluid optima,
+best-of-$30$ all $30$ (argmax $67\%$), with a relative welfare gap
+$V_{\mathrm{relax}}-V_{\mathrm{int}}$ of $+1.8\%$ (mean, $+4.5\%$ worst). Robots are integer
+throughout; the SDP certifies the relaxation, integers are re-certified.
 
 \paragraph*{E5 --- Method comparison (Table~\ref{tab:ablation})}
 At a demanding operating point ($\nu=0.4$, $\tau_d=6.5$), single-requirement and random
-$\mathcal X$-feasible assignments almost never clear both the wrench and connectivity
-tests. The \emph{exact} WISE SDP certifies every seed, whereas the decentralized flow
-(\texttt{WISE-PD}, $50\%$) and a centralized multistart heuristic ($67\%$) fall short---the
-observed attainment gap of not solving the SDP. Over the $(\nu,\tau_d)$ sweep every
-empirically attained solution lay inside the SDP-feasible region (flow success $\Rightarrow$
-WISE existence); certified-but-unattained cells quantify the heuristic attainment gap
-(repository, \texttt{exp\_phase}).
+$\mathcal X$-feasible assignments almost never clear both tests, while the decentralized
+flow (WISE-PD, $50\%$) and a centralized multistart heuristic ($67\%$) fall short of the
+exact relaxed certificate. Over the $(\nu,\tau_d)$ sweep every attained solution lay inside
+the SDP-feasible region (flow success $\Rightarrow$ WISE existence); certified-but-unattained
+cells quantify the attainment gap.
 
 \begin{table}[t]\centering
-\caption{Method comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$).
-Relative wrench deficit $\max_{k,\ell}[d-s]_+/\max d$ and margin $\lamtwo-\sigmastar$ are
-means; certified success (wrench-feasible \emph{and} $\lamtwo\ge\sigmastar$) carries a
-Wilson $95\%$ CI (proportion only). WISE-SDP is the exact relaxed selector; WISE-PD the
-decentralized flow.}
+\caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$). Relative
+wrench deficit $\max_{k,\ell}[d-s]_+/\max d$ and margin $\lamtwo-\sigmastar$ are means;
+success (wrench-feasible \emph{and} $\lamtwo\ge\sigmastar$) carries a Wilson $95\%$ CI
+(proportion only). The last block is a \emph{relaxed existence} certificate, not an
+attained integer controller; integer re-certification is reported separately (E4).}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}
