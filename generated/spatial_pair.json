@@ -1,24 +1,29 @@
 {
   "seed": 0,
-  "relay_robot": 10,
-  "relay_is_long": true,
+  "long_robot": 3,
+  "short_robot": 0,
+  "swing_slot": 0,
   "y_star": [
-    4.499999999999998
+    4.5
   ],
   "y_wise": [
-    7.548499047230457
+    7.402318956312467
   ],
   "y_unsafe": [
-    7.548499047230457
+    7.402318956312467
   ],
   "aggregate_identical": true,
-  "V_wise": 5.4783267795174915,
-  "V_unsafe": 5.4783267795174915,
+  "V_wise": 5.913272337914659,
+  "V_unsafe": 5.913272337914659,
+  "V_identical": true,
+  "n_active_wise": 7,
+  "n_active_unsafe": 7,
+  "active_count_identical": true,
   "wrench_res_wise": 0.0,
   "wrench_res_unsafe": 0.0,
   "wrench_feasible_wise": true,
   "wrench_feasible_unsafe": true,
-  "lambda2_geo_wise": 0.8506469743854504,
-  "lambda2_geo_unsafe": 5.518357612337024e-19,
+  "lambda2_geo_wise": 0.8301389004247971,
+  "lambda2_geo_unsafe": 2.4030793189259104e-16,
   "sigma_req": 0.25
 }

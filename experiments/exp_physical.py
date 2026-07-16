@@ -32,6 +32,20 @@ GEN.mkdir(exist_ok=True)
 FIG.mkdir(exist_ok=True)
 
 
+def _estimate_lambda2(L, v, iters=6, beta=0.15):
+    """Distributed Fiedler estimate: a few deflated, shifted power-iteration steps on
+    P = I - beta L - 11^T/N (warm-started at v), returning the updated vector and the
+    Rayleigh-quotient estimate lambda_hat = v^T L v. Finite iters -> bounded eps_est."""
+    N = L.shape[0]
+    P = np.eye(N) - beta * L - np.ones((N, N)) / N
+    for _ in range(iters):
+        v = P @ v
+        v = v - v.mean()
+        nv = np.linalg.norm(v)
+        v = v / nv if nv > 1e-12 else v
+    return v, float(v @ L @ v)
+
+
 def _scene():
     """Fixed 8-robot two-region scene: 3 left, 4 lifters on the load, 1 relay in the gap."""
     left = np.array([[1.6, 5.6], [1.2, 4.4], [2.4, 5.0]])
@@ -60,6 +74,8 @@ def run(steps=140, dt=0.03, kappa=0.5):
 
     load = dyn.Load(pose=np.array([load0[0], load0[1], 0.0]), twist=np.zeros(3))
     ref_goal = np.array([6.9, 5.0, 0.25])                     # gentle transport toward the gap
+    N = pos0.shape[0]
+    v_est = np.arange(N) - (N - 1) / 2.0; v_est /= np.linalg.norm(v_est)   # estimator warm start
     rows = []
     for t in range(steps):
         s = min(1.0, t / (0.7 * steps))
@@ -76,9 +92,13 @@ def run(steps=140, dt=0.03, kappa=0.5):
         intended = geometry(ref)                              # planned (candidate-site) geometry
         lam_geo = dyn.live_lambda2(act, ranges, relay_mask)
         eps_L, lam_bar, _, weyl_ok = gb.measure_mismatch(intended, act, ranges, relay_mask)
+        L_geo = dyn.geometric_laplacian(act, ranges, relay_mask)   # for the online estimator
+        v_est, lam_hat = _estimate_lambda2(L_geo, v_est)
+        w_norm = float(np.linalg.norm(w_cmd)) + 1e-9
         rows.append(dict(t=t * dt, pose_err=float(np.linalg.norm(err)),
-                         wrench_resid=float(resid), lam_geo=float(lam_geo),
-                         lam_bar=float(lam_bar), weyl=float(lam_bar - eps_L),
+                         wrench_resid=float(resid), wrench_resid_norm=float(resid / w_norm),
+                         lam_geo=float(lam_geo), lam_bar=float(lam_bar),
+                         lam_hat=float(lam_hat), weyl=float(lam_bar - eps_L),
                          eps_L=float(eps_L)))
     lam_bar = rows[-1]["lam_bar"]
     pos = geometry(load.pose)
@@ -93,13 +113,52 @@ def run(steps=140, dt=0.03, kappa=0.5):
 
     _write(rows)
     _figure(rows, pos, load, path, ranges, relay_mask, lifters, sigma_dyn, lam_bar)
+    _figure_transport(rows, sigma_dyn)
     lam_min = min(r["lam_geo"] for r in rows)
     weyl_min = min(r["weyl"] for r in rows)
+    est_err = max(abs(r["lam_hat"] - r["lam_geo"]) for r in rows)
     assert lam_min >= sigma_dyn, f"lambda2(L_geo) dipped below sigma_dyn: {lam_min:.3f}"
     print(f"physical: {steps} steps; min lambda2(L_geo)={lam_min:.3f}, "
           f"min Weyl bound={weyl_min:.3f}, sigma_dyn={sigma_dyn:.3f}; "
-          f"final pose err={rows[-1]['pose_err']:.3f}")
+          f"max estimator err={est_err:.3f}; final pose err={rows[-1]['pose_err']:.3f}")
     return rows
+
+
+def _figure_transport(rows, sigma_dyn):
+    """Compact temporal figure for the paper: pose error, normalized wrench residual, and
+    connectivity (geometric, surrogate, estimated) against sigma_dyn over the transport."""
+    import matplotlib
+    matplotlib.use("Agg")
+    matplotlib.rcParams["pdf.fonttype"] = 42
+    matplotlib.rcParams["ps.fonttype"] = 42
+    import matplotlib.pyplot as plt
+
+    t = np.array([r["t"] for r in rows])
+    fig, (a, b, c) = plt.subplots(1, 3, figsize=(7.0, 1.9))
+    a.plot(t, [r["pose_err"] for r in rows], color="#1f5fbf", lw=1.6)
+    a.set_title("(a) load pose error", fontsize=8.5)
+    a.set_ylabel(r"$\|q_{\rm load}-q_{\rm ref}\|$", fontsize=8)
+
+    b.plot(t, [r["wrench_resid_norm"] for r in rows], color="#c0392b", lw=1.6)
+    b.set_title("(b) norm. wrench residual", fontsize=8.5)
+    b.set_ylabel(r"$r_w/\|w^{\rm dem}\|$", fontsize=8)
+
+    c.plot(t, [r["lam_geo"] for r in rows], color="#2e8b57", lw=1.7,
+           label=r"$\lambda_2(L_{\rm geo}^{\pi})$")
+    c.plot(t, [r["lam_bar"] for r in rows], color="#1f5fbf", lw=1.0,
+           label=r"$\lambda_2(\bar L)$")
+    c.plot(t, [r["lam_hat"] for r in rows], color="#e08000", ls="--", lw=1.1,
+           label=r"$\widehat\lambda_2$")
+    c.axhline(sigma_dyn, color="#c0392b", ls=":", lw=1.1, label=r"$\sigma_{\rm dyn}$")
+    c.set_title("(c) connectivity", fontsize=8.5)
+    c.set_ylabel(r"$\lambda_2$", fontsize=8)
+    c.legend(fontsize=6, loc="center right", frameon=False)
+
+    for ax in (a, b, c):
+        ax.set_xlabel("time [s]", fontsize=8); ax.tick_params(labelsize=7); ax.grid(alpha=0.25)
+    fig.tight_layout()
+    fig.savefig(FIG / "fig_transport.pdf", metadata={"CreationDate": None})
+    plt.close(fig)
 
 
 def _write(rows):

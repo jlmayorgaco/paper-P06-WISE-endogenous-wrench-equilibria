@@ -11,13 +11,12 @@ barreiro2016constrained,martinezpiazuelo2022}. These methods rest on one premise
 the communication graph needed to \emph{compute} the equilibrium is available while
 the equilibrium is being reached.
 
-For a mobile team this premise cannot be taken for granted, because the robots that
-compute the equilibrium are the robots whose placement forms the graph. Consider a
-team moving a load across a gap. An assignment can be productively
-optimal---delivering the demanded wrench (force and
-torque~\cite{murray1994manipulation})---yet commit every robot to lifting, leaving
-none to relay: algebraic connectivity collapses and the estimator that produced the
-assignment loses the consensus channel it needs to compute it.
+For a mobile team this cannot be taken for granted: the robots that compute the
+equilibrium are the robots whose placement forms the graph. An assignment can be
+productively optimal---delivering the demanded wrench (force and
+torque~\cite{murray1994manipulation})---yet commit every robot to lifting, leaving none to
+relay, so algebraic connectivity collapses and the estimator loses the consensus channel
+it needs.
 
 Population-game and distributed Nash-seeking formulations take the interaction graph
 as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
@@ -33,10 +32,10 @@ relaxed SDP existence certificate under hard wrench constraints.
 
 \paragraph*{Contributions}
 \begin{itemize}
-\item \textbf{Equilibrium-fiber geometry} (Theorem~\ref{thm:degeneracy}): the
-productively optimal served aggregate is unique, but the equal-payoff assignments
-form a fiber whose dimension equals the tangent nullspace of its minimal active
-face; the transportation value $(T\!-\!1)(K\!-\!1)$ is one special case.
+\item \textbf{Equilibrium-fiber geometry} (Theorem~\ref{thm:degeneracy}): the productively
+optimal served aggregate is unique, but the equal-payoff assignments form a fiber whose
+dimension is the tangent nullspace of its minimal active face, coinciding with the loss of
+strong monotonicity.
 \item \textbf{WISE existence and selection} (Theorem~\ref{thm:existence}): the fiber
 contains a composition meeting the robust connectivity requirement $\sigmastar$ iff
 the optimal value of a semidefinite program clears it, and a lexicographic selector
@@ -52,7 +51,7 @@ We call a productively optimal, wrench-feasible assignment whose induced communi
 substrate meets the estimator's stability requirement a \emph{WISE equilibrium}.
 
 \begin{figure*}[t]\centering
-\resizebox{0.6\textwidth}{!}{\input{sections/fig_concept}}
+\resizebox{0.55\textwidth}{!}{\input{sections/fig_concept}}
 \caption{Assignment-induced connectivity and WISE selection. \textbf{(1)}~A distributed
 equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
 communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the decision

@@ -56,6 +56,7 @@ def two_region(
     kappa: float = 0.4,
     m_sides: int = 8,
     y_target: float = 12.0,
+    matched_pair: bool = False,
 ) -> WiseProblem:
     """Generate a reproducible two-region WISE instance.
 
@@ -81,6 +82,15 @@ def two_region(
     is_long = np.zeros(N, dtype=bool)
     is_long[rng.choice(N, size=n_long, replace=False)] = True
     r = np.where(is_long, rng.uniform(5.5, 7.0, size=N), rng.uniform(1.5, 2.5, size=N))
+
+    # matched comparative-advantage pair: one long and one short robot with *equal*
+    # lifting capacity (so swapping which one lifts leaves Bz and the wrench unchanged)
+    # but different range (only the long one bridges when relaying). Recorded in meta.
+    pair = None
+    if matched_pair:
+        L = int(np.where(is_long)[0][0]); S = int(np.where(~is_long)[0][0])
+        F[L] = F[S] = float(0.5 * (F[L] + F[S]))            # equal force -> equal capacity
+        pair = (L, S)
 
     # load + contact geometry (M = 1)
     load = RIGHT_CENTER.copy()
@@ -134,7 +144,7 @@ def two_region(
     )
     prob.meta = dict(seed=seed, nu=nu, tau_d=tau_d, lift=lift, pos=pos, F=F, r=r,
                      is_long=is_long, load=load, slot_world=slot_world,
-                     kappa=kappa, m_sides=m_sides)
+                     kappa=kappa, m_sides=m_sides, pair=pair)
     return prob
 
 

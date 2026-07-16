@@ -88,42 +88,44 @@ def _lambda2_geo(prob, pos, relay_mask):
 
 
 def build_pair(seed, y_target=4.5, tau_d=2.5, nu=0.35):
-    """Return a certified WISE integer assignment and its unsafe fiber-neighbour.
+    """Comparative-advantage role exchange on one optimal fiber.
 
-    A low-saturation regime (modest recruit target) is used so only a few robots lift
-    and the rest stay in their two home clusters -- the setting in which the connectivity
-    mechanism is legible; the fiber math is identical at any target.
+    With a matched long/short pair (L,S) of equal lifting capacity, both compositions share
+    the same base lifters and the same swing slot; they differ only in who lifts it and who
+    relays. Unsafe: L lifts, S relays (short range -> no bridge). WISE: S lifts, L relays
+    (long range -> bridge). Hence Bz, V, the wrench, and the active-robot count are
+    identical, and only lambda_2 changes. A low-saturation regime keeps a legible two-cluster
+    picture; the fiber math is target-independent.
     """
     prob = scenarios.two_region(seed=seed, N=12, nu=nu, tau_d=tau_d, bridge_gain=3.0,
-                                y_target=y_target)
+                                y_target=y_target, matched_pair=True)
+    if prob.meta["pair"] is None:
+        return None
+    L, S = prob.meta["pair"]
     _, y_star, _ = _stage1(prob)
 
-    # base (unsafe) composition: the wrench-feasible, connectivity-blind solver
-    # (wrench margin, no relay), integer-recovered, with every non-lifter forced idle.
+    # wrench-feasible, connectivity-blind base lifters (excluding the matched pair)
     z_wr = baselines.wrench_only(prob, max_iters=4000).x
-    x_unsafe = metrics.round_argmax(prob, z_wr)
-    role_u, _ = _roles(prob, x_unsafe)
-    for i in np.where(role_u != "lift")[0]:                # no relay in the base
-        x_unsafe[i] = 0.0; x_unsafe[i, prob.idle_index] = 1.0
-    role_u, slot_u = _roles(prob, x_unsafe)
-    if not np.all(prob.wrench_feasible(x_unsafe)):
-        return None
+    x_base = metrics.round_argmax(prob, z_wr)
+    role_b, slot_b = _roles(prob, x_base)
+    base = np.zeros((prob.N, prob.A))
+    for i in range(prob.N):
+        if role_b[i] == "lift" and i not in (L, S):
+            base[i, slot_b[i]] = 1.0
+        else:
+            base[i, prob.idle_index] = 1.0
+    swing = int(np.argmin(prob.g[L, :prob.M * prob.H]))    # slot the pair contests
 
-    # WISE fiber-neighbour: exactly one long-range idle robot switches to relay (B, V
-    # unchanged -- relay carries no served capacity); pick the one clearing sigma best.
-    is_long = prob.meta["is_long"]
-    cand = [i for i in range(prob.N) if is_long[i] and role_u[i] == "idle"]
-    if not cand:
+    # unsafe: base + L lifts swing + S relays;  WISE: base + S lifts swing + L relays
+    x_unsafe = base.copy()
+    x_unsafe[L] = 0.0; x_unsafe[L, swing] = 1.0
+    x_unsafe[S] = 0.0; x_unsafe[S, prob.relay_index] = 1.0
+    x_wise = base.copy()
+    x_wise[S] = 0.0; x_wise[S, swing] = 1.0
+    x_wise[L] = 0.0; x_wise[L, prob.relay_index] = 1.0
+    if not (np.all(prob.wrench_feasible(x_unsafe)) and np.all(prob.wrench_feasible(x_wise))):
         return None
-    best_j, best_lam = None, -np.inf
-    for j in cand:
-        xw = x_unsafe.copy(); xw[j] = 0.0; xw[j, prob.relay_index] = 1.0
-        rw, sw = _roles(prob, xw)
-        lam = _lambda2_geo(prob, _positions(prob, rw, sw), rw == "relay")
-        if lam > best_lam:
-            best_j, best_lam = j, lam
-    j = int(best_j)
-    x_wise = x_unsafe.copy(); x_wise[j] = 0.0; x_wise[j, prob.relay_index] = 1.0
+    role_u, slot_u = _roles(prob, x_unsafe)
     role_w, slot_w = _roles(prob, x_wise)
 
     pos_w = _positions(prob, role_w, slot_w)
@@ -132,14 +134,20 @@ def build_pair(seed, y_target=4.5, tau_d=2.5, nu=0.35):
     mask_u = role_u == "relay"                # empty
 
     y_w = prob.served_capacity(x_wise); y_u = prob.served_capacity(x_unsafe)
+    n_active_w = int(np.sum(np.argmax(x_wise, 1) != prob.idle_index))
+    n_active_u = int(np.sum(np.argmax(x_unsafe, 1) != prob.idle_index))
     rec = {
-        "seed": seed, "relay_robot": j, "relay_is_long": bool(prob.meta["is_long"][j]),
+        "seed": seed, "long_robot": L, "short_robot": S, "swing_slot": swing,
         "y_star": [float(v) for v in np.atleast_1d(y_star)],
         "y_wise": [float(v) for v in np.atleast_1d(y_w)],
         "y_unsafe": [float(v) for v in np.atleast_1d(y_u)],
         "aggregate_identical": bool(np.allclose(y_w, y_u, atol=1e-9)),
         "V_wise": float(prob.productive_value(x_wise)),
         "V_unsafe": float(prob.productive_value(x_unsafe)),
+        "V_identical": bool(abs(prob.productive_value(x_wise)
+                                - prob.productive_value(x_unsafe)) < 1e-9),
+        "n_active_wise": n_active_w, "n_active_unsafe": n_active_u,
+        "active_count_identical": bool(n_active_w == n_active_u),
         "wrench_res_wise": float(prob.max_residual(x_wise)),
         "wrench_res_unsafe": float(prob.max_residual(x_unsafe)),
         "wrench_feasible_wise": bool(np.all(prob.wrench_feasible(x_wise))),
@@ -149,7 +157,7 @@ def build_pair(seed, y_target=4.5, tau_d=2.5, nu=0.35):
         "sigma_req": float(prob.sigma),
     }
     ctx = dict(prob=prob, x_wise=x_wise, x_unsafe=x_unsafe, role_w=role_w, role_u=role_u,
-               pos_w=pos_w, pos_u=pos_u, mask_w=mask_w, mask_u=mask_u, relay=j)
+               pos_w=pos_w, pos_u=pos_u, mask_w=mask_w, mask_u=mask_u, pair=(L, S))
     return rec, ctx
 
 
@@ -188,7 +196,8 @@ def run():
     (GEN / "spatial_pair.json").write_text(json.dumps(rec, indent=2), encoding="utf-8")
     _figure(rec, ctx)
     print(json.dumps({k: rec[k] for k in
-                      ("seed", "relay_robot", "relay_is_long", "aggregate_identical",
+                      ("seed", "long_robot", "short_robot", "swing_slot",
+                       "aggregate_identical", "V_identical", "active_count_identical",
                        "lambda2_geo_unsafe", "lambda2_geo_wise", "sigma_req",
                        "wrench_feasible_wise", "wrench_feasible_unsafe")}, indent=2))
     return rec
@@ -232,7 +241,7 @@ def _draw(ax, prob, role, pos, mask, title, lam, sigma):
                    edgecolors="k", linewidths=0.4, zorder=4)
 
     col = "#2e8b57" if lam >= sigma else "#c0392b"
-    ax.set_title(rf"{title}: $\lambda_2(L_{{\rm geo}})={lam:.2f}$", fontsize=8.5, color=col)
+    ax.set_title(rf"{title} ($\lambda_2={lam:.2f}$)", fontsize=7.8, color=col)
     ax.set_xlim(-0.5, 10.5); ax.set_ylim(1.5, 8.5); ax.set_aspect("equal")
     ax.set_xticks([]); ax.set_yticks([])
 

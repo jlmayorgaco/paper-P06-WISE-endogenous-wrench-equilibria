@@ -30,18 +30,15 @@ dual $\pi$:
 \dot\pi &= \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
 \end{align}
 \end{subequations}
-where $(Oz)_{kh}=\sum_\tau z_{\tau,kh}$ collects the shared slot- and relay-occupancy so
-$\rho\ge0$ prices exclusivity.
-with $\mathcal R_\tau$ a budget-preserving projected-ascent revision whose rest points
+with $(Oz)_{kh}=\sum_\tau z_{\tau,kh}$ the shared slot/relay occupancy priced by $\rho\ge0$
+and $\mathcal R_\tau$ a budget-preserving projected-ascent revision whose rest points
 maximise $V$~\cite{sandholm2010population}. Each robot estimates $(\lamtwo,v)$ by power
-iteration on the deflated, shifted operator $P=I-\beta\Lap(z)-\tfrac1N\mathbf1\mathbf1^{\top}$
-($0<\beta<1/\lambda_{\max}$, so the Fiedler pair is dominant on $\mathbf1^{\perp}$),
-sign-fixed by a reference index; the eigengap $\lambda_3-\lamtwo$ sets the convergence rate
-and iteration stops when the eigen-residual $\|Pv-\widehat\mu v\|\le\tau_{\mathrm{eig}}$
-($\varepsilon_{\mathrm{est}}$ in $\delta$; recursion and message schedule in the
-repository). This is a \emph{preservation}, not a recovery, mechanism: it assumes a
-connected warm start $\lamtwo\ge\sigma_{\mathrm{safe}}>0$ and eigengap
-$\lambda_3-\lamtwo\ge g_{\min}>0$, on a slower time scale than the estimator. The flow is
-integrated in simulation by projected forward Euler
-$z^{k+1}=\Pi_{\mathcal X}[z^k+h\,\dot z^k]$ with step $h$. We make no global-convergence
-claim for~\eqref{eq:pd}; existence and selection rest on the exact SDP.
+iteration on $P=I-\beta\Lap(z)-\tfrac1N\mathbf1\mathbf1^{\top}$ ($0<\beta<1/\lambda_{\max}$),
+sign-fixed by a reference index and stopped at eigen-residual
+$\|Pv-\widehat\mu v\|\le\tau_{\mathrm{eig}}$ (the eigengap sets the rate;
+$\varepsilon_{\mathrm{est}}$ in $\delta$; recursion in the repository). This
+\emph{preserves} rather than recovers connectivity: it assumes a connected warm start
+$\lamtwo\ge\sigma_{\mathrm{safe}}$ and gap $\lambda_3-\lamtwo\ge g_{\min}>0$, on a slower
+scale than the estimator; in simulation it is integrated by projected forward Euler
+$z^{k+1}=\Pi_{\mathcal X}[z^k+h\,\dot z^k]$. We make no global-convergence claim; existence
+and selection rest on the exact SDP.

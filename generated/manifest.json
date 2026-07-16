@@ -1,20 +1,21 @@
 {
   "generated/epsilon_sweep.csv": "0690f94f724f25177d5c77557c39638763e25d04c05afa5f6edf79eb5595c537",
-  "generated/fiber_certificate.json": "336cfe6768ce4ab56152264e52528dbfb79beb777c6d7f8a64427148d817dc56",
+  "generated/fiber_certificate.json": "58081ffc93cfea9be2ddd86971da002565e8a37f50059ad9585b775f30ee81e3",
   "generated/fiber_sweep.csv": "43337c89f4444c0e78dfb87982ceed0115c9ff4d15923762e07cea8bfa1ce689",
   "generated/geometric_bridge_certificate.json": "42b49473d700b77744407224ca626b5e3ae91c015a79df117d89b8ad6d50cd3a",
-  "generated/integer_recovery.json": "efd257255eca0f33f2dac4895a1a4c91e20bc55f713a3570b23ed56b273e3fd7",
+  "generated/integer_recovery.json": "0a72120efe01733560e5a2cc891ac7eddeabfdfd8b94771db6e0365553113438",
   "generated/methods_comparison.csv": "bf879dba5f3b0d54966cd27bd96ea2cff2526a9c3801f4e73a2197c85e709a2b",
   "generated/nullspace_certificate.json": "d873df6fdce6205e085621e1889ee90678dc09ed862dda0bf821605253377302",
   "generated/phase_confusion.csv": "8993217be1f37b9d92e4578a2dd85c309c7dcf93e72d851abe7a8c5fec0322be",
   "generated/phase_grid.csv": "a677abb21561a2a5a20152f41ecf66a1089004223226f8a71dbf1812a8ef32f5",
-  "generated/physical_run.csv": "c9ca2667df5ae78b756860ee592d680714a261461679921320fdfe90bc18f8e1",
-  "generated/spatial_pair.json": "9e23e185e7d5f34c4b521f0af5c6b794e8885901301c6a98625f2129460d4b2c",
-  "paper/figures/ablation_table.tex": "94e0c05eafc9adefb6f6db75627b356963248eeb1a61b684780c9bc1e16c6915",
-  "paper/figures/fig_central.pdf": "dee6c012a22f48f647091011358e67c3cd65e6f41344594f3315a8b07ee44658",
+  "generated/physical_run.csv": "9842a2b90bf48ad0d2f128698a96375befdf2b8c8c4d1cd1fee9f3943ed3d98f",
+  "generated/spatial_pair.json": "49ebe22de0c6202326edc5d8e055b230af55b34da252621ddefe67cf20382fb8",
+  "paper/figures/ablation_table.tex": "e6a142375b3ca05ec475297b65c765052a939691d84a85deb1a1e4629f0101d6",
+  "paper/figures/fig_central.pdf": "c991605a8f0e5002b937893b9bdb4b1a468768bc1b86ec40cb17f03398e962b3",
   "paper/figures/fig_epsilon.pdf": "1cc9b672b3c6af085f58c4ceec42be787fe6866bba3fd120a01d6327ac3863b6",
   "paper/figures/fig_fiber.pdf": "d7b7367cd8cea6cb1253f07348c12c58f2ebe5136cbfe37bc94d80aa00588797",
   "paper/figures/fig_phase_sdp.pdf": "27bd69233ade728be0a7cc2edf5543868e3da1652125ed88ea83bcf0eff5357b",
   "paper/figures/fig_physical.pdf": "75324d161a6a50e0956bc4faa30379e144433daf5f2e36bcd1dc29538cee83fc",
-  "paper/figures/fig_spatial.pdf": "946446810a6472caf3ef7d83b78b050ece5b658314d0091044c1d5632543798b"
+  "paper/figures/fig_spatial.pdf": "a41e3ad14d4851d4be845b6c1e133cd8bd10d5ba48fe53f21d04790638913241",
+  "paper/figures/fig_transport.pdf": "b029b06e35e1d3917a6a5be22be4573c7d66ed502e7079d0739ae2ab75a3fd20"
 }

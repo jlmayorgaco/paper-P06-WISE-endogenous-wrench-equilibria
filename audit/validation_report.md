@@ -89,16 +89,26 @@ boundary claims), promotional phrases removed; Sion reference added.
 - **χ-threshold sweep, scalability (N=8..80, runtime), external connectivity-aware
   baseline, uniform time-varying corollary**: deferred; not implemented, not claimed.
 
-## Larger rebuild (design/strategy reviews 3–4) — scoped, not yet done
-These are multi-session and carry real design forks; not attempted in the consistency round:
-- **E2 comparative-advantage exchange**: current E2 is the idle↔relay demonstration
-  (exact same fiber). A genuine long-lift→short-lift + long-relay swap needs matched-capacity
-  scenario engineering to keep `Bz=y*` at the integer level. The abstract/E2 no longer
-  claim "productive opportunity cost".
-- **Temporal transport figure** `e_pose(t), r_w(t), λ2(L_geo(t)), σ_dyn`: needs a new
-  experiment surfaced into the PDF (currently `exp_physical` in repo only).
-- **Derive Thm 3 (M,Θ1,Θ2) from the actual primal-dual/consensus dynamics**, or demote to
-  a Proposition. Fork: rigor vs. sobriety.
-- **Hard-connectivity baseline** in Table I; **notation deduplication** (H, M, V, F, ξ, ν,
-  α, ρ, A, d, Z collisions); **Fiber Refinement Principle** generalization of Theorem 1;
-  **3-figure redesign + Fig. 1 legibility**; **Zenodo/DOI archival** replacing script names.
+## Round 3 (5 residual P0s + comparative exchange + temporal figure) — done, in PDF
+- **5 residual P0s**: (1) Thm 3 isotropic case replaced by a scalar mode-aligned Fiedler
+  block (dimensionally valid); (2) integer-recovery claims explicit everywhere (single
+  66%, best-of-30 100%, argmax 67%); (3) Table I split into existence vs. attainment
+  blocks; (4) occupancy dual ρ added to the primal-dual flow (15); (5) eigen-residual
+  stopping rule. Theorem 3 → Proposition 2 (Information-layer stability).
+- **E2 comparative-advantage exchange** (Fig 2b,c): matched long/short pair of equal
+  capacity; unsafe = long lifts + short relays (short range, λ2≈0); WISE = short lifts +
+  long relays (λ2=0.83). Verified `aggregate_identical`, `V_identical`,
+  `active_count_identical`, both wrench-feasible (`spatial_pair.json`). From the real
+  solver→rounding→pose→L_geo^π pipeline.
+- **Temporal transport figure** (Fig 3, `fig_transport.pdf`): closed-loop transport under
+  the WISE composition — pose error, normalized wrench residual, and
+  λ2(L_geo^π)/λ2(L̄)/λ̂2 all above σ_dyn=0.2 (min 0.58); distributed estimator tracks
+  within 0.011. 3-figure layout (concept, Fig 2 = certificate+exchange, Fig 3 = transport).
+
+## Still open (design/strategy) — scoped, not yet done
+- **Derive Prop 2 (M,Θ1,Θ2) from the actual primal-dual/consensus dynamics** (journal-level;
+  demoted to Proposition per decision).
+- **Hard-connectivity baseline** (`max V s.t. λ2≥σ_req`) in Table I.
+- **Notation deduplication** (H, M, V, F, ξ, ν, α, ρ, A, d, Z collisions) — to run after
+  content/figures freeze.
+- **Fiber Refinement Principle** generalization of Theorem 1; **Zenodo/DOI archival**.

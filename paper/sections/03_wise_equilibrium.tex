@@ -96,14 +96,11 @@ the degeneracy WISE exploits, in contrast to strongly contractive aggregative
 games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
-\begin{example}[A two-type fiber]\label{ex:fiber}
-With two types of equal lifting capacity $c_\ell=c_s$, moving $\alpha$ long-range robots
-from lifting to relay and an equal mass of short-range robots the other way is a
-productively neutral swap ($Bd=0$, so $V\equiv V^{\star}$) whose spectral effect is
-$D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v$ (simple $v$): $\lamtwo$
-rises whenever this directional derivative is positive, which the SDP verifies rather than
-assumes.
-\end{example}
+A comparative-advantage exchange makes this concrete (Fig.~\ref{fig:central}b,c): with two
+types of equal lifting capacity $c_\ell=c_s$, swapping which type lifts and which relays is
+productively neutral ($Bd=0$, $V\equiv V^{\star}$) with spectral effect
+$D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v$; $\lamtwo$ rises when this
+directional derivative is positive, which the SDP verifies rather than assumes.
 
 \subsection{The WISE refinement}
 \begin{definition}[WISE]\label{def:wise}
@@ -168,20 +165,16 @@ strictly inside the range of $\lamtwo$ over $\Emanifold$.
 \end{proof}
 
 \subsection{Aggregate--estimator stability}
-The decentralized realization~\eqref{eq:pd} couples a served-aggregate revision error
-$\xi$ with a consensus-estimator error $\eta$. To establish the \emph{dynamic
-significance} of the spectral threshold---not to claim a full linearisation
-of~\eqref{eq:pd}---we posit a local optimizer--estimator interconnection model with
-possibly distinct couplings,
+To show the \emph{dynamic significance} of the threshold (not to linearise~\eqref{eq:pd}),
+posit a local optimizer--estimator model coupling a served-aggregate error $\xi\in\R^p$
+and a consensus-estimator error $\eta\in\R^{(N-1)p}$,
 \begin{equation}
 \dot\xi=-M\xi+\Theta_1\eta,\qquad
 \dot\eta=\Theta_2\,\xi-c\,(\bar L_\perp\!\otimes\! I_p)\,\eta,
 \label{eq:jac}
 \end{equation}
-with $\xi\in\R^{p}$, $\eta\in\R^{(N-1)p}$, $\Theta_1\in\R^{p\times(N-1)p}$,
-$\Theta_2\in\R^{(N-1)p\times p}$, $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, under the
-hypotheses $\tfrac12(M+M^{\top})\succeq\mF I$ (optimizer curvature),
-$\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$, with $\mF,\vt_1,\vt_2>0$.
+$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, with $\tfrac12(M+M^{\top})\succeq\mF I$,
+$\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$, and $\mF,\vt_1,\vt_2>0$.
 
 \begin{proposition}[Information-layer stability interpretation]\label{thm:stability}
 Under those hypotheses, \eqref{eq:jac} is exponentially stable whenever
