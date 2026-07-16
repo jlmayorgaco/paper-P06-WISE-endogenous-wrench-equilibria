@@ -1,17 +1,16 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We identified composition degeneracy as a resource in heterogeneous cooperative transport.
-When the productive optimum fixes the served aggregate but not its composition by type
-(Theorem~\ref{thm:degeneracy}), a secondary spectral program selects, among equally
-productive assignments, one that preserves the communication substrate the estimator
-needs; relaxed WISE existence and selection reduce to a semidefinite program
-(Theorem~\ref{thm:existence}), and a small-gain condition ties the requirement to
-optimizer--estimator stability (Proposition~\ref{thm:stability}).
+We identified composition degeneracy as a resource in heterogeneous cooperative transport:
+when the productive optimum fixes the served aggregate but not its composition
+(Theorem~\ref{thm:degeneracy}), a spectral program selects, among equally productive
+assignments, one that preserves the estimator's communication substrate; relaxed WISE
+existence and selection reduce to a semidefinite program (Theorem~\ref{thm:existence}), and
+a small-gain condition ties the requirement to optimizer--estimator stability
+(Proposition~\ref{thm:stability}).
 
 \paragraph*{Limitations and future work}
-The guarantees hold for the relaxed candidate-site model: $\Lap(z)$ is an affine surrogate
-bounding $\Lgeo(q)$ through Lemma~\ref{lem:bridge}; integer assignments are re-certified
-after rounding (Remark~\ref{rem:integer}); nonholonomic realizability is modelled, not
-proved; and validation is in simulation. A realizability theorem for the nonholonomic
-contact and hardware validation remain open.
+The guarantees hold for the relaxed candidate-site model ($\Lap(z)$ bounds $\Lgeo(q)$
+through Lemma~\ref{lem:bridge}; integers are re-certified after rounding,
+Remark~\ref{rem:integer}); nonholonomic realizability is modelled, not proved; validation
+is in simulation. A nonholonomic realizability theorem and hardware validation remain open.

@@ -48,8 +48,8 @@ def main():
     import matplotlib.pyplot as plt
 
     sig = rec["sigma_req"]
-    fig = plt.figure(figsize=(7.0, 2.05))
-    gs = fig.add_gridspec(1, 3, width_ratios=[1.15, 1.0, 1.0], wspace=0.3)
+    fig = plt.figure(figsize=(7.2, 2.0))
+    gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1], wspace=0.42)
     a = fig.add_subplot(gs[0]); b = fig.add_subplot(gs[1]); c = fig.add_subplot(gs[2])
 
     # (a) fiber certificate: lambda_2 crosses sigma_req; residuals annotated as a band
@@ -59,10 +59,11 @@ def main():
     a.fill_between(an, sig_f, lam, where=(lam >= sig_f), color="#2e8b57", alpha=0.12)
     a.set_xlabel(r"position on fiber $\alpha$", fontsize=8)
     a.set_ylabel(r"$\lambda_2(\bar L(z(\alpha)))$", color="#2e8b57", fontsize=8)
-    a.set_title(rf"(a) certified fiber (dim $E={fib['dim_E']}$)", fontsize=8.2)
+    a.set_title(rf"(a) certified fiber (dim $E={fib['dim_E']}$)", fontsize=8.5)
     a.text(0.03, 0.97, r"$\max|V-V^\star|,\,\max\|Bz-y^\star\|<10^{-8}$",
            transform=a.transAxes, va="top", ha="left", fontsize=6.2,
            bbox=dict(boxstyle="round,pad=0.2", fc="w", ec="#bbb", lw=0.5))
+    a.set_box_aspect(7.2 / 9.2)                      # same box size as the spatial panels
 
     # (b,c) comparative-advantage exchange on the same fiber
     sp._draw(b, ctx["prob"], ctx["role_u"], ctx["pos_u"], ctx["mask_u"],

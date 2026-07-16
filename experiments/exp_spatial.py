@@ -285,8 +285,9 @@ def _draw(ax, prob, role, pos, mask, title, lam, sigma, pair=None):
 
     col = "#2e8b57" if lam >= sigma else "#c0392b"
     lam_s = r"<10^{-8}" if lam < 1e-8 else rf"={lam:.2f}"
-    ax.set_title(rf"{title} ($\lambda_2{lam_s}$)", fontsize=7.8, color=col)
-    ax.set_xlim(-0.5, 10.5); ax.set_ylim(1.3, 8.7); ax.set_aspect("equal")
+    ax.set_title(rf"{title} ($\lambda_2{lam_s}$)", fontsize=8.5, color=col)
+    # fixed data window with a box aspect matching its ratio -> undistorted, fills the cell
+    ax.set_xlim(0.5, 9.7); ax.set_ylim(1.4, 8.6); ax.set_box_aspect(7.2 / 9.2)
     ax.set_xticks([]); ax.set_yticks([])
 
 

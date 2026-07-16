@@ -31,10 +31,10 @@ long relays: $\lamtwo(\Lgeo)=0.78\ge\sigmastar$.}
 \end{figure*}
 
 \paragraph*{E1 --- Fiber neutrality, certified (Fig.~\ref{fig:central}a)}
-At an interior productive optimum $\mathcal N_p=\ker A\cap\ker B$ has dimension
-$72-13=59$; moving along it holds $V$ and $Bz$ at machine precision (residuals $<10^{-8}$)
-while $\lamtwo$ crosses $\sigmastar$, so the connectivity-feasible subset lies strictly
-inside the optimal fiber.
+At an interior productive optimum $\mathcal N_p=\ker A\cap\ker B$ has dimension $72-13=59$;
+moving along it holds $V$ and $Bz$ at machine precision (residuals $<10^{-8}$) while
+$\lamtwo$ crosses $\sigmastar$---the connectivity-feasible subset lies strictly inside the
+optimal fiber.
 
 \paragraph*{E2 --- Comparative-advantage exchange (Fig.~\ref{fig:central}b,c)}
 A matched long/short pair of equal lifting capacity swaps roles: in the productively
@@ -45,51 +45,44 @@ use the same robots and active-role count and share $Bz=y^{\star}$, $V^{\star}$,
 wrench residual; only connectivity differs.
 
 \paragraph*{E3 --- Lexicographic vs.\ scalarized selection}
-On free-regime seeds ($\LamE\ge\sigmastar$), the scalarised $V_\varepsilon=V+\varepsilon
-\lamtwo$ trades productive value for connectivity: as $\varepsilon$ grows from $10^{-3}$ to
-$1$ the productive loss rises from $0$ to $0.049$ and the aggregate drift from $0$ to
-$0.307$, both under the Tikhonov envelopes, whereas the lexicographic selector holds both
-at zero.
+On free-regime seeds the scalarised $V+\varepsilon\lamtwo$ trades productive value for
+connectivity (loss $0\!\to\!0.049$, drift $0\!\to\!0.307$ as $\varepsilon:10^{-3}\!\to\!1$,
+under the Tikhonov envelopes), whereas the lexicographic selector holds both at zero.
 
 \paragraph*{E4 --- Integer recovery (Rem.~\ref{rem:integer})}
 Over $30$ seeds a single randomized-rounding draw re-certifies $66\%$ of the fluid optima,
-best-of-$30$ all $30$ (argmax $67\%$), with a relative welfare gap
-$V_{\mathrm{relax}}-V_{\mathrm{int}}$ of $+1.8\%$ (mean, $+4.5\%$ worst); all robots are
-integer.
+best-of-$30$ all $30$ (argmax $67\%$), with welfare gap
+$V_{\mathrm{relax}}-V_{\mathrm{int}}=+1.8\%$ (mean); all robots are integer.
 
 \paragraph*{E5 --- Method comparison (Table~\ref{tab:ablation})}
-Single-criterion baselines rarely clear both tests. The natural strong comparator, the hard
-connectivity-constrained optimum $\max_{z\in X_{\mathrm f}}V(z)$ s.t.\ $\lamtwo\ge\sigmastar$,
-reaches $V^{\star}$ and certifies every seed in this free regime but only \emph{satisfies}
-the requirement (margin $+0.15$), whereas WISE maximizes the margin among productive optima
-($+0.99$)---the value of the lexicographic order. The decentralized flow (WISE-PD, $50\%$)
-and centralized multistart ($67\%$) attain less than the certificate. Both SDPs solve in
-$30$--$60$\,ms at $N=12$.
+Single-criterion baselines rarely clear both tests. The hard connectivity-constrained
+optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) reaches $V^{\star}$ but only \emph{satisfies}
+the requirement (margin $+0.15$); WISE maximizes it among productive optima ($+0.99$)---the
+value of the lexicographic order. The flow (WISE-PD, $50\%$) and multistart ($67\%$) attain
+less than the certificate; both SDPs solve in $30$--$60$\,ms at $N=12$.
 
-\begin{table}[b]\centering
-\caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$). Productive gap
-$V^{\star}-V$, relative wrench deficit, and margin $\lamtwo-\sigmastar$ are means; success
-(wrench-feasible \emph{and} $\lamtwo\ge\sigmastar$) carries a Wilson $95\%$ CI (proportion
-only). Hard-connectivity and WISE-SDP both reach $V^{\star}$, but WISE attains the larger
-spectral margin. The last block is a \emph{relaxed existence} certificate, not an attained
-integer controller; integer re-certification is reported separately (E4).}
+\begin{table}[t]\centering
+\caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$); means, Wilson
+$95\%$ CI on success (proportion). Hard-connectivity and WISE-SDP both reach $V^{\star}$,
+but WISE attains the larger margin. The last block certifies the \emph{relaxed} problem
+(integer re-certification: E4).}
 \label{tab:ablation}
-\small
+\footnotesize
 \input{figures/ablation_table.tex}
 \end{table}
 
-\paragraph*{E6 --- Closed-loop transport (Fig.~\ref{fig:transport})}
-Under the WISE composition the load pose error stays within a bounded tracking band
-$\varepsilon_q$ under the moving reference, the normalized wrench residual stays near zero,
-and $\lamtwo(\Lgeo^{\pi}(q(t)))$ holds above $\sigmadyn=0.2$ (min $0.58$; here $\sigmadyn=
-\vt_1\vt_2/(c\,\mF)$ for representative gains) with the distributed estimate
-$\widehat\lamtwo$ tracking within $0.011$ (the margin of Lemma~\ref{lem:bridge}).
+\paragraph*{E6 --- Self-defeat vs.\ self-sustenance in transport (Fig.~\ref{fig:transport})}
+During transport WISE holds $\lamtwo(\Lgeo^{\pi})$ above $\sigmastar$ (min $0.58$), so the
+optimizer--estimator error \emph{decays} and the load is delivered; withdrawing the relay
+drops $\lamtwo$ below $\sigmadyn=\vt_1\vt_2/(c\,\mF)=0.2$ and the \emph{same} error
+\emph{diverges}---the decision defeats its own computation
+(Proposition~\ref{thm:stability}). The estimate $\widehat\lamtwo$ tracks within $0.011$.
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.98\columnwidth]{fig_transport.pdf}
-\caption{Closed-loop transport under the WISE composition. (a) Load pose error; (b)
-normalized undeliverable wrench $r_w/\|w^{\mathrm{dem}}\|$; (c) geometric connectivity
-$\lamtwo(\Lgeo^{\pi})$, its affine surrogate $\lamtwo(\Lap)$, and the distributed estimate
-$\widehat\lamtwo$, all above $\sigmadyn$.}
+\includegraphics[width=\columnwidth]{fig_transport.pdf}
+\caption{Information-layer self-defeat during transport. (a) Geometric connectivity for the
+WISE composition (relay on, above $\sigmastar$) vs.\ the same team with the relay withdrawn
+(below $\sigmadyn$, shaded). (b) The coupled optimizer--estimator error $\|e(t)\|$ driven by
+each: above $\sigmadyn$ it decays (self-sustaining), below it grows (self-defeating).}
 \label{fig:transport}
 \end{figure}

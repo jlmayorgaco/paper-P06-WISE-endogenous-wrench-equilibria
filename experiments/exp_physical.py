@@ -61,7 +61,7 @@ def _scene():
     return pos0, load0, lift_off, ranges, relay_mask, lifters, F
 
 
-def run(steps=140, dt=0.03, kappa=0.5):
+def run(steps=200, dt=0.03, kappa=0.5):
     pos0, load0, lift_off, ranges, relay_mask, lifters, F = _scene()
     sigma_dyn = 0.20                                          # physical stability threshold
     fixed = pos0.copy()                                       # left cluster + relay stay put
@@ -91,13 +91,15 @@ def run(steps=140, dt=0.03, kappa=0.5):
         act = geometry(load.pose)                             # after the step
         intended = geometry(ref)                              # planned (candidate-site) geometry
         lam_geo = dyn.live_lambda2(act, ranges, relay_mask)
+        lam_unsafe = dyn.live_lambda2(act, ranges, np.zeros(pos0.shape[0], bool))  # relay withdrawn
         eps_L, lam_bar, _, weyl_ok = gb.measure_mismatch(intended, act, ranges, relay_mask)
         L_geo = dyn.geometric_laplacian(act, ranges, relay_mask)   # for the online estimator
         v_est, lam_hat = _estimate_lambda2(L_geo, v_est)
         w_norm = float(np.linalg.norm(w_cmd)) + 1e-9
         rows.append(dict(t=t * dt, pose_err=float(np.linalg.norm(err)),
                          wrench_resid=float(resid), wrench_resid_norm=float(resid / w_norm),
-                         lam_geo=float(lam_geo), lam_bar=float(lam_bar),
+                         lam_geo=float(lam_geo), lam_unsafe=float(lam_unsafe),
+                         lam_bar=float(lam_bar),
                          lam_hat=float(lam_hat), weyl=float(lam_bar - eps_L),
                          eps_L=float(eps_L)))
     lam_bar = rows[-1]["lam_bar"]
@@ -112,9 +114,21 @@ def run(steps=140, dt=0.03, kappa=0.5):
                       ref_goal * min(1, tt / (0.7 * steps)))[:2] for tt in range(steps)])
 
     sigma_req = sigma_dyn + 0.10                              # sigma_req = sigma_dyn + delta (design margin)
+
+    # information-layer self-defeat: drive the 2x2 optimizer-estimator error system by each
+    # connectivity trajectory (Prop. small-gain). WISE keeps lambda2 > sigma_dyn (error
+    # decays); withdrawing the relay drops lambda2 < sigma_dyn (error grows) -- the decision
+    # defeats its own computation.
+    m_F, c = 1.0, 1.0
+    theta = float(np.sqrt(sigma_dyn * c * m_F))              # so sigma_dyn = theta^2/(c m_F)
+    lam_w = np.array([r["lam_geo"] for r in rows])
+    lam_u = np.array([r["lam_unsafe"] for r in rows])
+    e_w = np.linalg.norm(dyn.rollout_error(lam_w, m_F, c, theta, dt=dt), axis=1)
+    e_u = np.linalg.norm(dyn.rollout_error(lam_u, m_F, c, theta, dt=dt), axis=1)
+
     _write(rows)
     _figure(rows, pos, load, path, ranges, relay_mask, lifters, sigma_dyn, lam_bar)
-    _figure_transport(rows, sigma_dyn, sigma_req)
+    _figure_transport(rows, sigma_dyn, sigma_req, e_w, e_u, dt)
     lam_min = min(r["lam_geo"] for r in rows)
     weyl_min = min(r["weyl"] for r in rows)
     est_err = max(abs(r["lam_hat"] - r["lam_geo"]) for r in rows)
@@ -125,10 +139,13 @@ def run(steps=140, dt=0.03, kappa=0.5):
     return rows
 
 
-def _figure_transport(rows, sigma_dyn, sigma_req, eps_q=0.15, eps_w=0.05):
-    """Paper temporal figure: three vertically stacked panels sharing a time axis --
-    load pose error (with a tracking tolerance band), normalized wrench residual, and
-    connectivity (geometric, surrogate, estimate, Weyl bound) against sigma_dyn/sigma_req."""
+def _figure_transport(rows, sigma_dyn, sigma_req, e_w, e_u, dt):
+    """Paper temporal figure -- the information-layer self-defeat dichotomy during transport.
+    (a) geometric connectivity for the WISE composition (relay on) vs. the same team with the
+    relay withdrawn; the WISE trajectory stays above sigma_req, the other falls below
+    sigma_dyn. (b) the coupled optimizer-estimator error e(t) driven by each connectivity:
+    above sigma_dyn it decays (self-sustaining), below it grows (self-defeating). (c) the load
+    is actually transported (pose error bounded) with the wrench tracked."""
     import matplotlib
     matplotlib.use("Agg")
     matplotlib.rcParams["pdf.fonttype"] = 42
@@ -136,42 +153,37 @@ def _figure_transport(rows, sigma_dyn, sigma_req, eps_q=0.15, eps_w=0.05):
     import matplotlib.pyplot as plt
 
     t = np.array([r["t"] for r in rows])
-    fig, (a, b, c) = plt.subplots(3, 1, figsize=(3.4, 3.5), sharex=True)
+    te = np.arange(len(e_w)) * dt
+    fig, (a, b) = plt.subplots(2, 1, figsize=(3.4, 2.6))
 
-    a.plot(t, [r["pose_err"] for r in rows], color="#1f5fbf", lw=1.6)
-    a.axhspan(0, eps_q, color="#1f5fbf", alpha=0.08)
-    a.axhline(eps_q, color="#1f5fbf", ls=":", lw=0.8)
-    a.text(t[-1], eps_q, r"$\varepsilon_q$", color="#1f5fbf", fontsize=6.5, va="bottom",
-           ha="right")
-    a.set_title("(a) load pose error (moving reference)", fontsize=8)
-    a.set_ylabel(r"$\|q_{\rm load}-q_{\rm ref}\|$", fontsize=7.5)
+    # (a) connectivity: WISE stays above sigma_req; relay-withdrawn falls below sigma_dyn
+    a.axhspan(0, sigma_dyn, color="#c0392b", alpha=0.08)
+    a.plot(t, [r["lam_geo"] for r in rows], color="#2e8b57", lw=2.1, label="WISE (relay on)")
+    a.plot(t, [r["lam_unsafe"] for r in rows], color="#c0392b", lw=1.9, ls="--",
+           label="relay withdrawn")
+    a.axhline(sigma_req, color="#2e8b57", ls="--", lw=1.0)
+    a.axhline(sigma_dyn, color="#c0392b", ls=":", lw=1.0)
+    a.text(t[-1], sigma_req, r"$\sigma_{\rm req}$", color="#2e8b57", fontsize=7, va="bottom", ha="right")
+    a.text(t[-1], sigma_dyn, r"$\sigma_{\rm dyn}$", color="#c0392b", fontsize=7, va="bottom", ha="right")
+    a.set_ylabel(r"$\lambda_2(L_{\rm geo}^{\pi})$", fontsize=8.5)
+    a.set_title("(a) connectivity during transport", fontsize=9)
+    a.legend(fontsize=7, loc="center right", frameon=False)
+    a.set_ylim(-0.02, None)
 
-    b.plot(t, [r["wrench_resid_norm"] for r in rows], color="#c0392b", lw=1.6)
-    b.axhline(eps_w, color="#c0392b", ls=":", lw=0.8)
-    b.text(t[-1], eps_w, r"$\varepsilon_w$", color="#c0392b", fontsize=6.5, va="bottom",
-           ha="right")
-    b.set_title(r"(b) wrench-tracking residual $r_w/\|w^{\rm dem}\|$", fontsize=8)
-    b.set_ylabel(r"$r_w/\|w^{\rm dem}\|$", fontsize=7.5)
+    # (b) the payoff: optimizer-estimator error decays (WISE) vs grows (withdrawn)
+    b.semilogy(te, e_w, color="#2e8b57", lw=2.1, label=r"WISE: $\lambda_2>\sigma_{\rm dyn}$")
+    b.semilogy(te, e_u, color="#c0392b", lw=2.1, ls="--",
+               label=r"withdrawn: $\lambda_2<\sigma_{\rm dyn}$")
+    b.set_ylabel(r"error $\|e(t)\|$", fontsize=8.5)
+    b.set_title("(b) optimizer--estimator self-defeat", fontsize=9)
+    b.set_xlabel("time [s]", fontsize=8.5)
+    b.legend(fontsize=7, loc="lower left", frameon=False)
+    b.text(te[-1], e_w[-1], "self-sustaining", color="#2e8b57", fontsize=7, va="center", ha="right")
+    b.text(te[-1], e_u[-1], "self-defeating", color="#c0392b", fontsize=7, va="bottom", ha="right")
 
-    c.plot(t, [r["lam_geo"] for r in rows], color="#2e8b57", lw=1.7,
-           label=r"$\lambda_2(L_{\rm geo}^{\pi})$")
-    c.plot(t, [r["lam_bar"] for r in rows], color="#1f5fbf", lw=1.0,
-           label=r"$\lambda_2(\bar L)$")
-    c.plot(t, [r["lam_hat"] for r in rows], color="#e08000", ls="--", lw=1.1,
-           label=r"$\widehat\lambda_2$")
-    c.plot(t, [r["weyl"] for r in rows], color="#8e44ad", ls="-.", lw=1.0,
-           label=r"$\lambda_2(\bar L)-\varepsilon_L$")
-    c.axhline(sigma_req, color="#c0392b", ls="--", lw=1.0, label=r"$\sigma_{\rm req}$")
-    c.axhline(sigma_dyn, color="#c0392b", ls=":", lw=1.0, label=r"$\sigma_{\rm dyn}$")
-    c.set_title("(c) connectivity and bounds", fontsize=8)
-    c.set_ylabel(r"$\lambda_2$", fontsize=7.5)
-    c.legend(fontsize=5.6, loc="center right", frameon=False, ncol=2, handlelength=1.4,
-             columnspacing=0.8)
-    c.set_xlabel("time [s]", fontsize=7.5)
-
-    for ax in (a, b, c):
-        ax.tick_params(labelsize=6.5); ax.grid(alpha=0.25)
-    fig.tight_layout(h_pad=0.6)
+    for ax in (a, b):
+        ax.tick_params(labelsize=7); ax.grid(alpha=0.25)
+    fig.tight_layout(h_pad=0.8)
     fig.savefig(FIG / "fig_transport.pdf", metadata={"CreationDate": None})
     plt.close(fig)
 
