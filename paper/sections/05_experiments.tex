@@ -9,67 +9,70 @@ service rate}: served only when wrench-feasible \emph{and} $\lamtwo-\sigmastar\g
 instance is seeded, reproduces exactly, and is backed by a numerical certificate.
 
 \begin{figure*}[t]\centering
-\includegraphics[width=0.66\textwidth]{fig_central.pdf}
+\includegraphics[width=0.6\textwidth]{fig_central.pdf}
 \caption{The equilibrium fiber, certified and physical ($\dim\Emanifold=59$). \textbf{(a)}
-Along a certified productive-nullspace direction $d\in\ker A\cap\ker B\cap\ker G_I$
+Along one certified productive-nullspace direction $d\in\ker A\cap\ker B\cap\ker G_I$
 ($\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$), the productive value and the served aggregate stay
 constant to machine precision: $\max_\alpha|V(z(\alpha))-V^{\star}|<10^{-8}$ and
 $\max_\alpha\|Bz(\alpha)-y^{\star}\|<10^{-8}$. \textbf{(b)} Yet the induced connectivity
-$\lamtwo(\Lap(z(\alpha)))$ sweeps across $\sigmastar$: optimal safe and unsafe
-compositions coexist on one payoff-flat fiber. \textbf{(c,d)} Two integer compositions on
-that same fiber, from the pipeline $z^{\star}\!\to\!$ rounding $\to$ pose
-$\to\Lgeo(q)$---identical $Bz=y^{\star}$ and $V^{\star}$, both delivering the demanded
-wrench. The productive optimum leaves the left cluster stranded
-($\lamtwo(\Lgeo)=0.03<\sigmastar$); WISE diverts one long-range robot to the relay site,
-bridging it ($\lamtwo(\Lgeo)=0.88\ge\sigmastar$).}
+$\lamtwo(\Lap(z(\alpha)))$ sweeps across $\sigmastar$ along that direction:
+connectivity-feasible and -infeasible compositions coexist on one payoff-flat fiber.
+\textbf{(c,d)} Two integer compositions on that same fiber, from the pipeline
+$z^{\star}\!\to\!$ rounding $\to$ pose $\to\Lgeo^{\pi}(q)$---identical $Bz=y^{\star}$ and
+$V^{\star}$, both delivering the demanded wrench. The productive optimum leaves the left
+cluster disconnected ($\lamtwo(\Lgeo)\approx0$); WISE diverts one long-range robot to the
+relay site, restoring the spectral margin ($\lamtwo(\Lgeo)=0.85\ge\sigmastar$).}
 \label{fig:central}
 \end{figure*}
 
-\paragraph*{E1 --- The fiber is real and certified (Fig.~\ref{fig:central}a,b)}
-At the productive optimum the neutral space $\mathcal N_p=\ker A\cap\ker B\cap\ker G_I$ has
-dimension $59$; moving along it holds $V$ and $Bz$ at machine precision (residuals
-$<10^{-8}$) while $\lamtwo$ crosses $\sigmastar$---Theorem~\ref{thm:degeneracy} made
-numerical, with the safe subset strictly inside the optimal fiber.
+\paragraph*{E1 --- Fiber neutrality, certified (Fig.~\ref{fig:central}a,b)}
+At an interior productive optimum the neutral space $\mathcal N_p=\ker A\cap\ker B\cap
+\ker G_I$ has dimension $72-\operatorname{rank}[A;B]=59$ (no inequality active there);
+moving along it holds $V$ and $Bz$ at machine precision (residuals $<10^{-8}$) while
+$\lamtwo$ crosses $\sigmastar$, so the connectivity-feasible subset lies strictly inside
+the optimal fiber.
 
-\paragraph*{E2 --- Same fiber, opposite fates (Fig.~\ref{fig:central}c,d)}
-Because the relay action carries no served capacity, flipping one spare long-range robot
-between \emph{idle} and \emph{relay} moves along the optimal fiber exactly: both integer
+\paragraph*{E2 --- Same fiber, different connectivity (Fig.~\ref{fig:central}c,d)}
+Because the relay action carries no served capacity, flipping one long-range robot between
+\emph{idle} and \emph{relay} moves along the optimal fiber exactly: both integer
 compositions share $Bz=y^{\star}$, $V^{\star}$, and zero wrench residual, yet
-$\lamtwo(\Lgeo)$ jumps from $0.03$ (fragmented) to $0.88$ (bridged) across
-$\sigmastar=0.25$. Poses come from the actual pipeline, not drawn by hand; a closed-loop
-transport (repository, \texttt{exp\_physical}) confirms Lemma~\ref{lem:bridge} along a
-trajectory.
+$\lamtwo(\Lgeo)$ rises from $\approx0$ (disconnected) to $0.85$ (connected with margin)
+across $\sigmastar=0.25$. Poses come from the actual pipeline, not placed by hand; a
+closed-loop transport (repository, \texttt{exp\_physical}) confirms Lemma~\ref{lem:bridge}
+along a trajectory.
 
-\paragraph*{E3 --- Lexicographic selection beats scalarization}
+\paragraph*{E3 --- Lexicographic vs.\ scalarized selection}
 On free-regime seeds ($\LamE\ge\sigmastar$, classified per seed by the exact SDP), the
-scalarised $V_\varepsilon=V+\varepsilon\lamtwo$ pays for connectivity: as $\varepsilon$
-grows from $10^{-3}$ to $1$ its productive loss $V^{\star}-V$ rises from $0$ to $0.049$
-\emph{and} its aggregate drift $\|Bz-y^{\star}\|$ from $0$ to $0.307$, both staying below
-the Tikhonov envelopes $\varepsilon\,\mathrm{osc}(\lamtwo)$ and
+scalarised $V_\varepsilon=V+\varepsilon\lamtwo$ trades productive value for connectivity:
+as $\varepsilon$ grows from $10^{-3}$ to $1$ its productive loss $V^{\star}-V$ rises from
+$0$ to $0.049$ \emph{and} its aggregate drift $\|Bz-y^{\star}\|$ from $0$ to $0.307$, both
+under the Tikhonov envelopes $\varepsilon\,\mathrm{osc}(\lamtwo)$ and
 $\sqrt{2\varepsilon\,\mathrm{osc}(\lamtwo)/\alpha}$ (repository, \texttt{exp\_epsilon}),
-whereas the lexicographic WISE selector holds both at zero---the exact-optimum
-preservation a weighted sum cannot match.
+whereas the lexicographic WISE selector holds both at zero.
 
 \paragraph*{E4 --- Integer recovery (Rem.~\ref{rem:integer})}
-The fluid certificate carries over to integer robots: over $16$ seeds the fluid optimum is
-certified $100\%$ of the time, randomized rounding recovers a certified integer
-assignment on $100\%$ (argmax rounding $75\%$), with a mean welfare integrality gap of
-$-0.009$. Robots are integer throughout; no fractional robot is implied.
+Over $30$ seeds the fluid optimum is WISE-certified $100\%$ of the time; a single
+randomized-rounding draw certifies $66\%$, best-of-$30$ draws $100\%$, and one-hot argmax
+$67\%$. The relative welfare gap $V_{\mathrm{relax}}-V_{\mathrm{int}}$ is $+1.8\%$ on
+average ($+4.5\%$ worst). Every robot is integer; the SDP certifies the relaxation and
+integer candidates are independently re-certified.
 
 \paragraph*{E5 --- Method comparison (Table~\ref{tab:ablation})}
 At a demanding operating point ($\nu=0.4$, $\tau_d=6.5$), single-requirement and random
 $\mathcal X$-feasible assignments almost never clear both the wrench and connectivity
 tests. The \emph{exact} WISE SDP certifies every seed, whereas the decentralized flow
-(\texttt{wise\_pd}, $50\%$) and a centralized multistart heuristic ($67\%$) fall
-short---the honest cost of not solving the SDP. The exact SDP phase boundary
-$\LamE=\sigmastar$ over $(\nu,\tau_d)$ has perfect recall against the flow (repository,
-\texttt{exp\_phase}).
+(\texttt{WISE-PD}, $50\%$) and a centralized multistart heuristic ($67\%$) fall short---the
+observed attainment gap of not solving the SDP. Over the $(\nu,\tau_d)$ sweep every
+empirically attained solution lay inside the SDP-feasible region (flow success $\Rightarrow$
+WISE existence); certified-but-unattained cells quantify the heuristic attainment gap
+(repository, \texttt{exp\_phase}).
 
 \begin{table}[t]\centering
-\caption{Method comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$);
-means, with a Wilson $95\%$ CI on certified success and wrench deficit relative to
-demand. The exact SDP selector \texttt{wise\_sdp} certifies all seeds; heuristic solvers
-and single-requirement / random baselines fall short.}
+\caption{Method comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$).
+Relative wrench deficit $\max_{k,\ell}[d-s]_+/\max d$ and margin $\lamtwo-\sigmastar$ are
+means; certified success (wrench-feasible \emph{and} $\lamtwo\ge\sigmastar$) carries a
+Wilson $95\%$ CI (proportion only). WISE-SDP is the exact relaxed selector; WISE-PD the
+decentralized flow.}
 \label{tab:ablation}
 \small
 \input{figures/ablation_table.tex}

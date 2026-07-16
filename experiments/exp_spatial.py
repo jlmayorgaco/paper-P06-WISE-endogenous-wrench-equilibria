@@ -81,8 +81,10 @@ def _positions(prob, role, slot):
 
 
 def _lambda2_geo(prob, pos, relay_mask):
+    # delta=0: no background regulariser, so a genuinely split graph has lambda_2 = 0
+    # exactly (honest "disconnected", not a small positive value).
     return float(dyn.live_lambda2(pos, np.array(prob.meta["r"], float), relay_mask,
-                                  base_range=BASE_RANGE, bridge_gain=3.0))
+                                  base_range=BASE_RANGE, bridge_gain=3.0, delta=0.0))
 
 
 def build_pair(seed, y_target=4.5, tau_d=2.5, nu=0.35):

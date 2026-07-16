@@ -60,6 +60,24 @@ artifact it emits, and fails if the paper is not exactly 6 pages, has undefined 
 overfull boxes. Central figure is composed by `make_central_fig.py` after `exp_fiber` and
 `exp_spatial`.
 
+## Consistency round (reviewer P0s, verified in the 6-page PDF)
+Closed against the compiled PDF: (1) dim E reconciled to **59** with the full rank ladder
+`n=72, rank[A;B]=13, G_I=∅` (certificate `fiber_certificate.json`), theory text corrected;
+(2) false spectral regulariser claim removed — single-Fiedler use gated on a real spectral
+gap, PSD supergradient otherwise; (3) robot↔candidate-site bijection `π` and
+`L_geo^π = P_π^T L_geo P_π` defined, transfer applies after integer recovery; (4) Fig. 1
+says *served-capacity aggregate* `Bz=y*` with wrench realizability noted separately;
+(5) lifted-SDP vs projected-KKT reconciled — KKT/flow declared on the projected
+representation via a wrench separation oracle; (6) `ε_L, ε_est, δ_num` formalized in
+Lemma bridge, exact SDP has `ε_est=δ_num=0`; (7) tie-break made strongly convex (unique);
+(8) Thm 3 necessity restricted to the fully isotropic mode-aligned case, dimensions +
+`ϑ>0` added; (9) unsafe graph now genuinely disconnected (`λ2≈0`, delta=0); (10) "Schur"
+→ "small-gain" in conclusion; (11) scalarization claim softened to "no exact-preservation
+guarantee"; (13/14) integer gap sign fixed (`V_relax−V_int=+1.8%`), 30 seeds, single-draw
+(66%) vs best-of-30 (100%) reported; (15) "perfect recall" → attainment-gap framing;
+(16/30) Table uses `σ_req`, WISE-PD/WISE-SDP; abstract sobered (no unicycle/stability-
+boundary claims), promotional phrases removed; Sion reference added.
+
 ## Still open (honest ledger — not claimed as closed)
 - **E (hard-connectivity baseline)**: `max V s.t. λ2(L̄(z))≥σ_req` not yet added to
   Table I. It would quantify what the lexicographic order adds over a hard constraint
@@ -70,3 +88,17 @@ overfull boxes. Central figure is composed by `make_central_fig.py` after `exp_f
   (E5). The central figure carries the two highest-value stories (fiber + spatial).
 - **χ-threshold sweep, scalability (N=8..80, runtime), external connectivity-aware
   baseline, uniform time-varying corollary**: deferred; not implemented, not claimed.
+
+## Larger rebuild (design/strategy reviews 3–4) — scoped, not yet done
+These are multi-session and carry real design forks; not attempted in the consistency round:
+- **E2 comparative-advantage exchange**: current E2 is the idle↔relay demonstration
+  (exact same fiber). A genuine long-lift→short-lift + long-relay swap needs matched-capacity
+  scenario engineering to keep `Bz=y*` at the integer level. The abstract/E2 no longer
+  claim "productive opportunity cost".
+- **Temporal transport figure** `e_pose(t), r_w(t), λ2(L_geo(t)), σ_dyn`: needs a new
+  experiment surfaced into the PDF (currently `exp_physical` in repo only).
+- **Derive Thm 3 (M,Θ1,Θ2) from the actual primal-dual/consensus dynamics**, or demote to
+  a Proposition. Fork: rigor vs. sobriety.
+- **Hard-connectivity baseline** in Table I; **notation deduplication** (H, M, V, F, ξ, ν,
+  α, ρ, A, d, Z collisions); **Fiber Refinement Principle** generalization of Theorem 1;
+  **3-figure redesign + Fig. 1 legibility**; **Zenodo/DOI archival** replacing script names.

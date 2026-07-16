@@ -3,9 +3,9 @@
 
 \subsection{Productive value and the optimal composition fiber}
 The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each
-load its minimum physical service, and the productive value allocates \emph{reserve}
-capacity---served capacity beyond that minimum---among the admitted loads through the
-\emph{served-capacity} aggregate $y=Bz$, $y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$:
+load its physical service, and the productive value allocates \emph{total served
+capacity} among the admitted loads through the \emph{served-capacity} aggregate $y=Bz$,
+$y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$ (distinct from the wrench aggregate $H_wz$):
 \begin{equation}
 V(z)=\phi(Bz),\qquad
 \phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
@@ -43,15 +43,11 @@ precise link to the loss of strong monotonicity---is Proposition~\ref{prop:fiber
 \end{definition}
 
 \begin{lemma}[Unique productive aggregate]\label{lem:uniqueagg}
-If $\phi$ is strictly concave on $BX_{\mathrm f}$ ($H=\alpha I\succ0$) and
-$X_{\mathrm f}$ is nonempty compact convex, the productively optimal aggregate
-$y^{\star}=Bz^{\star}$ is unique. Uniqueness is claimed for the \emph{aggregate},
-not the composition.
+If $\phi$ is strictly concave on $BX_{\mathrm f}$ ($H=\alpha I\succ0$) and $X_{\mathrm f}$
+is nonempty compact convex, the productively optimal aggregate $y^{\star}=Bz^{\star}$ is
+unique (a strictly concave maximum over a compact convex set); uniqueness is of the
+\emph{aggregate}, not the composition.
 \end{lemma}
-\begin{proof}
-$\phi$ strictly concave on the compact convex $BX_{\mathrm f}$ attains its maximum
-at a unique $y^{\star}$: two distinct optima would have a strictly better midpoint.
-\end{proof}
 
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
 Under Lemma~\ref{lem:uniqueagg} the aggregate $y^{\star}=Bz^{\star}$ is unique, but
@@ -78,8 +74,13 @@ $\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity. Since $V=\phi(Bz)$ dep
 $z$ only through $Bz$, every $z\in\Emanifold$ attains the same $V$; a general weighted
 $B$ can give $N_p=\{0\}$ (a single composition).
 \end{proof}
-For the representative instance we obtain $\dim\Emanifold=4$ out of $n=72$, with the
-neutral-direction residuals $\|Ad\|,\|Bd\|,\|G_Id\|$ at machine precision.
+For the representative instance ($n=72$), $\operatorname{rank}[A;B]=13$ and no inequality
+is active at the interior optimum ($G_I=\varnothing$), so the fiber is full-dimensional in
+its aggregate-fixing affine space: $\dim\Emanifold=72-13=59$, certified by a
+relative-interior point with neutral-direction residuals
+$\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$ (dimensions computed in $z$ with the projected wrench
+facets $H_w$; \texttt{exp\_fiber}). At a boundary optimum where wrench facets bind, the
+same formula gives a smaller fiber.
 
 \begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
 On the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$, the pseudo-gradient
@@ -96,19 +97,15 @@ games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
 \begin{example}[A two-type fiber]\label{ex:fiber}
-With $T=2$ types of \emph{equal lifting capacity} $c_\ell=c_s$ but only the long-range
-type relaying effectively ($\gamma_{\ell r}>\gamma_{s r}$), moving $\alpha$ long-range
-robots from lifting to relay and an equal mass of short-range robots the other way is a
-productively neutral swap ($Bd=0$): $Bz(\alpha)=y^{\star}$, $V\equiv V^{\star}$, while
-$\lamtwo$ rises by the comparative-advantage derivative
-$D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v>0$ (simple $v$). The
-SDP takes the largest feasible $\alpha$; a WISE exists iff it clears $\sigmastar$
-(Fig.~\ref{fig:scene}, block~2).
+With two types of equal lifting capacity $c_\ell=c_s$, moving $\alpha$ long-range robots
+from lifting to relay and an equal mass of short-range robots the other way is a
+productively neutral swap ($Bd=0$, so $V\equiv V^{\star}$) whose spectral effect is
+$D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v$ (simple $v$): $\lamtwo$
+rises whenever this directional derivative is positive, which the SDP verifies rather than
+assumes.
 \end{example}
 
 \subsection{The WISE refinement}
-Place the endogenous Laplacian \eqref{eq:laplacian} on $\Emanifold$.
-
 \begin{definition}[WISE]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and
 Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$,
@@ -120,8 +117,8 @@ keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and clos
 (super-level set of the concave $\lamtwo\!\circ\!\Lap$, Lemma~\ref{lem:convex}).
 \end{definition}
 
-\begin{theorem}[WISE existence and selection as an SDP]\label{thm:existence}
-\emph{Stage 1} fixes the unique optimal aggregate
+\begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
+Over the fluid relaxation, \emph{Stage 1} fixes the unique optimal aggregate
 $y^{\star}=Bz^{\star}$, $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$
 (Lemma~\ref{lem:uniqueagg}); \emph{Stage 2} selects connectivity on the resulting
 fiber. The lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
@@ -142,9 +139,11 @@ the \emph{spectral saddle}
 \big\langle Z,\,Q^{\top}\Lap(z)Q\big\rangle,
 \label{eq:saddle}
 \end{equation}
-with $\max$ and $\min$ interchangeable (Sion): the populations pick a productively
-equivalent composition while a spectral adversary $Z$ picks the worst disagreement
-mode. A WISE exists iff the value clears the requirement,
+with $\max$ and $\min$ interchangeable by Sion's minimax theorem~\cite{sion1958} ($\Emanifold$
+compact convex, the spectral set $\{Z\succeq0,\operatorname{tr}Z=1\}$ compact convex, the
+bilinear form concave--convex): an adversarial variational representation in which $Z$ is
+the worst disagreement eigenspace, not an additional physical player. Over the relaxation
+a WISE exists iff the value clears the requirement,
 \begin{equation}
 \Ess\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
@@ -153,11 +152,13 @@ and any maximiser $z^{\star}_{\mathrm{WISE}}$ preserves the productive optimum e
 $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$, hence is itself a variational equilibrium
 (Def.~\ref{def:ve}) with $V=V^{\star}$. When
 $\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}. The
-argmax set $\Emanifold^{\star}$ may be non-singleton; a lexicographic tie-break
-$\min_{z\in\Emanifold^{\star}}g^{\top}z$ (least role change) fixes a unique selector.
+argmax set $\Emanifold^{\star}$ may be non-singleton; the strongly convex tie-break
+$\min_{z\in\Emanifold^{\star}}\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ ($W\succ0$, least role
+change from the previous assignment) fixes a \emph{unique} selector, which a linear
+$g^{\top}z$ need not.
 \end{theorem}
 \begin{proof}
-$X_{\mathrm f}$ and $Bz=y^{\star}$ are affine and, by Lemma~\ref{lem:convex},
+$X_{\mathrm f}$ is a convex polytope and $Bz=y^{\star}$ is affine; by Lemma~\ref{lem:convex},
 $\{(z,t):Q^{\top}\Lap(z)Q\succeq tI\}$ is convex, so \eqref{eq:sdp} is an SDP; its value
 $\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is attained on the compact $\Emanifold$
 (Weierstrass). $\Ess=\Emanifold\cap\Cdelta$ is nonempty iff this maximum reaches
@@ -177,8 +178,10 @@ possibly distinct couplings,
 \dot\eta=\Theta_2\,\xi-c\,(\bar L_\perp\!\otimes\! I_p)\,\eta,
 \label{eq:jac}
 \end{equation}
-$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, under the hypotheses $\tfrac12(M+M^{\top})\succeq
-\mF I$ (optimizer curvature), $\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$.
+with $\xi\in\R^{p}$, $\eta\in\R^{(N-1)p}$, $\Theta_1\in\R^{p\times(N-1)p}$,
+$\Theta_2\in\R^{(N-1)p\times p}$, $\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, under the
+hypotheses $\tfrac12(M+M^{\top})\succeq\mF I$ (optimizer curvature),
+$\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$, with $\mF,\vt_1,\vt_2>0$.
 
 \begin{theorem}[Optimizer--estimator small gain]\label{thm:stability}
 Under those hypotheses, \eqref{eq:jac} is exponentially stable whenever
@@ -188,43 +191,42 @@ c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,
 \lamtwo>\sigmadyn:=\frac{\vt_1\vt_2}{c\,\mF}.
 \label{eq:threshold}
 \end{equation}
-The reciprocal isotropic case $\Theta_2=\Theta_1^{\top}$, $\vt_1=\vt_2=\vt$ recovers
-$c\,\mF\,\lamtwo>\vt^2$, which is then also \emph{necessary} on the Fiedler mode.
+In the fully isotropic, mode-aligned case $M=\mF I$, $\Theta_1=\Theta_2=\vt I$ the
+condition $c\,\mF\,\lamtwo>\vt^2$ is necessary and sufficient on the Fiedler mode; the
+decoupled case $\vt_1\vt_2=0$ is trivially stable.
 \end{theorem}
 \begin{proof}
 Take $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$. Then
 $\dot W\le-\mF\|\xi\|^2-\tfrac{\vt_1}{\vt_2}c\lamtwo\|\eta\|^2+2\vt_1\|\xi\|\|\eta\|$,
 a negative-definite quadratic form iff $\mF\cdot\tfrac{\vt_1}{\vt_2}c\lamtwo>\vt_1^2$,
-i.e.\ \eqref{eq:threshold}; the isotropic symmetric case is tight on the Fiedler mode.
+i.e.\ \eqref{eq:threshold}; the isotropic mode-aligned case is tight on the Fiedler mode.
 \end{proof}
 This is a conditional interconnection result, \emph{not} a convergence proof
-for~\eqref{eq:pd}: WISE existence and selection rest on the exact SDP. It links the
-connectivity requirement to a local stability boundary, which WISE's strict margin
-$\sigmastar=\sigmadyn+\delta$ clears with room.
+for~\eqref{eq:pd}; it concerns the optimizer--estimator (information) layer only, not the
+unicycle/load dynamics. It links the connectivity requirement to the information-layer
+stability boundary $\sigmadyn$, which the WISE margin
+$\sigmastar=\sigmadyn+\delta$ satisfies by construction.
 
-\subsection{Selection, prices, and the cost of endogeneity}
+\subsection{Selection cost and prices}
 The lexicographic selector of Theorem~\ref{thm:existence} is exact. A scalarised
 alternative $V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only in the limit: any
 maximiser obeys $0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$
 and $\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
-(Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ perturbs the aggregate
-whereas the lexicographic form does not. The Lagrangian of \eqref{eq:sdp} carries duals
-$\mu\ge0$ (wrench), $\nu$ (aggregate), $\rho$ (budget/occupancy), and PSD $Z\succeq0$
-(spectral); stationarity
-$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$ prices wrench feasibility
-through $\mu$ and certifies connectivity through $Z$, conflating no multiplier with a
-marginal utility.
+(Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ carries no exact-preservation
+guarantee and can move the aggregate (measurably so in Section~\ref{sec:exp}), whereas the
+lexicographic form preserves it exactly. On the projected representation
+$X_{\mathrm f}=\{H_wz\ge d\}$ (equivalent to the lifted set by
+Lemma~\ref{prop:membership}), the selection Lagrangian carries duals $\mu\ge0$ (wrench),
+$\nu$ (aggregate), $\rho$ (budget/occupancy), and PSD $Z\succeq0$ (spectral), with
+$H_w^{\top}\mu-B^{\top}\nu-A^{\top}\rho+\mathcal G^{*}(Z)=0$; the lifted multipliers
+of~\eqref{eq:sdp} aggregate into $\mu$, and the distributed flow of
+Section~\ref{sec:algorithm} uses this projected form via a wrench separation oracle.
 
-\begin{corollary}[Free / costly / impossible]\label{thm:trichotomy}
-With $\LamE$ from \eqref{eq:sdp} and $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))$
-(both attained by Weierstrass), the endogeneity cost
-$\Ddelta=V^{\star}-\max_{z\in X_{\mathrm f}\cap\Cdelta}V(z)$ partitions by $\sigmastar$
-relative to $\LamE\le\LamX$: \emph{(free)} $\LamE\ge\sigmastar$ gives
-$\Ess\neq\varnothing$, $\Ddelta=0$; \emph{(costly)} $\LamE<\sigmastar\le\LamX$ has no
-safe optimal composition but a safe feasible one, $\Ddelta>0$ (measured against
-$X_{\mathrm f}\cap\Cdelta$, not $\Ess$ where $V\equiv V^{\star}$); \emph{(impossible)}
-$\LamX<\sigmastar$ gives $X_{\mathrm f}\cap\Cdelta=\varnothing$, $\Ddelta=+\infty$.
-\end{corollary}
+With $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))\ge\LamE$, the requirement partitions
+instances into three regimes: \emph{free} ($\LamE\ge\sigmastar$: connectivity at no
+productive cost), \emph{costly} ($\LamE<\sigmastar\le\LamX$: a connectivity-feasible
+assignment exists but not a productively optimal one), and \emph{impossible}
+($\LamX<\sigmastar$).
 
 \begin{remark}[Finite-population recovery]\label{rem:integer}
 The analysis is a fluid relaxation; integer assignments are recovered by rounding and

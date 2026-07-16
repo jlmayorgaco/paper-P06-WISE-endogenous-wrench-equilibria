@@ -105,11 +105,19 @@ def run(seed: int = 3, N: int = 12, nu: float = 0.5, tau_d: float = 3.0):
     d_vec = d_vec / np.linalg.norm(d_vec)
     d = d_vec.reshape(z0.shape)
 
-    # ---- certify d is a genuine fiber direction ----
+    # ---- certify d is a genuine fiber direction + full rank ladder ----
     G_I = ns.active_inequalities(prob, z0)
     res_Ad = float(np.linalg.norm(A @ d_vec))
     res_Bd = float(np.linalg.norm(B @ d_vec))
     res_GId = float(np.linalg.norm(G_I @ d_vec)) if G_I.size else 0.0
+    n = prob.N * prob.A
+    AB = np.vstack([A, B])
+    ABG = np.vstack([AB, G_I]) if G_I.size else AB
+    rank_A = int(np.linalg.matrix_rank(A, tol=1e-8))
+    rank_AB = int(np.linalg.matrix_rank(AB, tol=1e-8))
+    rank_ABG = int(np.linalg.matrix_rank(ABG, tol=1e-8))
+    ladder = {"n": n, "rank_A": rank_A, "rank_AB": rank_AB, "rank_ABG": rank_ABG,
+              "dim_ker_AB": n - rank_AB, "dim_ker_ABG": n - rank_ABG}
 
     a_lo, a_hi = _feasible_alpha_range(z0, d)
     a_lo, a_hi = 0.9 * a_lo, 0.9 * a_hi                  # stay strictly feasible
@@ -135,6 +143,7 @@ def run(seed: int = 3, N: int = 12, nu: float = 0.5, tau_d: float = 3.0):
     cert = {
         "seed": seed, "N": N, "nu": nu, "tau_d": tau_d,
         "dim_E": int(info["dim_E"]), "n_active_ineq": int(info["n_active_ineq"]),
+        **ladder,
         "solver_status": status,
         "res_Ad": res_Ad, "res_Bd": res_Bd, "res_GId": res_GId,
         "max_abs_V_minus_Vstar": float(np.max(np.abs(Vd))),

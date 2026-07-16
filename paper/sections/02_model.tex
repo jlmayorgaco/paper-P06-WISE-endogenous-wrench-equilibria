@@ -45,10 +45,10 @@ polytope;
 in $z$ with each elementary $L_e\succeq0$ and each coefficient $\ge0$; \emph{(iv)}
 the communication graph is undirected and weighted, so every $\Lap(z)$ is a symmetric
 graph Laplacian; \emph{(v)} $\mathcal X_{\mathrm f}\neq\varnothing$; and \emph{(vi)}
-wherever the gradient $\nabla\lamtwo$ is used, $\lamtwo(\Lap(z))$ is a \emph{simple}
-eigenvalue (a weak background regulariser $\delta_0(I-\tfrac1N\mathbf 1\mathbf 1^{\top})$
-enforces this in practice); at multiplicity the Fiedler gradient is replaced by the
-PSD matrix dual $Z\succeq0$ of the LMI~\eqref{eq:lmi}.
+the single-Fiedler-vector gradient $\nabla\lamtwo$ is used only where $\lamtwo(\Lap(z))$
+is simple with gap $\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the
+PSD eigenspace supergradient $Z\succeq0$, $\operatorname{tr}Z=1$ of the LMI~\eqref{eq:lmi},
+which the exact SDP uses throughout (no spectral genericity assumed).
 \end{assumption}
 
 \subsection{Wrench feasibility}
@@ -90,11 +90,12 @@ physical elliptical forces. The certificate is quasi-static and assumes bilatera
 independent contact forces; it does not model frictional grasp or unilateral pushing.
 
 \subsection{Decision-induced candidate-site Laplacian $\Lap(z)$}
-We separate two graphs throughout, both on the \emph{same} node set: each of the $N$
-robots is a candidate-site node ($V=N$), and $\Lap(z)$ and $\Lgeo(q)$ index it
-identically, so the mismatch $\|\Lgeo(q)-\Lap(z)\|_2$ of Lemma~\ref{lem:bridge} is
-well defined. The \emph{decision-induced candidate-site Laplacian} $\Lap(z)$ depends
-only on the assignment $z$. A fixed base graph $L_0\succeq0$ carries the always-on
+We separate two graphs. The \emph{decision-induced candidate-site Laplacian} $\Lap(z)$ is
+indexed by the $N$ candidate sites ($V=N$) and depends only on $z$; the geometric
+$\Lgeo(q)$ is indexed by robots. They are compared \emph{after integer recovery}, whose
+bijection $\pi$ (robot $\mapsto$ occupied site) with permutation $P_\pi$ aligns them as
+$\Lgeo^{\pi}(q)=P_\pi^{\top}\Lgeo(q)P_\pi$, so the mismatch of Lemma~\ref{lem:bridge} is in
+one site order (a fractional occupancy has no such bijection). A fixed base graph $L_0\succeq0$ carries the always-on
 intra-cluster links;
 occupying relay site $r$ with a type-$\tau$ robot switches on the link Laplacian
 $L_r\succeq0$ with effectiveness $\gamma_{\tau r}\ge0$ (long-range types reach across
@@ -122,45 +123,28 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $z$, with PSD dual $Y\succeq0$. Writing $Y=\pi Z$ with $\pi=\operatorname{tr}Y$
-and $\operatorname{tr}Z=1$ separates the scalar connectivity \emph{price} $\pi$ from the
-critical modal \emph{direction} $Z$ (a single $vv^{\top}$ when $\lamtwo$ is simple). The
-requirement $\sigmastar=\sigmadyn+\delta$ pairs the
-derived stability boundary $\sigmadyn$ (Theorem~\ref{thm:stability}) with the robust
-margin $\delta$ of Lemma~\ref{lem:bridge}.
+affine in $z$, with PSD dual $Y\succeq0$; writing $Y=\pi Z$ ($\pi=\operatorname{tr}Y$,
+$\operatorname{tr}Z=1$) separates the connectivity price $\pi$ from the modal direction
+$Z$. The requirement $\sigmastar=\sigmadyn+\delta$ pairs the stability boundary $\sigmadyn$
+(Theorem~\ref{thm:stability}) with the margin $\delta$ of Lemma~\ref{lem:bridge}.
 
 \begin{lemma}[Convex information set]\label{lem:convex}
-$z\mapsto\lamtwo(\Lap(z))$ is concave, so \eqref{eq:lmi} defines a convex set.
+$z\mapsto\lamtwo(\Lap(z))$ is concave (a pointwise minimum
+$\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ of functions affine in
+$z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006growing}.
 \end{lemma}
-\begin{proof}
-$\lamtwo(L)=\min_{\|v\|=1,\,v\perp\mathbf 1}v^{\top}Lv$ is a pointwise minimum of
-functions linear in $L$~\cite{fiedler1973}, hence concave; composed with the affine
-$\Lap(z)$ it stays concave, and its super-level set is
-convex~\cite{ghosh2006growing}.
-\end{proof}
 
 \begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
-Suppose robots track their intended candidate sites so that
-$\|\Lgeo(q)-\Lap(z)\|_2\le\varepsilon_L$. Then Weyl's inequality gives
-\begin{equation}
-\lamtwo(\Lgeo(q))\;\ge\;\lamtwo(\Lap(z))-\varepsilon_L .
-\label{eq:weyl}
-\end{equation}
-Consequently, with the design margin
-$\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$
-($\varepsilon_L$: geometric/model mismatch; $\varepsilon_{\mathrm{est}}$:
-distributed eigenvalue-estimation error; $\delta_{\mathrm{num}}$: numerical
-margin), the WISE requirement $\lamtwo(\Lap(z))\ge\sigmastar:=\sigmadyn+\delta$
-implies $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the physical stability threshold.
+Suppose $\|\Lgeo^{\pi}(q)-\Lap(z)\|_2\le\varepsilon_L$, the estimator obeys
+$|\widehat\lamtwo-\lamtwo(\Lap(z))|\le\varepsilon_{\mathrm{est}}$, and the solver keeps
+$\widehat\lamtwo\ge\sigmastar-\delta_{\mathrm{num}}$. Then Weyl's inequality gives
+$\lamtwo(\Lgeo^{\pi}(q))\ge\lamtwo(\Lap(z))-\varepsilon_L$, so with
+$\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$ and
+$\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo^{\pi}(q))\ge\sigmadyn$, the
+optimizer--estimator (information-layer) stability threshold. For the exact centralized
+SDP, $\Lap(z)$ is known and $\varepsilon_{\mathrm{est}}=\delta_{\mathrm{num}}=0$.
 \end{lemma}
-\begin{proof}
-Weyl's inequality for symmetric matrices gives
-$|\lamtwo(\Lgeo)-\lamtwo(\Lap)|\le\|\Lgeo-\Lap\|_2\le\varepsilon_L$, which is
-\eqref{eq:weyl}; subtracting $\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$
-absorbs the estimator and numerical errors.
-\end{proof}
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses the affine
-$\Lap(z)$; it transfers to the geometric $\Lgeo(q)$ \emph{only} through
-\eqref{eq:weyl} under the margin $\delta$, with $\varepsilon_L$ measured
-(Section~\ref{sec:exp}, bounded by $C_L\rho$) and $\varepsilon_{\mathrm{est}},
-\delta_{\mathrm{num}}$ fixed constants (Section~\ref{sec:exp}).
+$\Lap(z)$ and transfers to $\Lgeo(q)$ only through Lemma~\ref{lem:bridge} under the margin
+$\delta$, with $\varepsilon_L$ measured (Section~\ref{sec:exp}, bounded by $C_L\rho$) and
+$\varepsilon_{\mathrm{est}},\delta_{\mathrm{num}}$ fixed constants.

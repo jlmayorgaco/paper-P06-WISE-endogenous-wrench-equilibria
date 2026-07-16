@@ -24,12 +24,12 @@ as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
 Communication-aware task allocation does couple the two, jointly trading task utility
 against the connectivity induced by the chosen
 assignment~\cite{williams2017matroid,lin2021connectivity,zavlanos2011connectivity,%
-ghosh2006growing,prorok2017diversity}. Our distinction is sharper: because the payoff
-couples only through aggregates~\cite{jensen2010aggregative}, the productive optimum
-fixes the served aggregate but leaves an \emph{aggregate-invariant} fiber of
-wrench-feasible compositions (Theorem~\ref{thm:degeneracy}); we select connectivity
-\emph{lexicographically} over that fiber---without moving the productive
-aggregate---which yields an SDP existence certificate under hard wrench constraints.
+ghosh2006growing,prorok2017diversity}. We instead exploit a structural degeneracy: because
+the payoff couples only through aggregates~\cite{jensen2010aggregative}, the productive
+optimum fixes the served aggregate but leaves an aggregate-invariant fiber of
+wrench-feasible compositions (Theorem~\ref{thm:degeneracy}). We select connectivity
+lexicographically over that fiber, without moving the productive aggregate, which yields a
+relaxed SDP existence certificate under hard wrench constraints.
 
 \paragraph*{Contributions}
 \begin{itemize}
@@ -42,26 +42,27 @@ contains a composition meeting the robust connectivity requirement $\sigmastar$ 
 the optimal value of a semidefinite program clears it, and a lexicographic selector
 then returns the most-connected productively optimal assignment without moving the
 aggregate.
-\item \textbf{Dynamic relevance and validation} (Theorem~\ref{thm:stability}): a
+\item \textbf{Physical interpretation and validation} (Theorem~\ref{thm:stability}): a
 small-gain condition $c\,\mF\,\lamtwo>\vt_1\vt_2$ ties the connectivity requirement to
-exponential stability of a local optimizer--estimator interconnection, and simulations
-with heterogeneous second-order unicycles evaluate the SDP certificate, the predicted
-boundary, and a decentralized heuristic realization.
+exponential stability of the optimizer--estimator (information) layer, and simulations
+quantify the connectivity margin, integer recovery, and the heuristic attainment gap
+against the exact certificate.
 \end{itemize}
 We call a productively optimal, wrench-feasible assignment whose induced communication
 substrate meets the estimator's stability requirement a \emph{WISE equilibrium}.
 
 \begin{figure*}[t]\centering
 \resizebox{0.6\textwidth}{!}{\input{sections/fig_concept}}
-\caption{The whole problem in one picture. \textbf{(1)}~A distributed
+\caption{Assignment-induced connectivity and WISE selection. \textbf{(1)}~A distributed
 equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
 communication graph---but that graph is $\Lap(z)$, formed by $z$ itself, so the decision
 builds the graph its own computation needs. \textbf{(2)}~The productive optimum fixes the
-delivered wrench $Bz=y^{\star}$ but not the composition: a whole fiber $\Emanifold$
-attains the same $V^{\star}$ while its connectivity $\lamtwo$ varies, crossing the
-requirement $\sigmastar$ (inset). \textbf{(3)}~On that fiber, one composition severs the
-graph ($\lamtwo<\sigmastar$: the estimator goes blind), while a WISE composition diverts
-one long-range robot to relay ($\lamtwo\ge\sigmastar$), meeting the stability
-requirement.}
+served-capacity aggregate $Bz=y^{\star}$ (with the demanded wrench realizable,
+$w_k^{\mathrm{dem}}\in\mathcal W(C_k)$ for all $z\in\Emanifold$) but not the composition:
+a whole fiber $\Emanifold$ attains the same $V^{\star}$ while its connectivity $\lamtwo$
+varies, crossing the requirement $\sigmastar$ (inset). \textbf{(3)}~On that fiber, one
+composition drops $\lamtwo$ below $\sigmastar$ (the information-layer stability condition
+is violated), while a WISE composition diverts one long-range robot to relay
+($\lamtwo\ge\sigmastar$), meeting it.}
 \label{fig:scene}
 \end{figure*}
