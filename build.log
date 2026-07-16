@@ -1,9 +1,0 @@
-Rc files read (in order):
-  NONE
-Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
-kpsewhich: major issue: So far, you have not checked for updates as a MiKTeX user.
-
-------------
-Latexmk: Could not find file 'main.tex'.
--- Use the -f option to force complete processing.
-latexmk: major issue: So far, you have not checked for updates as a MiKTeX user.
