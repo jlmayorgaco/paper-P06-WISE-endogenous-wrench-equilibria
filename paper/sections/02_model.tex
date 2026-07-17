@@ -2,17 +2,16 @@
 \label{sec:model}
 
 \subsection{Assignment state (relaxed per-robot occupancy $z$)}
-A team of $N=\sum_\tau n_\tau$ robots is partitioned into $T$ types
-$\tau\in\{1,\dots,T\}$ (heterogeneous in force capacity and communication range),
-$\tau(i)$ the type of robot $i$. There are $M$ loads with $H$ contact slots each, a set
-$\mathcal R$ of candidate relay sites, and the common action set
+A team of $N=\sum_\tau n_\tau$ robots has $T$ types (heterogeneous in force and range),
+$\tau(i)$ the type of robot $i$; there are $M$ loads with $H$ contact slots each, relay sites
+$\mathcal R$, and the common action set
 \begin{equation}
 \mathcal A=\underbrace{\{(k,h)\}_{k\le M,\,h\le H}}_{\text{load--slot}}
 \;\cup\;\mathcal R\;\cup\;\{\mathrm{o}\},
 \label{eq:actions}
 \end{equation}
-with $\mathrm o$ idle. We write $a\in\mathcal A$ for a generic action, $(k,h)$ for a
-load--slot, and $r\in\mathcal R$ for a relay site.
+with $\mathrm o$ idle; $a\in\mathcal A$ denotes a generic action, $(k,h)$ a load--slot,
+$r$ a relay.
 
 The \emph{assignment state} is the relaxed \emph{per-robot} occupancy matrix
 $z=(z_{ia})\in\R_{\ge0}^{N\times|\mathcal A|}$: $z_{ia}\in[0,1]$ relaxes robot $i$'s single
@@ -95,12 +94,10 @@ mismatch term of Lemma~\ref{lem:bridge}. Thus, \emph{directly in the per-robot o
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
 \end{equation}
-Because each $L_{ir}$ is fixed and robot-indexed, $\Lap$ is \emph{unambiguously affine} in $z$
-and needs no matching or permutation (relay occupancy gates edges, not a bilinear pairwise
-geometric graph). Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$,
-$\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$
-robots (node $i$ is robot $i$ in both), compared through Lemma~\ref{lem:bridge}. All theorems
-use $\Lap(z)$.
+Each $L_{ir}$ being fixed and robot-indexed makes $\Lap$ \emph{unambiguously affine} in $z$,
+needing no matching or permutation (relay occupancy gates edges, not a bilinear pairwise
+graph). $\Lap(z)$ is a symmetric Laplacian, an affine surrogate for the physical $\Lgeo(q)$ on
+the \emph{same} $N$ robots (node $i$ is robot $i$), compared through Lemma~\ref{lem:bridge}.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
@@ -111,9 +108,8 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \label{eq:lmi}
 \end{equation}
 affine in $z$, with PSD dual $Y\succeq0$; writing $Y=\pi Z$ ($\pi=\operatorname{tr}Y$,
-$\operatorname{tr}Z=1$) separates the connectivity price $\pi$ from the modal direction
-$Z$. The requirement $\sigmastar=\sigmadyn+\delta$ pairs the stability boundary $\sigmadyn$
-(Remark~\ref{thm:stability}) with the margin $\delta$ of Lemma~\ref{lem:bridge}.
+$\operatorname{tr}Z=1$) separates the connectivity price $\pi$ from the modal direction $Z$
+(the requirement $\sigmastar=\sigmadyn+\delta$ is set in Lemma~\ref{lem:bridge}).
 
 \begin{lemma}[Convex information set]\label{lem:convex}
 $z\mapsto\lamtwo(\Lap(z))$ is concave (a pointwise minimum

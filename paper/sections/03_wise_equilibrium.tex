@@ -20,21 +20,16 @@ pseudo-gradient $[F(z)]_{ia}=-\partial V/\partial z_{ia}=-[B^{\top}\nabla\phi(Bz
 (the population-game reading follows by grouping exchangeable same-type robots); the novelty
 lies in what $V$ leaves undetermined.
 
-Wrench feasibility is a \emph{hard} shared constraint, its projected matrix $H_w$
-(the wrench facets of Lemma~\ref{prop:membership}, $H_w z\ge d$) kept distinct from the
-objective Hessian $H$:
-\begin{equation}
-X_{\mathrm f}=\{z\in\mathcal X:\;H_w z\ge d\}.
-\label{eq:Xf}
-\end{equation}
+Wrench feasibility is a \emph{hard} shared constraint through $X_{\mathrm f}$
+(Lemma~\ref{prop:membership}), the projected matrix $H_w$ kept distinct from the objective
+Hessian $H$.
 
 \begin{definition}[Productive variational equilibrium]\label{def:ve}
-With $F(z)=-\nabla V(z)=-B^{\top}\nabla\phi(Bz)$, a profile $z^{\star}\in X_{\mathrm f}$ is a
-\emph{productive variational equilibrium} if $\langle F(z^{\star}),z-z^{\star}\rangle\ge0$
-for all $z\in X_{\mathrm f}$. As $V=\phi(Bz)$ is concave on the convex $X_{\mathrm f}$, this
-holds iff $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$: the productive optimum \emph{is}
-the variational equilibrium~\cite{facchinei2003fvi}, and its degeneracy is
-Proposition~\ref{prop:fibermono}.
+A profile $z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
+$\langle F(z^{\star}),z-z^{\star}\rangle\ge0$ for all $z\in X_{\mathrm f}$, with $F=-\nabla V$.
+As $V=\phi(Bz)$ is concave on the convex $X_{\mathrm f}$, this holds iff
+$z^{\star}\in\arg\max_{X_{\mathrm f}}V$: the productive optimum \emph{is} the variational
+equilibrium~\cite{facchinei2003fvi}, and its degeneracy is Proposition~\ref{prop:fibermono}.
 \end{definition}
 
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
@@ -54,11 +49,10 @@ $\Emanifold$ is positive-dimensional iff the
 \emph{productive neutral space} $N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is nontrivial.
 \end{theorem}
 \begin{proof}[Proof sketch]
-Uniqueness of $y^{\star}$ is strict concavity of $\phi$. At
-$\bar z\in\operatorname{relint}\Emanifold$ the feasible perturbations are exactly
-$\{d:Ad{=}Bd{=}G_Id{=}0\}=N_p(\bar z)$, so $\Emanifold$ locally coincides with
-$\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity; all $z\in\Emanifold$ share $V$,
-while a general weighted $B$ can give $N_p=\{0\}$.
+Uniqueness of $y^{\star}$ is strict concavity of $\phi$; at
+$\bar z\in\operatorname{relint}\Emanifold$ the feasible perturbations are exactly $N_p(\bar z)$,
+so $\Emanifold$ locally coincides with $\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity
+(a general weighted $B$ can give $N_p=\{0\}$).
 \end{proof}
 For the representative \emph{single-load} instance ($n=72$, $M{=}1$ so $B$ has one row),
 $\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=13$ with no inequality active at the
@@ -80,9 +74,8 @@ games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
 A comparative-advantage exchange makes this concrete (Fig.~\ref{fig:flagship}): with
-$c_\ell=2c_s$, moving one long lifter to the relay in exchange for two short lifters is
-productively neutral ($Bd=0$) with spectral effect
-$D\lamtwo[d]=\sum_{i,r}d_{ir}\,v^{\top}L_{ir}v$. Whether such a \emph{free} gain exists is a
+$c_\ell=2c_s$, moving one long lifter to the relay for two short lifters is neutral ($Bd=0$)
+with $D\lamtwo[d]=\sum_{i,r}d_{ir}\,v^{\top}L_{ir}v$. Whether a \emph{free} gain exists is a
 projection condition:
 
 \begin{proposition}[Free-connectivity criterion]\label{prop:freeconn}
@@ -134,10 +127,9 @@ game alone.
 Over the fluid relaxation, \emph{Stage 1} fixes the unique optimal aggregate
 $y^{\star}=Bz^{\star}$, $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$
 (Theorem~\ref{thm:degeneracy}); \emph{Stage 2} selects connectivity on the resulting
-fiber. The lexicographic selector $z^{\star}_{\mathrm{WISE}}\in
-\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is the solution of the Stage-2 semidefinite
-program, stated in the \emph{lifted} wrench variables of Lemma~\ref{prop:membership}
-(so no facet enumeration of $X_{\mathrm f}$ is needed),
+fiber. The selector $z^{\star}_{\mathrm{WISE}}\in
+\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ solves the Stage-2 SDP in the \emph{lifted} wrench
+variables (Lemma~\ref{prop:membership}, no facet enumeration of $X_{\mathrm f}$),
 \begin{equation}
 \LamE=\max_{z,\,\xi,\,t}\ t\quad\text{s.t.}\quad
 z\in\mathcal X,\ Bz=y^{\star},\ \eqref{eq:tensor},\ Q^{\top}\Lap(z)\,Q\succeq tI,
@@ -153,18 +145,15 @@ clears the requirement,
 and any maximiser $z^{\star}_{\mathrm{WISE}}$ preserves the productive optimum exactly,
 $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$, hence is itself a variational equilibrium
 (Def.~\ref{def:ve}) with $V=V^{\star}$. When
-$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}. The
-argmax set $\Emanifold^{\star}$ may be non-singleton; the strongly convex tie-break
-$\min_{z\in\Emanifold^{\star}}\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ ($W\succ0$, least role
-change from the previous assignment) fixes a \emph{unique} selector, which a linear
-$g^{\top}z$ need not.
+$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}. If
+$\Emanifold^{\star}$ is non-singleton, the strongly convex tie-break
+$\min_{\Emanifold^{\star}}\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ ($W\succ0$, least role change)
+fixes a \emph{unique} selector.
 \end{theorem}
 \begin{proof}[Proof sketch]
-$X_{\mathrm f}$, $Bz=y^{\star}$ and $\{(z,t):Q^{\top}\Lap Q\succeq tI\}$ are convex
-(Lemma~\ref{lem:convex}), so \eqref{eq:sdp} is an SDP whose value $\LamE$ is attained on the
-compact $\Emanifold$; $\Essrel$ is nonempty iff $\LamE\ge\sigmastar$, and feasibility forces
-$Bz^{\star}_{\mathrm{WISE}}=y^{\star}$ (strict when $\sigmastar$ is interior to the range of
-$\lamtwo$ over $\Emanifold$).
+The constraints are convex (Lemma~\ref{lem:convex}), so \eqref{eq:sdp} is an SDP with value
+$\LamE$ attained on the compact $\Emanifold$; $\Essrel\neq\varnothing$ iff $\LamE\ge\sigmastar$,
+and feasibility forces $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$.
 \end{proof}
 
 \subsection{Aggregate--estimator stability (motivating)}
@@ -211,15 +200,12 @@ connectivity constraint satisfies $\pi^{\star}\in\partial\Price(\sigma)$: the ma
 productive price of one unit of connectivity, in the units of $V$.
 \end{theorem}
 \begin{proof}[Proof sketch]
-$\{z\in X_{\mathrm f}:\lamtwo\ge\sigma\}$ is a convex super-level set (Lemma~\ref{lem:convex})
-shrinking in $\sigma$, so $\Price$ is nondecreasing; as $\sigma$ enters the single concave
-inequality linearly, $\Price$ is a convex perturbation value whose subdifferential (under
-Slater) is the optimal multiplier set~\cite{boyd2004convex}. The three cases follow from
-$\sigma\le\LamE$ ($z\in\Emanifold$ attains it, $\Price=0$), $\sigma>\LamX$ (infeasible), and
-$\LamE<\sigma\le\LamX$ (feasible but not in $\Emanifold$).
+The super-level set $\{z\in X_{\mathrm f}:\lamtwo\ge\sigma\}$ (Lemma~\ref{lem:convex}) shrinks
+in $\sigma$, so $\Price$ is nondecreasing; as $\sigma$ enters linearly, $\Price$ is a convex
+perturbation value whose subdifferential under Slater is the optimal multiplier
+set~\cite{boyd2004convex}. The cases follow from $\sigma\le\LamE$ ($\Price=0$), $\sigma>\LamX$
+(infeasible), and between (feasible, not in $\Emanifold$).
 \end{proof}
-The trichotomy is thus a certificate (Section~\ref{sec:exp}), with $\pi^{\star}$ pricing
-connectivity in the units of $V$.
 
 \subsection{Finite-team recovery}
 A sufficient margin test preserves \emph{joint feasibility} after integer recovery (it does

@@ -174,92 +174,104 @@ def _figure(bad_relayers, wise_relayers, lam_bad, lam_wise):
     import matplotlib.pyplot as plt
     from matplotlib.patches import FancyBboxPatch, FancyArrowPatch, Arc
 
-    RED, GREEN, GRAY, INK = "#c0392b", "#1f7a4d", "#b9b9b9", "#222222"
+    from matplotlib.lines import Line2D
+    RED, GREEN, GRAY, INK = "#c0392b", "#1f7a4d", "#aeb4ba", "#222222"
     LOAD_FC, LOAD_EC = "#eef1f4", "#5b6470"
-    LOAD_Y, LIFT_Y, RELAY_Y = 1.72, 0.92, -0.35        # rows: load body / lifters / relays
-    LW, LH = 2.5, 0.58                                  # load body size
+    # wide two-region layout with a task layer (loads+lifters) over a comm layer (relays)
+    aX, aB, aR = 0.0, 11.0, 5.5
+    LOAD_Y, LIFT_Y, DIV_Y, RELAY_Y = 2.35, 1.30, 0.35, -0.55
+    LW, LH = 3.0, 0.66
 
     def load_body(ax, cx, torque):
-        """Draw a load as a rounded box with its demanded wrench (force + optional torque)."""
+        """A load as a rounded box with its demanded wrench (force + optional torque)."""
         ax.add_patch(FancyBboxPatch((cx - LW / 2, LOAD_Y - LH / 2), LW, LH,
-                     boxstyle="round,pad=0.02,rounding_size=0.12",
-                     fc=LOAD_FC, ec=LOAD_EC, lw=1.3, zorder=2))
-        for sx in np.linspace(cx - LW / 2 + 0.35, cx + LW / 2 - 0.35, 4):   # contact slots
-            ax.plot([sx, sx], [LOAD_Y - LH / 2, LOAD_Y - LH / 2 - 0.14],
-                    color=INK, lw=1.4, zorder=3)
-        ax.add_patch(FancyArrowPatch((cx, LOAD_Y + 0.95), (cx, LOAD_Y + LH / 2 + 0.06),
-                     arrowstyle="-|>", mutation_scale=11, lw=1.8, color=INK, zorder=3))
-        ax.text(cx + 0.16, LOAD_Y + 0.72, r"$w^{\rm dem}$", fontsize=9, color=INK)
+                     boxstyle="round,pad=0.02,rounding_size=0.14",
+                     fc=LOAD_FC, ec=LOAD_EC, lw=1.5, zorder=2))
+        for sx in np.linspace(cx - LW / 2 + 0.4, cx + LW / 2 - 0.4, 4):     # contact slots
+            ax.plot([sx, sx], [LOAD_Y - LH / 2, LOAD_Y - LH / 2 - 0.17],
+                    color=INK, lw=1.7, zorder=3)
+        ax.add_patch(FancyArrowPatch((cx, LOAD_Y + 1.05), (cx, LOAD_Y + LH / 2 + 0.05),
+                     arrowstyle="-|>", mutation_scale=14, lw=2.2, color=INK, zorder=3))
+        ax.text(cx + 0.22, LOAD_Y + 0.78, r"$w^{\rm dem}$", fontsize=12, color=INK)
         if torque:                                                          # torque-critical load
-            ax.add_patch(Arc((cx, LOAD_Y), 1.15, 0.75, angle=0, theta1=200, theta2=430,
-                         color=INK, lw=1.6, zorder=3))
-            ax.add_patch(FancyArrowPatch((cx + 0.55, LOAD_Y + 0.18), (cx + 0.60, LOAD_Y - 0.02),
-                         arrowstyle="-|>", mutation_scale=9, lw=1.4, color=INK, zorder=3))
-            ax.text(cx + 0.62, LOAD_Y + 0.30, r"$\tau$", fontsize=9, color=INK)
+            ax.add_patch(Arc((cx, LOAD_Y), 1.35, 0.9, angle=0, theta1=200, theta2=430,
+                         color=INK, lw=1.9, zorder=3))
+            ax.add_patch(FancyArrowPatch((cx + 0.66, LOAD_Y + 0.22), (cx + 0.72, LOAD_Y - 0.02),
+                         arrowstyle="-|>", mutation_scale=11, lw=1.6, color=INK, zorder=3))
+            ax.text(cx + 0.74, LOAD_Y + 0.36, r"$\tau$", fontsize=12, color=INK)
 
     def robot(ax, x, y, is_long, role_relay):
         col = GREEN if role_relay else RED
         ax.scatter([x], [y], marker="^" if is_long else "o",
-                   s=190 if is_long else 96, c=col, edgecolors="k", lw=0.8, zorder=5)
+                   s=310 if is_long else 165, c=col, edgecolors="k", lw=1.0, zorder=5)
 
     def link(ax, p, q, bridging):
         ax.plot([p[0], q[0]], [p[1], q[1]], color=GREEN if bridging else GRAY,
-                lw=1.9 if bridging else 1.0, alpha=0.9,
-                zorder=1, solid_capstyle="round")
+                lw=2.6 if bridging else 1.4, alpha=0.95, zorder=1, solid_capstyle="round")
 
-    def panel(ax, lifters1, lifters2, relays, title, connected):
-        # lifters: list of (is_long,) placed as a small row beneath each load
-        for cx, lifters in [(xA, lifters1), (xB, lifters2)]:
-            xs = np.linspace(cx - 0.6 * (len(lifters) - 1) / 2 * 1.0,
-                             cx + 0.6 * (len(lifters) - 1) / 2 * 1.0, len(lifters))
+    def panel(ax, lifters1, lifters2, title, connected):
+        ax.axhline(DIV_Y, xmin=0.03, xmax=0.97, color="#d5d8dc", lw=1.0, ls=(0, (5, 4)),
+                   zorder=0)
+        ax.text(-3.6, LIFT_Y + 0.15, "task", fontsize=9, color="#9aa0a6",
+                rotation=90, va="center", style="italic")
+        ax.text(-3.6, RELAY_Y, "comm", fontsize=9, color="#9aa0a6",
+                rotation=90, va="center", style="italic")
+        for cx, lifters in [(aX, lifters1), (aB, lifters2)]:
+            xs = np.linspace(cx - 0.72 * (len(lifters) - 1) / 2, cx + 0.72 * (len(lifters) - 1) / 2,
+                             len(lifters))
             for x, is_long in zip(xs, lifters):
-                ax.plot([x, x], [LIFT_Y + 0.16, LOAD_Y - LH / 2 - 0.14],   # attachment stem
-                        color=LOAD_EC, lw=0.8, ls=(0, (2, 1.5)), zorder=1)
+                ax.plot([x, x], [LIFT_Y + 0.2, LOAD_Y - LH / 2 - 0.17], color=LOAD_EC,
+                        lw=1.0, ls=(0, (2, 1.6)), zorder=1)
                 robot(ax, x, LIFT_Y, is_long, False)
-        # relay site (always present) + occupants
-        ax.scatter([xR], [RELAY_Y], marker="D", s=210, facecolors="none",
-                   edgecolors=GREEN, lw=1.4, zorder=2)
-        if connected:                                    # one long robot bridges from the site
-            link(ax, (xA, LIFT_Y), (xR, RELAY_Y), True)
-            link(ax, (xB, LIFT_Y), (xR, RELAY_Y), True)
-            robot(ax, xR, RELAY_Y, True, True)
-        else:                                            # two short relays cannot span the gap
-            for rx in (xR - 1.25, xR + 1.25):
+        ax.scatter([aR], [RELAY_Y], marker="D", s=430, facecolors="none", edgecolors=GREEN,
+                   lw=1.7, zorder=2)
+        if connected:                                    # freed long robot bridges from the site
+            link(ax, (aX, LIFT_Y), (aR, RELAY_Y), True)
+            link(ax, (aB, LIFT_Y), (aR, RELAY_Y), True)
+            robot(ax, aR, RELAY_Y, True, True)
+        else:                                            # short relays cannot span the gap
+            for rx in (aR - 1.7, aR + 1.7):
                 robot(ax, rx, RELAY_Y, False, True)
-                ax.plot([rx, rx + (0.9 if rx < xR else -0.9)], [RELAY_Y, RELAY_Y],
-                        color=GRAY, lw=1.0, zorder=1)
-            ax.plot([xR - 0.35, xR + 0.35], [RELAY_Y, RELAY_Y], color=RED, lw=1.3,
-                    ls=(0, (1, 1.2)), zorder=1)
-            ax.text(xR, RELAY_Y - 0.62, "gap", fontsize=8, color=RED, ha="center")
-        # intra-region short links among lifters
-        link(ax, (xA, LIFT_Y), (xA, LIFT_Y), False)
-        # composition captions under each load
+                ax.plot([rx, rx + (1.1 if rx < aR else -1.1)], [RELAY_Y, RELAY_Y],
+                        color=GRAY, lw=1.4, zorder=1)
+            ax.plot([aR - 0.5, aR + 0.5], [RELAY_Y, RELAY_Y], color=RED, lw=1.6,
+                    ls=(0, (1, 1.3)), zorder=1)
+            ax.text(aR, RELAY_Y - 0.7, "gap", fontsize=11, color=RED, ha="center")
         comp1 = "3S" if connected and len(lifters1) == 3 else "1L+1S"
-        ax.text(xA, LIFT_Y - 0.95, f"load 1: {comp1}", fontsize=8.5, ha="center", color=INK)
-        ax.text(xB, LIFT_Y - 0.95, "load 2: 1L+1S", fontsize=8.5, ha="center", color=INK)
-        load_body(ax, xA, torque=False)
-        load_body(ax, xB, torque=True)
-        ax.set_title(title, fontsize=11, pad=3)
-        ax.set_xlim(-2.6, 10.6); ax.set_ylim(-1.05, 2.78); ax.set_aspect("equal")
+        ax.text(aX, LIFT_Y - 0.95, f"load 1: {comp1}", fontsize=11, ha="center", color=INK)
+        ax.text(aB, LIFT_Y - 0.95, "load 2: 1L+1S", fontsize=11, ha="center", color=INK)
+        load_body(ax, aX, torque=False)
+        load_body(ax, aB, torque=True)
+        ax.set_title(title, fontsize=13, pad=5)
+        ax.set_xlim(-4.2, 15.2); ax.set_ylim(-1.5, 3.55); ax.set_aspect("equal")
         ax.set_xticks([]); ax.set_yticks([])
         for s in ax.spines.values():
             s.set_visible(False)
 
-    fig, axs = plt.subplots(1, 2, figsize=(6.9, 2.0))
-    panel(axs[0], [True, False], [True, False], bad_relayers,
-          r"(a) both $L$ lift: $\lambda_2\approx0$", connected=False)
-    panel(axs[1], [False, False, False], [True, False], wise_relayers,
-          r"(b) WISE: one $L$ relays, $\lambda_2\geq\sigma_{\rm req}$", connected=True)
-    # neutral-exchange arrow + invariants between the panels
-    fig.subplots_adjust(wspace=0.20, bottom=0.16, top=0.9)
-    fig.text(0.5, 0.62, r"$\Rightarrow$", fontsize=20, ha="center", va="center", color=INK)
-    fig.text(0.5, 0.045,
+    fig, axs = plt.subplots(1, 2, figsize=(11.4, 2.55))
+    panel(axs[0], [True, False], [True, False],
+          r"(a) both $L$ lift: $\lambda_2\approx0$ (disconnected)", connected=False)
+    panel(axs[1], [False, False, False], [True, False],
+          r"(b) WISE: one $L$ relays: $\lambda_2\geq\sigma_{\rm req}$", connected=True)
+    fig.subplots_adjust(wspace=0.10, bottom=0.22, top=0.92)
+    fig.text(0.5, 0.64, r"$\Rightarrow$", fontsize=30, ha="center", va="center", color=INK)
+    legend = [Line2D([0], [0], marker="^", color="w", markerfacecolor=RED, markeredgecolor="k",
+                     markersize=11, label="long-range robot"),
+              Line2D([0], [0], marker="o", color="w", markerfacecolor=RED, markeredgecolor="k",
+                     markersize=10, label="short-range robot"),
+              Line2D([0], [0], marker="s", color="w", markerfacecolor=GREEN, markeredgecolor="k",
+                     markersize=10, label="relaying (green) vs lifting (red)"),
+              Line2D([0], [0], marker="D", color="w", markerfacecolor="w", markeredgecolor=GREEN,
+                     markersize=11, label="relay site")]
+    fig.legend(handles=legend, loc="lower left", bbox_to_anchor=(0.015, 0.03), ncol=2,
+               frameon=False, fontsize=9.5, handletextpad=0.3, columnspacing=1.2)
+    fig.text(0.75, 0.10,
              r"$1L_{\rm lift}{+}2S_{\rm relay}\rightarrow 1L_{\rm relay}{+}2S_{\rm lift}$:  "
              r"$\Delta Bz{=}\Delta w{=}\Delta V{=}0,\ \ \Delta\lambda_2>0$",
-             fontsize=9.5, ha="center", va="center", color=INK,
-             bbox=dict(boxstyle="round,pad=0.35", fc="#f4f7f4", ec=GREEN, lw=1.0))
+             fontsize=11, ha="center", va="center", color=INK,
+             bbox=dict(boxstyle="round,pad=0.4", fc="#f4f7f4", ec=GREEN, lw=1.2))
     fig.savefig(FIG / "fig_flagship.pdf", bbox_inches="tight", metadata={"CreationDate": None})
-    fig.savefig(GEN / "fig_flagship.png", dpi=200, bbox_inches="tight")   # inspection only
+    fig.savefig(GEN / "fig_flagship.png", dpi=170, bbox_inches="tight")   # inspection only
     plt.close(fig)
 
 
