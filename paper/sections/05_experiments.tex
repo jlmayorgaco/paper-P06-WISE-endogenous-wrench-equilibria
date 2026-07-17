@@ -72,8 +72,10 @@ $95\%$ CI $[89,100]$), and the relaxed SDP solves in $30$--$60$\,ms at $N=12$.
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
 on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
-every seed ($\LamE<\LamX$, median costly width $0.64$). The subgradient
-$\pi^{\star}\in\partial\Price$ prices one unit of connectivity.
+every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: the
+spectral multiplier $\pi^{\star}=\operatorname{tr}Z^{\star}$ matches the finite difference
+$\Delta\Price/\Delta\sigma$ over $84$ costly-regime points ($r=0.996$, median error $0.6\%$),
+confirming $\pi^{\star}\in\partial\Price$.
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.70\columnwidth]{fig_price.pdf}
