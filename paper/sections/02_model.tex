@@ -27,13 +27,13 @@ most one robot,
 \end{aligned}
 \label{eq:conservation}
 \end{equation}
-The type aggregate $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enters \emph{only} the
-productive payoff (which couples through types); the network below uses the per-robot
-occupancy directly. The feasible set
+The type aggregates $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enter the productive
+\emph{and} wrench layers (both couple through types); the communication layer uses the
+per-robot relay occupancies $z_{ir}$ directly. The feasible set
 $\mathcal X=\{z\in\R_{\ge0}^{N\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a compact
 convex polytope of dimension $n=N|\mathcal A|$. A finite team instantiates $z$ by rounding to
 one action per robot (Remark~\ref{rem:integer}); the poses $q\in(\mathrm{SE}(2))^N$ enter
-only the simulation (Section~\ref{sec:exp}).
+only the geometric instantiation (Section~\ref{sec:exp}).
 
 \begin{assumption}[Standing hypotheses]\label{as:standing}
 Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f}\neq
@@ -72,10 +72,9 @@ $\wdem_k\in\Wmap(C_k)$ iff there exist generator coefficients $\xi_{\tau kh}$ wi
 Wrench feasibility of load $k$ is thus a linear feasibility problem in $(z,\xi)$, and
 its projection onto $z$, $X_{\mathrm f}=\{z\in\mathcal X:H_w z\ge d\}$, is a polytope.
 \end{lemma}
-\begin{proof}
-$z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}=\{A_{kh}G_\tau\xi:\|\xi\|_\infty\le z_{\tau kh}\}$;
-the Minkowski sum superposes independent generators, giving \eqref{eq:tensor}, and
-eliminating $\xi$ yields the polytope $X_{\mathrm f}$.
+\begin{proof}[Proof sketch]
+The scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ superpose (giving
+\eqref{eq:tensor}); eliminating $\xi$ leaves the polytope $X_{\mathrm f}$.
 \end{proof}
 By $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ a certified wrench is feasible in this
 heading-robust actuation-set model. Each mechanically attached base (grippers/tow bars) is
@@ -89,8 +88,9 @@ robot \emph{identity}; every robot is always present, so no node is created, rem
 empty---an \emph{idle} robot still occupies its node and stays connected through the base
 graph (the action set chooses \emph{edges} at a node, not nodes). A fixed base graph
 $L_0\succeq0$ carries the always-on short-range conductances; when robot $i$ commits to relay
-site $r$ it \emph{gates on} its own predefined long-range link Laplacian
-$L_{ir}=\gamma_{\tau(i)r}\,b_{ir}b_{ir}^{\top}\succeq0$, so, \emph{directly in the per-robot
+site $r$ it \emph{gates on} its own predefined long-range links
+$L_{ir}=\gamma_{\tau(i)r}\sum_{j}w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$ (the fixed
+set of robots it then reaches, possibly several), so, \emph{directly in the per-robot
 occupancy},
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.

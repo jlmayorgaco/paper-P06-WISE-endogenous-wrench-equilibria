@@ -16,9 +16,11 @@ V(z)=\phi(Bz),\qquad
 so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ with $H=\alpha I\succ0$
 and $y_{\mathrm{ref}}=v/\alpha$. It is strictly concave ($\nabla^2\phi=-\alpha I\prec0$)
 and so pins down a unique optimal aggregate, whereas a deficit penalty such as
-$-\|[d-s]_+\|^2$ would be flat on the feasible set and leave it undetermined. The game is
-a constrained potential population game with payoff $\partial V/\partial z_{\tau a}$, and
-identical-interest: the novelty lies in what $V$ leaves undetermined.
+$-\|[d-s]_+\|^2$ would be flat on the feasible set and leave it undetermined. This is a
+constrained \emph{identical-interest aggregative game} in the per-robot occupancies, with
+pseudo-gradient $[F(z)]_{ia}=-\partial V/\partial z_{ia}=-[B^{\top}\nabla\phi(Bz)]_{ia}$
+(the population-game reading follows by grouping exchangeable same-type robots); the novelty
+lies in what $V$ leaves undetermined.
 
 Wrench feasibility is a \emph{hard} shared constraint, its projected matrix $H_w$
 (the wrench facets of Lemma~\ref{prop:membership}, $H_w z\ge d$) kept distinct from the
@@ -54,18 +56,18 @@ the inequalities of $X_{\mathrm f}$ active at $\bar z$ (nonnegativity, occupancy
 wrench), and $n=\dim z$. Thus $\Emanifold$ is positive-dimensional iff the
 \emph{productive neutral space} $N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is nontrivial.
 \end{theorem}
-\begin{proof}
+\begin{proof}[Proof sketch]
 Uniqueness of $y^{\star}$ is strict concavity of $\phi$. At
-$\bar z\in\operatorname{relint}\Emanifold$ the minimal face $F$ fixes exactly the
-active constraints, so the feasible perturbations are
-$\{d:Ad=0,\,Bd=0,\,G_Id=0\}=N_p(\bar z)$; hence $\Emanifold$ locally coincides with
-$\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity. Since $V=\phi(Bz)$ depends on
-$z$ only through $Bz$, every $z\in\Emanifold$ attains the same $V$; a general weighted
-$B$ can give $N_p=\{0\}$ (a single composition).
+$\bar z\in\operatorname{relint}\Emanifold$ the feasible perturbations are exactly
+$\{d:Ad{=}Bd{=}G_Id{=}0\}=N_p(\bar z)$, so $\Emanifold$ locally coincides with
+$\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity; all $z\in\Emanifold$ share $V$,
+while a general weighted $B$ can give $N_p=\{0\}$.
 \end{proof}
-For the representative instance ($n=72$), $\operatorname{rank}[A;B]=13$ and no inequality
-is active at the interior optimum ($G_I=\varnothing$), so the fiber is full-dimensional in
-its aggregate-fixing affine space: $\dim\Emanifold=72-13=59$, certified by a
+For the representative \emph{single-load} instance ($n=N|\mathcal A|=72$, $M{=}1$ so $B$ has
+one row), $\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=13$ with no inequality
+active at the interior optimum ($G_I=\varnothing$), so the fiber is full-dimensional in its
+aggregate-fixing affine space: $\dim\Emanifold=72-13=59$ (a two-load instance with two
+independent aggregates gives $\operatorname{rank}[A;B]=14$, $\dim=58$), certified by a
 relative-interior point with neutral-direction residuals
 $\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$ (dimensions computed in $z$ with the projected wrench
 facets $H_w$; \texttt{exp\_fiber}). At a boundary optimum where wrench facets bind, the
@@ -160,14 +162,12 @@ $\min_{z\in\Emanifold^{\star}}\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ ($W\succ0$, l
 change from the previous assignment) fixes a \emph{unique} selector, which a linear
 $g^{\top}z$ need not.
 \end{theorem}
-\begin{proof}
-$X_{\mathrm f}$ is a convex polytope and $Bz=y^{\star}$ is affine; by Lemma~\ref{lem:convex},
-$\{(z,t):Q^{\top}\Lap(z)Q\succeq tI\}$ is convex, so \eqref{eq:sdp} is an SDP; its value
-$\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is attained on the compact $\Emanifold$
-(Weierstrass). $\Essrel=\Emanifold\cap\Cdelta$ is nonempty iff this maximum reaches
-$\sigmastar$, giving \eqref{eq:exist}; feasibility forces
-$Bz^{\star}_{\mathrm{WISE}}=y^{\star}$. Strictness holds when $\sigmastar$ lies
-strictly inside the range of $\lamtwo$ over $\Emanifold$.
+\begin{proof}[Proof sketch]
+$X_{\mathrm f}$, $Bz=y^{\star}$ and $\{(z,t):Q^{\top}\Lap Q\succeq tI\}$ are convex
+(Lemma~\ref{lem:convex}), so \eqref{eq:sdp} is an SDP whose value $\LamE$ is attained on the
+compact $\Emanifold$; $\Essrel$ is nonempty iff $\LamE\ge\sigmastar$, and feasibility forces
+$Bz^{\star}_{\mathrm{WISE}}=y^{\star}$ (strict when $\sigmastar$ is interior to the range of
+$\lamtwo$ over $\Emanifold$).
 \end{proof}
 
 \subsection{Aggregate--estimator stability (motivating)}
@@ -216,17 +216,13 @@ $\lamtwo(\Lap(z))>\sigma$, i.e.\ Slater holds), the optimal multiplier $\pi^{\st
 connectivity constraint satisfies $\pi^{\star}\in\partial\Price(\sigma)$: the marginal
 productive price of one unit of connectivity, in the units of $V$.
 \end{theorem}
-\begin{proof}
-The set $\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigma\}$ is a super-level set of the
-concave $\lamtwo\!\circ\!\Lap$ (Lemma~\ref{lem:convex}), hence convex and shrinking in
-$\sigma$; so the constrained maximum is nonincreasing and $\Price$ nondecreasing. As
-$\sigma$ enters the single concave inequality $\lamtwo\ge\sigma$ linearly, $\Price$ is the
-perturbation value of a convex program, so it is convex and, under Slater, its
-subdifferential is the set of optimal multipliers $\pi^{\star}$ of that
-constraint~\cite{boyd2004convex}. For $\sigma\le\LamE$ some $z\in\Emanifold$ attains
-$\lamtwo\ge\sigma$ with $V=V^{\star}$, so $\Price=0$; for $\sigma>\LamX$ no wrench-feasible
-$z$ reaches $\sigma$ and $\Price=+\infty$; for $\LamE<\sigma\le\LamX$ a feasible $z$ exists
-but none in $\Emanifold$, so $0<\Price<\infty$.
+\begin{proof}[Proof sketch]
+$\{z\in X_{\mathrm f}:\lamtwo\ge\sigma\}$ is a convex super-level set (Lemma~\ref{lem:convex})
+shrinking in $\sigma$, so $\Price$ is nondecreasing; as $\sigma$ enters the single concave
+inequality linearly, $\Price$ is a convex perturbation value whose subdifferential (under
+Slater) is the optimal multiplier set~\cite{boyd2004convex}. The three cases follow from
+$\sigma\le\LamE$ ($z\in\Emanifold$ attains it, $\Price=0$), $\sigma>\LamX$ (infeasible), and
+$\LamE<\sigma\le\LamX$ (feasible but not in $\Emanifold$).
 \end{proof}
 This makes the trichotomy a certificate (Section~\ref{sec:exp}: $\Price\equiv0$ up to
 $\LamE$, a strictly positive branch on $(\LamE,\LamX]$, then infeasibility), with
@@ -258,27 +254,18 @@ self-sustaining assignment. If additionally $B\hat z=y^{\star}$ it is a zero-cos
 WISE; otherwise its productive loss $g_{\mathbb Z}$ is evaluated separately
 (Section~\ref{sec:exp}).
 \end{proposition}
-\begin{proof}
-Row-wise, $(H_w\hat z)_j\ge(H_wz^{\star})_j-\|(H_w)_j\|_2\,r\ge d_j+m_w-\kappa_w r>d_j$ by
-$r<m_w/\kappa_w$, so $\hat z\in X_{\mathrm f}$. As $\Lap$ is affine in $z$,
-$\|\Lap(\hat z)-\Lap(z^{\star})\|_2\le\kappa_L r$, and Weyl's inequality on
-$Q^{\top}\Lap Q$ gives
-$\lamtwo(\Lap(\hat z))\ge\lamtwo(\Lap(z^{\star}))-\kappa_L r=\sigmastar+m_\lambda-\kappa_L r
->\sigmastar$ by $r<m_\lambda/\kappa_L$.
+\begin{proof}[Proof sketch]
+Row-wise $(H_w\hat z)_j\ge d_j+m_w-\kappa_w r>d_j$ gives $\hat z\in X_{\mathrm f}$; and, as
+$\Lap$ is affine, Weyl's inequality gives $\lamtwo(\Lap(\hat z))\ge\sigmastar+m_\lambda-
+\kappa_L r>\sigmastar$.
 \end{proof}
 
 \begin{remark}[Rounding as a search]\label{rem:integer}
 Proposition~\ref{prop:integer} is a checkable sufficient condition, not an existence
-guarantee. Best-of-$R$ rounding \emph{searches} for a feasible $\hat z$ and \emph{directly}
-re-checks it against budgets, occupancy, the lifted wrench-feasibility LP and the spectral
-requirement $\lamtwo\ge\sigmastar$ (a search, not a proof; no $O(1/N)$ claim); the
-radius~\eqref{eq:intmargin} is a separate, conservative worst-case certificate. On the
-$N=12$ demonstration structured recovery (dependent rounding + neutral repair) directly
-re-certifies an integer self-sustaining assignment on the first draw for all $30$ seeds,
-versus $29/30$ for independent rounding and $7/30$ for argmax; the exact oracle for $N\le8$
-finds $0/23$ false positives and worst-case
-gap $\le0.005$ (Section~\ref{sec:exp}). The radius is dominated by the spectral term
-$m_\lambda/\kappa_L$ (wrench slack $m_w{=}3.6$; $\kappa_L$ a Cauchy--Schwarz bound) and highly
-conservative ($r^\star{\approx}0.006$, $\chi{\approx}190$), so direct re-certification is
-operative.
+guarantee: best-of-$R$ rounding \emph{searches} for a feasible $\hat z$ and \emph{directly}
+re-checks it against budgets, occupancy, the lifted wrench LP and $\lamtwo\ge\sigmastar$ (no
+$O(1/N)$ claim). The radius~\eqref{eq:intmargin} is a separate, conservative certificate,
+dominated by the spectral term $m_\lambda/\kappa_L$ (Cauchy--Schwarz $\kappa_L$;
+$\chi{\approx}190$ on the instances of Section~\ref{sec:exp}), so direct re-certification is
+the operative test.
 \end{remark}
