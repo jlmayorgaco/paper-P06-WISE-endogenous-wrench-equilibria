@@ -11,14 +11,24 @@ $\Lgeo(q)$; closed-loop dynamics are outside this validation. The primary metric
 $\lamtwo\ge\sigmastar$); every instance is seeded and reproduces exactly.
 
 \begin{figure*}[t]\centering
-\resizebox{0.56\textwidth}{!}{\input{sections/fig_flagship.tex}}
-\caption{Non-trivial comparative-advantage exchange: the scarce $L$ is the best lifter
-($c_L=2c_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$). Both $L$ lifting leaves
-the regions disconnected \textbf{(a)}; WISE frees one $L$ to the relay site, bridging at
-$\lamtwo=0.41$ \textbf{(b)}, along the neutral move in the box. Task layer (loads, wrench
-$w^{\mathrm{dem}}$, torque-critical load) over the communication layer; marker key at
-lower left.}
-\label{fig:flagship}
+\begin{subfigure}[b]{0.47\textwidth}\centering
+  \resizebox{\textwidth}{!}{\input{sections/fig_flagship.tex}}
+  \caption{Non-trivial comparative-advantage exchange: the scarce $L$ is the best lifter
+  ($c_L=2c_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$). Both $L$ lifting leaves
+  the regions disconnected (left); WISE frees one $L$ to the relay site, bridging at
+  $\lamtwo=0.41$ (right), along the neutral move in the box. Task layer (loads, wrench
+  $w^{\mathrm{dem}}$, torque-critical load) over the communication layer; markers keyed lower
+  left.}
+  \label{fig:flagship}
+\end{subfigure}\hfill
+\begin{subfigure}[b]{0.51\textwidth}\centering
+  \includegraphics[width=\textwidth]{fig_price.pdf}
+  \caption{Price of self-sustainability ($40$ seeds, normalized $\LamE\!\leftrightarrow\!1$,
+  $\LamX\!\leftrightarrow\!2$): a zero-cost plateau on the free regime (green), a strictly
+  positive costly branch (orange), and infeasibility beyond $\LamX$ (red)---the trichotomy of
+  Thm.~\ref{thm:price}; right, the capacities $\LamE\le\LamX$ (median costly width $0.64$).}
+  \label{fig:price}
+\end{subfigure}
 \end{figure*}
 
 \paragraph*{E1 --- Non-trivial composition exchange (Fig.~\ref{fig:flagship})}
@@ -81,14 +91,4 @@ width $0.64$). The dual is a genuine price: in
 unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches $\Delta\Price/\Delta\sigma$
 over $84$ interior points ($r=0.996$, median error $0.6\%$; $\Delta\sigma{=}0.05$ on the
 interior $25$--$75\%$ of $(\LamE,\LamX)$), confirming $\pi^{\star}\in\partial\Price$.
-
-\begin{figure}[t]\centering
-\includegraphics[width=0.64\columnwidth]{fig_price.pdf}
-\caption{Price of self-sustainability ($40$ seeds, normalized $\LamE\!\leftrightarrow\!1$,
-$\LamX\!\leftrightarrow\!2$). \textbf{(a)} median $\Price(\sigma)/V^\star$ with $25$--$75\%$
-band: free plateau (green), costly branch (orange), infeasible beyond $\LamX$
-(red)---the trichotomy of Thm.~\ref{thm:price}. \textbf{(b)} capacities $\LamE\le\LamX$ (median
-costly width $0.64$).}
-\label{fig:price}
-\end{figure}
 

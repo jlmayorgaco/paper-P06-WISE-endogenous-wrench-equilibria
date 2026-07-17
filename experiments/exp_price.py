@@ -166,7 +166,7 @@ def _figure(u_grid, curves, lamE, lamX):
              fontsize=7.5, ha="left")
     axL.set_xlabel(r"normalized connectivity requirement $\sigma$", fontsize=8)
     axL.set_ylabel(r"price $P(\sigma)/V^\star$", fontsize=8)
-    axL.set_title(r"(a) price of self-sustainability ($%d$ seeds)" % n_seeds, fontsize=8.5)
+    axL.set_title(r"price of self-sustainability ($%d$ seeds)" % n_seeds, fontsize=8.5)
     axL.tick_params(labelsize=7)
     axL.set_xticks([0, 1, 2]); axL.set_xticklabels(["0", r"$\Lambda_E$", r"$\Lambda_X$"])
 
@@ -178,7 +178,7 @@ def _figure(u_grid, curves, lamE, lamX):
         parts[key].set_color("#444444"); parts[key].set_linewidth(1.0)
     axR.set_xticks([0, 1]); axR.set_xticklabels([r"$\Lambda_E$", r"$\Lambda_X$"], fontsize=8)
     axR.set_ylabel(r"$\lambda_2$ capacity", fontsize=8)
-    axR.set_title("(b) fiber vs. feasible", fontsize=8.5)
+    axR.set_title(r"spectral capacities $\Lambda_E\leq\Lambda_X$", fontsize=8.5)
     axR.tick_params(labelsize=7)
     axR.text(0.5, 0.03, r"costly width $\Lambda_X\!-\!\Lambda_E$: %.2f" % np.median(lamX - lamE),
              transform=axR.transAxes, fontsize=6.8, ha="center", color="#b06000")

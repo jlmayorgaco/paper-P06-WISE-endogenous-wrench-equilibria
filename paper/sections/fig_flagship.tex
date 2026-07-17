@@ -37,7 +37,7 @@
 
 % =================== Panel (a): both L lift -> disconnected ===================
 \begin{scope}
-  \node[ptitle] at (2.35,5.75) {(a) both $L$ lift: $\lambda_2\approx0$};
+  \node[ptitle] at (2.35,5.75) {both $L$ lift: $\lambda_2\approx0$};
   \drawload{1.0}{4.5}{0}\drawload{3.7}{4.5}{1}
   % lifters: load1 = 1L+1S, load2 = 1L+1S (red = lifting)
   \foreach \x/\t in {0.62/l,1.30/s,3.32/l,4.00/s}{%
@@ -59,7 +59,7 @@
 
 % =================== Panel (b): WISE, one L relays -> connected ===================
 \begin{scope}[xshift=6.6cm]
-  \node[ptitle] at (2.35,5.75) {(b) WISE: one $L$ relays: $\lambda_2\ge\sigma_{\mathrm{req}}$};
+  \node[ptitle] at (2.35,5.75) {WISE: one $L$ relays: $\lambda_2\ge\sigma_{\mathrm{req}}$};
   \drawload{1.0}{4.5}{0}\drawload{3.7}{4.5}{1}
   % load1 lifted by 3 shorts; load2 by 1L+1S
   \foreach \x in {0.48,1.0,1.52}{\draw[stem](\x,3.62)--(\x,4.2);
