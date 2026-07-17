@@ -173,10 +173,11 @@ def _figure(bad_relayers, wise_relayers, lam_bad, lam_wise):
     matplotlib.rcParams["ps.fonttype"] = 42
     import matplotlib.pyplot as plt
 
-    fig, axs = plt.subplots(1, 2, figsize=(6.6, 2.5))
+    # wide aspect (short in a column) with LARGE native fonts so they survive downscaling
+    fig, axs = plt.subplots(1, 2, figsize=(5.2, 1.55))
     for ax, relayers, lam, title in [
-        (axs[0], bad_relayers, lam_bad, r"(a) productive, disconnected ($\lambda_2\approx0$)"),
-        (axs[1], wise_relayers, lam_wise, r"(b) WISE ($\lambda_2\geq\sigma_{\rm req}$)")]:
+        (axs[0], bad_relayers, lam_bad, r"(a) disconnected: $\lambda_2\approx0$"),
+        (axs[1], wise_relayers, lam_wise, r"(b) WISE: $\lambda_2\geq\sigma_{\rm req}$")]:
         # display position: a long relayer moves to the central relay site
         disp = np.array([[xR, 0.0] if (i in relayers and IS_LONG[i]) else POS[i]
                          for i in range(N)])
@@ -188,23 +189,20 @@ def _figure(bad_relayers, wise_relayers, lam_bad, lam_wise):
                     bridging = (i in relayers or j in relayers) and \
                         (IS_LONG[i] and i in relayers or IS_LONG[j] and j in relayers)
                     col = "#2e8b57" if bridging else "#bbb"
-                    lw = 1.4 if bridging else 0.8
+                    lw = 1.6 if bridging else 0.9
                     ax.plot([disp[i][0], disp[j][0]], [disp[i][1], disp[j][1]],
-                            color=col, lw=lw, alpha=0.8, zorder=1)
+                            color=col, lw=lw, alpha=0.85, zorder=1)
         for i in range(N):
             mk = "^" if IS_LONG[i] else "o"
             col = "#2e8b57" if i in relayers else "#c0392b"
-            ax.scatter(*disp[i], marker=mk, s=120 if IS_LONG[i] else 70, c=col,
-                       edgecolors="k", linewidths=0.7, zorder=3)
-        ax.scatter([xR], [0], marker="D", s=150, facecolors="none", edgecolors="#2e8b57",
-                   linewidths=1.1, zorder=2)
-        ax.set_title(title, fontsize=8.5)
-        ax.set_xlim(-2, 10); ax.set_ylim(-2.4, 2.2); ax.set_aspect("equal")
+            ax.scatter(*disp[i], marker=mk, s=150 if IS_LONG[i] else 85, c=col,
+                       edgecolors="k", linewidths=0.8, zorder=3)
+        ax.scatter([xR], [0], marker="D", s=180, facecolors="none", edgecolors="#2e8b57",
+                   linewidths=1.3, zorder=2)
+        ax.set_title(title, fontsize=13)
+        ax.set_xlim(-2, 10); ax.set_ylim(-2.2, 2.2); ax.set_aspect("equal")
         ax.set_xticks([]); ax.set_yticks([])
-    axs[0].text(0.5, -0.12, r"$1L_{\rm lift}+2S_{\rm relay}\ \longrightarrow\ "
-                r"1L_{\rm relay}+2S_{\rm lift}$: $\Delta Bz{=}0,\Delta w{=}0,"
-                r"\Delta n{=}0,\Delta\lambda_2{>}0$", transform=axs[0].transAxes,
-                fontsize=7.2, ha="left", color="#333")
+    fig.subplots_adjust(wspace=0.06)
     fig.savefig(FIG / "fig_flagship.pdf", bbox_inches="tight", metadata={"CreationDate": None})
     plt.close(fig)
 

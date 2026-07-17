@@ -13,6 +13,8 @@
   "prop4_m_lambda_median": 0.3,
   "prop4_rstar_median": 0.0055,
   "prop4_chi_median": 190.9861,
+  "prop4_rstar_tight_median": 0.0055,
+  "prop4_chi_tight_median": 190.9861,
   "prop4_certified_seeds": 0,
   "direct_certified_seeds": 29,
   "prop4_active_wrench_seeds": 0

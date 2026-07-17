@@ -44,22 +44,31 @@ def _relaxed_optimum_value(prob):
 
 
 def _prop4_margins(prob, x_fluid, x_round):
-    """Proposition-4 margins for a rounding: wrench/connectivity slacks, sensitivities,
-    the certified radius r* = min(m_w/kappa_w, m_lambda/kappa_L), and chi = ||zhat-z*||/r*.
-    chi < 1 => Proposition 4 certifies the rounding without any re-evaluation."""
+    """Proposition-4 margins for a rounding. Two radii are compared: the coarse
+    r_coarse = min(m_w/kappa_w, m_lambda/kappa_L) and the tighter PER-ROW wrench radius
+    r_w* = min_j (H_w z* - d)_j / ||(H_w)_j||_2 (always >= m_w/kappa_w). chi = ||zhat-z*||/r.
+    chi < 1 => Proposition 4 certifies the rounding without re-evaluation."""
     zc = np.asarray(x_fluid, float).ravel()
     zh = np.asarray(x_round, float).ravel()
     Hw = prob.wrench_matrix(); d = prob.demand().ravel()
-    m_w = float(np.min(Hw @ zc - d))                       # wrench slack at z*
+    slack = Hw @ zc - d
+    rownorm = np.linalg.norm(Hw, axis=1)
+    m_w = float(np.min(slack))                             # wrench slack at z*
     m_lam = float(prob.lambda2(x_fluid) - prob.sigma)      # connectivity slack at z*
-    kappa_w = float(np.max(np.linalg.norm(Hw, axis=1)))    # ||H_w||_{2->inf}
+    kappa_w = float(np.max(rownorm))                       # ||H_w||_{2->inf}
     R = np.asarray(prob.relay_laplacians, float)
     kappa_L = float(np.sqrt(np.sum([np.linalg.norm(R[i], 2) ** 2 for i in range(prob.N)])))
-    rstar = min(m_w / kappa_w, m_lam / kappa_L) if (m_w > 0 and m_lam > 0) else 0.0
+    # per-row wrench radius (tighter): r_w* = min_j slack_j / ||row_j||  >=  m_w/kappa_w
+    pos = rownorm > 1e-12
+    r_w_row = float(np.min(slack[pos] / rownorm[pos])) if np.any(pos) else 0.0
+    r_coarse = min(m_w / kappa_w, m_lam / kappa_L) if (m_w > 0 and m_lam > 0) else 0.0
+    r_tight = min(r_w_row, m_lam / kappa_L) if (r_w_row > 0 and m_lam > 0) else 0.0
     dist = float(np.linalg.norm(zh - zc))
-    chi = dist / rstar if rstar > 0 else np.inf
     return dict(m_w=m_w, m_lambda=m_lam, kappa_w=kappa_w, kappa_L=kappa_L,
-                rstar=rstar, dist=dist, chi=chi, prop4_certified=bool(chi < 1.0))
+                rstar=r_coarse, rstar_tight=r_tight, dist=dist,
+                chi=dist / r_coarse if r_coarse > 0 else np.inf,
+                chi_tight=dist / r_tight if r_tight > 0 else np.inf,
+                prop4_certified=bool(r_tight > 0 and dist < r_tight))
 
 
 def _rr_rates(prob, x_fluid, seed):
@@ -83,6 +92,7 @@ def _rr_rates(prob, x_fluid, seed):
 def main() -> None:
     fluid, arg, rr_single, rr_best, gaps = [], [], [], [], []
     m_w_all, m_lam_all, rstar_all, chi_all, p4_cert, direct_cert = [], [], [], [], 0, 0
+    chi_tight_all, rstar_tight_all = [], []
     for sd in SEEDS:
         prob = scenarios.two_region(seed=sd, N=12, nu=0.5, tau_d=3.0, bridge_gain=3.0)
         res = baselines.wise_primal_dual(prob, max_iters=4000)
@@ -99,6 +109,7 @@ def main() -> None:
         mg = _prop4_margins(prob, res.x, zh)
         m_w_all.append(mg["m_w"]); m_lam_all.append(mg["m_lambda"])
         rstar_all.append(mg["rstar"]); chi_all.append(mg["chi"])
+        chi_tight_all.append(mg["chi_tight"]); rstar_tight_all.append(mg["rstar_tight"])
         p4_cert += int(mg["prop4_certified"])
         direct_cert += int(metrics.certified(prob, zh))
     cert = {
@@ -116,6 +127,9 @@ def main() -> None:
         "prop4_rstar_median": round(float(np.median(rstar_all)), 4),
         "prop4_chi_median": round(float(np.median([c for c in chi_all if np.isfinite(c)])
                                      or [float("nan")]), 4),
+        "prop4_rstar_tight_median": round(float(np.median(rstar_tight_all)), 4),
+        "prop4_chi_tight_median": round(float(np.median([c for c in chi_tight_all
+                                                         if np.isfinite(c)]) or [float("nan")]), 4),
         "prop4_certified_seeds": p4_cert,
         "direct_certified_seeds": direct_cert,
         "prop4_active_wrench_seeds": int(np.sum(np.array(m_w_all) <= 1e-6)),

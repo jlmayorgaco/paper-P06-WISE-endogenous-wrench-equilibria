@@ -277,7 +277,8 @@ $N=12$ demonstration structured recovery (dependent rounding + neutral repair) d
 re-certifies an integer self-sustaining assignment on the first draw for all $30$ seeds,
 versus $29/30$ for independent rounding and $7/30$ for argmax; the exact oracle for $N\le8$
 finds $0/23$ false positives and worst-case
-gap $\le0.005$ (Section~\ref{sec:exp}). The radius is highly conservative
-($r^\star{\approx}0.006$, $\chi{=}\|\hat z-z^\star\|/r^\star{\approx}190$ despite slacks
-$m_w{=}3.6$, $m_\lambda{=}0.30$), so direct re-certification is the operative test.
+gap $\le0.005$ (Section~\ref{sec:exp}). The radius is dominated by the spectral term
+$m_\lambda/\kappa_L$ (wrench slack $m_w{=}3.6$; $\kappa_L$ a Cauchy--Schwarz bound) and highly
+conservative ($r^\star{\approx}0.006$, $\chi{\approx}190$), so direct re-certification is
+operative.
 \end{remark}
