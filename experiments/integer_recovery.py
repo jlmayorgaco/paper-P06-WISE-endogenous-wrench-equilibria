@@ -43,11 +43,31 @@ def _relaxed_optimum_value(prob):
     return float(prob.productive_value(np.asarray(z.value, float).reshape(prob.N, prob.A)))
 
 
+def _prop4_margins(prob, x_fluid, x_round):
+    """Proposition-4 margins for a rounding: wrench/connectivity slacks, sensitivities,
+    the certified radius r* = min(m_w/kappa_w, m_lambda/kappa_L), and chi = ||zhat-z*||/r*.
+    chi < 1 => Proposition 4 certifies the rounding without any re-evaluation."""
+    zc = np.asarray(x_fluid, float).ravel()
+    zh = np.asarray(x_round, float).ravel()
+    Hw = prob.wrench_matrix(); d = prob.demand().ravel()
+    m_w = float(np.min(Hw @ zc - d))                       # wrench slack at z*
+    m_lam = float(prob.lambda2(x_fluid) - prob.sigma)      # connectivity slack at z*
+    kappa_w = float(np.max(np.linalg.norm(Hw, axis=1)))    # ||H_w||_{2->inf}
+    R = np.asarray(prob.relay_laplacians, float)
+    kappa_L = float(np.sqrt(np.sum([np.linalg.norm(R[i], 2) ** 2 for i in range(prob.N)])))
+    rstar = min(m_w / kappa_w, m_lam / kappa_L) if (m_w > 0 and m_lam > 0) else 0.0
+    dist = float(np.linalg.norm(zh - zc))
+    chi = dist / rstar if rstar > 0 else np.inf
+    return dict(m_w=m_w, m_lambda=m_lam, kappa_w=kappa_w, kappa_L=kappa_L,
+                rstar=rstar, dist=dist, chi=chi, prop4_certified=bool(chi < 1.0))
+
+
 def _rr_rates(prob, x_fluid, seed):
     """Single-draw and best-of-N certified rates for randomized rounding."""
     rng = np.random.default_rng(seed + 5000)
     x = np.asarray(x_fluid, float)
     hits, best = 0, False
+    x_cert = None
     for _ in range(N_DRAWS):
         cand = np.zeros_like(x)
         for i in range(prob.N):
@@ -55,22 +75,32 @@ def _rr_rates(prob, x_fluid, seed):
             cand[i, rng.choice(prob.A, p=p)] = 1.0
         ok = metrics.certified(prob, cand)
         hits += int(ok); best = best or ok
-    return hits / N_DRAWS, float(best)
+        if ok and x_cert is None:
+            x_cert = cand
+    return hits / N_DRAWS, float(best), x_cert
 
 
 def main() -> None:
     fluid, arg, rr_single, rr_best, gaps = [], [], [], [], []
+    m_w_all, m_lam_all, rstar_all, chi_all, p4_cert, direct_cert = [], [], [], [], 0, 0
     for sd in SEEDS:
         prob = scenarios.two_region(seed=sd, N=12, nu=0.5, tau_d=3.0, bridge_gain=3.0)
         res = baselines.wise_primal_dual(prob, max_iters=4000)
         fluid.append(metrics.certified(prob, res.x))
         xa = metrics.round_argmax(prob, res.x)
         arg.append(metrics.certified(prob, xa))
-        s_rate, b_rate = _rr_rates(prob, res.x, sd)
+        s_rate, b_rate, x_cert = _rr_rates(prob, res.x, sd)
         rr_single.append(s_rate); rr_best.append(b_rate)
         v_relax = _relaxed_optimum_value(prob)
         v_int = prob.productive_value(xa)
         gaps.append((v_relax - v_int) / (abs(v_relax) + 1e-9))
+        # Proposition 4: margins for a certified rounding (best-of-N draw, else argmax)
+        zh = x_cert if x_cert is not None else xa
+        mg = _prop4_margins(prob, res.x, zh)
+        m_w_all.append(mg["m_w"]); m_lam_all.append(mg["m_lambda"])
+        rstar_all.append(mg["rstar"]); chi_all.append(mg["chi"])
+        p4_cert += int(mg["prop4_certified"])
+        direct_cert += int(metrics.certified(prob, zh))
     cert = {
         "n_seeds": len(SEEDS), "N_robots": 12, "n_draws": N_DRAWS,
         "note": "N=12 physical demonstration; each robot is integer (one action).",
@@ -80,6 +110,15 @@ def main() -> None:
         "rr_bestof_rate": round(float(np.mean(rr_best)), 4),
         "welfare_gap_rel_mean": round(float(np.mean(gaps)), 4),
         "welfare_gap_rel_max": round(float(np.max(gaps)), 4),
+        # Proposition 4 diagnostics (best-of-N certified rounding per seed)
+        "prop4_m_w_median": round(float(np.median(m_w_all)), 4),
+        "prop4_m_lambda_median": round(float(np.median(m_lam_all)), 4),
+        "prop4_rstar_median": round(float(np.median(rstar_all)), 4),
+        "prop4_chi_median": round(float(np.median([c for c in chi_all if np.isfinite(c)])
+                                     or [float("nan")]), 4),
+        "prop4_certified_seeds": p4_cert,
+        "direct_certified_seeds": direct_cert,
+        "prop4_active_wrench_seeds": int(np.sum(np.array(m_w_all) <= 1e-6)),
     }
     (GEN / "integer_recovery.json").write_text(json.dumps(cert, indent=2), encoding="utf-8")
     print(json.dumps(cert, indent=2))

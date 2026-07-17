@@ -86,23 +86,25 @@ independent contact forces; the model is quasi-static, and free-standing unilate
 (friction cones) or the full wheel-torque--heading--contact chain would need a separate
 realization layer.
 
-\subsection{Decision-induced candidate-site Laplacian $\Lap(z)$}
-We work with a \emph{surrogate conductance network} on a \emph{fixed} node set
-$\mathcal V=\{1,\dots,N\}$, one node per robot candidate site; nodes are not created or
-removed by the assignment. A fixed base graph $L_0\succeq0$ carries the always-on
+\subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
+The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
+robot's home position; every robot is always present, so no node is created, removed, or left
+empty---an \emph{idle} robot still occupies its node and stays connected through the base
+graph (the action set, of size $|\mathcal A|=MH{+}|\mathcal R|{+}1$, chooses \emph{edges} at a
+node, not nodes). A fixed base graph $L_0\succeq0$ carries the always-on short-range
 conductances; committing a type-$\tau$ robot to relay site $r$ \emph{gates on} a predefined
-link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), so
+long-range link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), so
 \begin{equation}
 \Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{N\times N}
 \label{eq:laplacian}
 \end{equation}
-is affine in $z$ (Assumption~\ref{as:standing}(ii)) because only relay occupancies gate
-edges---not a general pairwise geometric graph, whose weights would be bilinear in both
-endpoints' decisions. Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$ and
-$\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$; the two are compared
-only \emph{after integer recovery}, where a node relabeling $P$ (a permutation) aligns them
-as $\Lgeo^{P}(q)=P^{\top}\Lgeo(q)P$ through Lemma~\ref{lem:bridge}. All theorems use
-$\Lap(z)$.
+is affine in $z$ (Assumption~\ref{as:standing}(ii)) because \emph{only relay occupancy}
+gates edges---not a general pairwise geometric graph, whose weights would be bilinear in
+both endpoints' decisions. Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$,
+$\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$
+robots: integer recovery places one robot per node, so $\Lap$ and $\Lgeo$ share the node set
+under the identity correspondence and no permutation is needed; the two are compared through
+Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
@@ -124,12 +126,12 @@ $z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006g
 \end{lemma}
 
 \begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
-Suppose $\|\Lgeo^{P}(q)-\Lap(z)\|_2\le\varepsilon_L$, the estimator obeys
+Suppose $\|\Lgeo(q)-\Lap(z)\|_2\le\varepsilon_L$, the estimator obeys
 $|\widehat\lamtwo-\lamtwo(\Lap(z))|\le\varepsilon_{\mathrm{est}}$, and the solver keeps
 $\widehat\lamtwo\ge\sigmastar-\delta_{\mathrm{num}}$. Then Weyl's inequality gives
-$\lamtwo(\Lgeo^{P}(q))\ge\lamtwo(\Lap(z))-\varepsilon_L$, so with
+$\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(z))-\varepsilon_L$, so with
 $\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$ and
-$\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo^{P}(q))\ge\sigmadyn$, the
+$\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the
 optimizer--estimator (information-layer) stability threshold. For the exact centralized
 SDP, $\Lap(z)$ is known and $\varepsilon_{\mathrm{est}}=\delta_{\mathrm{num}}=0$.
 \end{lemma}

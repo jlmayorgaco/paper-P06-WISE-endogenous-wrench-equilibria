@@ -5,7 +5,9 @@
 The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each
 load its physical service, and the productive value allocates \emph{total served
 capacity} among the admitted loads through the \emph{served-capacity} aggregate $y=Bz$,
-$y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$ (distinct from the wrench aggregate $H_wz$):
+$y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$ (distinct from the wrench aggregate $H_wz$; $y_k$ is
+the productive reserve assigned to load $k$ beyond the wrench-feasibility floor---a proxy
+for admissible throughput or disturbance tolerance):
 \begin{equation}
 V(z)=\phi(Bz),\qquad
 \phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
@@ -267,5 +269,8 @@ rounding \emph{searches} for one and re-certifies it against~\eqref{eq:margins} 
 not a proof; no $O(1/N)$ claim). On the $N=12$ demonstration a single randomized-rounding
 draw re-certifies a fluid optimum with probability $0.40$ and best-of-$30$ re-certifies
 $29/30$ seeds (argmax $7/30$); an exact integer oracle for $N\le8$ finds $0\%$ false
-positives and integrality gap $\le0.002$ (Section~\ref{sec:exp}).
+positives and integrality gap $\le0.002$ (Section~\ref{sec:exp}). The radius
+\eqref{eq:intmargin} is only sufficient and conservative: median slacks $m_w{=}3.6$,
+$m_\lambda{=}0.30$ give $r^\star{\approx}0.006$ ($\chi{=}\|\hat z-z^\star\|/r^\star{\approx}190$),
+so direct re-certification, not the radius, is the operative test.
 \end{remark}
