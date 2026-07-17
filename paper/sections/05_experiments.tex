@@ -27,17 +27,15 @@ diamond: relay site.}
 
 \paragraph*{E1 --- Non-trivial composition exchange (Fig.~\ref{fig:flagship})}
 The flagship instance ($N=12$, $c_L=2c_S$) certifies a genuine comparative-advantage
-reorganization, not a swap of equals: releasing one long lifter, compensating its capacity
-with two short lifters, and moving it to the relay holds $Bz=(3,3)=y^{\star}$, both wrenches
-(inner-polygon LP), $V=V^{\star}$ and $n_{\mathrm{active}}=6$ (two long, four short) exactly
-fixed, while $\lamtwo(\Lgeo)$ rises from $\approx0$ to $0.41$---materializing
-Prop.~\ref{prop:freeconn} with $D\lamtwo[d]>0$; the fiber itself has $\dim\mathcal N_p=59$
-with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). Two checks: on a $C_3$-symmetric
-graph with $\lamtwo=\lambda_3$ the eigenspace criterion of Prop.~\ref{prop:freeconn} predicts
-$D\lamtwo$ to $10^{-6}$ over $200$ directions, whereas an arbitrary single Fiedler-vector
-estimate has median absolute error $0.04$; and the a-priori tracking bound
-$4d_{\max}L_\psi\rho$ (Lemma~\ref{lem:bridge}, smooth weights) held on \emph{every}
-perturbation ($\varepsilon_L^{\max}=0.43\le6.6$ at $\rho=0.3$\,m).
+reorganization: releasing one long lifter for two short lifters and moving it to the relay
+holds $Bz=(3,3)=y^{\star}$, both wrenches, $V=V^{\star}$ and $n_{\mathrm{active}}=6$ fixed,
+while $\lamtwo(\Lgeo)$ rises $\approx0\!\to\!0.41$ (Prop.~\ref{prop:freeconn},
+$D\lamtwo[d]>0$); the fiber itself has $\dim\mathcal N_p=59$
+with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). It is not tied to one bridge: on a
+three-region, two-bridge instance WISE frees \emph{two} long robots to two relay sites (shorts
+compensating), holding $(3,3,3)$ while $\lamtwo:0\!\to\!0.21$. (Repository checks confirm the
+harder claims: the eigenspace multiplicity criterion is exact on a $\lamtwo=\lambda_3$ case,
+and the a-priori $\varepsilon_L$ bound holds on every tracking perturbation.)
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) re-certifies an integer
@@ -70,22 +68,20 @@ such point and merely \emph{satisfies} the requirement (margin $+0.15$). WISE is
 lexicographic
 \emph{tie-break}: it selects the maximum-margin point ($+2.55$; all $100\%$ certified, Wilson
 $95\%$ CI $[89,100]$). Other fiber selectors fall short---random-fiber averages margin
-$+0.10$ (sometimes infeasible) and least-role-change $+0.38$, vs WISE's $+2.55$. On scaling
-(CVXPY/CLARABEL, single-threaded), Stage-1 is $\sim\!10$\,ms while the Stage-2 SDP grows with
-the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s over $N{=}12{\to}96$): fit for offline, not online,
-use.
+$+0.10$ (sometimes infeasible) and least-role-change $+0.38$, vs WISE's $+2.55$. Stage-1 is
+$\sim\!10$\,ms; the Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s,
+$N{=}12{\to}96$; CVXPY/CLARABEL, single-threaded): offline-ready.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
 on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
 every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: in
-unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches the finite difference
-$\Delta\Price/\Delta\sigma$ over $84$ interior points ($r=0.996$, median error $0.6\%$),
-confirming $\pi^{\star}\in\partial\Price$ ($Z^{\star}=Y^{\star}/\pi^{\star}$;
-Fig.~\ref{fig:price} normalization is display-only).
+unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches $\Delta\Price/\Delta\sigma$
+over $84$ interior points ($r=0.996$, median error $0.6\%$), confirming
+$\pi^{\star}\in\partial\Price$ (Fig.~\ref{fig:price} normalization is display-only).
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.70\columnwidth]{fig_price.pdf}
+\includegraphics[width=0.58\columnwidth]{fig_price.pdf}
 \caption{Price of self-sustainability ($40$ seeds, normalized so $\LamE\!\leftrightarrow\!1$,
 $\LamX\!\leftrightarrow\!2$). \textbf{(a)} median $\Price(\sigma)/V^\star$ with a $25$--$75\%$
 band: a zero-cost plateau on the free regime (green), a strictly positive costly branch

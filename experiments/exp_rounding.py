@@ -122,6 +122,22 @@ def run(seeds=SEEDS):
                 stats[m]["draws"].append(k)
                 stats[m]["gap"].append((v_relax - float(prob.productive_value(x)))
                                        / (abs(v_relax) + 1e-9))
+    # loss breakdown: dependent rounding alone vs the connectivity repair (first draw)
+    pre_loss, post_loss, zero_cost = [], [], 0
+    for sd in seeds:
+        prob = scenarios.two_region(seed=sd, N=12, nu=0.5, tau_d=3.0, bridge_gain=3.0)
+        z = np.maximum(baselines.wise_primal_dual(prob, max_iters=4000).x, 0.0)
+        v_relax = float(prob.productive_value(z))
+        x0 = _dependent_draw(prob, z, np.random.default_rng(sd + 9000))
+        xr = _repair(prob, x0.copy())
+        if metrics.certified(prob, xr):
+            post = (v_relax - float(prob.productive_value(xr))) / (abs(v_relax) + 1e-9)
+            pre = (v_relax - float(prob.productive_value(x0))) / (abs(v_relax) + 1e-9)
+            post_loss.append(post); pre_loss.append(pre)
+            zero_cost += int(post < 1e-4)
+    print(f"loss breakdown: dependent-only median {np.median(pre_loss):.3f}, "
+          f"after repair {np.median(post_loss):.3f}, zero-cost {zero_cost}/{len(post_loss)}")
+
     rows = []
     for m in methods:
         s = stats[m]

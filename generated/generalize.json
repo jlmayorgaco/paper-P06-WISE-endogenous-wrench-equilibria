@@ -1,0 +1,23 @@
+{
+  "regions": 3,
+  "relay_sites": 2,
+  "c_L": 2.0,
+  "c_S": 1.0,
+  "served_bad": [
+    3.0,
+    3.0,
+    3.0
+  ],
+  "served_wise": [
+    3.0,
+    3.0,
+    3.0
+  ],
+  "served_preserved": true,
+  "long_active_bad": 3,
+  "long_active_wise": 3,
+  "lambda2_bad": 1.5243330295249085e-16,
+  "lambda2_wise": 0.21084432234437886,
+  "delta_lambda2": 0.21084432234437872,
+  "two_bridges": true
+}
