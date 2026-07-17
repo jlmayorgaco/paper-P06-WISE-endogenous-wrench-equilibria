@@ -80,11 +80,10 @@ the Minkowski sum superposes independent generators, giving \eqref{eq:tensor}, a
 eliminating $\xi$ yields the polytope $X_{\mathrm f}$.
 \end{proof}
 By $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ a certified wrench is feasible in this
-heading-robust actuation-set model. We assume the lifters are \emph{rigidly or articulately
-coupled} to the load (attached grippers/tow bars), which is what admits bilateral
-independent contact forces; the model is quasi-static, and free-standing unilateral pushing
-(friction cones) or the full wheel-torque--heading--contact chain would need a separate
-realization layer.
+heading-robust actuation-set model. Each mechanically attached base (grippers/tow bars) is
+represented at the allocation layer by this conservative planar force set; we study
+assignment and communication feasibility, not actuator-level realization, which is left to a
+separate layer.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
@@ -100,11 +99,14 @@ long-range link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), s
 \end{equation}
 is affine in $z$ (Assumption~\ref{as:standing}(ii)) because \emph{only relay occupancy}
 gates edges---not a general pairwise geometric graph, whose weights would be bilinear in
-both endpoints' decisions. Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$,
-$\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$
-robots: integer recovery places one robot per node, so $\Lap$ and $\Lgeo$ share the node set
-under the identity correspondence and no permutation is needed; the two are compared through
-Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
+both endpoints' decisions. Robots of a type are interchangeable, and integer recovery
+includes a deterministic within-type node--role matching, so the type occupancy $z_{\tau r}$
+(with $L_r$ the fixed edge pattern of relay site $r$) determines $\Lap$ up to within-type
+node permutations, under which every spectral quantity is invariant. Each $\Lap(z)$ is a
+symmetric Laplacian ($\Lap(z)\mathbf1=0$, $\Lap(z)\succeq0$), an affine surrogate for the
+physical $\Lgeo(q)$ on the \emph{same} $N$ robots: one robot per node, so $\Lap$ and $\Lgeo$
+share the node set under the identity correspondence and no permutation is needed; the two
+are compared through Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
@@ -117,7 +119,7 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 affine in $z$, with PSD dual $Y\succeq0$; writing $Y=\pi Z$ ($\pi=\operatorname{tr}Y$,
 $\operatorname{tr}Z=1$) separates the connectivity price $\pi$ from the modal direction
 $Z$. The requirement $\sigmastar=\sigmadyn+\delta$ pairs the stability boundary $\sigmadyn$
-(Proposition~\ref{thm:stability}) with the margin $\delta$ of Lemma~\ref{lem:bridge}.
+(Remark~\ref{thm:stability}) with the margin $\delta$ of Lemma~\ref{lem:bridge}.
 
 \begin{lemma}[Convex information set]\label{lem:convex}
 $z\mapsto\lamtwo(\Lap(z))$ is concave (a pointwise minimum
@@ -135,7 +137,8 @@ $\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the
 optimizer--estimator (information-layer) stability threshold. For the exact centralized
 SDP, $\Lap(z)$ is known and $\varepsilon_{\mathrm{est}}=\delta_{\mathrm{num}}=0$.
 \end{lemma}
-The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses the affine
-$\Lap(z)$ and transfers to $\Lgeo(q)$ only through Lemma~\ref{lem:bridge} under the margin
-$\delta$, with $\varepsilon_L$ measured (Section~\ref{sec:exp}) and
-$\varepsilon_{\mathrm{est}},\delta_{\mathrm{num}}$ fixed constants.
+The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap(z)$ and transfers
+to $\Lgeo(q)$ only through Lemma~\ref{lem:bridge}. Its tracking part is \emph{a priori}: smooth
+weights $w_{ij}=\psi(\|q_i-q_j\|)$ ($|\psi'|\le L_\psi$) and a tube $\|q_i-\bar q_i\|\le\rho$
+give $\|\Lgeo(q)-\Lgeo(\bar q)\|_2\le4d_{\max}L_\psi\rho$; the residual surrogate term is
+measured, and $\varepsilon_{\mathrm{est}},\delta_{\mathrm{num}}$ are fixed.

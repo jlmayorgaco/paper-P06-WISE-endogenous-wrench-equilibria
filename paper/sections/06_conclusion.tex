@@ -6,13 +6,14 @@ productive optimum fixes the served aggregate but not its composition
 (Theorem~\ref{thm:degeneracy}), a tangent-cone criterion certifies zero-cost connectivity
 gains (Prop.~\ref{prop:freeconn}), a lexicographic semidefinite program selects the
 most-connected optimum (Theorem~\ref{thm:existence}), the capacities $\LamE\le\LamX$ price the
-requirement (Theorem~\ref{thm:price}), and explicit margins transfer the certificate to an
-integer team (Prop.~\ref{prop:integer}). A small-gain argument only \emph{motivates} the
-threshold (Prop.~\ref{thm:stability}).
+requirement (Theorem~\ref{thm:price}), and a sufficient margin test preserves wrench and
+connectivity feasibility after integer recovery (Prop.~\ref{prop:integer}). A small-gain
+argument only \emph{motivates} the threshold (Rem.~\ref{thm:stability}).
 
 \paragraph*{Limitations and future work}
 The guarantees hold for the affine communication-backbone relaxation ($\Lap(z)$ is within a
 measured perturbation $\varepsilon_L$ of $\Lgeo(q)$, Lemma~\ref{lem:bridge}; integers are
-re-certified after rounding, Prop.~\ref{prop:integer}); nonholonomic realizability is
-modelled, not proved. A distributed online realization with a convergence guarantee, an
-a-priori mismatch bound, an exact integer oracle, and hardware validation remain open.
+re-certified after rounding, Prop.~\ref{prop:integer}); actuator-level realization and
+closed-loop transport are outside this study. A distributed online realization with a
+convergence guarantee, a scalable exact integer oracle beyond $N=8$, and hardware validation
+remain open.

@@ -23,7 +23,11 @@ as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
 Communication-aware task allocation does couple the two, jointly trading task utility
 against the connectivity induced by the chosen
 assignment~\cite{williams2017matroid,lin2021connectivity,zavlanos2011connectivity,%
-ghosh2006growing,prorok2017diversity}. We instead exploit a structural degeneracy: because
+ghosh2006growing,prorok2017diversity}, and recent heterogeneous MRTA solves integer
+coalition allocation under physical constraints~\cite{calvo2025heterogeneous}; these trade
+utility against connectivity or impose a threshold directly, but do not characterize
+\emph{when} connectivity can be increased within the \emph{exact} productive-optimum fiber.
+We instead exploit a structural degeneracy: because
 the payoff couples only through aggregates~\cite{jensen2010aggregative}, the productive
 optimum fixes the served aggregate but leaves an aggregate-invariant fiber of
 wrench-feasible compositions (Theorem~\ref{thm:degeneracy}). We select connectivity
@@ -48,7 +52,7 @@ by rounding on heterogeneous instances.
 \end{itemize}
 A productively optimal, wrench-feasible assignment whose induced graph meets the estimator's
 stability requirement is a \emph{WISE equilibrium}. The guarantees are for the affine
-relaxation; a small-gain argument (Prop.~\ref{thm:stability}) only \emph{motivates} the
+relaxation; a small-gain argument (Rem.~\ref{thm:stability}) only \emph{motivates} the
 connectivity requirement, and distributed online realization remains future work.
 
 % Concept figure removed for the six-page limit (was uncited); source preserved in

@@ -189,9 +189,7 @@ def _write_table(rows, seeds):
             "hard_conn": r"hard-connectivity", "centralized": r"centralized multistart",
             "wise_sdp": r"\textbf{WISE-SDP}"}
     by = {r["method"]: r for r in rows}
-    groups = [(r"\emph{Single-criterion (attainment)}",
-               ["scalar_capacity", "wrench_only", "connectivity_only"]),
-              (r"\emph{Joint solvers (attainment)}",
+    groups = [(r"\emph{Joint solvers (attainment)}",
                ["hard_conn", "centralized"]),
               (r"\emph{Exact relaxed existence certificate}", ["wise_sdp"])]
 
