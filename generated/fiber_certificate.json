@@ -12,17 +12,17 @@
   "dim_ker_AB": 59,
   "dim_ker_ABG": 59,
   "solver_status": "optimal/optimal",
-  "res_Ad": 3.0554779340419277e-16,
-  "res_Bd": 6.106226635438361e-16,
+  "res_Ad": 3.430544514566347e-16,
+  "res_Bd": 1.1102230246251565e-15,
   "res_GId": 0.0,
-  "max_abs_V_minus_Vstar": 1.4210854715202004e-14,
+  "max_abs_V_minus_Vstar": 2.842170943040401e-14,
   "max_agg_drift": 7.105427357601002e-15,
-  "lambda2_min": 0.295140322622653,
-  "lambda2_max": 0.5527308958722379,
-  "sigma_req": 0.42393560924744544,
-  "V_star": 72.0,
+  "lambda2_min": 0.7864266281480071,
+  "lambda2_max": 1.3880754781218192,
+  "sigma_req": 1.087251053134913,
+  "V_star": 71.99999999999999,
   "y_star": [
-    12.000000000000014
+    11.999999999999996
   ],
   "fiber_crosses_sigma": true
 }

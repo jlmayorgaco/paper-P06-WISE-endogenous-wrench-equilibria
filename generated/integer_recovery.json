@@ -3,10 +3,10 @@
   "N_robots": 12,
   "n_draws": 30,
   "note": "N=12 physical demonstration; each robot is integer (one action).",
-  "fluid_certified_rate": 1.0,
-  "argmax_rate": 0.6667,
-  "rr_single_rate": 0.6644,
-  "rr_bestof_rate": 1.0,
-  "welfare_gap_rel_mean": 0.0175,
-  "welfare_gap_rel_max": 0.0449
+  "fluid_certified_rate": 0.9667,
+  "argmax_rate": 0.2333,
+  "rr_single_rate": 0.3989,
+  "rr_bestof_rate": 0.9667,
+  "welfare_gap_rel_mean": 0.0177,
+  "welfare_gap_rel_max": 0.312
 }

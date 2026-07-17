@@ -3,17 +3,15 @@
 
 We validate the main results on heterogeneous teams ($N=12$ unless noted) in a two-region
 world: a rigid load demands a planar wrench, short links connect robots only within a
-cluster, and the gap is bridged only when a long-range type relays. The lifters are
-second-order unicycles and the load a planar rigid body,
-\begin{equation}
-\dot p_i=v_i[\cos\theta_i,\sin\theta_i]^{\!\top}\!,\;
-m_i\dot v_i\!=\!u_{v,i}\!-\!d_iv_i,\;J_i\dot\omega_i\!=\!u_{\omega,i}\!-\!d_{\omega i}\omega_i,
-\label{eq:unicycle}
-\end{equation}
-with load wrench $\sum_{k,h}A_{kh}f_{i}$ from the admissible contact forces $f_i\in
-U_\tau(\theta_i)$. The primary metric is the \emph{certified service rate}: served only
-when wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and
-reproduces exactly.
+cluster, and the gap is bridged only when a long-range type relays. The heterogeneity is
+\emph{conflicting}: the long-range type has both higher lifting capacity ($c_\ell>c_s$) and
+stronger relay gain ($\gamma_\ell>\gamma_s$), so it is the more valuable resource for both
+roles and WISE must reorganize a whole composition to free it for the relay it alone bridges.
+Integer assignments are embedded in a geometric simulator solely to evaluate the induced
+communication graph $\Lgeo(q)$; closed-loop transport dynamics are outside the present
+validation. The primary metric is the \emph{certified service rate}: served only when
+wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces
+exactly.
 
 \begin{figure*}[t]\centering
 \includegraphics[width=0.72\textwidth]{fig_central.pdf}
@@ -33,9 +31,10 @@ it holds $V,Bz$ at machine precision ($<10^{-8}$) while $\lamtwo$ crosses $\sigm
 connectivity-feasible subset lies strictly inside the fiber.
 
 \paragraph*{E2 --- Comparative-advantage exchange (Fig.~\ref{fig:central}b,c)}
-A matched long/short pair swaps roles at fixed $Bz=y^{\star}$, $V^{\star}$ and zero wrench
-residual: the productively optimal composition (long lifts, short relays) leaves the clusters
-unbridged ($\lamtwo(\Lgeo)\approx0$), whereas WISE (short lifts, long relays) bridges them
+Within the heterogeneous team a matched long/short pair (capacities equalized to isolate one
+neutral direction) swaps roles at fixed $Bz=y^{\star}$, $V^{\star}$ and zero wrench residual:
+the productively optimal composition (long lifts, short relays) leaves the clusters unbridged
+($\lamtwo(\Lgeo)\approx0$), whereas WISE (short lifts, long relays) bridges them
 ($\lamtwo(\Lgeo)=0.78$); only connectivity differs.
 
 \paragraph*{E3 --- Lexicographic vs.\ scalarized selection}
@@ -43,10 +42,23 @@ On free-regime seeds $V+\varepsilon\lamtwo$ trades productive value for connecti
 $0\!\to\!0.049$, drift $0\!\to\!0.307$ as $\varepsilon:10^{-3}\!\to\!1$), whereas the
 lexicographic selector holds both at zero---a formulational, not empirical, gap.
 
-\paragraph*{E4 --- Integer recovery (Rem.~\ref{rem:integer})}
-Over $30$ seeds a single randomized-rounding draw re-certifies $66\%$ of fluid optima,
-best-of-$30$ all $30$ (argmax $67\%$); welfare gap
-$V_{\mathrm{relax}}-V_{\mathrm{int}}=+1.8\%$ (mean), all robots integer.
+\paragraph*{E4 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
+At $N=12$ a single randomized-rounding draw re-certifies a fluid optimum with probability
+$0.40$ and best-of-$30$ re-certifies $29/30$ seeds (argmax $7/30$); the \emph{rounding loss}
+$(V^{\star}_{\mathrm{relax}}-V_{\mathrm{round}})/V^{\star}_{\mathrm{relax}}=1.8\%$ (mean). For
+$N\le8$ we enumerate \emph{every} pure assignment exactly (Table~\ref{tab:oracle}): whenever a
+relaxed WISE exists an integer WISE also exists ($0\%$ false positives) and the true
+integrality gap $V^\star-V^{\mathbb Z}$ is $\le0.002$---the relaxation is tight and
+integer-recoverable on these instances.
+
+\begin{table}[t]\centering
+\caption{Exact integer oracle: all $A^N$ pure assignments enumerated ($8$ seeds each,
+$N$ small). ``rel./int.\ feas.'' count seeds with a relaxed / integer WISE; false positives
+are relaxed- but not integer-feasible; gap is $V^\star-V^{\mathbb Z}$.}
+\label{tab:oracle}
+\footnotesize
+\input{figures/oracle_table.tex}
+\end{table}
 
 \paragraph*{E5 --- Selection among productive optima (Table~\ref{tab:ablation})}
 Single-criterion baselines rarely clear both tests. The hard connectivity-constrained
@@ -54,7 +66,7 @@ optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) also reaches $V^{\star}$, but in
 regime it may return \emph{any} point of the optimal face and merely \emph{satisfies} the
 requirement (margin $+0.15$). WISE is not a competitor to it but its lexicographic
 \emph{tie-break}: among the same connectivity-constrained productive optima it selects the
-maximum-margin point ($+0.99$). The relaxed SDP solves in $30$--$60$\,ms at $N=12$.
+maximum-margin point ($+2.55$). The relaxed SDP solves in $30$--$60$\,ms at $N=12$.
 
 \begin{table}[t]\centering
 \caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$); means, Wilson
@@ -67,22 +79,18 @@ but WISE attains the larger margin. The last block certifies the \emph{relaxed} 
 \end{table}
 
 \paragraph*{E6 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
-Sweeping $\sigma$ traces $\Price(\sigma)$ over six seeds: zero up to $\LamE$ (free), positive
+Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
 on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
-every seed ($\LamE<\LamX$, so the costly branch is nonempty). The subgradient
+every seed ($\LamE<\LamX$, median costly width $0.64$). The subgradient
 $\pi^{\star}\in\partial\Price$ prices one unit of connectivity.
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.62\columnwidth]{fig_price.pdf}
-\caption{Price $\Price(\sigma)$ (six seeds): zero-cost plateau up to $\LamE$ (green), positive
-costly branch on $(\LamE,\LamX]$ (orange), infeasible beyond $\LamX$ (red); the trichotomy of
-Thm.~\ref{thm:price}.}
+\includegraphics[width=\columnwidth]{fig_price.pdf}
+\caption{Price of self-sustainability ($40$ seeds, normalized so $\LamE\!\leftrightarrow\!1$,
+$\LamX\!\leftrightarrow\!2$). \textbf{(a)} median $\Price(\sigma)/V^\star$ with a $25$--$75\%$
+band: a zero-cost plateau on the free regime (green), a strictly positive costly branch
+(orange), and infeasibility beyond $\LamX$ (red)---the trichotomy of Thm.~\ref{thm:price}.
+\textbf{(b)} the spectral capacities $\LamE\le\LamX$ (median costly width $0.64$).}
 \label{fig:price}
 \end{figure}
 
-\paragraph*{E7 --- Information-layer self-defeat (motivating)}
-Consistent with the motivating interpretation (Prop.~\ref{thm:stability}), when WISE holds
-$\lamtwo(\Lgeo^{P})$ above $\sigmastar$ the coupled optimizer--estimator error decays, whereas
-withdrawing the relay drops $\lamtwo$ below $\sigmadyn=\vt_1\vt_2/(c\,\mF)$ and the same error
-diverges---the decision would defeat its own computation. This is an information-layer
-illustration; closed-loop pose, wrench and actuator validation is future work.

@@ -260,7 +260,7 @@ def _draw(ax, prob, role, pos, mask, title, lam, sigma, pair=None):
         cx, cy = pi[:, 0].mean(), pi[:, 1].mean()
         rr = max(0.9, 1.25 * np.max(np.linalg.norm(pi - [cx, cy], axis=1)))
         ax.add_patch(_soft_circle([cx, cy], rr))
-        ax.text(cx, cy - rr - 0.15, "cut off", color="#c0392b", fontsize=6.5,
+        ax.text(cx, cy - rr - 0.15, "isolated", color="#c0392b", fontsize=6.5,
                 ha="center", va="top", style="italic")
 
     # relay site (diamond frame, behind), load, contact slots

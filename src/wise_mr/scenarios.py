@@ -57,6 +57,9 @@ def two_region(
     m_sides: int = 8,
     y_target: float = 12.0,
     matched_pair: bool = False,
+    het: bool = True,
+    c_long_ratio: float = 1.5,
+    gamma_long_ratio: float = 1.8,
 ) -> WiseProblem:
     """Generate a reproducible two-region WISE instance.
 
@@ -82,6 +85,16 @@ def two_region(
     is_long = np.zeros(N, dtype=bool)
     is_long[rng.choice(N, size=n_long, replace=False)] = True
     r = np.where(is_long, rng.uniform(5.5, 7.0, size=N), rng.uniform(1.5, 2.5, size=N))
+
+    # Conflicting heterogeneity (paper Sec. V): the long-range type is the more
+    # valuable resource for BOTH physical lifting (c_l = c_long_ratio * c_s) and
+    # communication (relay gain gamma_l = gamma_long_ratio * gamma_s). WISE must then
+    # reorganise a whole composition -- a long robot leaves lifting, short robots
+    # compensate its capacity -- to free the long robot for the relay it alone can bridge.
+    gamma = np.full(N, bridge_gain, dtype=float)
+    if het:
+        F[is_long] *= c_long_ratio
+        gamma[is_long] *= gamma_long_ratio
 
     # matched comparative-advantage pair: one long and one short robot with *equal*
     # lifting capacity (so swapping which one lifts leaves Bz and the wrench unchanged)
@@ -129,7 +142,7 @@ def two_region(
                 continue
             dij = np.linalg.norm(pos[i] - pos[j])
             if dij <= r[i]:
-                adj[i, j] = adj[j, i] = bridge_gain * np.exp(-dij / 3.0)
+                adj[i, j] = adj[j, i] = gamma[i] * np.exp(-dij / 3.0)
         relay_L[i] = np.diag(adj.sum(1)) - adj
 
     sigma = eg.sigma_star(theta, c, m_F)
@@ -144,7 +157,7 @@ def two_region(
     )
     prob.meta = dict(seed=seed, nu=nu, tau_d=tau_d, lift=lift, pos=pos, F=F, r=r,
                      is_long=is_long, load=load, slot_world=slot_world,
-                     kappa=kappa, m_sides=m_sides, pair=pair)
+                     kappa=kappa, m_sides=m_sides, pair=pair, gamma=gamma, het=het)
     return prob
 
 

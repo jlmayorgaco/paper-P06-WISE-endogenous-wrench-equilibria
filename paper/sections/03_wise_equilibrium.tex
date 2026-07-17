@@ -162,27 +162,19 @@ strictly inside the range of $\lamtwo$ over $\Emanifold$.
 \end{proof}
 
 \subsection{Aggregate--estimator stability (motivating)}
-To \emph{motivate} the threshold, posit a local optimizer--estimator model coupling a
-served-aggregate error $\xi$ and a consensus-estimator error $\eta$: $\dot\xi=-M\xi+
-\Theta_1\eta$, $\dot\eta=\Theta_2\xi-c(\bar L_\perp\!\otimes\!I_p)\eta$, with
-$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, $\tfrac12(M{+}M^{\top})\succeq\mF I$,
-$\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$ ($\mF,\vt_1,\vt_2>0$).
+A small-gain argument motivates a \emph{positive} threshold: a local optimizer--estimator
+interconnection---a served-aggregate error coupled to a consensus estimator over
+$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$ with gains $\mF,\vt_1,\vt_2>0$---is exponentially
+stable when $\lamtwo(\Lap(z^{\star}))>\sigmadyn:=\vt_1\vt_2/(c\,\mF)$
+(Prop.~\ref{thm:stability}). Since no online realization is analyzed here, $\sigmadyn$ is
+treated as an externally supplied design threshold that the WISE margin
+$\sigmastar=\sigmadyn+\delta$ satisfies by construction.
 
-\begin{proposition}[Information-layer stability interpretation]\label{thm:stability}
-This interconnection is exponentially stable whenever
-\begin{equation}
-c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,\quad\text{i.e.}\quad
-\lamtwo>\sigmadyn:=\vt_1\vt_2/(c\,\mF).
-\label{eq:threshold}
-\end{equation}
+\begin{proposition}[Information-layer stability, motivating]\label{thm:stability}
+The interconnection above is exponentially stable whenever $c\,\mF\,\lamtwo(\Lap(z^{\star}))>
+\vt_1\vt_2$; restricted to a single Fiedler mode this is also necessary (trace $<0$,
+determinant $>0$).
 \end{proposition}
-On a single Fiedler mode it reduces to $\dot a=-\mF a+\vt_1 b$, $\dot b=\vt_2 a-c\lamtwo b$,
-on which \eqref{eq:threshold} is necessary and sufficient (trace $<0$, determinant $>0$),
-and $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$ gives general sufficiency. This
-only \emph{motivates} a positive requirement---not a convergence proof for any distributed
-controller, and concerning the information layer, not the unicycle/load dynamics. It places
-the stability boundary at $\sigmadyn$, treated hereafter as an externally specified threshold
-that $\sigmastar=\sigmadyn+\delta$ satisfies.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
@@ -273,7 +265,7 @@ Proposition~\ref{prop:integer} is a checkable sufficient condition, not an exist
 guarantee: it does not assert an integer $\hat z$ within radius $r$ exists. Best-of-$R$
 rounding \emph{searches} for one and re-certifies it against~\eqref{eq:margins} (a search,
 not a proof; no $O(1/N)$ claim). On the $N=12$ demonstration a single randomized-rounding
-draw re-certifies $66\%$ of seeds and $30$ draws re-certify all $30$ (argmax rounding
-$67\%$); the residual welfare gap $V_{\mathrm{relax}}-V_{\mathrm{int}}$ is measured directly
-(Section~\ref{sec:exp}).
+draw re-certifies a fluid optimum with probability $0.40$ and best-of-$30$ re-certifies
+$29/30$ seeds (argmax $7/30$); an exact integer oracle for $N\le8$ finds $0\%$ false
+positives and integrality gap $\le0.002$ (Section~\ref{sec:exp}).
 \end{remark}

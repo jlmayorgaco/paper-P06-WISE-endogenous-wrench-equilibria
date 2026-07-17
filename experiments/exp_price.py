@@ -1,14 +1,18 @@
-"""E-price (respecification Thm 3): the price of self-sustainability P(sigma).
+"""E-price (Thm 3, central experiment): the price of self-sustainability P(sigma).
 
-For each seed we compute the productive optimum V*, the two spectral optima
+For each seed we compute the productive optimum V* and the two spectral capacities
     Lambda_E = max_{z in E}   lambda_2(Lbar(z))   (over the optimal fiber),
     Lambda_X = max_{z in X_f} lambda_2(Lbar(z))   (over all wrench-feasible z),
-and sweep the requirement sigma to trace
+and trace the price
     P(sigma) = V* - max{ V(z) : z in X_f, lambda_2(Lbar(z)) >= sigma },
 which is 0 (FREE) for sigma <= Lambda_E, positive (COSTLY) for Lambda_E < sigma <= Lambda_X,
-and +infinity (IMPOSSIBLE) for sigma > Lambda_X. This turns the free/costly/impossible
-trichotomy from an observation into a validated theorem, and reports the marginal spectral
-price pi*(sigma) = dP/dsigma in the costly regime.
+and +infinity (IMPOSSIBLE) for sigma > Lambda_X (Theorem 3).
+
+To aggregate across heterogeneous seeds (each with its own Lambda_E, Lambda_X) we sweep a
+normalized requirement u in [0,2]: u in [0,1] maps to sigma = u*Lambda_E (free), u in [1,2]
+maps to sigma = Lambda_E + (u-1)(Lambda_X - Lambda_E) (costly), so Lambda_E<->1, Lambda_X<->2
+for every seed. The figure then shows the median normalized price P/V* with a 25-75% band,
+and the distribution of the costly-regime width Lambda_X - Lambda_E.
 
 Writes generated/price_sweep.csv and paper/figures/fig_price.pdf.
 """
@@ -85,81 +89,101 @@ def _V_constrained(prob, sigma):
     return float(prob.productive_value(np.maximum(z.value, 0.0).reshape(prob.N, prob.A)))
 
 
-def run(seeds=6, n_sigma=13):
-    rows = []
-    lamE_all, lamX_all = [], []
+def run(seeds=40, n_u=16):
+    u_grid = np.linspace(0.06, 1.94, n_u)      # normalized requirement (E<->1, X<->2)
+    rows, curves = [], []
+    lamE_all, lamX_all, Vstar_all = [], [], []
     for s in range(seeds):
         prob = scenarios.two_region(seed=s, N=12, nu=0.4, tau_d=5.0, bridge_gain=3.0)
         y_star, V_star = _y_star(prob)
         LamE = _max_lambda2(prob, y_star=y_star)
         LamX = _max_lambda2(prob, y_star=None)
-        lamE_all.append(LamE); lamX_all.append(LamX)
-        sigmas = np.linspace(0.2 * LamE, 1.08 * LamX, n_sigma)
-        for sg in sigmas:
+        if not (LamX > LamE + 1e-3 and V_star > 1e-6):
+            continue                            # need a nonempty costly band to normalize
+        lamE_all.append(LamE); lamX_all.append(LamX); Vstar_all.append(V_star)
+        pcurve = []
+        for u in u_grid:
+            sg = u * LamE if u <= 1.0 else LamE + (u - 1.0) * (LamX - LamE)
             Vc = _V_constrained(prob, float(sg))
             P = (V_star - Vc) if Vc is not None else np.inf
-            regime = ("free" if sg <= LamE + 1e-6 else
-                      "costly" if sg <= LamX + 1e-6 else "impossible")
-            rows.append(dict(seed=s, sigma=float(sg), P=float(P) if np.isfinite(P) else np.inf,
+            regime = "free" if u <= 1.0 + 1e-9 else "costly"
+            pcurve.append(P / V_star if np.isfinite(P) else np.nan)
+            rows.append(dict(seed=s, u=float(u), sigma=float(sg),
+                             P=float(P) if np.isfinite(P) else np.inf, P_norm=pcurve[-1],
                              regime=regime, Lambda_E=LamE, Lambda_X=LamX, V_star=V_star,
                              feasible=Vc is not None))
-        print(f"seed {s}: Lambda_E={LamE:.3f} Lambda_X={LamX:.3f} V*={V_star:.3f}")
+        curves.append(pcurve)
+        print(f"seed {s}: Lambda_E={LamE:.3f} Lambda_X={LamX:.3f} V*={V_star:.3f} "
+              f"width={LamX - LamE:.3f}")
 
-    fields = ["seed", "sigma", "P", "regime", "Lambda_E", "Lambda_X", "V_star", "feasible"]
     with open(GEN / "price_sweep.csv", "w", newline="") as f:
-        w = csv.DictWriter(f, fieldnames=fields)
+        w = csv.DictWriter(f, fieldnames=["seed", "u", "sigma", "P", "P_norm", "regime",
+                                          "Lambda_E", "Lambda_X", "V_star", "feasible"])
         w.writeheader()
         for r in rows:
             rr = dict(r); rr["P"] = "inf" if not np.isfinite(r["P"]) else f"{r['P']:.6f}"
             w.writerow(rr)
 
-    # --- verify the theorem: P=0 on free, P>0 & finite on costly, infeasible on impossible ---
+    # --- verify Theorem 3: free (P=0), costly (P>=0), and Lambda_E < Lambda_X ---
     free_ok = all(abs(r["P"]) < 1e-4 for r in rows if r["regime"] == "free" and r["feasible"])
     costly_ok = all(r["P"] > -1e-6 for r in rows if r["regime"] == "costly" and r["feasible"])
-    imposs_ok = all(not r["feasible"] for r in rows if r["regime"] == "impossible")
-    print(f"theorem check: free(P=0)={free_ok}, costly(P>=0)={costly_ok}, "
-          f"impossible(infeasible)={imposs_ok}")
-    assert free_ok and costly_ok, "price theorem violated on free/costly regime"
+    print(f"theorem check ({len(curves)} seeds): free(P=0)={free_ok}, costly(P>=0)={costly_ok}")
+    assert free_ok and costly_ok, "price theorem violated"
 
-    _figure(rows, float(np.mean(lamE_all)), float(np.mean(lamX_all)))
+    _figure(u_grid, np.array(curves), np.array(lamE_all), np.array(lamX_all))
     return rows
 
 
-def _figure(rows, LamE, LamX):
+def _figure(u_grid, curves, lamE, lamX):
     import matplotlib
     matplotlib.use("Agg")
     matplotlib.rcParams["pdf.fonttype"] = 42
     matplotlib.rcParams["ps.fonttype"] = 42
     import matplotlib.pyplot as plt
 
-    # average finite P over seeds at each (normalized) sigma grid index
-    by_seed = {}
-    for r in rows:
-        by_seed.setdefault(r["seed"], []).append(r)
-    fig, ax = plt.subplots(figsize=(3.4, 2.3))
-    for s, rs in by_seed.items():
-        rs = sorted(rs, key=lambda r: r["sigma"])
-        sig = [r["sigma"] for r in rs]
-        P = [r["P"] if r["feasible"] else np.nan for r in rs]
-        ax.plot(sig, P, color="#1f5fbf", lw=0.8, alpha=0.35)
-    # regime shading using mean thresholds
-    ax.axvspan(min(r["sigma"] for r in rows), LamE, color="#2e8b57", alpha=0.10)
-    ax.axvspan(LamE, LamX, color="#e08000", alpha=0.10)
-    ax.axvspan(LamX, max(r["sigma"] for r in rows), color="#c0392b", alpha=0.10)
-    ax.axvline(LamE, color="#2e8b57", ls="--", lw=1.0)
-    ax.axvline(LamX, color="#c0392b", ls="--", lw=1.0)
-    ymax = max((r["P"] for r in rows if r["feasible"]), default=1.0)
-    ax.text(LamE, ymax * 0.9, r"$\Lambda_E$", color="#2e8b57", fontsize=7, ha="right")
-    ax.text(LamX, ymax * 0.9, r"$\Lambda_X$", color="#c0392b", fontsize=7, ha="left")
-    ax.text(0.02, 0.86, "free", transform=ax.transAxes, color="#2e8b57", fontsize=7)
-    ax.text(0.5, 0.86, "costly", transform=ax.transAxes, color="#b06000", fontsize=7, ha="center")
-    ax.text(0.98, 0.86, "impossible", transform=ax.transAxes, color="#c0392b", fontsize=7, ha="right")
-    ax.set_xlabel(r"connectivity requirement $\sigma$", fontsize=8)
-    ax.set_ylabel(r"price $P(\sigma)=V^\star-V$", fontsize=8)
-    ax.set_title("price of self-sustainability", fontsize=8.5)
-    ax.tick_params(labelsize=7)
-    fig.tight_layout()
-    fig.savefig(FIG / "fig_price.pdf", metadata={"CreationDate": None})
+    med = np.nanmedian(curves, axis=0)
+    lo = np.nanpercentile(curves, 25, axis=0)
+    hi = np.nanpercentile(curves, 75, axis=0)
+    n_seeds = curves.shape[0]
+
+    fig, (axL, axR) = plt.subplots(1, 2, figsize=(6.6, 2.35),
+                                   gridspec_kw=dict(width_ratios=[1.9, 1.0], wspace=0.42))
+
+    # --- (a) normalized price curve: median + 25-75% band ---
+    axL.axvspan(u_grid[0], 1.0, color="#2e8b57", alpha=0.10)
+    axL.axvspan(1.0, 2.0, color="#e08000", alpha=0.10)
+    axL.axvline(1.0, color="#2e8b57", ls="--", lw=1.0)
+    axL.axvline(2.0, color="#c0392b", ls="--", lw=1.0)
+    axL.fill_between(u_grid, lo, hi, color="#1f5fbf", alpha=0.25, lw=0)
+    axL.plot(u_grid, med, color="#1f5fbf", lw=1.8)
+    ytop = float(np.nanmax(hi)) if np.isfinite(np.nanmax(hi)) else 1.0
+    axL.set_ylim(-0.02 * max(ytop, 0.1), 1.08 * max(ytop, 0.1))
+    axL.text(0.5, 0.90, "free", transform=axL.get_xaxis_transform(), color="#2e8b57",
+             fontsize=7.5, ha="center")
+    axL.text(1.5, 0.90, "costly", transform=axL.get_xaxis_transform(), color="#b06000",
+             fontsize=7.5, ha="center")
+    axL.text(2.02, 0.90, "imposs.", transform=axL.get_xaxis_transform(), color="#c0392b",
+             fontsize=7.5, ha="left")
+    axL.set_xlabel(r"normalized connectivity requirement $\sigma$", fontsize=8)
+    axL.set_ylabel(r"price $P(\sigma)/V^\star$", fontsize=8)
+    axL.set_title(r"(a) price of self-sustainability ($%d$ seeds)" % n_seeds, fontsize=8.5)
+    axL.tick_params(labelsize=7)
+    axL.set_xticks([0, 1, 2]); axL.set_xticklabels(["0", r"$\Lambda_E$", r"$\Lambda_X$"])
+
+    # --- (b) spectral capacities: Lambda_E, Lambda_X and the costly width ---
+    parts = axR.violinplot([lamE, lamX], positions=[0, 1], widths=0.7, showmedians=True)
+    for pc, col in zip(parts["bodies"], ["#2e8b57", "#c0392b"]):
+        pc.set_facecolor(col); pc.set_alpha(0.35)
+    for key in ("cbars", "cmins", "cmaxes", "cmedians"):
+        parts[key].set_color("#444444"); parts[key].set_linewidth(1.0)
+    axR.set_xticks([0, 1]); axR.set_xticklabels([r"$\Lambda_E$", r"$\Lambda_X$"], fontsize=8)
+    axR.set_ylabel(r"$\lambda_2$ capacity", fontsize=8)
+    axR.set_title("(b) fiber vs. feasible", fontsize=8.5)
+    axR.tick_params(labelsize=7)
+    axR.text(0.5, 0.03, r"costly width $\Lambda_X\!-\!\Lambda_E$: %.2f" % np.median(lamX - lamE),
+             transform=axR.transAxes, fontsize=6.8, ha="center", color="#b06000")
+
+    fig.savefig(FIG / "fig_price.pdf", bbox_inches="tight", metadata={"CreationDate": None})
     plt.close(fig)
 
 

@@ -4,17 +4,17 @@
   "short_robot": 0,
   "swing_slot": 0,
   "y_star": [
-    4.5
+    4.4999999999999964
   ],
   "y_wise": [
-    7.402318956312467
+    8.354054593659354
   ],
   "y_unsafe": [
-    7.402318956312467
+    8.354054593659354
   ],
   "aggregate_identical": true,
-  "V_wise": 5.913272337914659,
-  "V_unsafe": 5.913272337914659,
+  "V_wise": 2.6981315945466164,
+  "V_unsafe": 2.6981315945466164,
   "V_identical": true,
   "n_active_wise": 7,
   "n_active_unsafe": 7,
