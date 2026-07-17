@@ -71,10 +71,10 @@ $V^{\star}$ but may return \emph{any} such point and merely \emph{satisfies} the
 feasible potential) gives $+0.31$. WISE is not a competitor but their lexicographic
 \emph{tie-break}: it selects the maximum-margin point ($+2.55$; all $100\%$ certified, Wilson
 $95\%$ CI $[89,100]$). Other fiber selectors fall short---random-fiber averages margin
-$+0.10$ (sometimes infeasible) and least-role-change $+0.38$ vs WISE's $+2.53$. On scaling
+$+0.10$ (sometimes infeasible) and least-role-change $+0.38$, vs WISE's $+2.55$. On scaling
 (CVXPY/CLARABEL, single-threaded), Stage-1 is $\sim\!10$\,ms while the Stage-2 SDP grows with
-the $(N{-}1)$-LMI ($29$\,ms/$0.26$/$2.9$/$98$\,s at $N=12/24/48/96$): fit for offline
-reassignment, not yet online replanning.
+the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s over $N{=}12{\to}96$): fit for offline, not online,
+use.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
