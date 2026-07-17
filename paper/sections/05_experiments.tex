@@ -33,18 +33,19 @@ with two short lifters, and moving it to the relay holds $Bz=(3,3)=y^{\star}$, b
 (inner-polygon LP), $V=V^{\star}$ and $n_{\mathrm{active}}=6$ (two long, four short) exactly
 fixed, while $\lamtwo(\Lgeo)$ rises from $\approx0$ to $0.41$---materializing
 Prop.~\ref{prop:freeconn} with $D\lamtwo[d]>0$; the fiber itself has $\dim\mathcal N_p=59$
-with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). Two checks back the harder claims:
-on a $C_3$-symmetric graph with $\lamtwo=\lambda_3$, an arbitrary single-vector gradient
-mispredicts $D\lamtwo$ by a median factor $\sim\!10^{8}$ while the eigenspace criterion
-tracks it to $0.6\%$; and the a-priori bound $4d_{\max}L_\psi\rho$ (Lemma~\ref{lem:bridge})
-holds at every tube radius ($\varepsilon_L$ median $\le0.05$ for $\rho\le0.05$\,m).
+with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). Two checks: on a $C_3$-symmetric
+graph with $\lamtwo=\lambda_3$ an arbitrary single-vector gradient mispredicts $D\lamtwo$ by
+$\sim\!10^{8}{\times}$ while the eigenspace criterion tracks it to $0.6\%$; and the a-priori
+bound $4d_{\max}L_\psi\rho$ (Lemma~\ref{lem:bridge}) holds at every $\rho$ ($\varepsilon_L$
+median $\le0.05$ for $\rho\le0.05$\,m).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
-At $N=12$ one randomized draw yields a directly re-certified integer self-sustaining
-assignment with probability $0.40$ (per draw), best-of-$30$ in $29/30$ seeds (argmax
-$7/30$); the \emph{rounding loss}
-$(V^{\star}_{\mathrm{relax}}-V_{\mathrm{round}})/V^{\star}_{\mathrm{relax}}=1.8\%$ (mean);
-optimality is not claimed at this size. For $N\le8$ we enumerate \emph{every} $|\mathcal
+At $N=12$, \emph{structured} recovery---occupancy-aware dependent rounding with a greedy
+neutral repair that frees marginal lifters to relay---directly re-certifies an integer
+self-sustaining assignment on the \emph{first} draw for all $30$ seeds ($30/30$), versus
+$29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax, trading a modest
+rounding loss ($4.5\%$ vs $2.4\%$; optimality is not claimed). For $N\le8$ we enumerate
+\emph{every} $|\mathcal
 A|^N$ robot--action map exactly (Table~\ref{tab:oracle}): whenever a relaxed WISE exists an
 integer self-sustaining assignment also exists ($0/23$ false positives observed), and the
 worst-case productive integrality gap $\max g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star$ is
@@ -52,12 +53,11 @@ $\le0.005$ (an exact zero-cost integer WISE, $B\hat z=y^\star$, is rarer, but th
 loss is negligible).
 
 \begin{table}[t]\centering
-\caption{Exact integer oracle ($8$ seeds each, $N$ small): every $|\mathcal A|^N$
-robot--action map enumerated, pruned by budget/occupancy/wrench. Columns count, among
-relaxed-WISE-feasible seeds, those with an integer self-sustaining assignment
-($\mathcal F_{\mathbb Z}\!\neq\!\varnothing$) and with an exact zero-cost integer WISE
-($B\hat z\!=\!y^\star$); $\max g_{\mathbb Z}$ is the \emph{worst-case} productive integrality
-gap $V^\star-V_{\mathbb Z}^\star$ over those seeds.}
+\caption{Exact integer oracle ($8$ seeds each): every $|\mathcal A|^N$ robot--action map
+enumerated (pruned by budget/occupancy/wrench). Among relaxed-WISE-feasible seeds, columns
+count integer self-sustaining ($\mathcal F_{\mathbb Z}\!\neq\!\varnothing$) and exact
+zero-cost ($B\hat z\!=\!y^\star$) WISE; $\max g_{\mathbb Z}$ is the worst-case gap
+$V^\star-V_{\mathbb Z}^\star$.}
 \label{tab:oracle}
 \footnotesize
 \input{figures/oracle_table.tex}
@@ -71,19 +71,20 @@ $V^{\star}$ but may return \emph{any} such point and merely \emph{satisfies} the
 (margin $+0.15$); centralized multistart (the primal--dual solver from $4$ warm starts, best
 feasible potential) gives $+0.31$. WISE is not a competitor but their lexicographic
 \emph{tie-break}: it selects the maximum-margin point ($+2.55$; all $100\%$ certified, Wilson
-$95\%$ CI $[89,100]$). The Stage-1 QP stays $\sim\!10$\,ms across $N$, while the Stage-2 SDP
-grows with the $(N{-}1)$-dimensional LMI ($29$\,ms, $0.26$\,s, $2.9$\,s, $98$\,s at
-$N=12,24,48,96$)---a sparse/first-order or distributed solver is the main scalability frontier.
+$95\%$ CI $[89,100]$). Other fiber selectors fall short---random-fiber averages margin
+$+0.10$ (sometimes infeasible) and least-role-change $+0.38$ vs WISE's $+2.53$. On scaling
+(CVXPY/CLARABEL, single-threaded), Stage-1 is $\sim\!10$\,ms while the Stage-2 SDP grows with
+the $(N{-}1)$-LMI ($29$\,ms/$0.26$/$2.9$/$98$\,s at $N=12/24/48/96$): fit for offline
+reassignment, not yet online replanning.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
 on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
 every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: in
-\emph{unnormalized} $\sigma$, the spectral multiplier $\pi^{\star}=\operatorname{tr}Y^{\star}$
-($Z^{\star}=Y^{\star}/\pi^{\star}$ the normalized modal direction) matches the central finite
-difference $\Delta\Price/\Delta\sigma$ over $84$ interior costly-regime points ($r=0.996$,
-median error $0.6\%$), confirming $\pi^{\star}\in\partial\Price$ (the axis normalization in
-Fig.~\ref{fig:price} is only for display).
+unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches the finite difference
+$\Delta\Price/\Delta\sigma$ over $84$ interior points ($r=0.996$, median error $0.6\%$),
+confirming $\pi^{\star}\in\partial\Price$ ($Z^{\star}=Y^{\star}/\pi^{\star}$;
+Fig.~\ref{fig:price} normalization is display-only).
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.70\columnwidth]{fig_price.pdf}
