@@ -189,7 +189,7 @@ def _write_table(rows, seeds):
              r"% /wrench). Columns denominated in relaxed-feasible seeds.",
              r"\setlength{\tabcolsep}{3pt}",
              r"\begin{tabular}{rccccc}", r"\hline",
-             r"$N$ & rel.\ WISE & int.\ feas. & zero-cost & $g_{\mathbb Z}\!=\!V^\star\!-\!V_{\mathbb Z}^\star$"
+             r"$N$ & rel.\ WISE & int.\ feas. & zero-cost & $\max g_{\mathbb Z}$"
              r" & time \\", r"\hline"]
     for r in rows:
         k = r["seeds_relaxed_feasible"]
@@ -197,7 +197,7 @@ def _write_table(rows, seeds):
             r["N"], k, seeds,
             r["integer_feasible"], k,
             r["zero_cost_integer_wise"], k,
-            _g(r, "gZ_mean", r"%.3f"), _rt(r)))
+            _g(r, "gZ_max", r"%.4f"), _rt(r)))
     lines += [r"\hline",
               r"\multicolumn{6}{l}{\footnotesize $%d/%d$ false positives observed.}\\"
               % (tot_fp, tot_rel),

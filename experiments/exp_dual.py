@@ -46,7 +46,9 @@ def _lap_expr(prob, z, cp):
 
 
 def _V_and_dual(prob, sigma):
-    """Return (V_c, pi*) with pi* = tr(Z*) the PSD dual of the connectivity LMI."""
+    """Return (V_c, pi*). pi* = tr(Y*) where Y* is the UNNORMALIZED PSD dual matrix of the
+    connectivity LMI (cvxpy returns the raw KKT multiplier). Paper: Y = pi Z, tr Z = 1, so
+    pi* = tr(Y*) and Z* = Y*/pi* is the normalized modal direction. All in physical sigma."""
     import cvxpy as cp
     A, B, Hw, d, v, n = _data(prob)
     Q = complement_basis(prob.N)
@@ -58,8 +60,8 @@ def _V_and_dual(prob, sigma):
     if z.value is None or p.status not in ("optimal", "optimal_inaccurate"):
         return None, None
     Vc = float(prob.productive_value(np.maximum(z.value, 0.0).reshape(prob.N, prob.A)))
-    Z = lmi.dual_value
-    pi = float(np.trace(Z)) if Z is not None else float("nan")
+    Y = lmi.dual_value                                   # raw (unnormalized) dual matrix
+    pi = float(np.trace(Y)) if Y is not None else float("nan")
     return Vc, pi
 
 
@@ -135,7 +137,7 @@ def _figure(pis, fds, corr, med_rel):
     ax.scatter(fds, pis, s=14, c="#1f5fbf", alpha=0.6, edgecolors="none", zorder=2)
     ax.set_xlim(0, lim); ax.set_ylim(0, lim); ax.set_aspect("equal")
     ax.set_xlabel(r"finite difference $\Delta P/\Delta\sigma$", fontsize=8)
-    ax.set_ylabel(r"spectral dual $\pi^\star=\mathrm{tr}\,Z^\star$", fontsize=8)
+    ax.set_ylabel(r"spectral dual $\pi^\star=\mathrm{tr}\,Y^\star$", fontsize=8)
     ax.set_title(r"$\pi^\star=\partial P$ (r$=%.3f$)" % corr, fontsize=8.5)
     ax.tick_params(labelsize=7)
     fig.savefig(FIG / "fig_dual.pdf", bbox_inches="tight", metadata={"CreationDate": None})

@@ -42,9 +42,9 @@ Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f
 \varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
 $L_r\succeq0$ and coefficient $\ge0$, undirected (symmetric); \emph{(iii)} the
 single-Fiedler gradient $\nabla\lamtwo$ is used only where $\lamtwo$ is simple with gap
-$\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the PSD eigenspace
-supergradient $Z\succeq0,\operatorname{tr}Z=1$ of~\eqref{eq:lmi}, used throughout by the
-exact SDP (no spectral genericity assumed).
+$\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the eigenspace
+directional derivative (Prop.~\ref{prop:freeconn}), while the SDP~\eqref{eq:lmi} itself stays
+exact and needs no spectral differentiability (no genericity assumed).
 \end{assumption}
 
 \subsection{Wrench feasibility}
@@ -87,7 +87,7 @@ separate layer.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
-robot's home position; every robot is always present, so no node is created, removed, or left
+robot \emph{identity}; every robot is always present, so no node is created, removed, or left
 empty---an \emph{idle} robot still occupies its node and stays connected through the base
 graph (the action set, of size $|\mathcal A|=MH{+}|\mathcal R|{+}1$, chooses \emph{edges} at a
 node, not nodes). A fixed base graph $L_0\succeq0$ carries the always-on short-range
@@ -99,11 +99,14 @@ long-range link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), s
 \end{equation}
 is affine in $z$ (Assumption~\ref{as:standing}(ii)) because \emph{only relay occupancy}
 gates edges---not a general pairwise geometric graph, whose weights would be bilinear in
-both endpoints' decisions. Robots of a type are interchangeable, and integer recovery
-includes a deterministic within-type node--role matching, so the type occupancy $z_{\tau r}$
-(with $L_r$ the fixed edge pattern of relay site $r$) determines $\Lap$ up to within-type
-node permutations, under which every spectral quantity is invariant. Each $\Lap(z)$ is a
-symmetric Laplacian ($\Lap(z)\mathbf1=0$, $\Lap(z)\succeq0$), an affine surrogate for the
+both endpoints' decisions. The individual variables are $x_{ir}\in\{0,1\}$ with
+$z_{\tau r}=\sum_{i\in\mathcal N_\tau}x_{ir}$; a deterministic injective matching
+$\chi_z:\{(\tau,r):z_{\tau r}\!=\!1\}\to\mathcal N_\tau$ (one robot per occupied site within a
+type) instantiates $z$. \emph{Type-permutation invariance:} any two individual assignments
+$x,x'$ with the same $z$ give $L(x')=\Pi^{\top}L(x)\Pi$ for a block-diagonal within-type
+permutation $\Pi$, so $\lamtwo(\Lap(z))$ is well defined on the equivalence class. Each
+$\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$, $\Lap(z)\succeq0$), an affine
+surrogate for the
 physical $\Lgeo(q)$ on the \emph{same} $N$ robots: one robot per node, so $\Lap$ and $\Lgeo$
 share the node set under the identity correspondence and no permutation is needed; the two
 are compared through Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.

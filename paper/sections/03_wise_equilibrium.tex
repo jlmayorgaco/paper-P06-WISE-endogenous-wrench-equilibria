@@ -99,7 +99,8 @@ $g_\lambda=\nabla_z\lamtwo(\Lap(\bar z))$ (entries $\gamma_{\tau r}v^{\top}L_r v
 so a productively neutral improvement exists $\iff\Pi_{N_p}g_\lambda\neq0$, with optimal
 direction $h^\star=\Pi_{N_p}g_\lambda/\|\Pi_{N_p}g_\lambda\|$. At a boundary $\bar z$ replace
 $N_p$ by the tangent cone $T_{\Emanifold}(\bar z)=\{h:Ah{=}0,\ Bh{=}0,\ G_jh\le0,\ j\in
-I(\bar z)\}$ ($I(\bar z)$ the active set, sign convention $Gz\le h$); then no free
+I(\bar z)\}$ ($I(\bar z)$ the active set of $Gz\le\bar g$, the direction $h$ distinct from the
+bound $\bar g$); then no free
 improvement exists $\iff g_\lambda\in N_{\Emanifold}(\bar z)=\{A^{\top}\alpha+B^{\top}\beta+
 G_I^{\top}\nu:\nu\ge0\}$, the KKT-stationarity certificate. Under a repeated $\lamtwo$,
 replace $D\lamtwo[h]$ by $\lambda_{\min}(U_2^{\top}D\Lap(\bar z)[h]\,U_2)$, where $U_2$ is an
@@ -268,13 +269,14 @@ $\lamtwo(\Lap(\hat z))\ge\lamtwo(\Lap(z^{\star}))-\kappa_L r=\sigmastar+m_\lambd
 
 \begin{remark}[Rounding as a search]\label{rem:integer}
 Proposition~\ref{prop:integer} is a checkable sufficient condition, not an existence
-guarantee: it does not assert an integer $\hat z$ within radius $r$ exists. Best-of-$R$
-rounding \emph{searches} for one and re-certifies it against~\eqref{eq:margins} (a search,
-not a proof; no $O(1/N)$ claim). On the $N=12$ demonstration a single randomized-rounding
-draw re-certifies a fluid optimum with probability $0.40$ and best-of-$30$ re-certifies
-$29/30$ seeds (argmax $7/30$); an exact integer oracle for $N\le8$ finds $0\%$ false
-positives and integrality gap $\le0.002$ (Section~\ref{sec:exp}). The radius
-\eqref{eq:intmargin} is sufficient but conservative (median $r^\star{\approx}0.006$,
-$\chi{=}\|\hat z-z^\star\|/r^\star{\approx}190$ despite slacks $m_w{=}3.6$,
-$m_\lambda{=}0.30$), so direct re-certification is the operative test.
+guarantee. Best-of-$R$ rounding \emph{searches} for a feasible $\hat z$ and \emph{directly}
+re-checks it against budgets, occupancy, the lifted wrench-feasibility LP and the spectral
+requirement $\lamtwo\ge\sigmastar$ (a search, not a proof; no $O(1/N)$ claim); the
+radius~\eqref{eq:intmargin} is a separate, conservative worst-case certificate. On the
+$N=12$ demonstration one randomized draw yields a directly re-certified integer
+self-sustaining assignment with probability $0.40$ (per draw), best-of-$30$ in $29/30$ seeds
+(argmax $7/30$); the exact oracle for $N\le8$ finds $0/23$ false positives and worst-case
+gap $\le0.005$ (Section~\ref{sec:exp}). The radius is highly conservative
+($r^\star{\approx}0.006$, $\chi{=}\|\hat z-z^\star\|/r^\star{\approx}190$ despite slacks
+$m_w{=}3.6$, $m_\lambda{=}0.30$), so direct re-certification is the operative test.
 \end{remark}

@@ -7,8 +7,9 @@ $y^{\star}$ by maximising $V$ over $X_{\mathrm f}$; the Stage-2 SDP~\eqref{eq:sd
 returns $\LamE$ and the most-connected productively optimal assignment
 $z^{\star}_{\mathrm{WISE}}$, and $\LamE\ge\sigmastar$ is the relaxed WISE existence test
 (Theorem~\ref{thm:existence}). We report this certificate and use it as the relaxed
-reference for the simulations; an integer team is recovered by rounding and re-certified
-against the margins of Proposition~\ref{prop:integer}.
+reference for the simulations; an integer team is recovered by rounding and \emph{directly}
+re-certified against budgets, wrench feasibility and the spectral requirement, with
+Proposition~\ref{prop:integer} reported separately as a conservative robustness radius.
 
 A fully \emph{distributed} realization---in which each robot samples its own action from a
 type-population flow using only locally communicated aggregates and duals, and provably

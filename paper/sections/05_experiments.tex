@@ -38,22 +38,24 @@ $\dim\mathcal N_p=72-13=59$ and moving along the fiber holds $V,Bz$ to $<10^{-8}
 $\lamtwo$ crosses $\sigmastar$ (\texttt{exp\_fiber}).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
-At $N=12$ a single randomized-rounding draw re-certifies a fluid optimum with probability
-$0.40$ and best-of-$30$ re-certifies $29/30$ seeds (argmax $7/30$); the \emph{rounding loss}
+At $N=12$ one randomized draw yields a directly re-certified integer self-sustaining
+assignment with probability $0.40$ (per draw), best-of-$30$ in $29/30$ seeds (argmax
+$7/30$); the \emph{rounding loss}
 $(V^{\star}_{\mathrm{relax}}-V_{\mathrm{round}})/V^{\star}_{\mathrm{relax}}=1.8\%$ (mean);
 optimality is not claimed at this size. For $N\le8$ we enumerate \emph{every} $|\mathcal
 A|^N$ robot--action map exactly (Table~\ref{tab:oracle}): whenever a relaxed WISE exists an
 integer self-sustaining assignment also exists ($0/23$ false positives observed), and the
-productive integrality gap $g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star$ is $\le0.002$ (an exact
-zero-cost integer WISE, $B\hat z=y^\star$, is rarer, but the productive loss is negligible).
+worst-case productive integrality gap $\max g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star$ is
+$\le0.005$ (an exact zero-cost integer WISE, $B\hat z=y^\star$, is rarer, but the productive
+loss is negligible).
 
 \begin{table}[t]\centering
 \caption{Exact integer oracle ($8$ seeds each, $N$ small): every $|\mathcal A|^N$
 robot--action map enumerated, pruned by budget/occupancy/wrench. Columns count, among
 relaxed-WISE-feasible seeds, those with an integer self-sustaining assignment
 ($\mathcal F_{\mathbb Z}\!\neq\!\varnothing$) and with an exact zero-cost integer WISE
-($B\hat z\!=\!y^\star$); $g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star$ is the productive
-integrality gap.}
+($B\hat z\!=\!y^\star$); $\max g_{\mathbb Z}$ is the \emph{worst-case} productive integrality
+gap $V^\star-V_{\mathbb Z}^\star$ over those seeds.}
 \label{tab:oracle}
 \footnotesize
 \input{figures/oracle_table.tex}
@@ -74,10 +76,12 @@ $N=12,24,48,96$)---a sparse/first-order or distributed solver is the main scalab
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
 on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
-every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: the
-spectral multiplier $\pi^{\star}=\operatorname{tr}Z^{\star}$ matches the finite difference
-$\Delta\Price/\Delta\sigma$ over $84$ costly-regime points ($r=0.996$, median error $0.6\%$),
-confirming $\pi^{\star}\in\partial\Price$.
+every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: in
+\emph{unnormalized} $\sigma$, the spectral multiplier $\pi^{\star}=\operatorname{tr}Y^{\star}$
+($Z^{\star}=Y^{\star}/\pi^{\star}$ the normalized modal direction) matches the central finite
+difference $\Delta\Price/\Delta\sigma$ over $84$ interior costly-regime points ($r=0.996$,
+median error $0.6\%$), confirming $\pi^{\star}\in\partial\Price$ (the axis normalization in
+Fig.~\ref{fig:price} is only for display).
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.70\columnwidth]{fig_price.pdf}
