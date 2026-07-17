@@ -1,10 +1,16 @@
-"""E-mismatch: quantify Lemma 3 -- the surrogate-vs-geometric gap eps_L vs tracking tube rho.
+"""E-mismatch: a-priori geometric transfer by graph monotonicity (Lemma 3).
 
-For each WISE composition we take the nominal poses q_bar, build the geometric Laplacian
-L_geo(q_bar) as a smooth-weight proximity graph, and perturb every robot within a tube of
-radius rho. We measure the a-priori tracking bound 4 d_max L_psi rho against the realized
-mismatch ||L_geo(q) - L_geo(q_bar)||_2, and the fraction of perturbations that still preserve
-lambda_2(L_geo(q)) >= sigma_dyn. Writes generated/mismatch.json.
+We build the surrogate as a LOWER-BOUND Laplacian Lbar_lb: every edge weight is the infimum
+of the smooth decreasing weight psi over the tracking tube, i.e. psi evaluated at the nominal
+distance inflated by 2*rho (the worst case when both endpoints move by rho). For ANY pose q
+with each robot inside its tube, w_ij(q) = psi(||q_i-q_j||) >= psi(||qbar_i-qbar_j||+2rho),
+so L_geo(q) - Lbar_lb is a nonnegative combination of edge Laplacians:
+
+    L_geo(q) >= Lbar_lb   (Loewner)   ==>   lambda_2(L_geo(q)) >= lambda_2(Lbar_lb).
+
+This is an a-priori guarantee -- no measured mismatch, no post-hoc term. We verify it over
+many perturbations: the PSD gap min-eig(Q'(L_geo - Lbar_lb)Q) and the spectral margin
+lambda_2(L_geo) - lambda_2(Lbar_lb) must both stay >= 0. Writes generated/mismatch.json.
 """
 
 from __future__ import annotations
@@ -29,15 +35,14 @@ def _psi(r):
     return 0.5 * np.exp(-r / 2.0)          # smooth edge weight; |psi'| <= 0.25 <= L_PSI
 
 
-def _lgeo(pos, reach):
-    """Smooth-weight proximity Laplacian: edge (i,j) if within min(reach_i,reach_j)."""
+def _lgeo(pos, extra=0.0):
+    """Smooth-weight Laplacian. `extra` >= 0 inflates every pairwise distance, and since psi
+    is decreasing this yields a guaranteed LOWER-BOUND weight (extra=2*rho over the tube)."""
     N = pos.shape[0]
     W = np.zeros((N, N))
     for i in range(N):
         for j in range(i + 1, N):
-            # smooth weight for ALL pairs (Lemma 3 assumes a Lipschitz psi, no hard R-disk
-            # cutoff -- a cutoff switches topology and breaks the Lipschitz bound)
-            W[i, j] = W[j, i] = _psi(np.linalg.norm(pos[i] - pos[j]))
+            W[i, j] = W[j, i] = _psi(np.linalg.norm(pos[i] - pos[j]) + extra)
     return np.diag(W.sum(1)) - W
 
 
@@ -46,38 +51,49 @@ def _lam2(L):
     return float(w[1])
 
 
-def run(seeds=20, rhos=(0.0, 0.02, 0.05, 0.1, 0.2, 0.3), draws=100):
+def _Q(N):
+    """Orthonormal basis of 1^perp."""
+    M = np.eye(N) - np.ones((N, N)) / N
+    w, V = np.linalg.eigh(M)
+    return V[:, w > 0.5]                                 # the N-1 nonzero eigenvectors
+
+
+def run(seeds=20, rhos=(0.02, 0.05, 0.1, 0.2, 0.3), draws=100):
     rng = np.random.default_rng(0)
     out = {}
+    all_margin, all_psd = [], []
     for rho in rhos:
-        eps_meas, apriori, preserved, lam_min = [], [], [], []
+        margins, psd_gaps, lam_lb_all = [], [], []
         for s in range(seeds):
             prob = scenarios.two_region(seed=s, N=12, nu=0.4, tau_d=5.0, bridge_gain=3.0)
             pos = np.asarray(prob.meta["pos"], float)
-            reach = np.asarray(prob.meta["r"], float)
-            Lg = _lgeo(pos, reach)
-            d_max = int(np.max((np.abs(Lg) > 1e-9).sum(1) - 1))
-            sig_dyn = prob.sigma                        # threshold = sigma_dyn
-            for _ in range(draws if rho > 0 else 1):
+            N = pos.shape[0]; Q = _Q(N)
+            Lb = _lgeo(pos, extra=2.0 * rho)             # lower-bound Laplacian over the tube
+            lam_lb = _lam2(Lb); lam_lb_all.append(lam_lb)
+            for _ in range(draws):
                 delta = rng.standard_normal(pos.shape)
                 delta *= (rho / np.maximum(np.linalg.norm(delta, axis=1, keepdims=True), 1e-9))
-                Lq = _lgeo(pos + delta, reach)
-                eps_meas.append(np.linalg.norm(Lq - Lg, 2))
-                apriori.append(4 * d_max * L_PSI * rho)
-                lam = _lam2(Lq); lam_min.append(lam)
-                preserved.append(lam >= _lam2(Lg) - 1e-9 or lam >= sig_dyn)
+                Lq = _lgeo(pos + delta, extra=0.0)       # true geometric graph within the tube
+                margins.append(_lam2(Lq) - lam_lb)       # spectral transfer margin (>= 0 a priori)
+                D = Q.T @ (Lq - Lb) @ Q
+                psd_gaps.append(float(np.linalg.eigvalsh(0.5 * (D + D.T))[0]))  # min eig of gap
+        margins = np.array(margins); psd_gaps = np.array(psd_gaps)
+        all_margin.append(margins); all_psd.append(psd_gaps)
         out[f"{rho:.2f}"] = dict(
-            rho=rho,
-            eps_L_measured_median=float(np.median(eps_meas)),
-            eps_L_measured_max=float(np.max(eps_meas)),
-            apriori_bound_median=float(np.median(apriori)),
-            lambda2_geo_min=float(np.min(lam_min)),
-            preserved_frac=float(np.mean(preserved)),
+            rho=rho, draws=len(margins),
+            spectral_margin_min=float(margins.min()),
+            spectral_margin_median=float(np.median(margins)),
+            spectral_margin_nonneg_frac=float(np.mean(margins >= -1e-9)),
+            psd_gap_min=float(psd_gaps.min()),
+            psd_nonneg_frac=float(np.mean(psd_gaps >= -1e-9)),
+            lambda2_lb_min=float(np.min(lam_lb_all)),
         )
-        print(f"rho={rho:.2f}: eps_L med={out[f'{rho:.2f}']['eps_L_measured_median']:.3f} "
-              f"(<= apriori {out[f'{rho:.2f}']['apriori_bound_median']:.2f}), "
-              f"min lam2={out[f'{rho:.2f}']['lambda2_geo_min']:.3f}, "
-              f"preserved={out[f'{rho:.2f}']['preserved_frac']:.0%}")
+        print(f"rho={rho:.2f}: lam2(Lgeo)-lam2(Lb) min={margins.min():.4f} "
+              f"med={np.median(margins):.3f} nonneg={np.mean(margins>=-1e-9):.0%}; "
+              f"PSD-gap min={psd_gaps.min():.2e} nonneg={np.mean(psd_gaps>=-1e-9):.0%}")
+    M = np.concatenate(all_margin); P = np.concatenate(all_psd)
+    print(f"\nTOTAL {len(M)} perturbations: spectral margin >=0 in {np.mean(M>=-1e-9):.1%}, "
+          f"min={M.min():.4f}; Loewner L_geo>=Lbar_lb in {np.mean(P>=-1e-9):.1%}")
     (GEN / "mismatch.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
     return out
 

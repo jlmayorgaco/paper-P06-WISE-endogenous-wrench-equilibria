@@ -22,21 +22,20 @@ lower left.}
 \end{figure*}
 
 \paragraph*{E1 --- Non-trivial composition exchange (Fig.~\ref{fig:flagship})}
-The two-load flagship instance ($N=12$, $c_L=2c_S$) certifies a genuine comparative-advantage
-reorganization: releasing one long lifter for two short lifters and moving it to the relay
-holds $Bz=(3,3)=y^{\star}$, both wrenches, $V=V^{\star}$ and $n_{\mathrm{active}}=6$ fixed,
-while $\lamtwo(\Lgeo)$ rises $\approx0\!\to\!0.41$ (Prop.~\ref{prop:freeconn}, $D\lamtwo[d]>0$).
-With $\operatorname{rank}[A;B]=14$, $\dim\Emanifold=58$ (Theorem~\ref{thm:degeneracy}); its
-certified neutral direction preserves both components of $Bz=(3,3)$ to $<10^{-8}$. It is not
-tied to one bridge: a three-region, two-bridge instance frees \emph{two} long robots to two
-relays (shorts compensating), holding $(3,3,3)$ while $\lamtwo:0\!\to\!0.21$. On $200$ symmetric
-$\lamtwo{=}\lambda_3$ instances the eigenspace criterion attains median \emph{absolute}
-finite-difference error $10^{-6}$ with correct sign in $200/200$ cases, versus $0.04$ for an
-arbitrary single eigenvector (sign-correct here but quantitatively unreliable). The Weyl
-transfer $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)-\varepsilon_L$ held on all $2000$ perturbations
-($\rho\le0.3$, realized $\varepsilon_{\mathrm{track}}\le0.43$); as the a-priori Lipschitz bound
-($6.6$) far exceeds both the realized mismatch and $\lamtwo$, Lemma~\ref{lem:bridge} serves as a
-conservative \emph{post-recovery} transfer check ($\varepsilon_{\mathrm{model}}$ offline).
+The two-load flagship ($N=12$, $c_L=2c_S$) certifies a comparative-advantage reorganization:
+releasing one long lifter for two short lifters and moving it to the relay holds
+$Bz=(3,3)=y^{\star}$, both wrenches and $V=V^{\star}$, while $\lamtwo(\Lgeo)$ rises
+$\approx0\!\to\!0.41$ (Prop.~\ref{prop:freeconn}, $D\lamtwo[d]>0$). With
+$\operatorname{rank}[A;B]=14$, $\dim\Emanifold=58$ (Theorem~\ref{thm:degeneracy}); its neutral
+direction preserves both components of $Bz=(3,3)$ to $<10^{-8}$. A three-region, two-bridge
+instance similarly frees \emph{two} long robots to two relays, holding $(3,3,3)$ while
+$\lamtwo:0\!\to\!0.21$. On $200$ symmetric $\lamtwo{=}\lambda_3$
+instances the eigenspace criterion matches the finite-difference derivative to median absolute
+error $10^{-6}$ (correct sign $200/200$), versus $0.04$ for a single eigenvector. With
+lower-bound Laplacians the transfer is \emph{a priori}: across $10{,}000$ perturbations
+($\rho\le0.3$) the geometric graph dominated the surrogate in Loewner order in $100\%$ of
+trials, so $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)$ held with minimum spectral margin $0.0017$
+(Lemma~\ref{lem:bridge}).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) re-certifies an integer
@@ -64,11 +63,12 @@ worst-case gap $V^\star-V_{\mathbb Z}^\star$, shown absolute and relative to $V^
 \end{table}
 
 \paragraph*{E3 --- Selection among productive optima ($30$ paired seeds)}
-On the same optimal face, the hard connectivity-constrained optimum ($\max V$ s.t.\
-$\lamtwo\ge\sigmastar$) reaches $V^{\star}$ but returns \emph{any} such point, merely
-\emph{satisfying} it (margin $+0.15$). WISE is their lexicographic \emph{tie-break}, selecting
-the maximum-margin point ($+2.55$; $100\%$ certified, Wilson $[89,100]$), versus random-fiber
-$+0.10$ (sometimes infeasible) and least-role-change $+0.38$. Stage-1 is $\sim\!10$\,ms; the
+On the evaluated free-regime instances, the hard connectivity-constrained optimum ($\max V$
+s.t.\ $\lamtwo\ge\sigmastar$) reaches $V^{\star}$ but returns \emph{any} point of that optimal
+face, merely \emph{satisfying} it (margin $+0.15$). WISE is their lexicographic
+\emph{tie-break}, selecting the maximum-margin point ($+2.55$; relaxed joint feasibility in
+$30/30$, Wilson $[89,100]$), versus random-fiber $+0.10$ (sometimes infeasible) and
+least-role-change $+0.38$. Stage-1 is $\sim\!10$\,ms; the
 Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s, $N{=}12{\to}96$;
 CVXPY~1.9/CLARABEL~0.11, tol $10^{-7}$, single-threaded, $T,M,H,|\mathcal R|$ fixed so this
 isolates spectral-LMI scaling in $N$, not full MRTA): offline-ready.

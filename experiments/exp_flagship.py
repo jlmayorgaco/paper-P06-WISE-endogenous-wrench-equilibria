@@ -162,11 +162,11 @@ def certify():
     )
     (GEN / "flagship.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(json.dumps(result, indent=2))
-    _figure(bad_relayers, wise_relayers, lam_bad, lam_wise)
+    _figure()
     return result
 
 
-def _figure(bad_relayers, wise_relayers, lam_bad, lam_wise):
+def _figure():
     import matplotlib
     matplotlib.use("Agg")
     matplotlib.rcParams["pdf.fonttype"] = 42

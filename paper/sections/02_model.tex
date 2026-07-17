@@ -85,10 +85,11 @@ node), and the action set chooses \emph{edges} at a node, not nodes. A fixed bas
 $L_0\succeq0$ carries the always-on short-range conductances; when robot $i$ commits to relay
 site $r$ it \emph{gates on} its own predefined long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$ (the fixed
-set of robots it then reaches, possibly several). Each $L_{ir}$ is precomputed from the
-nominal role-site geometry, retaining only links guaranteed available for every pose within
-the prescribed tracking tubes; assignment-dependent deviations are absorbed into the
-mismatch term of Lemma~\ref{lem:bridge}. Thus, \emph{directly in the per-robot occupancy},
+set of robots it then reaches, possibly several). Each $L_{ir}$ is a \emph{lower-bound}
+Laplacian: its weights are tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_r}w_{ij}(q)$
+(with a smooth decreasing weight law, the infimum is $w$ at the tube-inflated distance), so
+every link it carries is guaranteed for every admissible pose and $\Lgeo(q)\succeq\Lap(\hat z)$
+in Loewner order (Lemma~\ref{lem:bridge}). Thus, \emph{directly in the per-robot occupancy},
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
@@ -106,9 +107,10 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $z$, with PSD dual $Y\succeq0$; writing $Y=\pi Z$ ($\pi=\operatorname{tr}Y$,
-$\operatorname{tr}Z=1$) separates the connectivity price $\pi$ from the modal direction $Z$
-(the requirement $\sigmastar=\sigmadyn+\delta$ is set in Lemma~\ref{lem:bridge}).
+affine in $z$, with PSD dual $Y\succeq0$; for $Y\neq0$, $\pi=\operatorname{tr}Y>0$ and
+$Z=Y/\pi$ ($\operatorname{tr}Z=1$) separate the connectivity price $\pi$ from the modal
+direction $Z$, while $Y=0$ ($\pi=0$) leaves $Z$ immaterial. The requirement
+$\sigmastar>\sigmadyn$ is specified externally (Lemma~\ref{lem:bridge}).
 
 \begin{lemma}[Convex information set]\label{lem:convex}
 $z\mapsto\lamtwo(\Lap(z))$ is concave (a pointwise minimum
@@ -116,24 +118,21 @@ $\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ of functions affine in
 $z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006growing}.
 \end{lemma}
 
-\begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
-Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $\bar q=\bar q(\hat z)$ its
-nominal role-site realization. Split the surrogate--geometric gap as
+\begin{lemma}[A priori geometric transfer by graph monotonicity]\label{lem:bridge}
+Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $q$ any pose with each robot
+inside its tracking tube. Since every weight of $\Lap(\hat z)$ is a tube infimum and $\psi$ is
+decreasing, $w_{ij}(q)\ge\underline w_{ij}$, so
 \begin{equation}
-\|\Lgeo(q)-\Lap(\hat z)\|_2\le
-\varepsilon_{\mathrm{track}}+\varepsilon_{\mathrm{model}}=:\varepsilon_L,
+\Lgeo(q)-\Lap(\hat z)=\!\sum_{i<j}\!\big(w_{ij}(q)-\underline w_{ij}\big)
+(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0 .
 \label{eq:mismatch}
 \end{equation}
-with tracking $\varepsilon_{\mathrm{track}}=\|\Lgeo(q)-\Lgeo(\bar q)\|_2$ and model term
-$\varepsilon_{\mathrm{model}}=\|\Lgeo(\bar q)-\Lap(\hat z)\|_2$. The tracking term is
-\emph{a priori}: smooth weights $w_{ij}=\psi(\|q_i-q_j\|)$
-($|\psi'|\le L_\psi$) and a tube $\|q_i-\bar q_i\|\le\rho$ give
-$\varepsilon_{\mathrm{track}}\le4d_{\max}L_\psi\rho$, while $\varepsilon_{\mathrm{model}}$ is
-calibrated offline. If $\lamtwo(\Lap(\hat z))\ge\sigmadyn+\varepsilon_L+\delta_{\mathrm{num}}$,
-Weyl's inequality gives $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the information-layer stability
-threshold; equivalently $\sigmastar:=\sigmadyn+\delta$, $\delta=\varepsilon_L+
-\delta_{\mathrm{num}}$. A future distributed estimator would add an
-$\varepsilon_{\mathrm{est}}$ term, zero in the centralized certificate studied here.
+Restricting to $\mathbf 1^{\perp}$, eigenvalue monotonicity gives
+$\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$. Hence a certificate
+$\lamtwo(\Lap(\hat z))\ge\sigmastar$ (with $\sigmastar>\sigmadyn$ specified externally) yields
+$\lamtwo(\Lgeo(q))\ge\sigmadyn$ \emph{a priori}, for every admissible pose---no post-hoc
+mismatch term. Solver tolerance $\delta_{\mathrm{num}}$ is the only slack; a future distributed
+estimator would add $\varepsilon_{\mathrm{est}}$, zero here.
 \end{lemma}
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap$ and transfers to
-$\Lgeo$ only through \eqref{eq:mismatch}, applied at the integer recovery $\hat z$.
+$\Lgeo$ through the Loewner bound \eqref{eq:mismatch} at the integer recovery $\hat z$.

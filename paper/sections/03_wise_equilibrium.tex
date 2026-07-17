@@ -105,10 +105,10 @@ SDP).
 \begin{definition}[WISE and its integer counterparts]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and
 Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$, i.e.\
-$z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$ over the fluid relaxation, where
+$z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$ over the fractional occupancy relaxation, where
 $\Cdelta=\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigmastar\}$. For finite teams three
 integer notions differ: the \emph{self-sustaining feasible} set
-$\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\mathbb Z^{n}:\lamtwo(\Lap(z))\ge\sigmastar\}$
+$\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\{0,1\}^{n}:\lamtwo(\Lap(z))\ge\sigmastar\}$
 (wrench- and connectivity-feasible), its \emph{optimum}
 $V_{\mathbb Z}^{\star}=\max_{\mathcal F_{\mathbb Z}}V$, and the \emph{zero-cost integer WISE}
 $\Essint=\mathcal F_{\mathbb Z}\cap\{z:Bz=y^{\star}\}$, nonempty iff
@@ -124,7 +124,7 @@ game alone.
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
-Over the fluid relaxation, \emph{Stage 1} fixes the unique optimal aggregate
+Over the fractional occupancy relaxation, \emph{Stage 1} fixes the unique optimal aggregate
 $y^{\star}=Bz^{\star}$, $z^{\star}\in\arg\max_{z\in X_{\mathrm f}}V(z)$
 (Theorem~\ref{thm:degeneracy}); \emph{Stage 2} selects connectivity on the resulting
 fiber. The selector $z^{\star}_{\mathrm{WISE}}\in
@@ -161,17 +161,18 @@ and feasibility forces $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$.
 A standard small-gain model---a served-aggregate error coupled to a consensus estimator over
 $Q^{\top}\Lap(z^{\star})Q$ with gains $\mF,\vt_1,\vt_2>0$---is exponentially stable when
 $\lamtwo>\sigmadyn:=\vt_1\vt_2/(c\,\mF)$. This motivates treating $\sigmadyn>0$ as an external
-information-layer requirement, met by construction through the WISE margin
-$\sigmastar=\sigmadyn+\delta$; no online realization is analyzed here.
+information-layer requirement; the selector enforces $\sigmastar>\sigmadyn$ and
+Lemma~\ref{lem:bridge} transfers it to the geometric graph a priori. No online realization is
+analyzed here.
 \end{remark}
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
 The lexicographic selector of Theorem~\ref{thm:existence} is exact; a scalarised
-$V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only as $\varepsilon\to0$ (a maximiser has
-$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$,
-Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ moves the aggregate; it is a
-Pareto scalarisation, not the lexicographic form.
+$V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only as $\varepsilon\to0$
+(Tikhonov~\cite{facchinei2003fvi}: $\|Bz_\varepsilon-y^{\star}\|\le
+\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$), so a finite $\varepsilon$ moves the
+aggregate---a Pareto scalarisation, not the lexicographic form.
 
 Beyond the free fiber the requirement carries a productive cost. Define the
 \emph{price of self-sustainability}
@@ -200,11 +201,10 @@ connectivity constraint satisfies $\pi^{\star}\in\partial\Price(\sigma)$: the ma
 productive price of one unit of connectivity, in the units of $V$.
 \end{theorem}
 \begin{proof}[Proof sketch]
-The super-level set $\{z\in X_{\mathrm f}:\lamtwo\ge\sigma\}$ (Lemma~\ref{lem:convex}) shrinks
-in $\sigma$, so $\Price$ is nondecreasing; as $\sigma$ enters linearly, $\Price$ is a convex
-perturbation value whose subdifferential under Slater is the optimal multiplier
-set~\cite{boyd2004convex}. The cases follow from $\sigma\le\LamE$ ($\Price=0$), $\sigma>\LamX$
-(infeasible), and between (feasible, not in $\Emanifold$).
+The super-level set (Lemma~\ref{lem:convex}) shrinks in $\sigma$, so $\Price$ is nondecreasing;
+$\sigma$ enters linearly, so $\Price$ is a convex perturbation value with subdifferential the
+optimal multiplier set under Slater~\cite{boyd2004convex}. The cases follow from
+$\sigma\le\LamE$ ($\Price=0$), $\sigma>\LamX$ (infeasible), and between.
 \end{proof}
 
 \subsection{Finite-team recovery}
