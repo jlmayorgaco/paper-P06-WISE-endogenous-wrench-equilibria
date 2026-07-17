@@ -64,7 +64,7 @@ For the representative \emph{single-load} instance ($n=72$, $M{=}1$ so $B$ has o
 $\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=13$ with no inequality active at the
 interior optimum ($G_I=\varnothing$), so $\dim\Emanifold=72-13=59$ (a two-load instance with
 two independent aggregates gives $\operatorname{rank}[A;B]=14$, $\dim=58$), certified by a
-relative-interior point with residuals $\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$ (\texttt{exp\_fiber}).
+relative-interior point with residuals $\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$.
 A boundary optimum where wrench facets bind gives a smaller fiber.
 
 \begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
@@ -118,17 +118,16 @@ integer notions differ: the \emph{self-sustaining feasible} set
 $\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\mathbb Z^{n}:\lamtwo(\Lap(z))\ge\sigmastar\}$
 (wrench- and connectivity-feasible), its \emph{optimum}
 $V_{\mathbb Z}^{\star}=\max_{\mathcal F_{\mathbb Z}}V$, and the \emph{zero-cost integer WISE}
-$\Essint=\mathcal F_{\mathbb Z}\cap\{\|Bz-y^{\star}\|_\infty\le\tau_B\}$, which is nonempty iff
+$\Essint=\mathcal F_{\mathbb Z}\cap\{z:Bz=y^{\star}\}$, nonempty iff
 $V_{\mathbb Z}^{\star}=V^{\star}$; the productive integrality gap is
-$g_{\mathbb Z}=V^{\star}-V_{\mathbb Z}^{\star}\ge0$. Throughout, \emph{zero-cost} refers to
-exact preservation of the relaxed optimal aggregate $y^{\star}$ (numerically
-$\|B\hat z-y^{\star}\|_\infty\le\tau_B$, $\tau_B=10^{-8}$); an integer self-sustaining
-assignment need not be zero-cost unless $B\hat z=y^{\star}$. Since
-$\sigmastar=\sigmadyn+\delta>\sigmadyn$, a WISE clears the stability threshold of
-Remark~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge}, keeps the
-\emph{geometric} graph above $\sigmadyn$; $\Cdelta$ is convex and closed
-(Lemma~\ref{lem:convex}). WISE is a \emph{lexicographic selection} from the productive VE set,
-not an equilibrium of the productive game alone.
+$g_{\mathbb Z}=V^{\star}-V_{\mathbb Z}^{\star}\ge0$. \emph{Zero-cost} means exact aggregate
+preservation $B\hat z=y^{\star}$; numerically it is declared when
+$\|B\hat z-y^{\star}\|_\infty\le\tau_B$ ($\tau_B=10^{-8}$), an implementation criterion that
+does not alter this definition. An integer self-sustaining assignment need not be zero-cost. Since
+$\sigmastar>\sigmadyn$, a WISE clears the stability threshold (Remark~\ref{thm:stability}) with
+margin $\delta$; $\Cdelta$ is convex and closed (Lemma~\ref{lem:convex}). WISE is a
+\emph{lexicographic selection} from the productive VE set, not an equilibrium of the productive
+game alone.
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
@@ -243,9 +242,10 @@ r<\min\!\Big\{\tfrac{m_w}{\kappa_w},\ \tfrac{m_\lambda}{\kappa_L}\Big\},
 \label{eq:intmargin}
 \end{equation}
 then $\hat z\in X_{\mathrm f}$ and $\lamtwo(\Lap(\hat z))\ge\sigmastar$: $\hat z$ is an integer
-self-sustaining assignment. If additionally $B\hat z=y^{\star}$ it is a zero-cost integer
-WISE; otherwise its productive loss $g_{\mathbb Z}$ is evaluated separately
-(Section~\ref{sec:exp}).
+self-sustaining assignment. If additionally $B\hat z=y^{\star}$ it is a zero-cost integer WISE;
+otherwise it has \emph{recovery loss} $\ell(\hat z)=V^{\star}-V(\hat z)$. The optimal
+integrality gap $g_{\mathbb Z}=V^{\star}-V_{\mathbb Z}^{\star}$ is a distinct quantity,
+evaluated by the exact oracle (Section~\ref{sec:exp}).
 \end{proposition}
 \begin{proof}[Proof sketch]
 Row-wise $(H_w\hat z)_j\ge d_j+m_w-\kappa_w r>d_j$ gives $\hat z\in X_{\mathrm f}$; and, as

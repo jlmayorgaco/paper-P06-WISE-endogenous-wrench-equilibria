@@ -26,18 +26,21 @@ diamond: relay site.}
 \end{figure}
 
 \paragraph*{E1 --- Non-trivial composition exchange (Fig.~\ref{fig:flagship})}
-The flagship instance ($N=12$, $c_L=2c_S$) certifies a genuine comparative-advantage
+The two-load flagship instance ($N=12$, $c_L=2c_S$) certifies a genuine comparative-advantage
 reorganization: releasing one long lifter for two short lifters and moving it to the relay
 holds $Bz=(3,3)=y^{\star}$, both wrenches, $V=V^{\star}$ and $n_{\mathrm{active}}=6$ fixed,
-while $\lamtwo(\Lgeo)$ rises $\approx0\!\to\!0.41$ (Prop.~\ref{prop:freeconn},
-$D\lamtwo[d]>0$) on the separate single-load fiber of dimension $59$ (Theorem~\ref{thm:degeneracy},
-\texttt{exp\_fiber}). It is not tied to one bridge: on a three-region, two-bridge instance WISE
-frees \emph{two} long robots to two relay sites (shorts compensating), holding $(3,3,3)$ while
-$\lamtwo:0\!\to\!0.21$. On $200$ symmetric
-$\lamtwo{=}\lambda_3$ instances the eigenspace criterion matches the finite-difference
-derivative to median $10^{-6}$, versus $0.04$ for an arbitrary Fiedler vector; across $2000$
-perturbations ($\rho\le0.3$) the tracking mismatch stays under the a-priori $4d_{\max}L_\psi\rho$
-(max $0.43\le6.6$), $\varepsilon_{\mathrm{model}}$ calibrated offline (Lemma~\ref{lem:bridge}).
+while $\lamtwo(\Lgeo)$ rises $\approx0\!\to\!0.41$ (Prop.~\ref{prop:freeconn}, $D\lamtwo[d]>0$).
+With $\operatorname{rank}[A;B]=14$, $\dim\Emanifold=58$ (Theorem~\ref{thm:degeneracy}); its
+certified neutral direction preserves both components of $Bz=(3,3)$ to $<10^{-8}$. It is not
+tied to one bridge: a three-region, two-bridge instance frees \emph{two} long robots to two
+relays (shorts compensating), holding $(3,3,3)$ while $\lamtwo:0\!\to\!0.21$. On $200$ symmetric
+$\lamtwo{=}\lambda_3$ instances the eigenspace criterion attains median \emph{absolute}
+finite-difference error $10^{-6}$ with correct sign in $200/200$ cases, versus $0.04$ for an
+arbitrary single eigenvector (sign-correct here but quantitatively unreliable). The Weyl
+transfer $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)-\varepsilon_L$ held on all $2000$ perturbations
+($\rho\le0.3$, realized $\varepsilon_{\mathrm{track}}\le0.43$); as the a-priori Lipschitz bound
+($6.6$) far exceeds both the realized mismatch and $\lamtwo$, Lemma~\ref{lem:bridge} serves as a
+conservative \emph{post-recovery} transfer check ($\varepsilon_{\mathrm{model}}$ offline).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) re-certifies an integer
@@ -76,8 +79,9 @@ lexicographic \emph{tie-break}, selecting the maximum-margin point ($+2.55$; $10
 Wilson $[89,100]$), versus random-fiber $+0.10$ (sometimes infeasible) and least-role-change
 $+0.38$. Stage-1 is
 $\sim\!10$\,ms; the Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s,
-$N{=}12{\to}96$; CVXPY/CLARABEL, tol $10^{-7}$, single-threaded, with $T,M,H,|\mathcal R|$
-fixed so this isolates spectral-LMI scaling in $N$, not full MRTA scaling): offline-ready.
+$N{=}12{\to}96$; CVXPY~1.9/CLARABEL~0.11, tol $10^{-7}$, single-threaded, hardware logged in
+the repository, with $T,M,H,|\mathcal R|$ fixed so this isolates spectral-LMI scaling in $N$,
+not full MRTA scaling): offline-ready.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive

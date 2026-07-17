@@ -177,28 +177,31 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 84.
+(hyperref)                removing `math shift' on input line 83.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 84.
+(hyperref)                removing `math shift' on input line 83.
 
 [2]) (sections/03_wise_equilibrium.tex
 Underfull \hbox (badness 3989) in paragraph at lines 32--38
 [][]\OT1/ptm/b/n/10 Definition 1 \OT1/ptm/m/n/10 (Pro-duc-tive vari-a-tional eq
 ui-lib-rium)\OT1/ptm/b/n/10 . []\OT1/ptm/m/it/10 With
-(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1pcr.fd) [3]
-Underfull \hbox (badness 1377) in paragraph at lines 182--187
+[3]
+Underfull \hbox (badness 1377) in paragraph at lines 181--186
 []\OT1/ptm/m/n/10 The lex-i-co-graphic se-lec-tor of The-o-rem [][]2[][] is ex-
 act; a
 
-Underfull \hbox (badness 1558) in paragraph at lines 193--197
+Underfull \hbox (badness 1558) in paragraph at lines 192--196
 \OT1/ptm/m/n/10 ($\OMS/cmsy/m/n/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^[\OT1/c
 mr/m/n/10 ) = +\OMS/cmsy/m/n/10 1$ \OT1/ptm/m/n/10 when the set is empty), and 
 the two
 [4]) (sections/04_algorithm.tex) (sections/05_experiments.tex [5 <./figures/fig
-_flagship.pdf>] (figures/oracle_table.tex)) (sections/06_conclusion.tex)
-(main.bbl)
+_flagship.pdf>] (figures/oracle_table.tex)
+Underfull \hbox (badness 1502) in paragraph at lines 75--85
+\OT1/ptm/m/n/10 Stage-1 is $\OMS/cmsy/m/n/10 ^^X  \OT1/cmr/m/n/10 10$\OT1/ptm/m
+/n/10 ms; the Stage-2 SDP grows with the
+) (sections/06_conclusion.tex) (main.bbl)
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -232,10 +235,9 @@ ublic/amsfonts/cm/cmsy8.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfont
 s/cm/cmsy9.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msb
 m10.pfb><C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm5.pfb>
 <C:/Program Files/MiKTeX/fonts/type1/public/amsfonts/symbols/msbm7.pfb><C:/Prog
-ram Files/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX/fo
-nts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/u
-tmbi8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Progra
-m Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 460960 bytes).
+ram Files/MiKTeX/fonts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX/font
+s/type1/urw/times/utmbi8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/ut
+mr8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (6 pages, 452813 bytes).
 Transcript written on main.log.
 pdflatex: major issue: So far, you have not checked for updates as a MiKTeX user.

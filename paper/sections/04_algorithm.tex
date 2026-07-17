@@ -2,19 +2,22 @@
 \label{sec:algorithm}
 
 A WISE is decided by the SDP of Theorem~\ref{thm:existence}, solved centrally over the fluid
-relaxation: Stage~1 fixes $y^{\star}=\arg\max_{X_{\mathrm f}}V$, and the Stage-2
-SDP~\eqref{eq:sdp} returns $\LamE$ and the most-connected optimal assignment
-$z^{\star}_{\mathrm{WISE}}$, with $\LamE\ge\sigmastar$ the relaxed existence test. We use this
+relaxation: Stage~1 computes a productive optimum
+$z^{\mathrm{prod}}\in\arg\max_{z\in X_{\mathrm f}}V(z)$ and sets the unique optimal aggregate
+$y^{\star}=Bz^{\mathrm{prod}}$; the Stage-2 SDP~\eqref{eq:sdp} then returns $\LamE$ and the
+most-connected optimal assignment $z^{\star}_{\mathrm{WISE}}$, with $\LamE\ge\sigmastar$ the
+relaxed existence test. We use this
 certificate as the relaxed reference; an integer team is recovered by rounding and
 \emph{directly} re-certified against budgets, wrench feasibility and the spectral requirement,
 Proposition~\ref{prop:integer} serving as a separate conservative radius.
 
-\emph{Structured recovery.} Given a relaxed $z^{\star}$, one \emph{structured draw} is
-\emph{occupancy-aware sequential randomized rounding}: robots are processed in a random order
-and robot $i$ samples one action from its normalized occupancy $z^{\star}_i$ restricted to the
-contact slots still free, so every draw meets one action per robot and all slot/relay
-capacities exactly (randomized rounding, \emph{not} a marginal-preserving dependent-rounding
-scheme). A greedy \emph{repair} then raises connectivity over the single-robot candidate moves
+\emph{Structured recovery.} Given a relaxed $z^{\star}$, one draw of
+\emph{occupancy-aware sequential randomized rounding} processes robots in a uniformly random
+order: robot $i$ samples from $z^{\star}_i$ restricted to the currently available
+unit-capacity actions (free contact slots and relay sites), with idle always admissible and
+assigned when the remaining mass is zero, renormalizing after each capacity update. Every draw
+thus meets one action per robot and all capacities exactly (randomized rounding, \emph{not} a
+marginal-preserving scheme). A greedy \emph{repair} then raises connectivity over the single-robot candidate moves
 $\mathcal D(\hat z)=\{e_{ir}{-}e_{ia}:\hat z_{ia}{=}1,\ r\ \text{a free relay}\}$: a move is
 admissible only if $\hat z{+}d\in\mathcal X$ and the lifted wrench LP~\eqref{eq:tensor} stays
 feasible; the admissible move maximizing $\lamtwo(\Lap(\hat z{+}d))$ is applied and accepted
