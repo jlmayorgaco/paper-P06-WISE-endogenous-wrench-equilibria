@@ -11,9 +11,17 @@ reference for the simulations; an integer team is recovered by rounding and \emp
 re-certified against budgets, wrench feasibility and the spectral requirement, with
 Proposition~\ref{prop:integer} reported separately as a conservative robustness radius.
 
-A fully \emph{distributed} realization---in which each robot samples its own action from a
-type-population flow using only locally communicated aggregates and duals, and provably
-converges to $\Emanifold^{\star}_{\mathrm{WISE}}$ over the very graph it forms---is the
-natural next step, but requires a local message protocol and a convergence guarantee over a
-decision-dependent graph that are outside the present relaxed guarantees. We therefore leave
-it to future work and claim only the centralized certificate here.
+\emph{Structured recovery.} Given $z^{\star}$: \textbf{(i)}~\emph{dependent rounding} draws
+one action per robot, preserving each unit budget and slot/relay occupancy
+($\sum_i z_{i,a}\le1$; taken slots are resampled out); \textbf{(ii)}~solve the lifted wrench
+LP for the integer team; \textbf{(iii)}~while $\lamtwo<\sigmastar$, apply the single-robot
+move $\hat z\!+\!d$ ($Ad=0$, occupancy-preserving) that keeps wrench feasibility and most
+increases $\lamtwo$ (a marginal lifter/idler $\to$ relay); \textbf{(iv)}~stop when
+re-certified or after $\le12$ moves. Step~(iii) trades productive value for connectivity
+($Bd\neq0$), so the recovered team is integer self-sustaining but rarely \emph{exactly}
+zero-cost.
+
+A fully \emph{distributed} realization---each robot sampling from a local flow and converging
+to $\Emanifold^{\star}_{\mathrm{WISE}}$ over the graph it forms---needs a message protocol and
+a convergence guarantee over a decision-dependent graph, and is left to future work; we claim
+only the centralized certificate here.

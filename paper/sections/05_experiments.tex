@@ -33,23 +33,24 @@ with two short lifters, and moving it to the relay holds $Bz=(3,3)=y^{\star}$, b
 fixed, while $\lamtwo(\Lgeo)$ rises from $\approx0$ to $0.41$---materializing
 Prop.~\ref{prop:freeconn} with $D\lamtwo[d]>0$; the fiber itself has $\dim\mathcal N_p=59$
 with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). Two checks: on a $C_3$-symmetric
-graph with $\lamtwo=\lambda_3$ an arbitrary single-vector gradient mispredicts $D\lamtwo$ by
-$\sim\!10^{8}{\times}$ while the eigenspace criterion tracks it to $0.6\%$; and the a-priori
-bound $4d_{\max}L_\psi\rho$ (Lemma~\ref{lem:bridge}) holds at every $\rho$ ($\varepsilon_L$
-median $\le0.05$ for $\rho\le0.05$\,m).
+graph with $\lamtwo=\lambda_3$ the eigenspace criterion of Prop.~\ref{prop:freeconn} predicts
+$D\lamtwo$ to $10^{-6}$ over $200$ directions, whereas an arbitrary single Fiedler-vector
+estimate has median absolute error $0.04$; and the a-priori tracking bound
+$4d_{\max}L_\psi\rho$ (Lemma~\ref{lem:bridge}, smooth weights) held on \emph{every}
+perturbation ($\varepsilon_L^{\max}=0.43\le6.6$ at $\rho=0.3$\,m).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
-At $N=12$, \emph{structured} recovery---occupancy-aware dependent rounding with a greedy
-neutral repair that frees marginal lifters to relay---directly re-certifies an integer
+At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) re-certifies an integer
 self-sustaining assignment on the \emph{first} draw for all $30$ seeds ($30/30$), versus
-$29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax, trading a modest
-rounding loss ($4.5\%$ vs $2.4\%$; optimality is not claimed). For $N\le8$ we enumerate
+$29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax, at a modest rounding
+loss ($4.5\%$ vs $2.4\%$; optimality not claimed). For $N\le8$ we enumerate
 \emph{every} $|\mathcal
 A|^N$ robot--action map exactly (Table~\ref{tab:oracle}): at the design requirement no false
 positives occur ($0/23$) and the worst-case gap $\max g_{\mathbb Z}=V^\star-V_{\mathbb
-Z}^\star\le0.005$. Pushed \emph{adversarially} to $\sigma=0.97\LamE$ (the fiber ceiling) it is
-\emph{not} always integer-tight at tiny $N$: $N{=}6$ gives $13/50$ boundary false positives
-(Wilson $[16,40]\%$), closing by $N{=}8$ ($0/50$) as granularity grows.
+Z}^\star\le0.005$ ($<0.03\%$ of $V^\star$). Pushed \emph{adversarially} to $\sigma=0.97\LamE$
+(the fiber ceiling) it is \emph{not} always integer-tight at the smallest $N$: $N{=}6$ gives
+$13/50$ boundary false positives (Wilson $[16,40]\%$), and none at $N{=}7,8$ ($0/50$ each,
+Wilson upper $7\%$).
 
 \begin{table}[t]\centering
 \caption{Exact integer oracle ($8$ seeds each): every $|\mathcal A|^N$ robot--action map
@@ -63,12 +64,10 @@ $V^\star-V_{\mathbb Z}^\star$.}
 \end{table}
 
 \paragraph*{E3 --- Selection among productive optima ($30$ paired seeds)}
-Single-criterion baselines (scalar-capacity, wrench-only, connectivity-only) each fail one
-test by construction (certified $0\%$). Among selectors on the same productively optimal face,
-the hard connectivity-constrained optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) reaches
-$V^{\star}$ but may return \emph{any} such point and merely \emph{satisfies} the requirement
-(margin $+0.15$); centralized multistart (the primal--dual solver from $4$ warm starts, best
-feasible potential) gives $+0.31$. WISE is not a competitor but their lexicographic
+Among selectors on the same productively optimal face, the hard connectivity-constrained
+optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) reaches $V^{\star}$ but may return \emph{any}
+such point and merely \emph{satisfies} the requirement (margin $+0.15$). WISE is instead their
+lexicographic
 \emph{tie-break}: it selects the maximum-margin point ($+2.55$; all $100\%$ certified, Wilson
 $95\%$ CI $[89,100]$). Other fiber selectors fall short---random-fiber averages margin
 $+0.10$ (sometimes infeasible) and least-role-change $+0.38$, vs WISE's $+2.55$. On scaling

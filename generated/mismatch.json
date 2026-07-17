@@ -4,47 +4,47 @@
     "eps_L_measured_median": 0.0,
     "eps_L_measured_max": 0.0,
     "apriori_bound_median": 0.0,
-    "lambda2_geo_min": -2.1255075383073526e-16,
+    "lambda2_geo_min": 0.17868098141033173,
     "preserved_frac": 1.0
   },
   "0.02": {
     "rho": 0.02,
-    "eps_L_measured_median": 0.016010673540640237,
-    "eps_L_measured_max": 0.6323752030396562,
-    "apriori_bound_median": 0.24,
-    "lambda2_geo_min": -4.710288058618952e-16,
-    "preserved_frac": 0.882
+    "eps_L_measured_median": 0.016259609116904994,
+    "eps_L_measured_max": 0.0312632181973268,
+    "apriori_bound_median": 0.44,
+    "lambda2_geo_min": 0.17681385584425666,
+    "preserved_frac": 0.847
   },
   "0.05": {
     "rho": 0.05,
-    "eps_L_measured_median": 0.04475567969799861,
-    "eps_L_measured_max": 0.6975300142124471,
-    "apriori_bound_median": 0.6000000000000001,
-    "lambda2_geo_min": -4.0909625605957116e-16,
-    "preserved_frac": 0.863
+    "eps_L_measured_median": 0.040603911164140874,
+    "eps_L_measured_max": 0.07481096986588288,
+    "apriori_bound_median": 1.1,
+    "lambda2_geo_min": 0.17459607721670356,
+    "preserved_frac": 0.8485
   },
   "0.10": {
     "rho": 0.1,
-    "eps_L_measured_median": 0.34172869373584225,
-    "eps_L_measured_max": 0.7859374048221175,
-    "apriori_bound_median": 1.2000000000000002,
-    "lambda2_geo_min": -5.370415109067482e-16,
-    "preserved_frac": 0.8755
+    "eps_L_measured_median": 0.08059563933659167,
+    "eps_L_measured_max": 0.15099427373971605,
+    "apriori_bound_median": 2.2,
+    "lambda2_geo_min": 0.16938114509504024,
+    "preserved_frac": 0.8445
   },
   "0.20": {
     "rho": 0.2,
-    "eps_L_measured_median": 0.45880044682781596,
-    "eps_L_measured_max": 1.006082248620296,
-    "apriori_bound_median": 2.4000000000000004,
-    "lambda2_geo_min": -4.103185560825278e-16,
-    "preserved_frac": 0.88
+    "eps_L_measured_median": 0.16063879473328913,
+    "eps_L_measured_max": 0.29902202365953434,
+    "apriori_bound_median": 4.4,
+    "lambda2_geo_min": 0.1615510004798068,
+    "preserved_frac": 0.8555
   },
   "0.30": {
     "rho": 0.3,
-    "eps_L_measured_median": 0.5364039770905347,
-    "eps_L_measured_max": 1.1321458649196254,
-    "apriori_bound_median": 3.5999999999999996,
-    "lambda2_geo_min": -6.001179423817302e-16,
-    "preserved_frac": 0.873
+    "eps_L_measured_median": 0.23485560150384432,
+    "eps_L_measured_max": 0.4337157528790713,
+    "apriori_bound_median": 6.6,
+    "lambda2_geo_min": 0.15749804341787027,
+    "preserved_frac": 0.8545
   }
 }

@@ -5,7 +5,7 @@
 The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each
 load its physical service, and the productive value allocates \emph{total served
 capacity} among the admitted loads through the \emph{served-capacity} aggregate $y=Bz$,
-$y_k=\sum_{\tau,h}c_\tau z_{\tau kh}$ (distinct from the wrench aggregate $H_wz$; $y_k$ is
+$y_k=\sum_{i,h}c_{\tau(i)} z_{ikh}$ (distinct from the wrench aggregate $H_wz$; $y_k$ is
 the productive reserve assigned to load $k$ beyond the wrench-feasibility floor---a proxy
 for admissible throughput or disturbance tolerance):
 \begin{equation}
@@ -84,14 +84,14 @@ games~\cite{martinezpiazuelo2022}.
 A comparative-advantage exchange makes this concrete (Fig.~\ref{fig:flagship}): with
 $c_\ell=2c_s$, releasing one long lifter for two short lifters and moving it to the relay is
 productively neutral ($Bd=0$, $V\equiv V^{\star}$) with spectral effect
-$D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v$. Whether such a
+$D\lamtwo[d]=\sum_{i,r}d_{ir}\,v^{\top}L_{ir}v$. Whether such a
 \emph{free} gain exists is a projection condition:
 
 \begin{proposition}[Free-connectivity criterion]\label{prop:freeconn}
 Let $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple and Fiedler vector $v$,
 so the locally feasible directions form the subspace $N_p=\ker A\cap\ker B\cap\ker G_I$ (no
 constraint beyond those defining the minimal active face becomes newly active). With
-$g_\lambda=\nabla_z\lamtwo(\Lap(\bar z))$ (entries $\gamma_{\tau r}v^{\top}L_r v$),
+$g_\lambda=\nabla_z\lamtwo(\Lap(\bar z))$ (entries $v^{\top}L_{ir}v$),
 \begin{equation}
 \max_{h\in N_p,\ \|h\|\le1}D\lamtwo(\bar z)[h]=\|\Pi_{N_p}g_\lambda\|,
 \label{eq:freeconn}

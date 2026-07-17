@@ -71,33 +71,30 @@ def run(trials=200, eps=1e-4, seed=0):
     U2 = V[:, 1:3]
     rng = np.random.default_rng(seed)
 
-    wrong_single = wrong_U = 0
-    rel_single, rel_U = [], []
+    bridges = [_bridge_dL(reps, n, p) for p in [(0, 1), (1, 2), (2, 0)]]
+    ok_single = ok_U = 0                                # correct-sign counts
+    abs_single, abs_U = [], []                          # absolute prediction errors
+    TOL = 1e-4
     for _ in range(trials):
-        pair = tuple(rng.choice(3, size=2, replace=False))
-        dL = _bridge_dL(reps, n, pair)
-        truth = (_lam2(L + eps * dL) - _lam2(L)) / eps
-        # single arbitrary unit vector in the 2-D eigenspace
-        c = rng.standard_normal(2); c /= np.linalg.norm(c)
-        v = U2 @ c
+        a = rng.random(3)                               # random nonneg bridge mix
+        dL = sum(a[p] * bridges[p] for p in range(3))
+        dL = dL / np.linalg.norm(dL, 2)                 # unit perturbation
+        truth = (_lam2(L + eps * dL) - _lam2(L)) / eps  # ground-truth directional derivative
+        # single ARBITRARY unit vector in the degenerate 2-D eigenspace
+        c = rng.standard_normal(2); c /= np.linalg.norm(c); v = U2 @ c
         g_v = float(v @ dL @ v)
-        # eigenspace criterion = lambda_min(U2^T dL U2)
+        # eigenspace criterion (Prop. 2) = lambda_min(U2^T dL U2)
         g_U = float(np.linalg.eigvalsh(U2.T @ dL @ U2)[0])
-        if np.sign(g_v) != np.sign(truth) and abs(truth) > 1e-9:
-            wrong_single += 1
-        if np.sign(g_U) != np.sign(truth) and abs(truth) > 1e-9:
-            wrong_U += 1
-        rel_single.append(abs(g_v - truth) / (abs(truth) + 1e-9))
-        rel_U.append(abs(g_U - truth) / (abs(truth) + 1e-9))
+        ok_single += int(np.sign(g_v) == np.sign(truth) or (abs(g_v) < TOL and abs(truth) < TOL))
+        ok_U += int(np.sign(g_U) == np.sign(truth) or (abs(g_U) < TOL and abs(truth) < TOL))
+        abs_single.append(abs(g_v - truth)); abs_U.append(abs(g_U - truth))
 
     res = dict(
         clusters=3, clique_size=k, lambda2=float(w[1]), lambda3=float(w[2]),
-        gap_lambda3_lambda2=gap23, degenerate=bool(gap23 < 1e-9),
-        trials=trials,
-        single_vector_wrong_sign=wrong_single,
-        eigenspace_wrong_sign=wrong_U,
-        single_vector_median_relerr=float(np.median(rel_single)),
-        eigenspace_median_relerr=float(np.median(rel_U)),
+        gap_lambda3_lambda2=gap23, degenerate=bool(gap23 < 1e-9), trials=trials,
+        single_vector_correct_sign=ok_single, eigenspace_correct_sign=ok_U,
+        single_vector_median_abserr=float(np.median(abs_single)),
+        eigenspace_median_abserr=float(np.median(abs_U)),
     )
     (GEN / "multiplicity.json").write_text(json.dumps(res, indent=2), encoding="utf-8")
     print(json.dumps(res, indent=2))

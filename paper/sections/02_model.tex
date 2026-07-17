@@ -1,11 +1,11 @@
 \section{Population Model and Induced Network}
 \label{sec:model}
 
-\subsection{Assignment state (relaxed robot counts $z$)}
+\subsection{Assignment state (relaxed per-robot occupancy $z$)}
 A team of $N=\sum_\tau n_\tau$ robots is partitioned into $T$ types
 $\tau\in\{1,\dots,T\}$ (heterogeneous in force capacity and communication range),
-with $n_\tau$ robots of type $\tau$. There are $M$ loads with $H$ contact slots
-each, a set $\mathcal R$ of candidate relay sites, and the common action set
+$\tau(i)$ the type of robot $i$. There are $M$ loads with $H$ contact slots each, a set
+$\mathcal R$ of candidate relay sites, and the common action set
 \begin{equation}
 \mathcal A=\underbrace{\{(k,h)\}_{k\le M,\,h\le H}}_{\text{load--slot}}
 \;\cup\;\mathcal R\;\cup\;\{\mathrm{o}\},
@@ -14,33 +14,31 @@ each, a set $\mathcal R$ of candidate relay sites, and the common action set
 with $\mathrm o$ idle. We write $a\in\mathcal A$ for a generic action, $(k,h)$ for a
 load--slot, and $r\in\mathcal R$ for a relay site.
 
-The \emph{assignment state} is the relaxed-count matrix
-$z=(z_{\tau a})\in\R_{\ge0}^{T\times|\mathcal A|}$: $z_{\tau a}$ is a continuous
-relaxation of the number of type-$\tau$ robots assigned to action $a$---neither a
-probability nor a physical force. Each type spends its budget, and each slot or
-relay site holds at most one robot,
+The \emph{assignment state} is the relaxed \emph{per-robot} occupancy matrix
+$z=(z_{ia})\in\R_{\ge0}^{N\times|\mathcal A|}$: $z_{ia}\in[0,1]$ relaxes robot $i$'s single
+integer action. Each robot spends a unit budget, and each slot or relay site is held by at
+most one robot,
 \begin{equation}
 \begin{aligned}
-&\textstyle\sum_{a\in\mathcal A} z_{\tau a}=n_\tau\ \ \forall\tau,
-\qquad z_{\tau a}\ge0,\\[1mm]
-&\textstyle\sum_\tau z_{\tau,kh}\le1\ \ \forall(k,h),
-\qquad \sum_\tau z_{\tau,r}\le1\ \ \forall r.
+&\textstyle\sum_{a\in\mathcal A} z_{ia}=1\ \ \forall i,
+\qquad z_{ia}\ge0,\\[1mm]
+&\textstyle\sum_i z_{i,kh}\le1\ \ \forall(k,h),
+\qquad \sum_i z_{i,r}\le1\ \ \forall r.
 \end{aligned}
 \label{eq:conservation}
 \end{equation}
-The feasible set
-$\mathcal X=\{z\in\R_{\ge0}^{T\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a
-compact convex polytope. A finite team instantiates $z$ by an integer assignment
-(one action per robot); integerization is treated in Remark~\ref{rem:integer}. The
-state $z$ is distinct from the physical poses $q\in(\mathrm{SE}(2))^N$, which enter
-only the closed-loop simulation (Section~\ref{sec:exp}). Multiplying a count
-$z_{\tau kh}$ by a per-robot force yields a total force, so every aggregate below is
-dimensionally a force or torque.
+The type aggregate $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enters \emph{only} the
+productive payoff (which couples through types); the network below uses the per-robot
+occupancy directly. The feasible set
+$\mathcal X=\{z\in\R_{\ge0}^{N\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a compact
+convex polytope of dimension $n=N|\mathcal A|$. A finite team instantiates $z$ by rounding to
+one action per robot (Remark~\ref{rem:integer}); the poses $q\in(\mathrm{SE}(2))^N$ enter
+only the simulation (Section~\ref{sec:exp}).
 
 \begin{assumption}[Standing hypotheses]\label{as:standing}
 Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f}\neq
 \varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
-$L_r\succeq0$ and coefficient $\ge0$, undirected (symmetric); \emph{(iii)} the
+$L_{ir}\succeq0$ (robot-indexed, fixed), undirected (symmetric); \emph{(iii)} the
 single-Fiedler gradient $\nabla\lamtwo$ is used only where $\lamtwo$ is simple with gap
 $\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the eigenspace
 directional derivative (Prop.~\ref{prop:freeconn}), while the SDP~\eqref{eq:lmi} itself stays
@@ -89,27 +87,22 @@ separate layer.
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
 robot \emph{identity}; every robot is always present, so no node is created, removed, or left
 empty---an \emph{idle} robot still occupies its node and stays connected through the base
-graph (the action set, of size $|\mathcal A|=MH{+}|\mathcal R|{+}1$, chooses \emph{edges} at a
-node, not nodes). A fixed base graph $L_0\succeq0$ carries the always-on short-range
-conductances; committing a type-$\tau$ robot to relay site $r$ \emph{gates on} a predefined
-long-range link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), so
+graph (the action set chooses \emph{edges} at a node, not nodes). A fixed base graph
+$L_0\succeq0$ carries the always-on short-range conductances; when robot $i$ commits to relay
+site $r$ it \emph{gates on} its own predefined long-range link Laplacian
+$L_{ir}=\gamma_{\tau(i)r}\,b_{ir}b_{ir}^{\top}\succeq0$, so, \emph{directly in the per-robot
+occupancy},
 \begin{equation}
-\Lap(z)=L_0+\sum_{\tau,r}\gamma_{\tau r}\,z_{\tau r}\,L_r\ \in\R^{N\times N}
+\Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
 \end{equation}
-is affine in $z$ (Assumption~\ref{as:standing}(ii)) because \emph{only relay occupancy}
-gates edges---not a general pairwise geometric graph, whose weights would be bilinear in
-both endpoints' decisions. The individual variables are $x_{ir}\in\{0,1\}$ with
-$z_{\tau r}=\sum_{i\in\mathcal N_\tau}x_{ir}$; a deterministic injective matching
-$\chi_z:\{(\tau,r):z_{\tau r}\!=\!1\}\to\mathcal N_\tau$ (one robot per occupied site within a
-type) instantiates $z$. \emph{Type-permutation invariance:} any two individual assignments
-$x,x'$ with the same $z$ give $L(x')=\Pi^{\top}L(x)\Pi$ for a block-diagonal within-type
-permutation $\Pi$, so $\lamtwo(\Lap(z))$ is well defined on the equivalence class. Each
-$\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$, $\Lap(z)\succeq0$), an affine
-surrogate for the
-physical $\Lgeo(q)$ on the \emph{same} $N$ robots: one robot per node, so $\Lap$ and $\Lgeo$
-share the node set under the identity correspondence and no permutation is needed; the two
-are compared through Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
+Because each $L_{ir}$ is fixed and robot-indexed, $\Lap$ is \emph{unambiguously affine} in $z$
+and needs no matching or permutation: no type-count aggregation is used here, only relay
+occupancy gates edges (not a general pairwise geometric graph, whose weights would be
+bilinear in both endpoints). Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$,
+$\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$
+robots (node $i$ is robot $i$ in both), compared in the common identity order through
+Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI

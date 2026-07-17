@@ -35,9 +35,9 @@ def _lgeo(pos, reach):
     W = np.zeros((N, N))
     for i in range(N):
         for j in range(i + 1, N):
-            dij = np.linalg.norm(pos[i] - pos[j])
-            if dij <= min(reach[i], reach[j]):
-                W[i, j] = W[j, i] = _psi(dij)
+            # smooth weight for ALL pairs (Lemma 3 assumes a Lipschitz psi, no hard R-disk
+            # cutoff -- a cutoff switches topology and breaks the Lipschitz bound)
+            W[i, j] = W[j, i] = _psi(np.linalg.norm(pos[i] - pos[j]))
     return np.diag(W.sum(1)) - W
 
 
