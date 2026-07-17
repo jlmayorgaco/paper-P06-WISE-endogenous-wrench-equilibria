@@ -46,11 +46,11 @@ self-sustaining assignment on the \emph{first} draw for all $30$ seeds ($30/30$)
 $29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax, trading a modest
 rounding loss ($4.5\%$ vs $2.4\%$; optimality is not claimed). For $N\le8$ we enumerate
 \emph{every} $|\mathcal
-A|^N$ robot--action map exactly (Table~\ref{tab:oracle}): whenever a relaxed WISE exists an
-integer self-sustaining assignment also exists ($0/23$ false positives observed), and the
-worst-case productive integrality gap $\max g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star$ is
-$\le0.005$ (an exact zero-cost integer WISE, $B\hat z=y^\star$, is rarer, but the productive
-loss is negligible).
+A|^N$ robot--action map exactly (Table~\ref{tab:oracle}): at the design requirement no false
+positives occur ($0/23$) and the worst-case gap $\max g_{\mathbb Z}=V^\star-V_{\mathbb
+Z}^\star\le0.005$. Pushed \emph{adversarially} to $\sigma=0.97\LamE$ (the fiber ceiling) it is
+\emph{not} always integer-tight at tiny $N$: $N{=}6$ gives $13/50$ boundary false positives
+(Wilson $[16,40]\%$), closing by $N{=}8$ ($0/50$) as granularity grows.
 
 \begin{table}[t]\centering
 \caption{Exact integer oracle ($8$ seeds each): every $|\mathcal A|^N$ robot--action map

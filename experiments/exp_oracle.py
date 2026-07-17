@@ -71,7 +71,7 @@ def _relaxed(prob):
     return V_star, float(r.lambda_star)
 
 
-def _oracle(prob):
+def _oracle(prob, sigma=None):
     """Exact enumeration of all A^N pure assignments; returns the integer optima."""
     N, A, H = prob.N, prob.A, prob.H
     P = prob.P
@@ -84,7 +84,7 @@ def _oracle(prob):
     Wpad[:, :H, :] = prob.W[:, 0, :, :]                 # slots 0..H-1 carry wrench
     base = np.asarray(prob.base_laplacian, float)
     relayL = np.asarray(prob.relay_laplacians, float)   # (N,V,V)
-    sigma = prob.sigma
+    sigma = prob.sigma if sigma is None else float(sigma)
 
     total = A ** N
     feas_V, feas_relay = [], []                         # wrench-feasible profiles
@@ -171,6 +171,44 @@ def run(sizes=(6, 7, 8), seeds=8, nu=0.5, tau_d=2.0, lift=3.0):
         w = csv.DictWriter(f, fieldnames=fields); w.writeheader(); w.writerows(rows)
     _write_table(rows, seeds)
     return rows
+
+
+def _wilson(k, n, z=1.96):
+    if n == 0:
+        return float("nan"), float("nan")
+    p = k / n; den = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / den
+    h = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / den
+    return max(0.0, c - h), min(1.0, c + h)
+
+
+def adversarial(sizes=(6, 8), seeds=50, frac=0.97, nu=0.5, tau_d=2.0, lift=3.0):
+    """Boundary-adversarial oracle: sigma_req = frac * Lambda_E (just below the fiber max),
+    where integer attainment is hardest, so false positives (relaxed- but not integer-
+    feasible) are most likely. Reports the count and a Wilson 95% CI."""
+    print("=== adversarial oracle (sigma = %.2f * Lambda_E) ===" % frac)
+    tot_rel = tot_fp = 0
+    for N in sizes:
+        y_target = round(0.75 * N)
+        rel = fp = 0
+        for s in range(seeds):
+            prob = scenarios.two_region(seed=s, N=N, nu=nu, tau_d=tau_d, lift=lift,
+                                        bridge_gain=3.0, y_target=y_target)
+            _, LamE = _relaxed(prob)
+            if LamE <= 1e-6:
+                continue
+            sig = frac * LamE                            # relaxed-feasible by construction
+            rel += 1
+            o = _oracle(prob, sigma=sig)
+            if not o["integer_feasible"]:
+                fp += 1
+        lo, hi = _wilson(fp, rel)
+        tot_rel += rel; tot_fp += fp
+        print(f"N={N}: relaxed-feasible {rel}/{seeds}, false positives {fp}/{rel} "
+              f"(Wilson95 [{lo:.1%},{hi:.1%}])")
+    lo, hi = _wilson(tot_fp, tot_rel)
+    print(f"TOTAL: {tot_fp}/{tot_rel} false positives, Wilson95 [{lo:.1%},{hi:.1%}]")
+    return tot_fp, tot_rel, (lo, hi)
 
 
 def _write_table(rows, seeds):
