@@ -38,13 +38,13 @@ trials, so $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)$ held with minimum spectral margin $0
 (Lemma~\ref{lem:bridge}).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
-At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) re-certifies an integer
-self-sustaining assignment on the \emph{first} draw for all $30$ seeds ($30/30$), versus
-$29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax. Its median productive
-loss is $2.3\%$ after the matching and $4.9\%$ after the connectivity repair, while
-independent best-of-$30$ reaches $2.4\%$ but recovers a jointly feasible team on only $29/30$
-(optimality not claimed). Only $4/30$ structured recoveries satisfy $B\hat z=y^{\star}$
-exactly ($\le\tau_B$); the rest stay jointly feasible at that loss. For $N\le8$ we enumerate
+At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) is robust across random
+processing orders: over $30$ instances $\times\,30$ independent draws ($900$ recoveries),
+direct rounding is jointly feasible in $72.6\%$, and the one-step repair (mean $0.27$, max $1$
+move) raises this to $99.4\%$ (Wilson $[98.7,99.8]$), every instance succeeding on $\ge1$ draw
+(worst-instance $83\%$; optimality not claimed). The relative recovery loss is median $4.2\%$
+(IQR $[1.7,8.8]\%$, max $27\%$); $9.3\%$ of recoveries are exactly zero-cost
+($\|B\hat z-y^\star\|_\infty\le\tau_B$). For $N\le8$ we enumerate
 \emph{every} $|\mathcal A|^N$ map (Table~\ref{tab:oracle}): at the design requirement no false
 positives occur ($0/23$) and $\max g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star\le0.005$
 ($<0.06\%$ of $V^\star$). Pushed \emph{adversarially} to $\sigma=0.97\LamE$ it is \emph{not}

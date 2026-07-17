@@ -197,5 +197,79 @@ def _figure(stats, methods, n):
     plt.close(fig)
 
 
+def _repair_moves(prob, x, max_steps=12):
+    """Greedy repair returning (x, n_moves)."""
+    x = x.copy(); ridx = prob.relay_index; nm = 0
+    for _ in range(max_steps):
+        if metrics.certified(prob, x):
+            return x, nm
+        best, best_lam = None, prob.lambda2(x)
+        for i in range(prob.N):
+            if x[i, ridx] == 1.0:
+                continue
+            cand = x[i].copy(); x[i] = 0.0; x[i, ridx] = 1.0
+            if _wrench_ok(prob, x) and prob.lambda2(x) > best_lam + 1e-9:
+                best, best_lam = i, prob.lambda2(x)
+            x[i] = cand
+        if best is None:
+            break
+        x[best] = 0.0; x[best, ridx] = 1.0; nm += 1
+    return x, nm
+
+
+def _wilson(k, n, z=1.96):
+    if n == 0:
+        return float("nan"), float("nan")
+    p = k / n; den = 1 + z * z / n
+    c = (p + z * z / (2 * n)) / den
+    h = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / den
+    return max(0.0, c - h), min(1.0, c + h)
+
+
+def campaign(seeds=SEEDS, R=30):
+    """Robustness of structured recovery over R independent random orders per instance
+    (|seeds| x R structured draws). Reports pre/post joint-feasibility rates, worst-instance
+    rate, Wilson CI, move counts, relative recovery loss, and zero-cost fraction."""
+    pre_ok = post_ok = zero_cost = 0
+    total = 0
+    per_inst_post = []
+    moves, losses = [], []
+    for sd in seeds:
+        prob = scenarios.two_region(seed=sd, N=12, nu=0.5, tau_d=3.0, bridge_gain=3.0)
+        z = np.maximum(baselines.wise_primal_dual(prob, max_iters=4000).x, 0.0)
+        v_relax = float(prob.productive_value(z))
+        inst_post = 0
+        for r in range(R):
+            rng = np.random.default_rng(1000 * sd + r)
+            x0 = _dependent_draw(prob, z, rng)
+            pre = metrics.certified(prob, x0)
+            xr, nm = _repair_moves(prob, x0.copy())
+            post = metrics.certified(prob, xr)
+            pre_ok += int(pre); post_ok += int(post); total += 1
+            moves.append(nm); inst_post += int(post)
+            if post:
+                loss = (v_relax - float(prob.productive_value(xr))) / (abs(v_relax) + 1e-9)
+                losses.append(loss); zero_cost += int(loss < 1e-4)
+        per_inst_post.append(inst_post / R)
+    losses = np.array(losses)
+    lo, hi = _wilson(post_ok, total)
+    q1, q3 = np.percentile(losses, [25, 75])
+    print(f"campaign: {len(seeds)}x{R}={total} structured draws")
+    print(f"  p_pre  (jointly feasible before repair) = {pre_ok/total:.1%}")
+    print(f"  p_post (jointly feasible after repair)   = {post_ok/total:.1%} "
+          f"(Wilson95 [{lo:.1%},{hi:.1%}])")
+    print(f"  worst-instance post rate = {min(per_inst_post):.1%}; "
+          f"all-instance min>=1 draw = {all(p > 0 for p in per_inst_post)}")
+    print(f"  moves: mean={np.mean(moves):.2f} max={max(moves)}")
+    print(f"  rel loss: median={np.median(losses):.3f} IQR=[{q1:.3f},{q3:.3f}] max={losses.max():.3f}")
+    print(f"  zero-cost fraction = {zero_cost}/{len(losses)} = {zero_cost/len(losses):.1%}")
+    return dict(total=total, p_pre=pre_ok/total, p_post=post_ok/total,
+                wilson=[lo, hi], worst_instance=min(per_inst_post),
+                moves_mean=float(np.mean(moves)), moves_max=int(max(moves)),
+                loss_median=float(np.median(losses)), loss_q1=float(q1), loss_q3=float(q3),
+                loss_max=float(losses.max()), zero_cost_frac=zero_cost / len(losses))
+
+
 if __name__ == "__main__":
     run()
+    campaign()

@@ -25,11 +25,11 @@ only if $\Delta\lamtwo>\tau_\lambda$. Since integer assignments are finite and $
 strictly increases, the search cannot cycle; it stops when re-certified, when no admissible
 move remains, or after $K_{\max}{=}12$ moves (each iteration costs $|\mathcal D|$ wrench-LP and
 eigenvalue evaluations); it returns $\hat z$ once budgets, wrench, and $\lamtwo\ge\sigmastar$
-hold. Empirically ($N{=}12$, $30$ seeds, Section~\ref{sec:exp}) one draw is already self-sustaining
-on $18/30$ instances and the remaining $12$ are repaired in a single relay move (max $1$, cap
-$12$). Repair trades productive value for connectivity ($Bd\neq0$; median loss
-$2.3\%\!\to\!4.9\%$), so the team is integer self-sustaining but rarely \emph{exactly}
-zero-cost ($4/30$, $\|B\hat z-y^{\star}\|_\infty\le\tau_B$).
+hold. Empirically (Section~\ref{sec:exp}; $30$ instances $\times\,30$ random orders) direct rounding
+is jointly feasible in $72.6\%$ of draws and the repair (mean $0.27$, max $1$ move) raises this
+to $99.4\%$. Repair trades productive value for connectivity ($Bd\neq0$; median relative loss
+$4.2\%$), so the team is integer self-sustaining but seldom \emph{exactly} zero-cost ($9.3\%$,
+$\|B\hat z-y^{\star}\|_\infty\le\tau_B$).
 
 A fully \emph{distributed} realization---each robot sampling from a local flow and converging
 to $\Emanifold^{\star}_{\mathrm{WISE}}$ over the graph it forms---needs a convergence guarantee
