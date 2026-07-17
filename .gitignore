@@ -37,3 +37,6 @@ Thumbs.db
 .idea/
 .vscode/
 build.log
+
+generated/*.png
+paper/log2.txt

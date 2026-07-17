@@ -15,13 +15,12 @@ exactly.
 
 \begin{figure}[t]\centering
 \includegraphics[width=\columnwidth]{fig_flagship.pdf}
-\caption{A \emph{non-trivial} exchange: the scarce $L$ is the best lifter ($c_L=2c_S$)
-\emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$). \textbf{(a)} both $L$ lift
-$\Rightarrow$ disconnected ($\lamtwo\approx0$); \textbf{(b)} WISE frees one $L$ to the relay,
-bridging ($\lamtwo=0.41$). The move $1L_{\mathrm{lift}}{+}2S_{\mathrm{relay}}\!\to\!
-1L_{\mathrm{relay}}{+}2S_{\mathrm{lift}}$ is exactly neutral ($\Delta Bz{=}\Delta w{=}\Delta
-n{=}\Delta V{=}0$) yet $D\lamtwo[d]>0$. Triangles/circles: long/short; red/green: lift/relay;
-diamond: relay site.}
+\caption{Non-trivial comparative-advantage exchange: the scarce $L$ is the best lifter
+($c_L=2c_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$). Both $L$ lifting leaves
+the regions disconnected \textbf{(a)}; WISE frees one $L$ to the central relay site, bridging
+at $\lamtwo=0.41$ \textbf{(b)}, along the exactly neutral move annotated below. Triangles/circles:
+long/short-range robots; red/green: lifting/relaying; diamond: relay site; box with
+$w^{\mathrm{dem}}$/$\tau$: (torque-critical) load.}
 \label{fig:flagship}
 \end{figure}
 
@@ -84,9 +83,9 @@ the repository, with $T,M,H,|\mathcal R|$ fixed so this isolates spectral-LMI sc
 not full MRTA scaling): offline-ready.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
-Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
-on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
-every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: in
+Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$, positive on
+$(\LamE,\LamX]$, infeasible beyond, matching \eqref{eq:trichotomy} on every seed (median costly
+width $0.64$). The dual is a genuine price: in
 unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches $\Delta\Price/\Delta\sigma$
 over $84$ interior points ($r=0.996$, median relative error $0.6\%$; central differences
 $\Delta\sigma{=}0.05$ on the interior $25$--$75\%$ of $(\LamE,\LamX)$, no kink straddled),
