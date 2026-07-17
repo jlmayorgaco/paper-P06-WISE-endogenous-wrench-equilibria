@@ -217,6 +217,30 @@ def _repair_moves(prob, x, max_steps=12):
     return x, nm
 
 
+def _repair_budget(prob, x, v_ref, eta_max, max_steps=12):
+    """Greedy repair that never lets the productive value fall below (1-eta_max) V*.
+    Returns (x, n_moves, feasible). If no admissible in-budget move re-certifies, it fails
+    rather than degrading utility -- a loss-budgeted policy."""
+    x = x.copy(); ridx = prob.relay_index; nm = 0
+    floor = (1.0 - eta_max) * v_ref
+    for _ in range(max_steps):
+        if metrics.certified(prob, x):
+            return x, nm, True
+        best, best_lam = None, prob.lambda2(x)
+        for i in range(prob.N):
+            if x[i, ridx] == 1.0:
+                continue
+            cand = x[i].copy(); x[i] = 0.0; x[i, ridx] = 1.0
+            if (_wrench_ok(prob, x) and prob.lambda2(x) > best_lam + 1e-9
+                    and float(prob.productive_value(x)) >= floor):
+                best, best_lam = i, prob.lambda2(x)
+            x[i] = cand
+        if best is None:
+            break
+        x[best] = 0.0; x[best, ridx] = 1.0; nm += 1
+    return x, nm, metrics.certified(prob, x)
+
+
 def _wilson(k, n, z=1.96):
     if n == 0:
         return float("nan"), float("nan")
@@ -224,6 +248,40 @@ def _wilson(k, n, z=1.96):
     c = (p + z * z / (2 * n)) / den
     h = z * np.sqrt(p * (1 - p) / n + z * z / (4 * n * n)) / den
     return max(0.0, c - h), min(1.0, c + h)
+
+
+def campaign_budget(seeds=SEEDS, R=30, etas=(0.05, 0.10, 1.0)):
+    """Success rate vs maximum-loss budget eta_max (Sec V, P0.8/9). For each eta_max the
+    loss-budgeted repair either re-certifies within (1-eta_max) V* or reports failure."""
+    probs = []
+    for sd in seeds:
+        prob = scenarios.two_region(seed=sd, N=12, nu=0.5, tau_d=3.0, bridge_gain=3.0)
+        z = np.maximum(baselines.wise_primal_dual(prob, max_iters=4000).x, 0.0)
+        probs.append((sd, prob, z, float(prob.productive_value(z))))
+    rows = []
+    for eta in etas:
+        ok = 0; tot = 0; losses = []; inst_ok = []
+        for sd, prob, z, v in probs:
+            got = 0
+            for r in range(R):
+                rng = np.random.default_rng(1000 * sd + r)   # same draws as campaign()
+                x0 = _dependent_draw(prob, z, rng)
+                xr, nm, feas = _repair_budget(prob, x0.copy(), v, eta)
+                loss = (v - float(prob.productive_value(xr))) / (abs(v) + 1e-9)
+                good = feas and loss <= eta + 1e-9           # success = feasible AND in budget
+                tot += 1; ok += int(good); got += int(good)
+                if good:
+                    losses.append(loss)
+            inst_ok.append(got > 0)
+        lo, hi = _wilson(ok, tot)
+        mx = max(losses) if losses else float("nan")
+        rows.append(dict(eta_max=eta, success=ok / tot, n=f"{ok}/{tot}",
+                         wilson=[lo, hi], loss_max=mx, inst_success=float(np.mean(inst_ok))))
+        tag = "unbounded" if eta >= 1.0 else f"{eta:.0%}"
+        print(f"eta_max={tag:>9}: per-draw success={ok}/{tot}={ok/tot:.1%} "
+              f"(Wilson [{lo:.1%},{hi:.1%}]), instances w/>=1 good draw="
+              f"{int(np.sum(inst_ok))}/{len(probs)}, max loss={mx:.1%}")
+    return rows
 
 
 def campaign(seeds=SEEDS, R=30):

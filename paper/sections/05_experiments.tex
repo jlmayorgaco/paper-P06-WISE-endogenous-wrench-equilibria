@@ -42,15 +42,16 @@ At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) is robust acros
 processing orders: over $30$ instances $\times\,30$ independent draws ($900$ recoveries),
 direct rounding is jointly feasible in $653/900$ ($72.6\%$), and the one-step repair (mean
 $0.27$, max $1$ move) raises this to $895/900$ ($99.4\%$, Wilson $[98.7,99.8]$), every instance
-succeeding on $\ge1$ of its $30$ draws (worst-instance $25/30$; optimality not claimed). The
+succeeding on $\ge1$ of its $30$ draws (optimality not claimed). The
 relative recovery loss is median $4.2\%$ (IQR $[1.7,8.8]\%$, max $27\%$); $83/895$ ($9.3\%$)
-recoveries are exactly zero-cost ($\|B\hat z-y^\star\|_\infty\le\tau_B$). For $N\le8$ we
-enumerate
+recoveries are exactly zero-cost ($\le\tau_B$). A loss-budgeted repair capping the drop at
+$(1{-}\eta_{\max})V^{\star}$ still recovers $514/900$ draws within $\eta_{\max}{=}5\%$ and
+$806/900$ within $10\%$ (both $29/30$ instances). For $N\le8$ we enumerate
 \emph{every} $|\mathcal A|^N$ map (Table~\ref{tab:oracle}): at the design requirement no false
 positives occur ($0/23$) and $\max g_{\mathbb Z}=V^\star-V_{\mathbb Z}^\star\le0.005$
 ($<0.06\%$ of $V^\star$). Pushed \emph{adversarially} to $\sigma=0.97\LamE$ it is \emph{not}
-always integer-tight at the smallest $N$: $N{=}6$ gives $13/50$ boundary false positives
-(Wilson $[16,40]\%$), none at $N{=}7,8$ ($0/50$, Wilson upper $7\%$).
+always integer-tight at the smallest $N$: $N{=}6$ gives $13/50$ false positives
+(Wilson $[16,40]\%$), none at $N{=}7,8$.
 
 \begin{table}[t]\centering
 \caption{Exact oracle on relaxed-WISE-feasible small-team instances ($8$ seeds each; every
@@ -71,16 +72,15 @@ $30/30$, Wilson $[89,100]$), versus random-fiber $+0.10$ (sometimes infeasible) 
 least-role-change $+0.38$. Stage-1 is $\sim\!10$\,ms; the
 Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s, $N{=}12{\to}96$;
 CVXPY~1.9/CLARABEL~0.11, tol $10^{-7}$, single-threaded, no warm starts, $T,M,H,|\mathcal R|$
-fixed so this isolates spectral-LMI scaling in $N$, not full MRTA): offline-ready.
+fixed so this isolates spectral-LMI scaling in $N$, not full MRTA).
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$, positive on
 $(\LamE,\LamX]$, infeasible beyond, matching \eqref{eq:trichotomy} on every seed (median costly
 width $0.64$). The dual is a genuine price: in
 unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches $\Delta\Price/\Delta\sigma$
-over $84$ interior points ($r=0.996$, median relative error $0.6\%$; central differences
-$\Delta\sigma{=}0.05$ on the interior $25$--$75\%$ of $(\LamE,\LamX)$), confirming
-$\pi^{\star}\in\partial\Price$ at differentiable points.
+over $84$ interior points ($r=0.996$, median error $0.6\%$; $\Delta\sigma{=}0.05$ on the
+interior $25$--$75\%$ of $(\LamE,\LamX)$), confirming $\pi^{\star}\in\partial\Price$.
 
 \begin{figure}[t]\centering
 \includegraphics[width=0.64\columnwidth]{fig_price.pdf}
