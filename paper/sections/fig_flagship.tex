@@ -1,0 +1,93 @@
+% Flagship figure (native TikZ). Two-region comparative-advantage exchange.
+\definecolor{liftred}{HTML}{C0392B}
+\definecolor{relaygreen}{HTML}{1F7A4D}
+\definecolor{loadfill}{HTML}{EEF1F4}
+\definecolor{loadedge}{HTML}{5B6470}
+\begin{tikzpicture}[
+  load/.style={draw=loadedge, fill=loadfill, rounded corners=1.5pt,
+               minimum width=17mm, minimum height=6mm, line width=0.9pt},
+  lrobot/.style={regular polygon, regular polygon sides=3, draw=black,
+                 line width=0.6pt, minimum size=5.6mm, inner sep=0pt},
+  srobot/.style={circle, draw=black, line width=0.6pt, minimum size=3.9mm, inner sep=0pt},
+  site/.style={diamond, draw=relaygreen, line width=1pt, minimum size=8.5mm, inner sep=0pt},
+  wdem/.style={-{Latex[length=1.8mm]}, line width=1pt},
+  slot/.style={black, line width=1pt},
+  stem/.style={loadedge, dash pattern=on 1.2pt off 1.2pt, line width=0.5pt},
+  link/.style={black!45, line width=1pt},
+  bridge/.style={relaygreen, line width=1.5pt, line cap=round},
+  divider/.style={black!30, dash pattern=on 3pt off 2.5pt, line width=0.6pt},
+  layerlab/.style={rotate=90, gray, font=\footnotesize\itshape},
+  gapdash/.style={liftred, dash pattern=on 1pt off 1.4pt, line width=0.9pt},
+  invbox/.style={draw=relaygreen, rounded corners=2pt, fill=green!4, inner sep=5pt,
+                 align=center, font=\small},
+  ptitle/.style={font=\normalsize},
+]
+% ---- load macro: center x, center y, torque flag (0/1) ----
+\newcommand{\drawload}[3]{%
+  \node[load] at (#1,#2) {};
+  \foreach \sx in {-0.55,-0.18,0.18,0.55}{%
+    \draw[slot] ({#1+\sx},{#2-0.3}) -- ({#1+\sx},{#2-0.45});}
+  \draw[wdem] (#1,{#2+0.82}) -- (#1,{#2+0.34});
+  \node[font=\small] at ({#1+0.34},{#2+0.62}) {$w^{\mathrm{dem}}$};
+  \ifnum#3=1
+    \draw[-{Latex[length=1.4mm]}, line width=0.8pt]
+      ({#1+0.42},{#2+0.18}) arc[start angle=40, end angle=320, radius=3.6mm];
+    \node[font=\small] at ({#1+0.62},{#2+0.30}) {$\tau$};
+  \fi}
+
+% =================== Panel (a): both L lift -> disconnected ===================
+\begin{scope}
+  \node[ptitle] at (2.35,5.75) {(a) both $L$ lift: $\lambda_2\approx0$};
+  \drawload{1.0}{4.5}{0}\drawload{3.7}{4.5}{1}
+  % lifters: load1 = 1L+1S, load2 = 1L+1S (red = lifting)
+  \foreach \x/\t in {0.62/l,1.30/s,3.32/l,4.00/s}{%
+    \draw[stem] (\x,3.62) -- (\x,4.2);}
+  \node[lrobot,fill=liftred] at (0.62,3.42){}; \node[srobot,fill=liftred] at (1.30,3.42){};
+  \node[lrobot,fill=liftred] at (3.32,3.42){}; \node[srobot,fill=liftred] at (4.00,3.42){};
+  \node[font=\small] at (1.0,2.78){load 1: 1L+1S};
+  \node[font=\small] at (3.7,2.78){load 2: 1L+1S};
+  \draw[divider] (-0.35,2.4) -- (5.05,2.4);
+  \node[layerlab] at (-0.55,3.45){task};  \node[layerlab] at (-0.55,1.25){comm};
+  % comm layer: two short relays, unoccupied site, a gap they cannot span
+  \node[site] at (2.35,1.25){};
+  \node[srobot,fill=relaygreen] at (1.55,1.25){};
+  \node[srobot,fill=relaygreen] at (3.15,1.25){};
+  \draw[link] (1.55,1.25) -- (2.02,1.25);  \draw[link] (3.15,1.25) -- (2.68,1.25);
+  \draw[gapdash] (2.05,1.25) -- (2.65,1.25);
+  \node[font=\footnotesize, liftred] at (2.35,0.78){gap};
+\end{scope}
+
+% =================== Panel (b): WISE, one L relays -> connected ===================
+\begin{scope}[xshift=6.6cm]
+  \node[ptitle] at (2.35,5.75) {(b) WISE: one $L$ relays: $\lambda_2\ge\sigma_{\mathrm{req}}$};
+  \drawload{1.0}{4.5}{0}\drawload{3.7}{4.5}{1}
+  % load1 lifted by 3 shorts; load2 by 1L+1S
+  \foreach \x in {0.48,1.0,1.52}{\draw[stem](\x,3.62)--(\x,4.2);
+    \node[srobot,fill=liftred] at (\x,3.42){};}
+  \draw[stem](3.32,3.62)--(3.32,4.2); \node[lrobot,fill=liftred] at (3.32,3.42){};
+  \draw[stem](4.0,3.62)--(4.0,4.2);  \node[srobot,fill=liftred] at (4.0,3.42){};
+  \node[font=\small] at (1.0,2.78){load 1: 3S};
+  \node[font=\small] at (3.7,2.78){load 2: 1L+1S};
+  \draw[divider] (-0.35,2.4) -- (5.05,2.4);
+  \node[layerlab] at (-0.55,3.45){task};  \node[layerlab] at (-0.55,1.15){comm};
+  % freed long robot occupies the central site and bridges both regions
+  \draw[bridge] (1.0,3.05) -- (2.35,1.1);  \draw[bridge] (3.66,3.05) -- (2.35,1.1);
+  \node[site] at (2.35,1.1){};
+  \node[lrobot,fill=relaygreen] at (2.35,1.1){};
+\end{scope}
+
+% ---- neutral-exchange arrow between the panels ----
+\node[font=\LARGE] at (5.75,3.45) {$\Rightarrow$};
+
+% ---- marker legend (lower left, two compact lines) ----
+\node[anchor=west, font=\footnotesize] at (-0.55,0.45) {%
+  \textcolor{liftred}{$\blacktriangle\,\bullet$}~lifting \;\;
+  \textcolor{relaygreen}{$\blacktriangle\,\bullet$}~relaying \;\; $\Diamond$~relay site};
+\node[anchor=west, font=\footnotesize] at (-0.55,-0.05) {%
+  $\blacktriangle$~long-range robot \;\; $\bullet$~short-range robot};
+
+% ---- neutral-move invariants (lower right, two lines to clear the legend) ----
+\node[invbox] at (9.0,0.15) {%
+  $1L_{\mathrm{lift}}{+}2S_{\mathrm{relay}}\to 1L_{\mathrm{relay}}{+}2S_{\mathrm{lift}}$\\[2pt]
+  $\Delta Bz{=}\Delta w{=}\Delta V{=}0,\quad \Delta\lambda_2>0$};
+\end{tikzpicture}
