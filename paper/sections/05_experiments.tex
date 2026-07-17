@@ -15,15 +15,14 @@ exactly.
 
 \begin{figure}[t]\centering
 \includegraphics[width=\columnwidth]{fig_flagship.pdf}
-\caption{A \emph{non-trivial} composition exchange: the scarce type $L$ is the best lifter
-($c_L=2c_S$, $F_L=2F_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$,
-$R_L\!\gg\!R_S$), and a torque-critical load ties one $L$ down. \textbf{(a)} both $L$ lift, so
-the productive optimum is disconnected ($\lamtwo\approx0$); \textbf{(b)} WISE frees one $L$ to
-the central relay and replaces its capacity with two $S$, bridging the regions
+\caption{A \emph{non-trivial} exchange: the scarce $L$ is the best lifter ($c_L=2c_S$,
+$F_L=2F_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$), and a torque-critical load
+pins one $L$. \textbf{(a)} both $L$ lift $\Rightarrow$ disconnected ($\lamtwo\approx0$);
+\textbf{(b)} WISE frees one $L$ to the relay, two $S$ replace its capacity, bridging
 ($\lamtwo=0.41$). The move $1L_{\mathrm{lift}}{+}2S_{\mathrm{relay}}\!\to\!
-1L_{\mathrm{relay}}{+}2S_{\mathrm{lift}}$ is exactly neutral---$\Delta Bz=0$ ($-c_L{+}2c_S=0$),
-$\Delta w=0$, $\Delta n_{\mathrm{active}}=0$, $\Delta V=0$---yet $D\lamtwo[d]>0$. Triangles:
-long; circles: short; red: lift; green: relay; diamond: relay site.}
+1L_{\mathrm{relay}}{+}2S_{\mathrm{lift}}$ is exactly neutral ($\Delta Bz{=}\Delta w{=}\Delta
+n{=}\Delta V{=}0$) yet $D\lamtwo[d]>0$. Triangles/circles: long/short; red/green: lift/relay;
+diamond: relay site.}
 \label{fig:flagship}
 \end{figure}
 
@@ -33,9 +32,12 @@ reorganization, not a swap of equals: releasing one long lifter, compensating it
 with two short lifters, and moving it to the relay holds $Bz=(3,3)=y^{\star}$, both wrenches
 (inner-polygon LP), $V=V^{\star}$ and $n_{\mathrm{active}}=6$ (two long, four short) exactly
 fixed, while $\lamtwo(\Lgeo)$ rises from $\approx0$ to $0.41$---materializing
-Prop.~\ref{prop:freeconn} with $D\lamtwo[d]>0$. More broadly, at an interior optimum
-$\dim\mathcal N_p=72-13=59$ and moving along the fiber holds $V,Bz$ to $<10^{-8}$ while
-$\lamtwo$ crosses $\sigmastar$ (\texttt{exp\_fiber}).
+Prop.~\ref{prop:freeconn} with $D\lamtwo[d]>0$; the fiber itself has $\dim\mathcal N_p=59$
+with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). Two checks back the harder claims:
+on a $C_3$-symmetric graph with $\lamtwo=\lambda_3$, an arbitrary single-vector gradient
+mispredicts $D\lamtwo$ by a median factor $\sim\!10^{8}$ while the eigenspace criterion
+tracks it to $0.6\%$; and the a-priori bound $4d_{\max}L_\psi\rho$ (Lemma~\ref{lem:bridge})
+holds at every tube radius ($\varepsilon_L$ median $\le0.05$ for $\rho\le0.05$\,m).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$ one randomized draw yields a directly re-certified integer self-sustaining

@@ -1,0 +1,13 @@
+{
+  "clusters": 3,
+  "clique_size": 3,
+  "lambda2": 0.2783961525291438,
+  "lambda3": 0.2783961525291439,
+  "gap_lambda3_lambda2": 1.1102230246251565e-16,
+  "degenerate": true,
+  "trials": 200,
+  "single_vector_wrong_sign": 0,
+  "eigenspace_wrong_sign": 0,
+  "single_vector_median_relerr": 233701367.09174538,
+  "eigenspace_median_relerr": 0.0055204565554663665
+}
