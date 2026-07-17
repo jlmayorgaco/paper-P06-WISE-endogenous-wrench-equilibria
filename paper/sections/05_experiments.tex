@@ -30,22 +30,29 @@ The flagship instance ($N=12$, $c_L=2c_S$) certifies a genuine comparative-advan
 reorganization: releasing one long lifter for two short lifters and moving it to the relay
 holds $Bz=(3,3)=y^{\star}$, both wrenches, $V=V^{\star}$ and $n_{\mathrm{active}}=6$ fixed,
 while $\lamtwo(\Lgeo)$ rises $\approx0\!\to\!0.41$ (Prop.~\ref{prop:freeconn},
-$D\lamtwo[d]>0$); a separate single-load fiber has $\dim\mathcal N_p=72{-}13=59$
-with $V,Bz$ invariant to $<10^{-8}$ (\texttt{exp\_fiber}). It is not tied to one bridge: on a
-three-region, two-bridge instance WISE frees \emph{two} long robots to two relay sites (shorts
-compensating), holding $(3,3,3)$ while $\lamtwo:0\!\to\!0.21$. (Repository checks confirm the
-harder claims: the eigenspace multiplicity criterion is exact on a $\lamtwo=\lambda_3$ case,
-and the a-priori $\varepsilon_L$ bound holds on every tracking perturbation.)
+$D\lamtwo[d]>0$) on the separate single-load fiber of dimension $59$ (Theorem~\ref{thm:degeneracy},
+\texttt{exp\_fiber}). It is not tied to one bridge: on a three-region, two-bridge instance WISE
+frees \emph{two} long robots to two relay sites (shorts compensating), holding $(3,3,3)$ while
+$\lamtwo:0\!\to\!0.21$. On $200$ symmetric
+$\lamtwo{=}\lambda_3$ instances the eigenspace criterion matches the finite-difference
+derivative to median $10^{-6}$, versus $0.04$ for an arbitrary Fiedler vector; across $2000$
+perturbations ($\rho\le0.3$) the tracking mismatch stays under the a-priori $4d_{\max}L_\psi\rho$
+(max $0.43\le6.6$), $\varepsilon_{\mathrm{model}}$ calibrated offline (Lemma~\ref{lem:bridge}).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) re-certifies an integer
 self-sustaining assignment on the \emph{first} draw for all $30$ seeds ($30/30$), versus
-$29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax, at a modest rounding
-loss ($4.5\%$ vs $2.4\%$; optimality not claimed). For $N\le8$ we enumerate
+$29/30$ (best-of-$30$) for independent rounding and $7/30$ for argmax. Its median productive
+loss is $2.3\%$ after the matching and $4.9\%$ after the connectivity repair, while
+independent best-of-$30$ reaches $2.4\%$ but recovers a jointly feasible team on only $29/30$
+(optimality not claimed). Only $4/30$ structured recoveries satisfy $B\hat z=y^{\star}$
+exactly ($\|B\hat z-y^\star\|_\infty\le\tau_B$); the rest stay jointly feasible at that loss.
+For $N\le8$ we enumerate
 \emph{every} $|\mathcal
 A|^N$ robot--action map exactly (Table~\ref{tab:oracle}): at the design requirement no false
 positives occur ($0/23$) and the worst-case gap $\max g_{\mathbb Z}=V^\star-V_{\mathbb
-Z}^\star\le0.005$ ($<0.03\%$ of $V^\star$). Pushed \emph{adversarially} to $\sigma=0.97\LamE$
+Z}^\star\le0.005$ ($<0.06\%$ of $V^\star$; Table~\ref{tab:oracle} reports both). Pushed
+\emph{adversarially} to $\sigma=0.97\LamE$
 (the fiber ceiling) it is \emph{not} always integer-tight at the smallest $N$: $N{=}6$ gives
 $13/50$ boundary false positives (Wilson $[16,40]\%$), and none at $N{=}7,8$ ($0/50$ each,
 Wilson upper $7\%$).
@@ -54,8 +61,8 @@ Wilson upper $7\%$).
 \caption{Exact integer oracle ($8$ seeds each): every $|\mathcal A|^N$ robot--action map
 enumerated (pruned by budget/occupancy/wrench). Among relaxed-WISE-feasible seeds, columns
 count integer self-sustaining ($\mathcal F_{\mathbb Z}\!\neq\!\varnothing$) and exact
-zero-cost ($B\hat z\!=\!y^\star$) WISE; $\max g_{\mathbb Z}$ is the worst-case gap
-$V^\star-V_{\mathbb Z}^\star$.}
+zero-cost ($\|B\hat z-y^\star\|_\infty\!\le\!\tau_B$) WISE; $\max g_{\mathbb Z}$ is the
+worst-case gap $V^\star-V_{\mathbb Z}^\star$, shown absolute and relative to $V^\star$.}
 \label{tab:oracle}
 \footnotesize
 \input{figures/oracle_table.tex}
@@ -64,24 +71,26 @@ $V^\star-V_{\mathbb Z}^\star$.}
 \paragraph*{E3 --- Selection among productive optima ($30$ paired seeds)}
 Among selectors on the same productively optimal face, the hard connectivity-constrained
 optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) reaches $V^{\star}$ but may return \emph{any}
-such point and merely \emph{satisfies} the requirement (margin $+0.15$). WISE is instead their
-lexicographic
-\emph{tie-break}: it selects the maximum-margin point ($+2.55$; all $100\%$ certified, Wilson
-$95\%$ CI $[89,100]$). Other fiber selectors fall short---random-fiber averages margin
-$+0.10$ (sometimes infeasible) and least-role-change $+0.38$, vs WISE's $+2.55$. Stage-1 is
+such point, merely \emph{satisfying} the requirement (margin $+0.15$). WISE is their
+lexicographic \emph{tie-break}, selecting the maximum-margin point ($+2.55$; $100\%$ certified,
+Wilson $[89,100]$), versus random-fiber $+0.10$ (sometimes infeasible) and least-role-change
+$+0.38$. Stage-1 is
 $\sim\!10$\,ms; the Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s,
-$N{=}12{\to}96$; CVXPY/CLARABEL, single-threaded): offline-ready.
+$N{=}12{\to}96$; CVXPY/CLARABEL, tol $10^{-7}$, single-threaded, with $T,M,H,|\mathcal R|$
+fixed so this isolates spectral-LMI scaling in $N$, not full MRTA scaling): offline-ready.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$ (free), positive
 on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
 every seed ($\LamE<\LamX$, median costly width $0.64$). The dual is a genuine price: in
 unnormalized $\sigma$, $\pi^{\star}=\operatorname{tr}Y^{\star}$ matches $\Delta\Price/\Delta\sigma$
-over $84$ interior points ($r=0.996$, median error $0.6\%$), confirming
-$\pi^{\star}\in\partial\Price$ (Fig.~\ref{fig:price} normalization is display-only).
+over $84$ interior points ($r=0.996$, median relative error $0.6\%$; central differences
+$\Delta\sigma{=}0.05$ on the interior $25$--$75\%$ of $(\LamE,\LamX)$, no kink straddled),
+confirming $\pi^{\star}\in\partial\Price$ at differentiable points (Fig.~\ref{fig:price}
+normalization is display-only).
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.88\columnwidth]{fig_price.pdf}
+\includegraphics[width=0.64\columnwidth]{fig_price.pdf}
 \caption{Price of self-sustainability ($40$ seeds, normalized so $\LamE\!\leftrightarrow\!1$,
 $\LamX\!\leftrightarrow\!2$). \textbf{(a)} median $\Price(\sigma)/V^\star$ with a $25$--$75\%$
 band: a zero-cost plateau on the free regime (green), a strictly positive costly branch

@@ -18,17 +18,15 @@ torque~\cite{murray1994manipulation})---yet commit every robot to lifting, leavi
 relay, so algebraic connectivity collapses and the estimator loses the consensus channel
 it needs.
 
-Population-game and distributed Nash-seeking formulations take the interaction graph
-as given~\cite{quijano2017role,barreiro2016constrained,koshal2016aggregative}.
-Communication-aware task allocation does couple the two, jointly trading task utility
-against the connectivity induced by the chosen
-assignment~\cite{williams2017matroid,lin2021connectivity,zavlanos2011connectivity,%
-ghosh2006growing,prorok2017diversity}, and recent heterogeneous MRTA solves integer
-coalition allocation under physical constraints~\cite{calvo2025heterogeneous}, and
-communication-backbone methods reconfigure the relay layer to maintain
-connectivity~\cite{santos2024backbone}; these trade utility against connectivity, impose a
-threshold, or repair the backbone directly, but do not characterize \emph{when} connectivity
-can be increased within the \emph{exact} productive-optimum fiber.
+Population-game and distributed Nash-seeking formulations take the interaction graph as
+given~\cite{quijano2017role,barreiro2016constrained}. Communication-aware
+task allocation couples the two, trading task utility against assignment-induced
+connectivity~\cite{williams2017matroid,lin2021connectivity,zavlanos2011connectivity,%
+ghosh2006growing}; recent heterogeneous MRTA solves integer coalition
+allocation under physical constraints~\cite{calvo2025heterogeneous}, and communication-backbone
+methods reconfigure the relay layer~\cite{santos2024backbone}. These impose a threshold or
+repair the backbone directly, but do not characterize \emph{when} connectivity can rise within
+the \emph{exact} productive-optimum fiber.
 We instead exploit a structural degeneracy: because
 the payoff couples only through aggregates~\cite{jensen2010aggregative}, the productive
 optimum fixes the served aggregate but leaves an aggregate-invariant fiber of
@@ -51,9 +49,10 @@ minimal active face; a tangent-cone criterion certifies when connectivity improv
 lexicographic semidefinite program, and the spectral capacities $\LamE\le\LamX$ separate
 \emph{free}, \emph{costly}, and \emph{impossible} requirements through a convex price
 $\Price(\sigma)$ whose subgradient prices connectivity in units of utility.
-\item \textbf{Finite-team transfer} (Proposition~\ref{prop:integer}): a deterministic
-worst-case preservation radius, an exact small-team oracle, and a structured recovery with
-direct re-certification that together quantify integer attainment.
+\item \textbf{Finite-team assessment} (Proposition~\ref{prop:integer}): a deterministic but
+conservative joint-feasibility radius, an exact small-team oracle, and a directly
+re-certified structured recovery that together quantify integer attainability, recovery loss,
+and the conservatism of the worst-case bound.
 \end{itemize}
 A productively optimal, wrench-feasible assignment whose induced graph meets the estimator's
 stability requirement is a \emph{WISE equilibrium}. The guarantees are for the affine

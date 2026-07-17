@@ -164,12 +164,9 @@ sty))) (C:\Program Files\MiKTeX\tex/latex/l3backend\l3backend-pdftex.def)
 (C:\Program Files\MiKTeX\tex/latex/00miktex\epstopdf-sys.cfg)) (main.out)
 (main.out) (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsa.fd)
 (C:\Program Files\MiKTeX\tex/latex/amsfonts\umsb.fd)
-(sections/01_introduction.tex
-Underfull \hbox (badness 1609) in paragraph at lines 21--41
-\OT1/ptm/m/n/10 tions take the in-ter-ac-tion graph as given [[][]2[][]], [[][]
-3[][]], [[][]6[][]].
-[1{C:/Users/walla/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}{C:/Program 
-Files/MiKTeX/fonts/enc/dvips/base/8r.enc}]) (sections/02_model.tex
+(sections/01_introduction.tex [1{C:/Users/walla/AppData/Local/MiKTeX/fonts/map/
+pdftex/pdftex.map}{C:/Program Files/MiKTeX/fonts/enc/dvips/base/8r.enc}])
+(sections/02_model.tex
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 (hyperref)                removing `math shift' on input line 4.
@@ -180,26 +177,22 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 85.
+(hyperref)                removing `math shift' on input line 84.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 85.
+(hyperref)                removing `math shift' on input line 84.
 
 [2]) (sections/03_wise_equilibrium.tex
-Underfull \hbox (badness 3989) in paragraph at lines 36--42
+Underfull \hbox (badness 3989) in paragraph at lines 32--38
 [][]\OT1/ptm/b/n/10 Definition 1 \OT1/ptm/m/n/10 (Pro-duc-tive vari-a-tional eq
 ui-lib-rium)\OT1/ptm/b/n/10 . []\OT1/ptm/m/it/10 With
-(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1pcr.fd)
-Underfull \hbox (badness 1406) in paragraph at lines 77--84
-[][]\OT1/ptm/b/n/10 Proposition 1 \OT1/ptm/m/n/10 (Fiber---mono-tonic-ity equiv
--a-lence)\OT1/ptm/b/n/10 . []\OT1/ptm/m/it/10 On the
-[3]
-Underfull \hbox (badness 1377) in paragraph at lines 185--192
+(C:\Users\walla\AppData\Roaming\MiKTeX\tex/latex/psnfss\ot1pcr.fd) [3]
+Underfull \hbox (badness 1377) in paragraph at lines 182--187
 []\OT1/ptm/m/n/10 The lex-i-co-graphic se-lec-tor of The-o-rem [][]2[][] is ex-
 act; a
 
-Underfull \hbox (badness 1558) in paragraph at lines 198--202
+Underfull \hbox (badness 1558) in paragraph at lines 193--197
 \OT1/ptm/m/n/10 ($\OMS/cmsy/m/n/10 P\OT1/cmr/m/n/10 (\OML/cmm/m/it/10 ^^[\OT1/c
 mr/m/n/10 ) = +\OMS/cmsy/m/n/10 1$ \OT1/ptm/m/n/10 when the set is empty), and 
 the two
@@ -243,6 +236,6 @@ ram Files/MiKTeX/fonts/type1/urw/courier/ucrr8a.pfb><C:/Program Files/MiKTeX/fo
 nts/type1/urw/times/utmb8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/u
 tmbi8a.pfb><C:/Program Files/MiKTeX/fonts/type1/urw/times/utmr8a.pfb><C:/Progra
 m Files/MiKTeX/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (6 pages, 456944 bytes).
+Output written on main.pdf (6 pages, 460960 bytes).
 Transcript written on main.log.
 pdflatex: major issue: So far, you have not checked for updates as a MiKTeX user.

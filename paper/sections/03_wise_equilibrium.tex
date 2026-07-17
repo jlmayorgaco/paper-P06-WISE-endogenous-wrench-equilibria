@@ -3,20 +3,18 @@
 
 \subsection{Productive value and the optimal composition fiber}
 The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each
-load its physical service, and the productive value allocates \emph{total served
-capacity} among the admitted loads through the \emph{served-capacity} aggregate $y=Bz$,
-$y_k=\sum_{i,h}c_{\tau(i)} z_{ikh}$ (distinct from the wrench aggregate $H_wz$; $y_k$ is
-the productive reserve assigned to load $k$ beyond the wrench-feasibility floor---a proxy
-for admissible throughput or disturbance tolerance):
+load its physical service, and the productive value allocates total served capacity through
+the \emph{served-capacity} aggregate $y=Bz$, $y_k=\sum_{i,h}c_{\tau(i)} z_{ikh}$ (distinct
+from the wrench aggregate $H_wz$; $y_k$ is the reserve for load $k$ beyond the wrench floor, a
+proxy for admissible throughput):
 \begin{equation}
 V(z)=\phi(Bz),\qquad
 \phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
 \label{eq:value}
 \end{equation}
-so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ with $H=\alpha I\succ0$
-and $y_{\mathrm{ref}}=v/\alpha$. It is strictly concave ($\nabla^2\phi=-\alpha I\prec0$)
-and so pins down a unique optimal aggregate, whereas a deficit penalty such as
-$-\|[d-s]_+\|^2$ would be flat on the feasible set and leave it undetermined. This is a
+so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ ($H=\alpha I\succ0$,
+$y_{\mathrm{ref}}=v/\alpha$), strictly concave and pinning down a unique optimal aggregate (a
+flat deficit penalty would leave it undetermined). This is a
 constrained \emph{identical-interest aggregative game} in the per-robot occupancies, with
 pseudo-gradient $[F(z)]_{ia}=-\partial V/\partial z_{ia}=-[B^{\top}\nabla\phi(Bz)]_{ia}$
 (the population-game reading follows by grouping exchangeable same-type robots); the novelty
@@ -29,8 +27,6 @@ objective Hessian $H$:
 X_{\mathrm f}=\{z\in\mathcal X:\;H_w z\ge d\}.
 \label{eq:Xf}
 \end{equation}
-The action cost $g$ enters only as a selection refinement, \emph{excluded} from the
-degeneracy result.
 
 \begin{definition}[Productive variational equilibrium]\label{def:ve}
 With $F(z)=-\nabla V(z)=-B^{\top}\nabla\phi(Bz)$, a profile $z^{\star}\in X_{\mathrm f}$ is a
@@ -53,7 +49,8 @@ convex polytope whose local dimension at a relative-interior point $\bar z$ is
 \end{equation}
 where $Az=b$ is budget conservation, $Bz=y^{\star}$ the served aggregate, $G_Iz=h_I$
 the inequalities of $X_{\mathrm f}$ active at $\bar z$ (nonnegativity, occupancy, active
-wrench), and $n=\dim z$. Thus $\Emanifold$ is positive-dimensional iff the
+wrench), and $n=N|\mathcal A|$ is the ambient number of decision coordinates. Thus
+$\Emanifold$ is positive-dimensional iff the
 \emph{productive neutral space} $N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is nontrivial.
 \end{theorem}
 \begin{proof}[Proof sketch]
@@ -63,31 +60,30 @@ $\{d:Ad{=}Bd{=}G_Id{=}0\}=N_p(\bar z)$, so $\Emanifold$ locally coincides with
 $\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity; all $z\in\Emanifold$ share $V$,
 while a general weighted $B$ can give $N_p=\{0\}$.
 \end{proof}
-For the representative \emph{single-load} instance ($n=N|\mathcal A|=72$, $M{=}1$ so $B$ has
-one row), $\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=13$ with no inequality
-active at the interior optimum ($G_I=\varnothing$), so the fiber is full-dimensional in its
-aggregate-fixing affine space: $\dim\Emanifold=72-13=59$ (a two-load instance with two
-independent aggregates gives $\operatorname{rank}[A;B]=14$, $\dim=58$), certified by a
-relative-interior point with neutral-direction residuals
-$\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$ (dimensions computed in $z$ with the projected wrench
-facets $H_w$; \texttt{exp\_fiber}). At a boundary optimum where wrench facets bind, the
-same formula gives a smaller fiber.
+For the representative \emph{single-load} instance ($n=72$, $M{=}1$ so $B$ has one row),
+$\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=13$ with no inequality active at the
+interior optimum ($G_I=\varnothing$), so $\dim\Emanifold=72-13=59$ (a two-load instance with
+two independent aggregates gives $\operatorname{rank}[A;B]=14$, $\dim=58$), certified by a
+relative-interior point with residuals $\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$ (\texttt{exp\_fiber}).
+A boundary optimum where wrench facets bind gives a smaller fiber.
 
 \begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
-On the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$ the pseudo-gradient
+Let $P_F$ have columns forming an orthonormal basis of the active-face tangent
+$\mathcal T_F=\ker A\cap\ker G_I$. The pseudo-gradient
 $F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys $\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$,
-so its strong-monotonicity modulus is $\mu_F=\sigma_{\min}^2(H^{1/2}B|_{\mathcal T_F})$ with
-$\ker(B|_{\mathcal T_F})=N_p(\bar z)$. Hence $\dim\Emanifold>0\iff\mu_F=0$: strong
+so its strong-monotonicity modulus on that face is
+$\mu_F=\lambda_{\min}(P_F^{\top}B^{\top}HBP_F)$, and
+$\mu_F=0\iff\ker(BP_F)\neq\{0\}\iff N_p(\bar z)\neq\{0\}$. Hence $\dim\Emanifold>0\iff\mu_F=0$: strong
 monotonicity holds in the served aggregate ($H\succ0$) but is \emph{lost} on the
 composition face---the degeneracy WISE exploits, unlike strongly contractive aggregative
 games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
 A comparative-advantage exchange makes this concrete (Fig.~\ref{fig:flagship}): with
-$c_\ell=2c_s$, releasing one long lifter for two short lifters and moving it to the relay is
-productively neutral ($Bd=0$, $V\equiv V^{\star}$) with spectral effect
-$D\lamtwo[d]=\sum_{i,r}d_{ir}\,v^{\top}L_{ir}v$. Whether such a
-\emph{free} gain exists is a projection condition:
+$c_\ell=2c_s$, moving one long lifter to the relay in exchange for two short lifters is
+productively neutral ($Bd=0$) with spectral effect
+$D\lamtwo[d]=\sum_{i,r}d_{ir}\,v^{\top}L_{ir}v$. Whether such a \emph{free} gain exists is a
+projection condition:
 
 \begin{proposition}[Free-connectivity criterion]\label{prop:freeconn}
 Let $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple and Fiedler vector $v$,
@@ -95,20 +91,20 @@ so the locally feasible directions form the subspace $N_p=\ker A\cap\ker B\cap\k
 constraint beyond those defining the minimal active face becomes newly active). With
 $g_\lambda=\nabla_z\lamtwo(\Lap(\bar z))$ (entries $v^{\top}L_{ir}v$),
 \begin{equation}
-\max_{h\in N_p,\ \|h\|\le1}D\lamtwo(\bar z)[h]=\|\Pi_{N_p}g_\lambda\|,
+\max_{d\in N_p,\ \|d\|\le1}D\lamtwo(\bar z)[d]=\|\Pi_{N_p}g_\lambda\|,
 \label{eq:freeconn}
 \end{equation}
 so a productively neutral improvement exists $\iff\Pi_{N_p}g_\lambda\neq0$, with optimal
-direction $h^\star=\Pi_{N_p}g_\lambda/\|\Pi_{N_p}g_\lambda\|$. At a boundary $\bar z$ replace
-$N_p$ by the tangent cone $T_{\Emanifold}(\bar z)=\{h:Ah{=}0,\ Bh{=}0,\ G_jh\le0,\ j\in
-I(\bar z)\}$ ($I(\bar z)$ the active set of $Gz\le\bar g$, the direction $h$ distinct from the
-bound $\bar g$); then no free
-improvement exists $\iff g_\lambda\in N_{\Emanifold}(\bar z)=\{A^{\top}\alpha+B^{\top}\beta+
-G_I^{\top}\nu:\nu\ge0\}$, the KKT-stationarity certificate. Under a repeated $\lamtwo$,
-replace $D\lamtwo[h]$ by $\lambda_{\min}(U_2^{\top}D\Lap(\bar z)[h]\,U_2)$, where $U_2$ is an
-orthonormal basis of the eigenspace of the \emph{smallest} eigenvalue of
-$Q^{\top}\Lap(\bar z)Q$; a first-order neutral improvement then exists
-$\iff\max_{h\in T_{\Emanifold},\|h\|\le1}\lambda_{\min}(U_2^{\top}D\Lap[h]U_2)>0$ (a small
+direction $d^\star=\Pi_{N_p}g_\lambda/\|\Pi_{N_p}g_\lambda\|$. At a boundary $\bar z$ replace
+$N_p$ by the tangent cone $T_{\Emanifold}(\bar z)=\{d:Ad{=}0,\ Bd{=}0,\ G_jd\le0,\ j\in
+I(\bar z)\}$ ($I(\bar z)$ the active set); as $\Emanifold$ is convex, positivity of
+\eqref{eq:freeconn} over $T_{\Emanifold}$ is equivalent to a local zero-cost improvement, and
+none exists $\iff g_\lambda\in N_{\Emanifold}(\bar z)=\{A^{\top}\alpha+B^{\top}\beta+
+G_I^{\top}\nu:\nu\ge0\}$, the KKT normal cone. Under a repeated $\lamtwo$,
+replace $D\lamtwo[d]$ by $\lambda_{\min}(U_2^{\top}D\Lap(\bar z)[d]\,U_2)$ with $U_2$ an
+orthonormal basis of the smallest-eigenvalue eigenspace of $Q^{\top}\Lap(\bar z)Q$; a neutral
+improvement then exists
+$\iff\max_{d\in T_{\Emanifold},\|d\|\le1}\lambda_{\min}(U_2^{\top}D\Lap[d]U_2)>0$ (a small
 SDP).
 \end{proposition}
 
@@ -122,15 +118,17 @@ integer notions differ: the \emph{self-sustaining feasible} set
 $\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\mathbb Z^{n}:\lamtwo(\Lap(z))\ge\sigmastar\}$
 (wrench- and connectivity-feasible), its \emph{optimum}
 $V_{\mathbb Z}^{\star}=\max_{\mathcal F_{\mathbb Z}}V$, and the \emph{zero-cost integer WISE}
-$\Essint=\mathcal F_{\mathbb Z}\cap\{Bz=y^{\star}\}$, which is nonempty iff
+$\Essint=\mathcal F_{\mathbb Z}\cap\{\|Bz-y^{\star}\|_\infty\le\tau_B\}$, which is nonempty iff
 $V_{\mathbb Z}^{\star}=V^{\star}$; the productive integrality gap is
-$g_{\mathbb Z}=V^{\star}-V_{\mathbb Z}^{\star}\ge0$. Since
+$g_{\mathbb Z}=V^{\star}-V_{\mathbb Z}^{\star}\ge0$. Throughout, \emph{zero-cost} refers to
+exact preservation of the relaxed optimal aggregate $y^{\star}$ (numerically
+$\|B\hat z-y^{\star}\|_\infty\le\tau_B$, $\tau_B=10^{-8}$); an integer self-sustaining
+assignment need not be zero-cost unless $B\hat z=y^{\star}$. Since
 $\sigmastar=\sigmadyn+\delta>\sigmadyn$, a WISE clears the stability threshold of
-Remark~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge},
-keeps the \emph{geometric} graph above $\sigmadyn$. $\Cdelta$ is convex and closed
-(super-level set of the concave $\lamtwo\!\circ\!\Lap$, Lemma~\ref{lem:convex}). WISE is a
-\emph{lexicographic selection} from the productive VE set, not an equilibrium generated by
-the productive game alone.
+Remark~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge}, keeps the
+\emph{geometric} graph above $\sigmadyn$; $\Cdelta$ is convex and closed
+(Lemma~\ref{lem:convex}). WISE is a \emph{lexicographic selection} from the productive VE set,
+not an equilibrium of the productive game alone.
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
@@ -174,21 +172,18 @@ $\lamtwo$ over $\Emanifold$).
 \begin{remark}[Connectivity threshold]\label{thm:stability}
 A standard small-gain model---a served-aggregate error coupled to a consensus estimator over
 $Q^{\top}\Lap(z^{\star})Q$ with gains $\mF,\vt_1,\vt_2>0$---is exponentially stable when
-$c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2$, i.e.\ $\lamtwo>\sigmadyn:=\vt_1\vt_2/(c\,\mF)$
-(single-mode necessary). It motivates treating $\sigmadyn>0$ as an external information-layer
-requirement; no online optimizer--estimator realization is analyzed here, and the WISE margin
-$\sigmastar=\sigmadyn+\delta$ satisfies it by construction.
+$\lamtwo>\sigmadyn:=\vt_1\vt_2/(c\,\mF)$. This motivates treating $\sigmadyn>0$ as an external
+information-layer requirement, met by construction through the WISE margin
+$\sigmastar=\sigmadyn+\delta$; no online realization is analyzed here.
 \end{remark}
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
 The lexicographic selector of Theorem~\ref{thm:existence} is exact; a scalarised
-$V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only as $\varepsilon\to0$: any maximiser
-obeys $0\le V^{\star}-V(z_\varepsilon)\le\varepsilon\operatorname{osc}(\lamtwo)$ and
-$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$
-(Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ moves the aggregate
-(measurably, Section~\ref{sec:exp}); it is a Pareto scalarisation, not an equivalent of the
-lexicographic form.
+$V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only as $\varepsilon\to0$ (a maximiser has
+$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\operatorname{osc}(\lamtwo)/\alpha}$,
+Tikhonov~\cite{facchinei2003fvi}), so a finite $\varepsilon$ moves the aggregate; it is a
+Pareto scalarisation, not the lexicographic form.
 
 Beyond the free fiber the requirement carries a productive cost. Define the
 \emph{price of self-sustainability}
@@ -224,9 +219,8 @@ Slater) is the optimal multiplier set~\cite{boyd2004convex}. The three cases fol
 $\sigma\le\LamE$ ($z\in\Emanifold$ attains it, $\Price=0$), $\sigma>\LamX$ (infeasible), and
 $\LamE<\sigma\le\LamX$ (feasible but not in $\Emanifold$).
 \end{proof}
-This makes the trichotomy a certificate (Section~\ref{sec:exp}: $\Price\equiv0$ up to
-$\LamE$, a strictly positive branch on $(\LamE,\LamX]$, then infeasibility), with
-$\pi^{\star}$ pricing connectivity in the same units as $V$.
+The trichotomy is thus a certificate (Section~\ref{sec:exp}), with $\pi^{\star}$ pricing
+connectivity in the units of $V$.
 
 \subsection{Finite-team recovery}
 A sufficient margin test preserves \emph{joint feasibility} after integer recovery (it does
@@ -241,7 +235,6 @@ m_\lambda=\lamtwo(\Lap(z^{\star}))-\sigmastar,\\
 \end{aligned}
 \label{eq:margins}
 \end{equation}
-($H_wz\ge d$ is formed offline only for these margins; the SDP stays lifted.)
 \begin{proposition}[Margin-based preservation of joint feasibility]\label{prop:integer}
 Let $\hat z$ be any integer assignment meeting budgets, integrality and occupancy exactly
 with $\|\hat z-z^{\star}\|_2\le r$. If

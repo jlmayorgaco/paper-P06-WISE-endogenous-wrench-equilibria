@@ -2,13 +2,13 @@
 % Exact enumeration of all |A|^N robot-action maps (pruned by budget/occupancy
 % /wrench). Columns denominated in relaxed-feasible seeds.
 \setlength{\tabcolsep}{3pt}
-\begin{tabular}{rccccc}
+\begin{tabular}{rcccccc}
 \hline
-$N$ & rel.\ WISE & int.\ feas. & zero-cost & $\max g_{\mathbb Z}$ & time \\
+$N$ & rel.\ WISE & int.\ feas. & zero-cost & $\max g_{\mathbb Z}$ & $\max\tfrac{g_{\mathbb Z}}{|V^\star|}$ & time \\
 \hline
-6 & 7/8 & 7/7 & 0/7 & 0.0046 & 0.02\,s \\
-7 & 8/8 & 8/8 & 1/8 & 0.0005 & 0.16\,s \\
-8 & 8/8 & 8/8 & 1/8 & 0.0023 & 1.12\,s \\
+6 & 7/8 & 7/7 & 0/7 & 0.0046 & 0.057\% & 0.02\,s \\
+7 & 8/8 & 8/8 & 1/8 & 0.0005 & 0.004\% & 0.15\,s \\
+8 & 8/8 & 8/8 & 1/8 & 0.0023 & 0.013\% & 1.12\,s \\
 \hline
-\multicolumn{6}{l}{\footnotesize $0/23$ false positives observed.}\\
+\multicolumn{7}{l}{\footnotesize $0/23$ false positives observed.}\\
 \end{tabular}

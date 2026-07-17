@@ -1,27 +1,34 @@
 \section{Centralized Relaxed Certificate}
 \label{sec:algorithm}
 
-Existence and selection of a WISE are decided by the semidefinite program of
-Theorem~\ref{thm:existence}, solved centrally over the fluid relaxation. Stage~1 fixes
-$y^{\star}$ by maximising $V$ over $X_{\mathrm f}$; the Stage-2 SDP~\eqref{eq:sdp} then
-returns $\LamE$ and the most-connected productively optimal assignment
-$z^{\star}_{\mathrm{WISE}}$, and $\LamE\ge\sigmastar$ is the relaxed WISE existence test
-(Theorem~\ref{thm:existence}). We report this certificate and use it as the relaxed
-reference for the simulations; an integer team is recovered by rounding and \emph{directly}
-re-certified against budgets, wrench feasibility and the spectral requirement, with
-Proposition~\ref{prop:integer} reported separately as a conservative robustness radius.
+A WISE is decided by the SDP of Theorem~\ref{thm:existence}, solved centrally over the fluid
+relaxation: Stage~1 fixes $y^{\star}=\arg\max_{X_{\mathrm f}}V$, and the Stage-2
+SDP~\eqref{eq:sdp} returns $\LamE$ and the most-connected optimal assignment
+$z^{\star}_{\mathrm{WISE}}$, with $\LamE\ge\sigmastar$ the relaxed existence test. We use this
+certificate as the relaxed reference; an integer team is recovered by rounding and
+\emph{directly} re-certified against budgets, wrench feasibility and the spectral requirement,
+Proposition~\ref{prop:integer} serving as a separate conservative radius.
 
-\emph{Structured recovery.} Given $z^{\star}$: \textbf{(i)}~\emph{dependent rounding} draws
-one action per robot, preserving each unit budget and slot/relay occupancy
-($\sum_i z_{i,a}\le1$; taken slots are resampled out); \textbf{(ii)}~solve the lifted wrench
-LP for the integer team; \textbf{(iii)}~while $\lamtwo<\sigmastar$, apply the single-robot
-move $\hat z\!+\!d$ ($Ad=0$, occupancy-preserving) that keeps wrench feasibility and most
-increases $\lamtwo$ (a marginal lifter/idler $\to$ relay); \textbf{(iv)}~stop when
-re-certified or after $\le12$ moves. Step~(iii) trades productive value for connectivity
-($Bd\neq0$; median loss $2.3\%\!\to\!4.9\%$), so the recovered team is integer self-sustaining
-but rarely \emph{exactly} zero-cost ($4/30$).
+\emph{Structured recovery.} Given a relaxed $z^{\star}$, one \emph{structured draw} is
+\emph{occupancy-aware sequential randomized rounding}: robots are processed in a random order
+and robot $i$ samples one action from its normalized occupancy $z^{\star}_i$ restricted to the
+contact slots still free, so every draw meets one action per robot and all slot/relay
+capacities exactly (randomized rounding, \emph{not} a marginal-preserving dependent-rounding
+scheme). A greedy \emph{repair} then raises connectivity over the single-robot candidate moves
+$\mathcal D(\hat z)=\{e_{ir}{-}e_{ia}:\hat z_{ia}{=}1,\ r\ \text{a free relay}\}$: a move is
+admissible only if $\hat z{+}d\in\mathcal X$ and the lifted wrench LP~\eqref{eq:tensor} stays
+feasible; the admissible move maximizing $\lamtwo(\Lap(\hat z{+}d))$ is applied and accepted
+only if $\Delta\lamtwo>\tau_\lambda$. Since integer assignments are finite and $\lamtwo$
+strictly increases, the search cannot cycle; it stops when re-certified, when no admissible
+move remains, or after $K_{\max}{=}12$ moves (each iteration costs $|\mathcal D|$ wrench-LP and
+eigenvalue evaluations); it returns $\hat z$ once budgets, wrench, and $\lamtwo\ge\sigmastar$
+hold. Empirically ($N{=}12$, $30$ seeds, Section~\ref{sec:exp}) one draw is already self-sustaining
+on $18/30$ instances and the remaining $12$ are repaired in a single relay move (max $1$, cap
+$12$). Repair trades productive value for connectivity ($Bd\neq0$; median loss
+$2.3\%\!\to\!4.9\%$), so the team is integer self-sustaining but rarely \emph{exactly}
+zero-cost ($4/30$, $\|B\hat z-y^{\star}\|_\infty\le\tau_B$).
 
 A fully \emph{distributed} realization---each robot sampling from a local flow and converging
-to $\Emanifold^{\star}_{\mathrm{WISE}}$ over the graph it forms---needs a message protocol and
-a convergence guarantee over a decision-dependent graph, and is left to future work; we claim
-only the centralized certificate here.
+to $\Emanifold^{\star}_{\mathrm{WISE}}$ over the graph it forms---needs a convergence guarantee
+over a decision-dependent graph and is left to future work; we claim only the centralized
+certificate.

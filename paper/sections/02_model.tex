@@ -31,7 +31,10 @@ The type aggregates $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enter the prod
 \emph{and} wrench layers (both couple through types); the communication layer uses the
 per-robot relay occupancies $z_{ir}$ directly. The feasible set
 $\mathcal X=\{z\in\R_{\ge0}^{N\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a compact
-convex polytope of dimension $n=N|\mathcal A|$. A finite team instantiates $z$ by rounding to
+convex polytope in $\R^{n}$, $n=N|\mathcal A|$ \emph{ambient} decision coordinates; the $N$
+budget equalities reduce its affine dimension (to $N(|\mathcal A|-1)$ absent active facets),
+and Theorem~\ref{thm:degeneracy} gives the face-specific dimension through the
+active-constraint matrix. A finite team instantiates $z$ by rounding to
 one action per robot (Remark~\ref{rem:integer}); the poses $q\in(\mathrm{SE}(2))^N$ enter
 only the geometric instantiation (Section~\ref{sec:exp}).
 
@@ -39,22 +42,19 @@ only the geometric instantiation (Section~\ref{sec:exp}).
 Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f}\neq
 \varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
 $L_{ir}\succeq0$ (robot-indexed, fixed), undirected (symmetric); \emph{(iii)} the
-single-Fiedler gradient $\nabla\lamtwo$ is used only where $\lamtwo$ is simple with gap
-$\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the eigenspace
-directional derivative (Prop.~\ref{prop:freeconn}), while the SDP~\eqref{eq:lmi} itself stays
-exact and needs no spectral differentiability (no genericity assumed).
+single-Fiedler gradient $\nabla\lamtwo$ is used only where $\lamtwo$ is simple; at
+multiplicity it is replaced by the eigenspace directional derivative
+(Prop.~\ref{prop:freeconn}), while the SDP~\eqref{eq:lmi} stays exact and needs no spectral
+differentiability (no genericity assumed).
 \end{assumption}
 
 \subsection{Wrench feasibility}
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned
 ellipse $U_\tau(\phi)$ with semi-axes $F_\tau$, $\kappa F_\tau$ ($\kappa\le1$,
-nonholonomic penalty). The strategic layer does not track headings, so we certify
-against the heading-independent \emph{inner zonotope}
+anisotropic actuation factor). Not tracking headings, we certify against the heading-independent \emph{inner zonotope}
 $U_\tau^{\mathrm{in}}=\{G_\tau u:\|u\|_\infty\le1\}$ (generators $G_\tau$) inscribed in
-the disk of radius $\kappa F_\tau$. Since $\mathrm{disk}(\kappa F_\tau)\subseteq
-U_\tau(\phi)$, $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$, so feasibility tested
-against
-$U_\tau^{\mathrm{in}}$ is \emph{conservative} and creates no false positive.
+$\mathrm{disk}(\kappa F_\tau)\subseteq U_\tau(\phi)$; feasibility tested against
+$U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ is \emph{conservative}, with no false positive.
 
 Let $A_{kh}\in\R^{3\times2}$ be the contact-to-wrench map at slot $(k,h)$ and
 $\wdem_k\in\R^3$ the demanded wrench of load $k$. The reachable population wrench set is
@@ -77,32 +77,31 @@ The scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ superpose (giving
 \eqref{eq:tensor}); eliminating $\xi$ leaves the polytope $X_{\mathrm f}$.
 \end{proof}
 By $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ a certified wrench is feasible in this
-heading-robust actuation-set model. Each mechanically attached base (grippers/tow bars) is
-represented at the allocation layer by this conservative planar force set; we study
-assignment and communication feasibility, not actuator-level realization, which is left to a
-separate layer.
+heading-robust model; each attached base (grippers/tow bars) enters the allocation layer only
+through this conservative planar force set. We study assignment and communication feasibility,
+not actuator-level realization.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
-robot \emph{identity}; every robot is always present, so no node is created, removed, or left
-empty---an \emph{idle} robot still occupies its node and stays connected through the base
-graph (the action set chooses \emph{edges} at a node, not nodes). A fixed base graph
+robot \emph{identity}: every robot is always present (an \emph{idle} robot still occupies its
+node), and the action set chooses \emph{edges} at a node, not nodes. A fixed base graph
 $L_0\succeq0$ carries the always-on short-range conductances; when robot $i$ commits to relay
 site $r$ it \emph{gates on} its own predefined long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$ (the fixed
-set of robots it then reaches, possibly several), so, \emph{directly in the per-robot
-occupancy},
+set of robots it then reaches, possibly several). Each $L_{ir}$ is precomputed from the
+nominal role-site geometry, retaining only links guaranteed available for every pose within
+the prescribed tracking tubes; assignment-dependent deviations are absorbed into the
+mismatch term of Lemma~\ref{lem:bridge}. Thus, \emph{directly in the per-robot occupancy},
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
 \end{equation}
 Because each $L_{ir}$ is fixed and robot-indexed, $\Lap$ is \emph{unambiguously affine} in $z$
-and needs no matching or permutation: no type-count aggregation is used here, only relay
-occupancy gates edges (not a general pairwise geometric graph, whose weights would be
-bilinear in both endpoints). Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$,
+and needs no matching or permutation (relay occupancy gates edges, not a bilinear pairwise
+geometric graph). Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$,
 $\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$
-robots (node $i$ is robot $i$ in both), compared in the common identity order through
-Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
+robots (node $i$ is robot $i$ in both), compared through Lemma~\ref{lem:bridge}. All theorems
+use $\Lap(z)$.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
@@ -124,17 +123,23 @@ $z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006g
 \end{lemma}
 
 \begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
-Suppose $\|\Lgeo(q)-\Lap(z)\|_2\le\varepsilon_L$, the estimator obeys
-$|\widehat\lamtwo-\lamtwo(\Lap(z))|\le\varepsilon_{\mathrm{est}}$, and the solver keeps
-$\widehat\lamtwo\ge\sigmastar-\delta_{\mathrm{num}}$. Then Weyl's inequality gives
-$\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(z))-\varepsilon_L$, so with
-$\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$ and
-$\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the
-optimizer--estimator (information-layer) stability threshold. For the exact centralized
-SDP, $\Lap(z)$ is known and $\varepsilon_{\mathrm{est}}=\delta_{\mathrm{num}}=0$.
+Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $\bar q=\bar q(\hat z)$ its
+nominal role-site realization. Split the surrogate--geometric gap as
+\begin{equation}
+\|\Lgeo(q)-\Lap(\hat z)\|_2\le
+\varepsilon_{\mathrm{track}}+\varepsilon_{\mathrm{model}}=:\varepsilon_L,
+\label{eq:mismatch}
+\end{equation}
+with tracking $\varepsilon_{\mathrm{track}}=\|\Lgeo(q)-\Lgeo(\bar q)\|_2$ and model term
+$\varepsilon_{\mathrm{model}}=\|\Lgeo(\bar q)-\Lap(\hat z)\|_2$. The tracking term is
+\emph{a priori}: smooth weights $w_{ij}=\psi(\|q_i-q_j\|)$
+($|\psi'|\le L_\psi$) and a tube $\|q_i-\bar q_i\|\le\rho$ give
+$\varepsilon_{\mathrm{track}}\le4d_{\max}L_\psi\rho$, while $\varepsilon_{\mathrm{model}}$ is
+calibrated offline. If $\lamtwo(\Lap(\hat z))\ge\sigmadyn+\varepsilon_L+\delta_{\mathrm{num}}$,
+Weyl's inequality gives $\lamtwo(\Lgeo(q))\ge\sigmadyn$, the information-layer stability
+threshold; equivalently $\sigmastar:=\sigmadyn+\delta$, $\delta=\varepsilon_L+
+\delta_{\mathrm{num}}$. A future distributed estimator would add an
+$\varepsilon_{\mathrm{est}}$ term, zero in the centralized certificate studied here.
 \end{lemma}
-The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap(z)$ and transfers
-to $\Lgeo(q)$ only through Lemma~\ref{lem:bridge}. Its tracking part is \emph{a priori}: smooth
-weights $w_{ij}=\psi(\|q_i-q_j\|)$ ($|\psi'|\le L_\psi$) and a tube $\|q_i-\bar q_i\|\le\rho$
-give $\|\Lgeo(q)-\Lgeo(\bar q)\|_2\le4d_{\max}L_\psi\rho$; the residual surrogate term is
-measured, and $\varepsilon_{\mathrm{est}},\delta_{\mathrm{num}}$ are fixed.
+The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap$ and transfers to
+$\Lgeo$ only through \eqref{eq:mismatch}, applied at the integer recovery $\hat z$.

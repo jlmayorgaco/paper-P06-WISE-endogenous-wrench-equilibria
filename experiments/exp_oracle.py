@@ -128,7 +128,7 @@ def run(sizes=(6, 7, 8), seeds=8, nu=0.5, tau_d=2.0, lift=3.0):
     rows = []
     for N in sizes:
         rel_feas = int_feas = fpos = zero_cost = 0
-        gaps, times, considered = [], [], []
+        gaps, rel_gaps, times, considered = [], [], [], []
         y_target = round(0.75 * N)          # keep enough robots free to relay at small N
         for s in range(seeds):
             prob = scenarios.two_region(seed=s, N=N, nu=nu, tau_d=tau_d, lift=lift,
@@ -145,6 +145,7 @@ def run(sizes=(6, 7, 8), seeds=8, nu=0.5, tau_d=2.0, lift=3.0):
                 int_feas += 1
                 gz = V_star - o["V_int_wise"]            # productive integrality gap g_Z >= 0
                 gaps.append(gz)
+                rel_gaps.append(gz / (abs(V_star) + 1e-12))   # relative gap g_Z / |V*|
                 if gz <= ZC_TOL:                         # zero-cost integer WISE (B zhat = y*)
                     zero_cost += 1
             else:
@@ -158,6 +159,7 @@ def run(sizes=(6, 7, 8), seeds=8, nu=0.5, tau_d=2.0, lift=3.0):
             zero_cost_integer_wise=zero_cost, false_positive=fpos,
             gZ_mean=float(np.mean(gaps)) if gaps else float("nan"),
             gZ_max=float(np.max(gaps)) if gaps else float("nan"),
+            gZ_rel_max=float(100.0 * np.max(rel_gaps)) if rel_gaps else float("nan"),
             runtime_mean_s=float(np.mean(times)) if times else float("nan"),
             maps_enumerated=int(prob.A ** N),
             wrench_feasible_mean=float(np.mean(considered)) if considered else float("nan"),
@@ -226,18 +228,19 @@ def _write_table(rows, seeds):
              r"% Exact enumeration of all |A|^N robot-action maps (pruned by budget/occupancy",
              r"% /wrench). Columns denominated in relaxed-feasible seeds.",
              r"\setlength{\tabcolsep}{3pt}",
-             r"\begin{tabular}{rccccc}", r"\hline",
+             r"\begin{tabular}{rcccccc}", r"\hline",
              r"$N$ & rel.\ WISE & int.\ feas. & zero-cost & $\max g_{\mathbb Z}$"
-             r" & time \\", r"\hline"]
+             r" & $\max\tfrac{g_{\mathbb Z}}{|V^\star|}$ & time \\", r"\hline"]
     for r in rows:
         k = r["seeds_relaxed_feasible"]
-        lines.append(r"%d & %d/%d & %d/%d & %d/%d & %s & %s \\" % (
+        lines.append(r"%d & %d/%d & %d/%d & %d/%d & %s & %s & %s \\" % (
             r["N"], k, seeds,
             r["integer_feasible"], k,
             r["zero_cost_integer_wise"], k,
-            _g(r, "gZ_max", r"%.4f"), _rt(r)))
+            _g(r, "gZ_max", r"%.4f"),
+            _g(r, "gZ_rel_max", r"%.3f\%%"), _rt(r)))
     lines += [r"\hline",
-              r"\multicolumn{6}{l}{\footnotesize $%d/%d$ false positives observed.}\\"
+              r"\multicolumn{7}{l}{\footnotesize $%d/%d$ false positives observed.}\\"
               % (tot_fp, tot_rel),
               r"\end{tabular}"]
     (FIG / "oracle_table.tex").write_text("\n".join(lines) + "\n")

@@ -54,8 +54,8 @@
 
 \begin{document}
 
-\title{WISE: Zero-Cost Connectivity on Wrench-Feasible Assignment\\
-Fibers for Heterogeneous Multi-Robot Transport}
+\title{WISE: Zero-Cost Connectivity on Wrench-Feasible Fibers\\
+for Heterogeneous Robot Transport}
 
 \author{\IEEEauthorblockN{Jorge Luis Mayorga Taborda}
 \IEEEauthorblockA{\textit{Universidad Internacional de Valencia (VIU)}\\
@@ -68,23 +68,21 @@ jl.mayorga236@gmail.com}}
 Heterogeneous multi-robot transport couples physical task allocation with the
 communication structure needed to coordinate it. We show that when productive utility
 depends on a low-dimensional served aggregate, its unique optimum can correspond to a
-\emph{positive-dimensional fiber} of wrench-feasible robot compositions---a
-resource for communication design.
-We characterize the fiber on its active face and give a tangent-cone condition for
-improving algebraic connectivity without moving the optimal served aggregate, including
-the case of a repeated Fiedler eigenvalue. A wrench- and information-self-sustaining
-equilibrium (WISE) is then selected lexicographically by a semidefinite program, and the
-resulting spectral capacities separate \emph{zero-cost}, \emph{costly}, and
-\emph{impossible} connectivity requirements through a price of self-sustainability
-$\Price(\sigma)$ whose subgradient prices connectivity in units of utility. For finite
-teams we give a sufficient, conservative margin test under which an integer recovery
-preserves both wrench and connectivity feasibility. Simulations with heterogeneous teams
-exhibit a zero-cost connectivity plateau (in a representative instance $\lamtwo$ rises from
-$\approx0$ to $0.41$ at fixed productive value); an exact integer oracle measures the
-integrality gap on evaluated teams with $N\le8$, while structured rounding attains re-certified integer
-self-sustaining assignments on all $30$ instances at $N=12$ (no optimality claim). The
-guarantees concern the affine communication-backbone relaxation;
-distributed online realization over a changing geometric network remains future work.
+\emph{positive-dimensional fiber} of wrench-feasible robot compositions---a resource for
+communication design. We characterize the fiber on its active face and give a tangent-cone
+condition for improving algebraic connectivity without moving the optimal served aggregate,
+including a repeated Fiedler eigenvalue. A wrench- and information-self-sustaining equilibrium
+(WISE) is then selected lexicographically by a semidefinite program, and the resulting
+spectral capacities separate \emph{zero-cost}, \emph{costly}, and \emph{impossible}
+connectivity requirements through a price of self-sustainability $\Price(\sigma)$ whose
+subgradient prices connectivity in units of utility. For finite teams a conservative margin
+test preserves joint wrench and connectivity feasibility after integer recovery. Simulations
+exhibit a zero-cost plateau ($\lamtwo$ rises $\approx0\!\to\!0.41$ at fixed productive value);
+an exact oracle measures the integrality gap for $N\le8$, and structured rounding attains
+re-certified integer self-sustaining assignments on all $30$ instances at $N=12$ (no
+optimality claim). Zero-cost is exact on the relaxed optimal fiber; finite-team integerization
+may incur a separately quantified recovery loss. The guarantees concern the affine
+communication-backbone relaxation; distributed online realization remains future work.
 \end{abstract}
 
 \begin{IEEEkeywords}
