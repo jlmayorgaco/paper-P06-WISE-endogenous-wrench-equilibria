@@ -54,12 +54,11 @@ $\bar z\in\operatorname{relint}\Emanifold$ the feasible perturbations are exactl
 so $\Emanifold$ locally coincides with $\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity
 (a general weighted $B$ can give $N_p=\{0\}$).
 \end{proof}
-For the representative \emph{single-load} instance ($n=72$, $M{=}1$ so $B$ has one row),
-$\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=13$ with no inequality active at the
-interior optimum ($G_I=\varnothing$), so $\dim\Emanifold=72-13=59$ (a two-load instance with
-two independent aggregates gives $\operatorname{rank}[A;B]=14$, $\dim=58$), certified by a
-relative-interior point with residuals $\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$.
-A boundary optimum where wrench facets bind gives a smaller fiber.
+For the two-load flagship ($n=72$), $\operatorname{rank}A=12$ and $\operatorname{rank}[A;B]=14$
+with no inequality active at the interior optimum ($G_I=\varnothing$), so
+$\dim\Emanifold=72-14=58$ (a single served aggregate would give $\dim=59$), certified by a
+relative-interior point with residuals $\|Ad\|,\|Bd\|,\|G_Id\|<10^{-15}$. A boundary optimum
+where wrench facets bind gives a smaller fiber.
 
 \begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
 Let $P_F$ have columns forming an orthonormal basis of the active-face tangent
@@ -117,10 +116,11 @@ $g_{\mathbb Z}=V^{\star}-V_{\mathbb Z}^{\star}\ge0$. \emph{Zero-cost} means exac
 preservation $B\hat z=y^{\star}$; numerically it is declared when
 $\|B\hat z-y^{\star}\|_\infty\le\tau_B$ ($\tau_B=10^{-8}$), an implementation criterion that
 does not alter this definition. An integer self-sustaining assignment need not be zero-cost. Since
-$\sigmastar>\sigmadyn$, a WISE clears the stability threshold (Remark~\ref{thm:stability}) with
-margin $\delta$; $\Cdelta$ is convex and closed (Lemma~\ref{lem:convex}). WISE is a
-\emph{lexicographic selection} from the productive VE set, not an equilibrium of the productive
-game alone.
+$\sigmastar>\sigmadyn$, the affine certificate clears the information-layer threshold by the
+explicit margin $\sigmastar-\sigmadyn$ (Remark~\ref{thm:stability}), and Lemma~\ref{lem:bridge}
+transfers this to every admissible geometric realization; $\Cdelta$ is convex and closed
+(Lemma~\ref{lem:convex}). WISE is a \emph{lexicographic selection} from the productive VE set,
+not an equilibrium of the productive game alone.
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}

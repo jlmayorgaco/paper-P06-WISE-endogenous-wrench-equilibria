@@ -44,7 +44,7 @@
 \newcommand{\Lammax}{\Lambda^{\star}}         % max algebraic connectivity over E
 \newcommand{\LamE}{\Lambda_{\Emanifold}}      % max lambda_2 over the optimal fiber E
 \newcommand{\LamX}{\Lambda_{X}}               % max lambda_2 over the feasible set X_f
-\newcommand{\Cdelta}{\mathcal{C}_{\delta}}    % safe information set {lambda_2 >= sigma_req}
+\newcommand{\Cdelta}{\mathcal{C}_{\mathrm{req}}} % safe information set {lambda_2 >= sigma_req}
 \newcommand{\Price}{\mathcal{P}}              % price of self-sustainability P(sigma)
 \newcommand{\Ddelta}{\Delta_{\delta}}         % productive loss in the costly regime
 \newcommand{\sigmadyn}{\sigma_{\mathrm{dyn}}} % dynamic stability threshold = theta^2/(c m_F)
@@ -79,8 +79,8 @@ subgradient prices connectivity in units of utility. For finite teams a conserva
 test preserves joint wrench and connectivity feasibility after integer recovery. Simulations
 exhibit a zero-cost plateau ($\lamtwo$ rises $\approx0\!\to\!0.41$ at fixed productive value);
 an exact oracle measures the integrality gap for $N\le8$, and structured rounding attains
-re-certified integer self-sustaining assignments in $99.4\%$ of $900$ random-order draws at
-$N=12$ (every instance succeeding; no optimality claim). Zero-cost is exact on the relaxed optimal fiber; finite-team integerization
+re-certified integer self-sustaining assignments in $895/900$ random-order draws at
+$N=12$ (all $30$ instances succeeding on $\ge1$ draw; no optimality claim). Zero-cost is exact on the relaxed optimal fiber; finite-team integerization
 may incur a separately quantified recovery loss. The guarantees concern the affine
 communication-backbone relaxation; distributed online realization remains future work.
 \end{abstract}

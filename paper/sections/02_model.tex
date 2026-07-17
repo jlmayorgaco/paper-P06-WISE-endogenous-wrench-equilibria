@@ -43,7 +43,11 @@ Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f
 $L_{ir}\succeq0$ (robot-indexed, fixed), symmetric; \emph{(iii)} $\nabla\lamtwo$ is used only
 where $\lamtwo$ is simple, else the eigenspace directional derivative
 (Prop.~\ref{prop:freeconn}); the SDP~\eqref{eq:lmi} stays exact regardless (no genericity
-assumed).
+assumed); \emph{(iv)} the physical graph decomposes additively as
+$\Lgeo(q,\hat z)=L_0^{\mathrm{geo}}(q)+\sum_{i,r}\hat z_{ir}L_{ir}^{\mathrm{geo}}(q)$ with
+$L_0^{\mathrm{geo}}(q)\succeq L_0$ and $L_{ir}^{\mathrm{geo}}(q)\succeq L_{ir}$ for every
+admissible pose (edge supports shared by several relays add; otherwise they are disjoint, so no
+link is double-counted).
 \end{assumption}
 
 \subsection{Wrench feasibility}
@@ -82,14 +86,17 @@ realization.
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
 robot \emph{identity}: every robot is always present (an \emph{idle} robot still occupies its
 node), and the action set chooses \emph{edges} at a node, not nodes. A fixed base graph
-$L_0\succeq0$ carries the always-on short-range conductances; when robot $i$ commits to relay
-site $r$ it \emph{gates on} its own predefined long-range links
-$L_{ir}=\gamma_{\tau(i)r}\sum_{j}w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$ (the fixed
-set of robots it then reaches, possibly several). Each $L_{ir}$ is a \emph{lower-bound}
-Laplacian: its weights are tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_r}w_{ij}(q)$
-(with a smooth decreasing weight law, the infimum is $w$ at the tube-inflated distance), so
-every link it carries is guaranteed for every admissible pose and $\Lgeo(q)\succeq\Lap(\hat z)$
-in Loewner order (Lemma~\ref{lem:bridge}). Thus, \emph{directly in the per-robot occupancy},
+$L_0\succeq0$ carries the always-on short-range conductances (itself a lower-bound Laplacian);
+when robot $i$ commits to relay site $r$ it \emph{gates on} its predefined long-range links
+$L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
+weighted by the tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$. The
+tube $\mathcal Q_{ir}$---robot $i$ at relay $r$ and all \emph{admissible} positions of the
+robots it reaches---is fixed before optimization, so each $L_{ir}$ is decision-independent and
+the SDP stays affine (links of zero infimum weight are excluded, a more conservative backbone).
+With a smooth decreasing weight law the infimum is $w$ at the tube-inflated distance; both
+$L_0$ and every $L_{ir}$ are lower-bound Laplacians, giving $\Lgeo(q)\succeq\Lap(\hat z)$
+(Assumption~\ref{as:standing}(iv), Lemma~\ref{lem:bridge}). Thus, \emph{directly in the
+per-robot occupancy},
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
@@ -119,20 +126,21 @@ $z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006g
 \end{lemma}
 
 \begin{lemma}[A priori geometric transfer by graph monotonicity]\label{lem:bridge}
-Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $q$ any pose with each robot
-inside its tracking tube. Since every weight of $\Lap(\hat z)$ is a tube infimum and $\psi$ is
-decreasing, $w_{ij}(q)\ge\underline w_{ij}$, so
+Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $q$ any admissible pose. By
+the additive decomposition of Assumption~\ref{as:standing}(iv) and the lower-bound
+construction of $L_0,L_{ir}$,
 \begin{equation}
-\Lgeo(q)-\Lap(\hat z)=\!\sum_{i<j}\!\big(w_{ij}(q)-\underline w_{ij}\big)
-(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0 .
+\Lgeo(q)-\Lap(\hat z)=(L_0^{\mathrm{geo}}{-}L_0)+\textstyle\sum_{i,r}\hat z_{ir}
+(L_{ir}^{\mathrm{geo}}{-}L_{ir})\succeq0,
 \label{eq:mismatch}
 \end{equation}
-Restricting to $\mathbf 1^{\perp}$, eigenvalue monotonicity gives
-$\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$. Hence a certificate
-$\lamtwo(\Lap(\hat z))\ge\sigmastar$ (with $\sigmastar>\sigmadyn$ specified externally) yields
+a sum of PSD terms with no link double-counted. Restricting to $\mathbf 1^{\perp}$, eigenvalue
+monotonicity gives $\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$. Hence a certificate
+$\lamtwo(\Lap(\hat z))\ge\sigmastar$ ($\sigmastar>\sigmadyn$ specified externally) yields
 $\lamtwo(\Lgeo(q))\ge\sigmadyn$ \emph{a priori}, for every admissible pose---no post-hoc
-mismatch term. Solver tolerance $\delta_{\mathrm{num}}$ is the only slack; a future distributed
-estimator would add $\varepsilon_{\mathrm{est}}$, zero here.
+mismatch term. Every certificate is re-evaluated in double precision, so solver tolerance does
+not enter the guarantee; a future distributed estimator would add $\varepsilon_{\mathrm{est}}$,
+zero here.
 \end{lemma}
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap$ and transfers to
 $\Lgeo$ through the Loewner bound \eqref{eq:mismatch} at the integer recovery $\hat z$.
