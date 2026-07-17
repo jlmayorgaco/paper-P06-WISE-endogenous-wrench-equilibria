@@ -1,18 +1,18 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-We identified composition degeneracy as a resource in heterogeneous cooperative transport:
-when the productive optimum fixes the served aggregate but not its composition
-(Theorem~\ref{thm:degeneracy}), a spectral program selects, among equally productive
-assignments, one that preserves the estimator's communication substrate; relaxed WISE
-existence and selection reduce to a semidefinite program (Theorem~\ref{thm:existence}), and
-a small-gain condition ties the requirement to optimizer--estimator stability
-(Proposition~\ref{thm:stability}).
+Composition degeneracy is a resource in heterogeneous cooperative transport: when the
+productive optimum fixes the served aggregate but not its composition
+(Theorem~\ref{thm:degeneracy}), a tangent-cone criterion certifies zero-cost connectivity
+gains (Prop.~\ref{prop:freeconn}), a lexicographic semidefinite program selects the
+most-connected optimum (Theorem~\ref{thm:existence}), the capacities $\LamE\le\LamX$ price the
+requirement (Theorem~\ref{thm:price}), and explicit margins transfer the certificate to an
+integer team (Prop.~\ref{prop:integer}). A small-gain argument only \emph{motivates} the
+threshold (Prop.~\ref{thm:stability}).
 
 \paragraph*{Limitations and future work}
-The guarantees hold for the relaxed candidate-site model ($\Lap(z)$ is within a bounded
-perturbation $\varepsilon_L$ of $\Lgeo(q)$ under Lemma~\ref{lem:bridge}, with
-$\varepsilon_L$ measured, not bounded a priori; integers are re-certified after rounding,
-Remark~\ref{rem:integer}); nonholonomic realizability is modelled, not proved; validation
-is in simulation. An a-priori mismatch bound, a nonholonomic realizability theorem, and
-hardware validation remain open.
+The guarantees hold for the affine communication-backbone relaxation ($\Lap(z)$ is within a
+measured perturbation $\varepsilon_L$ of $\Lgeo(q)$, Lemma~\ref{lem:bridge}; integers are
+re-certified after rounding, Prop.~\ref{prop:integer}); nonholonomic realizability is
+modelled, not proved. A distributed online realization with a convergence guarantee, an
+a-priori mismatch bound, an exact integer oracle, and hardware validation remain open.

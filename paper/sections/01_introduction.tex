@@ -32,34 +32,33 @@ relaxed SDP existence certificate under hard wrench constraints.
 
 \paragraph*{Contributions}
 \begin{itemize}
-\item \textbf{Equilibrium-fiber geometry} (Theorem~\ref{thm:degeneracy},
+\item \textbf{Active-face and tangent-cone geometry} (Theorem~\ref{thm:degeneracy},
 Prop.~\ref{prop:freeconn}): the optimal served aggregate is unique, but the equal-payoff
 assignments form a fiber whose dimension is the local loss of strong monotonicity on the
-minimal active face; a projection
-criterion certifies when connectivity improves at \emph{zero} productive cost.
-\item \textbf{WISE certificate and selection} (Theorem~\ref{thm:existence}): the fiber
-contains a composition meeting the connectivity requirement $\sigmastar$ iff a semidefinite
-program clears it, and a lexicographic selector returns the most-connected productive
-optimum without moving the aggregate.
-\item \textbf{Information-layer relevance and validation} (Proposition~\ref{thm:stability}):
-a small-gain condition $c\,\mF\,\lamtwo>\vt_1\vt_2$ ties the requirement to
-optimizer--estimator stability, and simulations quantify the margin, integer recovery, and
-the heuristic attainment gap.
+minimal active face; a tangent-cone criterion certifies when connectivity improves at
+\emph{zero} productive cost, including a repeated Fiedler eigenvalue.
+\item \textbf{WISE threshold and price of self-sustainability}
+(Theorems~\ref{thm:existence},~\ref{thm:price}): relaxed WISE existence and selection are a
+lexicographic semidefinite program, and the spectral capacities $\LamE\le\LamX$ separate
+\emph{free}, \emph{costly}, and \emph{impossible} requirements through a convex price
+$\Price(\sigma)$ whose subgradient prices connectivity in units of utility.
+\item \textbf{Finite-team transfer} (Proposition~\ref{prop:integer}): explicit wrench and
+connectivity margins under which an integer recovery preserves both feasibilities, evaluated
+by rounding on heterogeneous instances.
 \end{itemize}
 A productively optimal, wrench-feasible assignment whose induced graph meets the estimator's
-stability requirement is a \emph{WISE equilibrium}.
+stability requirement is a \emph{WISE equilibrium}. The guarantees are for the affine
+relaxation; a small-gain argument (Prop.~\ref{thm:stability}) only \emph{motivates} the
+connectivity requirement, and distributed online realization remains future work.
 
-\begin{figure*}[t]\centering
-\resizebox{0.86\textwidth}{!}{\input{sections/fig_concept}}
-\caption{Assignment-induced connectivity and WISE selection. \textbf{(1)}~A distributed
-equilibrium-seeker computes the assignment $z$ from aggregates estimated over the
-communication graph---but that graph is $\Lap(z)$, formed by $z$ itself. \textbf{(2)}~The
-productive optimum fixes the served aggregate $Bz=y^{\star}$ (demanded wrench realizable
-throughout) but not the composition: a whole fiber $\Emanifold$ attains the same $V^{\star}$
-while its connectivity $\lamtwo$ varies, crossing $\sigmastar$ (inset). \textbf{(3)}~A
-comparative-advantage exchange between a matched long/short pair of equal capacity, which
-keeps $Bz=y^{\star}$ and $V^{\star}$: (a) the long-range robot lifts and the short one
-relays (too short to bridge), $\lamtwo<\sigmastar$; (b) the short robot lifts and the long
-one relays, bridging the gap, $\lamtwo\ge\sigmastar$.}
-\label{fig:scene}
-\end{figure*}
+% Concept figure removed for the six-page limit (was uncited); source preserved in
+% sections/fig_concept.tex and restorable for the extended/repository version.
+% \begin{figure*}[t]\centering
+% \resizebox{0.62\textwidth}{!}{\input{sections/fig_concept}}
+% \caption{Assignment-induced connectivity and WISE selection: (1) the seeker computes $z$
+% from aggregates over the graph $\Lap(z)$ that $z$ itself forms; (2) the productive optimum
+% fixes $Bz=y^{\star}$ but not the composition, so a fiber $\Emanifold$ attains $V^{\star}$
+% with $\lamtwo$ crossing $\sigmastar$; (3) a comparative-advantage long/short role exchange
+% keeps $Bz=y^{\star},V^{\star}$ while moving $\lamtwo$ across $\sigmastar$.}
+% \label{fig:scene}
+% \end{figure*}

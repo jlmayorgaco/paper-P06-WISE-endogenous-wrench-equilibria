@@ -1,47 +1,18 @@
-\section{Certificate and Decentralized Realization}
+\section{Centralized Relaxed Certificate}
 \label{sec:algorithm}
 
-We separate the exact certificate from the online controller: existence and
-selection of a WISE are decided by the semidefinite program of
-Theorem~\ref{thm:existence}, solved centrally; the primal--dual flow below is a
-decentralized \emph{heuristic} realization evaluated empirically, not a convergence
-guarantee.
+Existence and selection of a WISE are decided by the semidefinite program of
+Theorem~\ref{thm:existence}, solved centrally over the fluid relaxation. Stage~1 fixes
+$y^{\star}$ by maximising $V$ over $X_{\mathrm f}$; the Stage-2 SDP~\eqref{eq:sdp} then
+returns $\LamE$ and the most-connected productively optimal assignment
+$z^{\star}_{\mathrm{WISE}}$, and $\LamE\ge\sigmastar$ is the relaxed WISE existence test
+(Theorem~\ref{thm:existence}). We report this certificate and use it as the relaxed
+reference for the simulations; an integer team is recovered by rounding and re-certified
+against the margins of Proposition~\ref{prop:integer}.
 
-\subsection{Exact certificate (centralized SDP)}
-Stage 1 fixes $y^{\star}$ by maximising $V$ over $X_{\mathrm f}$; the Stage-2
-SDP~\eqref{eq:sdp} then returns $\LamE$ and the most-connected productively optimal
-assignment $z^{\star}_{\mathrm{WISE}}$, and $\LamE\ge\sigmastar$ is the WISE existence
-test (Theorem~\ref{thm:existence}). We report this certificate and use it as a relaxed
-reference for the simulations.
-
-\subsection{Decentralized realization}
-We write the online approximation as a \emph{type-population} flow: $z_{\tau a}=\sum_{i\in
-\tau}x_{ia}$ is the type aggregate of individual assignments $x_{ia}$, and each robot
-samples its own action from the type distribution, so~\eqref{eq:pd} is the aggregate of the
-per-robot revisions rather than a controller run by a coordinator. Shared per-site
-occupancy $\sum_\tau z_{\tau,kh}\le1$ is priced by $\rho_{kh}\ge0$ (a soft penalty; strict
-exclusivity requires a separate one-at-a-time arbitration). The flow carries a hard-wrench
-dual $\mu$ and a connectivity dual $\pi$:
-\begin{subequations}\label{eq:pd}
-\begin{align}
-\dot z_\tau &= \mathcal R_\tau\!\Big(z,\;\nabla_{z_\tau}V(z)+H_w^{\top}\mu
--O_\tau^{\top}\rho+\pi\,\nabla_{z_\tau}\lamtwo(\Lap(z))\Big),\label{eq:pd-x}\\
-\dot\mu &= \big[d-H_w z\big]_+^{\mu},\qquad
-\dot\rho = \big[Oz-\mathbf 1\big]_+^{\rho},\label{eq:pd-mu}\\
-\dot\pi &= \big[\sigmastar-\lamtwo(\Lap(z))\big]_+^{\pi},\label{eq:pd-pi}
-\end{align}
-\end{subequations}
-with $(Oz)_{kh}=\sum_\tau z_{\tau,kh}$ the shared slot/relay occupancy priced by $\rho\ge0$
-and $\mathcal R_\tau$ a budget-preserving projected-ascent revision whose rest points
-maximise $V$~\cite{sandholm2010population}. Each robot estimates $(\lamtwo,v)$ by power
-iteration on $P=I-\beta\Lap(z)-\tfrac1N\mathbf1\mathbf1^{\top}$ ($0<\beta<1/\lambda_{\max}$),
-sign-fixed by a reference index and stopped at eigen-residual
-$\|Pv-\widehat\mu v\|\le\tau_{\mathrm{eig}}$ (the eigengap sets the rate;
-$\varepsilon_{\mathrm{est}}$ in $\delta$; recursion in the repository). This
-\emph{preserves} rather than recovers connectivity: it assumes a connected warm start
-$\lamtwo\ge\sigma_{\mathrm{safe}}$ and gap $\lambda_3-\lamtwo\ge g_{\min}>0$, on a slower
-scale than the estimator; in simulation it is integrated by forward Euler
-$z^{k+1}=\Pi_{\mathcal X_0}[z^k+h\,\dot z^k]$ with $\Pi_{\mathcal X_0}$ the projection onto
-the \emph{local} per-type budget simplices $\{z\ge0:\sum_a z_{\tau a}=n_\tau\}$ (occupancy
-handled by $\rho$, not by a global projection). We make no global-convergence claim;
-existence and selection rest on the exact SDP.
+A fully \emph{distributed} realization---in which each robot samples its own action from a
+type-population flow using only locally communicated aggregates and duals, and provably
+converges to $\Emanifold^{\star}_{\mathrm{WISE}}$ over the very graph it forms---is the
+natural next step, but requires a local message protocol and a convergence guarantee over a
+decision-dependent graph that are outside the present relaxed guarantees. We therefore leave
+it to future work and claim only the centralized certificate here.

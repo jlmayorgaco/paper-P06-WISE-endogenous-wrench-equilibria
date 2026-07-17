@@ -6,8 +6,8 @@ world: a rigid load demands a planar wrench, short links connect robots only wit
 cluster, and the gap is bridged only when a long-range type relays. The lifters are
 second-order unicycles and the load a planar rigid body,
 \begin{equation}
-\dot p_i=v_i[\cos\theta_i,\sin\theta_i]^{\!\top},\;\;
-m_i\dot v_i=u_{v,i}-d_iv_i,\;\;J_i\dot\omega_i=u_{\omega,i}-d_{\omega i}\omega_i,
+\dot p_i=v_i[\cos\theta_i,\sin\theta_i]^{\!\top}\!,\;
+m_i\dot v_i\!=\!u_{v,i}\!-\!d_iv_i,\;J_i\dot\omega_i\!=\!u_{\omega,i}\!-\!d_{\omega i}\omega_i,
 \label{eq:unicycle}
 \end{equation}
 with load wrench $\sum_{k,h}A_{kh}f_{i}$ from the admissible contact forces $f_i\in
@@ -16,50 +16,45 @@ when wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seed
 reproduces exactly.
 
 \begin{figure*}[t]\centering
-\includegraphics[width=0.82\textwidth]{fig_central.pdf}
+\includegraphics[width=0.72\textwidth]{fig_central.pdf}
 \caption{Productively equivalent compositions with different information feasibility.
-\textbf{(a)} Along one certified productive-nullspace direction ($\|Ad\|,\|Bd\|,\|G_Id\|
-<10^{-15}$, $\dim\Emanifold=59$), the productive value and the served aggregate are
-invariant ($\max_\alpha|V(z(\alpha))-V^{\star}|,\max_\alpha\|Bz(\alpha)-y^{\star}\|<10^{-8}$)
-while $\lamtwo(\Lap(z(\alpha)))$ crosses $\sigmastar$. \textbf{(b,c)} A comparative-advantage
-role exchange between a matched long/short pair of \emph{equal} lifting capacity, from the
-pipeline $z^{\star}\!\to\!$ rounding $\to$ pose $\to\Lgeo^{\pi}(q)$: both use the same robots
-and active-role count and share $Bz=y^{\star}$, $V^{\star}$, and the same wrench. (b)~long
-robot lifts, short relays (short range, no bridge): $\lamtwo(\Lgeo)\approx0$. (c)~short lifts,
-long relays: $\lamtwo(\Lgeo)=0.78\ge\sigmastar$.}
+\textbf{(a)} Along a certified productive-nullspace direction ($\dim\Emanifold=59$), $V$ and
+$Bz$ stay invariant ($<10^{-8}$) while $\lamtwo(\Lap(z(\alpha)))$ crosses $\sigmastar$.
+\textbf{(b,c)} A comparative-advantage role exchange between a matched long/short pair from
+the pipeline $z^{\star}\!\to\!$ rounding $\to$ pose $\to\Lgeo^{P}(q)$, sharing $Bz=y^{\star}$,
+$V^{\star}$ and wrench: (b) long lifts, short relays, $\lamtwo(\Lgeo)\approx0$; (c) short
+lifts, long relays, $\lamtwo(\Lgeo)=0.78\ge\sigmastar$.}
 \label{fig:central}
 \end{figure*}
 
 \paragraph*{E1 --- Fiber neutrality, certified (Fig.~\ref{fig:central}a)}
-At an interior productive optimum $\mathcal N_p=\ker A\cap\ker B$ has dimension $72-13=59$;
-moving along it holds $V$ and $Bz$ at machine precision (residuals $<10^{-8}$) while
-$\lamtwo$ crosses $\sigmastar$---the connectivity-feasible subset lies strictly inside the
-optimal fiber.
+At an interior optimum $\mathcal N_p=\ker A\cap\ker B$ has dimension $72-13=59$; moving along
+it holds $V,Bz$ at machine precision ($<10^{-8}$) while $\lamtwo$ crosses $\sigmastar$, so the
+connectivity-feasible subset lies strictly inside the fiber.
 
 \paragraph*{E2 --- Comparative-advantage exchange (Fig.~\ref{fig:central}b,c)}
-A matched long/short pair of equal lifting capacity swaps roles: in the productively
-optimal but information-infeasible composition the long-range robot lifts and the short
-one relays (its short range bridges nothing, $\lamtwo(\Lgeo)\approx0$); WISE has the short
-robot lift and the long robot relay, bridging the clusters ($\lamtwo(\Lgeo)=0.78$). Both
-use the same robots and active-role count and share $Bz=y^{\star}$, $V^{\star}$, and zero
-wrench residual; only connectivity differs.
+A matched long/short pair swaps roles at fixed $Bz=y^{\star}$, $V^{\star}$ and zero wrench
+residual: the productively optimal composition (long lifts, short relays) leaves the clusters
+unbridged ($\lamtwo(\Lgeo)\approx0$), whereas WISE (short lifts, long relays) bridges them
+($\lamtwo(\Lgeo)=0.78$); only connectivity differs.
 
 \paragraph*{E3 --- Lexicographic vs.\ scalarized selection}
-On free-regime seeds the scalarised $V+\varepsilon\lamtwo$ trades productive value for
-connectivity (loss $0\!\to\!0.049$, drift $0\!\to\!0.307$ as $\varepsilon:10^{-3}\!\to\!1$,
-under the Tikhonov envelopes), whereas the lexicographic selector holds both at zero.
+On free-regime seeds $V+\varepsilon\lamtwo$ trades productive value for connectivity (loss
+$0\!\to\!0.049$, drift $0\!\to\!0.307$ as $\varepsilon:10^{-3}\!\to\!1$), whereas the
+lexicographic selector holds both at zero---a formulational, not empirical, gap.
 
 \paragraph*{E4 --- Integer recovery (Rem.~\ref{rem:integer})}
-Over $30$ seeds a single randomized-rounding draw re-certifies $66\%$ of the fluid optima,
-best-of-$30$ all $30$ (argmax $67\%$), with welfare gap
-$V_{\mathrm{relax}}-V_{\mathrm{int}}=+1.8\%$ (mean); all robots are integer.
+Over $30$ seeds a single randomized-rounding draw re-certifies $66\%$ of fluid optima,
+best-of-$30$ all $30$ (argmax $67\%$); welfare gap
+$V_{\mathrm{relax}}-V_{\mathrm{int}}=+1.8\%$ (mean), all robots integer.
 
-\paragraph*{E5 --- Method comparison (Table~\ref{tab:ablation})}
+\paragraph*{E5 --- Selection among productive optima (Table~\ref{tab:ablation})}
 Single-criterion baselines rarely clear both tests. The hard connectivity-constrained
-optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) reaches $V^{\star}$ but only \emph{satisfies}
-the requirement (margin $+0.15$); WISE maximizes it among productive optima ($+0.99$)---the
-value of the lexicographic order. The flow (WISE-PD, $50\%$) and multistart ($67\%$) attain
-less than the certificate; both SDPs solve in $30$--$60$\,ms at $N=12$.
+optimum ($\max V$ s.t.\ $\lamtwo\ge\sigmastar$) also reaches $V^{\star}$, but in the free
+regime it may return \emph{any} point of the optimal face and merely \emph{satisfies} the
+requirement (margin $+0.15$). WISE is not a competitor to it but its lexicographic
+\emph{tie-break}: among the same connectivity-constrained productive optima it selects the
+maximum-margin point ($+0.99$). The relaxed SDP solves in $30$--$60$\,ms at $N=12$.
 
 \begin{table}[t]\centering
 \caption{Comparison on $30$ paired seeds ($N=12$, $\nu=0.4$, $\tau_d=6.5$); means, Wilson
@@ -72,34 +67,22 @@ but WISE attains the larger margin. The last block certifies the \emph{relaxed} 
 \end{table}
 
 \paragraph*{E6 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
-Sweeping the requirement $\sigma$ traces $\Price(\sigma)$ over six seeds: identically zero up
-to $\LamE$ (free---connectivity at no productive cost), strictly positive and finite on
-$(\LamE,\LamX]$ (costly), and infeasible beyond $\LamX$ (impossible), matching
-\eqref{eq:trichotomy} on every seed ($\LamE<\LamX$ throughout, so the costly branch is
-nonempty). The subgradient $\pi^{\star}\in\partial\Price$ is the productive cost of one unit
-of connectivity.
+Sweeping $\sigma$ traces $\Price(\sigma)$ over six seeds: zero up to $\LamE$ (free), positive
+on $(\LamE,\LamX]$ (costly), infeasible beyond (impossible), matching \eqref{eq:trichotomy} on
+every seed ($\LamE<\LamX$, so the costly branch is nonempty). The subgradient
+$\pi^{\star}\in\partial\Price$ prices one unit of connectivity.
 
 \begin{figure}[t]\centering
-\includegraphics[width=0.74\columnwidth]{fig_price.pdf}
-\caption{Price of self-sustainability $\Price(\sigma)$ (six seeds). Zero-cost plateau up to
-$\LamE$ (green), a strictly positive costly branch on $(\LamE,\LamX]$ (orange), and
-infeasibility beyond $\LamX$ (red)---the certified free/costly/impossible trichotomy of
-Theorem~\ref{thm:price}.}
+\includegraphics[width=0.62\columnwidth]{fig_price.pdf}
+\caption{Price $\Price(\sigma)$ (six seeds): zero-cost plateau up to $\LamE$ (green), positive
+costly branch on $(\LamE,\LamX]$ (orange), infeasible beyond $\LamX$ (red); the trichotomy of
+Thm.~\ref{thm:price}.}
 \label{fig:price}
 \end{figure}
 
-\paragraph*{E7 --- Self-defeat vs.\ self-sustenance in transport (Fig.~\ref{fig:transport})}
-During transport WISE holds $\lamtwo(\Lgeo^{\pi})$ above $\sigmastar$ (min $0.58$), so the
-optimizer--estimator error \emph{decays} and the load is delivered; withdrawing the relay
-drops $\lamtwo$ below $\sigmadyn=\vt_1\vt_2/(c\,\mF)=0.2$ and the \emph{same} error
-\emph{diverges}---the decision defeats its own computation
-(Proposition~\ref{thm:stability}). The estimate $\widehat\lamtwo$ tracks within $0.011$.
-
-\begin{figure}[t]\centering
-\includegraphics[width=\columnwidth]{fig_transport.pdf}
-\caption{Information-layer self-defeat during transport. (a) Geometric connectivity for the
-WISE composition (relay on, above $\sigmastar$) vs.\ the same team with the relay withdrawn
-(below $\sigmadyn$, shaded). (b) The coupled optimizer--estimator error $\|e(t)\|$ driven by
-each: above $\sigmadyn$ it decays (self-sustaining), below it grows (self-defeating).}
-\label{fig:transport}
-\end{figure}
+\paragraph*{E7 --- Information-layer self-defeat (motivating)}
+Consistent with the motivating interpretation (Prop.~\ref{thm:stability}), when WISE holds
+$\lamtwo(\Lgeo^{P})$ above $\sigmastar$ the coupled optimizer--estimator error decays, whereas
+withdrawing the relay drops $\lamtwo$ below $\sigmadyn=\vt_1\vt_2/(c\,\mF)$ and the same error
+diverges---the decision would defeat its own computation. This is an information-layer
+illustration; closed-loop pose, wrench and actuator validation is future work.

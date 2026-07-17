@@ -34,7 +34,7 @@ GEN.mkdir(exist_ok=True)
 FIG.mkdir(exist_ok=True)
 
 METHODS = ["scalar_capacity", "wrench_only", "connectivity_only",
-           "hard_conn", "centralized", "wise_pd", "wise_sdp"]
+           "hard_conn", "centralized", "wise_sdp"]
 
 
 def _random_feasible(prob, rng):
@@ -187,12 +187,12 @@ def _write_table(rows, seeds):
     disp = {"scalar_capacity": r"scalar-capacity",
             "wrench_only": r"wrench-only", "connectivity_only": r"connectivity-only",
             "hard_conn": r"hard-connectivity", "centralized": r"centralized multistart",
-            "wise_pd": r"\textbf{WISE-PD}", "wise_sdp": r"\textbf{WISE-SDP}"}
+            "wise_sdp": r"\textbf{WISE-SDP}"}
     by = {r["method"]: r for r in rows}
     groups = [(r"\emph{Single-criterion (attainment)}",
                ["scalar_capacity", "wrench_only", "connectivity_only"]),
               (r"\emph{Joint solvers (attainment)}",
-               ["hard_conn", "centralized", "wise_pd"]),
+               ["hard_conn", "centralized"]),
               (r"\emph{Exact relaxed existence certificate}", ["wise_sdp"])]
 
     def _row(m):
@@ -208,7 +208,7 @@ def _write_table(rows, seeds):
              r"\setlength{\tabcolsep}{3pt}",
              r"\begin{tabular}{lcccc}", r"\hline",
              r"Method & $V^\star\!-\!V$ $\downarrow$ & wr.\ def.\ $\downarrow$ & "
-             r"$\lambda_2\!-\!\sigma_{\mathrm{req}}$ $\uparrow$ & Succ.\ $\uparrow$\\",
+             r"$\lambda_2\!-\!\sigma_{\mathrm{req}}$ $\uparrow$ & Cert.\ $\uparrow$\\",
              r"\hline"]
     for title, methods in groups:
         lines.append(r"\multicolumn{5}{l}{%s}\\" % title)

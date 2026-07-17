@@ -40,7 +40,7 @@ dimensionally a force or torque.
 \begin{assumption}[Standing hypotheses]\label{as:standing}
 Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f}\neq
 \varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
-$L_e\succeq0$ and coefficient $\ge0$, undirected (symmetric); \emph{(iii)} the
+$L_r\succeq0$ and coefficient $\ge0$, undirected (symmetric); \emph{(iii)} the
 single-Fiedler gradient $\nabla\lamtwo$ is used only where $\lamtwo$ is simple with gap
 $\lambda_3-\lamtwo\ge g_{\min}>0$; at multiplicity it is replaced by the PSD eigenspace
 supergradient $Z\succeq0,\operatorname{tr}Z=1$ of~\eqref{eq:lmi}, used throughout by the
@@ -98,10 +98,11 @@ link Laplacian $L_r\succeq0$ (effectiveness $\gamma_{\tau r}\ge0$), so
 \end{equation}
 is affine in $z$ (Assumption~\ref{as:standing}(ii)) because only relay occupancies gate
 edges---not a general pairwise geometric graph, whose weights would be bilinear in both
-endpoints' decisions. Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0\preceq
-\Lap(z)$), a surrogate for the physical $\Lgeo(q)$; the two are compared only \emph{after
-integer recovery}, whose bijection $\pi$ aligns them as $\Lgeo^{\pi}(q)=P_\pi^{\top}
-\Lgeo(q)P_\pi$ through Lemma~\ref{lem:bridge}. All theorems use $\Lap(z)$.
+endpoints' decisions. Each $\Lap(z)$ is a symmetric Laplacian ($\Lap(z)\mathbf1=0$ and
+$\Lap(z)\succeq0$), an affine surrogate for the physical $\Lgeo(q)$; the two are compared
+only \emph{after integer recovery}, where a node relabeling $P$ (a permutation) aligns them
+as $\Lgeo^{P}(q)=P^{\top}\Lgeo(q)P$ through Lemma~\ref{lem:bridge}. All theorems use
+$\Lap(z)$.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
@@ -123,16 +124,16 @@ $z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006g
 \end{lemma}
 
 \begin{lemma}[Geometric transfer under model mismatch]\label{lem:bridge}
-Suppose $\|\Lgeo^{\pi}(q)-\Lap(z)\|_2\le\varepsilon_L$, the estimator obeys
+Suppose $\|\Lgeo^{P}(q)-\Lap(z)\|_2\le\varepsilon_L$, the estimator obeys
 $|\widehat\lamtwo-\lamtwo(\Lap(z))|\le\varepsilon_{\mathrm{est}}$, and the solver keeps
 $\widehat\lamtwo\ge\sigmastar-\delta_{\mathrm{num}}$. Then Weyl's inequality gives
-$\lamtwo(\Lgeo^{\pi}(q))\ge\lamtwo(\Lap(z))-\varepsilon_L$, so with
+$\lamtwo(\Lgeo^{P}(q))\ge\lamtwo(\Lap(z))-\varepsilon_L$, so with
 $\delta=\varepsilon_L+\varepsilon_{\mathrm{est}}+\delta_{\mathrm{num}}$ and
-$\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo^{\pi}(q))\ge\sigmadyn$, the
+$\sigmastar:=\sigmadyn+\delta$ one obtains $\lamtwo(\Lgeo^{P}(q))\ge\sigmadyn$, the
 optimizer--estimator (information-layer) stability threshold. For the exact centralized
 SDP, $\Lap(z)$ is known and $\varepsilon_{\mathrm{est}}=\delta_{\mathrm{num}}=0$.
 \end{lemma}
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses the affine
 $\Lap(z)$ and transfers to $\Lgeo(q)$ only through Lemma~\ref{lem:bridge} under the margin
-$\delta$, with $\varepsilon_L$ measured (Section~\ref{sec:exp}, bounded by $C_L\rho$) and
+$\delta$, with $\varepsilon_L$ measured (Section~\ref{sec:exp}) and
 $\varepsilon_{\mathrm{est}},\delta_{\mathrm{num}}$ fixed constants.

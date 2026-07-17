@@ -87,28 +87,32 @@ $D\lamtwo[d]=\sum_{\tau,r}\gamma_{\tau r}d_{\tau r}\,v^{\top}L_r v$. Whether suc
 
 \begin{proposition}[Free-connectivity criterion]\label{prop:freeconn}
 Let $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple and Fiedler vector $v$,
-so the feasible directions are exactly $N_p=\ker A\cap\ker B\cap\ker G_I$ (no inequality
-binds). With $g_\lambda=\nabla_z\lamtwo(\Lap(\bar z))$ (entries $\gamma_{\tau r}v^{\top}L_r
-v$),
+so the locally feasible directions form the subspace $N_p=\ker A\cap\ker B\cap\ker G_I$ (no
+constraint beyond those defining the minimal active face becomes newly active). With
+$g_\lambda=\nabla_z\lamtwo(\Lap(\bar z))$ (entries $\gamma_{\tau r}v^{\top}L_r v$),
 \begin{equation}
 \max_{h\in N_p,\ \|h\|\le1}D\lamtwo(\bar z)[h]=\|\Pi_{N_p}g_\lambda\|,
 \label{eq:freeconn}
 \end{equation}
-so a productively neutral connectivity improvement exists $\iff\Pi_{N_p}g_\lambda\neq0$, with
-optimal direction $h^\star=\Pi_{N_p}g_\lambda/\|\Pi_{N_p}g_\lambda\|$; if it vanishes,
-$\bar z$ is KKT-stationary for $\max_{\Emanifold}\lamtwo$ ($g_\lambda$ lies in the normal
-cone). At a boundary $\bar z$ the same holds with $N_p$ replaced by the tangent cone
-$T_{\Emanifold}(\bar z)$; and under multiplicity, with $D\lamtwo[h]$ replaced by
-$\lambda_{\min}(U_2^{\top}D\Lap(\bar z)[h]\,U_2)$ ($U_2$ a basis of the reduced eigenspace),
-so a first-order neutral improvement exists $\iff\max_{h\in T_{\Emanifold},\|h\|\le1}
-\lambda_{\min}(U_2^{\top}D\Lap[h]U_2)>0$ (a small SDP).
+so a productively neutral improvement exists $\iff\Pi_{N_p}g_\lambda\neq0$, with optimal
+direction $h^\star=\Pi_{N_p}g_\lambda/\|\Pi_{N_p}g_\lambda\|$. At a boundary $\bar z$ replace
+$N_p$ by the tangent cone $T_{\Emanifold}(\bar z)=\{h:Ah{=}0,\ Bh{=}0,\ G_jh\le0,\ j\in
+I(\bar z)\}$ ($I(\bar z)$ the active set, sign convention $Gz\le h$); then no free
+improvement exists $\iff g_\lambda\in N_{\Emanifold}(\bar z)=\{A^{\top}\alpha+B^{\top}\beta+
+G_I^{\top}\nu:\nu\ge0\}$, the KKT-stationarity certificate. Under a repeated $\lamtwo$,
+replace $D\lamtwo[h]$ by $\lambda_{\min}(U_2^{\top}D\Lap(\bar z)[h]\,U_2)$, where $U_2$ is an
+orthonormal basis of the eigenspace of the \emph{smallest} eigenvalue of
+$Q^{\top}\Lap(\bar z)Q$; a first-order neutral improvement then exists
+$\iff\max_{h\in T_{\Emanifold},\|h\|\le1}\lambda_{\min}(U_2^{\top}D\Lap[h]U_2)>0$ (a small
+SDP).
 \end{proposition}
 
 \subsection{The WISE refinement}
 \begin{definition}[WISE]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and
 Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$,
-i.e.\ $z^{\star}\in\Ess:=\Emanifold\cap\Cdelta$, where
+i.e.\ $z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$ over the fluid relaxation (its integer
+counterpart is $\Essint=\Essrel\cap\mathbb Z^{n}$), where
 $\Cdelta=\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigmastar\}$. Since
 $\sigmastar=\sigmadyn+\delta>\sigmadyn$, a WISE clears the stability threshold of
 Proposition~\ref{thm:stability} with margin $\delta$ and, by Lemma~\ref{lem:bridge},
@@ -132,10 +136,10 @@ z\in\mathcal X,\ Bz=y^{\star},\ \eqref{eq:tensor},\ Q^{\top}\Lap(z)\,Q\succeq tI
 \label{eq:sdp}
 \end{equation}
 convex by Lemma~\ref{lem:convex} (affine constraints in $(z,\xi)$, concave
-$\lamtwo\!\circ\!\Lap$). Over the relaxation a WISE exists iff the value clears the
-requirement,
+$\lamtwo\!\circ\!\Lap$). Over the relaxation a \emph{relaxed} WISE exists iff the value
+clears the requirement,
 \begin{equation}
-\Ess\neq\varnothing\iff\LamE\ge\sigmastar,
+\Essrel\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
 \end{equation}
 and any maximiser $z^{\star}_{\mathrm{WISE}}$ preserves the productive optimum exactly,
@@ -151,48 +155,34 @@ $g^{\top}z$ need not.
 $X_{\mathrm f}$ is a convex polytope and $Bz=y^{\star}$ is affine; by Lemma~\ref{lem:convex},
 $\{(z,t):Q^{\top}\Lap(z)Q\succeq tI\}$ is convex, so \eqref{eq:sdp} is an SDP; its value
 $\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ is attained on the compact $\Emanifold$
-(Weierstrass). $\Ess=\Emanifold\cap\Cdelta$ is nonempty iff this maximum reaches
+(Weierstrass). $\Essrel=\Emanifold\cap\Cdelta$ is nonempty iff this maximum reaches
 $\sigmastar$, giving \eqref{eq:exist}; feasibility forces
 $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$. Strictness holds when $\sigmastar$ lies
 strictly inside the range of $\lamtwo$ over $\Emanifold$.
 \end{proof}
 
-\subsection{Aggregate--estimator stability}
-To show the \emph{dynamic significance} of the threshold (not to linearise~\eqref{eq:pd}),
-posit a local optimizer--estimator model coupling a served-aggregate error $\xi\in\R^p$
-and a consensus-estimator error $\eta\in\R^{(N-1)p}$,
-\begin{equation}
-\dot\xi=-M\xi+\Theta_1\eta,\qquad
-\dot\eta=\Theta_2\,\xi-c\,(\bar L_\perp\!\otimes\! I_p)\,\eta,
-\label{eq:jac}
-\end{equation}
-$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, with $\tfrac12(M+M^{\top})\succeq\mF I$,
-$\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$, and $\mF,\vt_1,\vt_2>0$.
+\subsection{Aggregate--estimator stability (motivating)}
+To \emph{motivate} the threshold, posit a local optimizer--estimator model coupling a
+served-aggregate error $\xi$ and a consensus-estimator error $\eta$: $\dot\xi=-M\xi+
+\Theta_1\eta$, $\dot\eta=\Theta_2\xi-c(\bar L_\perp\!\otimes\!I_p)\eta$, with
+$\bar L_\perp=Q^{\top}\Lap(z^{\star})Q$, $\tfrac12(M{+}M^{\top})\succeq\mF I$,
+$\|\Theta_1\|_2\le\vt_1$, $\|\Theta_2\|_2\le\vt_2$ ($\mF,\vt_1,\vt_2>0$).
 
 \begin{proposition}[Information-layer stability interpretation]\label{thm:stability}
-Under those hypotheses, \eqref{eq:jac} is exponentially stable whenever
+This interconnection is exponentially stable whenever
 \begin{equation}
-c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,
-\quad\text{i.e.}\quad
-\lamtwo>\sigmadyn:=\frac{\vt_1\vt_2}{c\,\mF}.
+c\,\mF\,\lamtwo(\Lap(z^{\star}))>\vt_1\vt_2,\quad\text{i.e.}\quad
+\lamtwo>\sigmadyn:=\vt_1\vt_2/(c\,\mF).
 \label{eq:threshold}
 \end{equation}
-Restricted to a single Fiedler mode, \eqref{eq:jac} reduces to the scalar block
-$\dot a=-\mF a+\vt_1 b$, $\dot b=\vt_2 a-c\lamtwo b$, on which $c\,\mF\,\lamtwo>\vt_1\vt_2$
-is necessary and sufficient (trace $<0$, determinant $>0$); the decoupled case
-$\vt_1\vt_2=0$ is trivially stable.
 \end{proposition}
-\begin{proof}[Proof sketch]
-With $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$,
-$\dot W\le-\mF\|\xi\|^2-\tfrac{\vt_1}{\vt_2}c\lamtwo\|\eta\|^2+2\vt_1\|\xi\|\|\eta\|$ is
-negative definite iff $\mF\,\tfrac{\vt_1}{\vt_2}c\lamtwo>\vt_1^2$, i.e.\
-\eqref{eq:threshold}; the scalar Fiedler block gives the converse.
-\end{proof}
-This is a conditional interconnection result, \emph{not} a convergence proof
-for~\eqref{eq:pd}; it concerns the optimizer--estimator (information) layer only, not the
-unicycle/load dynamics. It links the connectivity requirement to the information-layer
-stability boundary $\sigmadyn$, which the WISE margin
-$\sigmastar=\sigmadyn+\delta$ satisfies by construction.
+On a single Fiedler mode it reduces to $\dot a=-\mF a+\vt_1 b$, $\dot b=\vt_2 a-c\lamtwo b$,
+on which \eqref{eq:threshold} is necessary and sufficient (trace $<0$, determinant $>0$),
+and $W=\tfrac12\|\xi\|^2+\tfrac{\vt_1}{2\vt_2}\|\eta\|^2$ gives general sufficiency. This
+only \emph{motivates} a positive requirement---not a convergence proof for any distributed
+controller, and concerning the information layer, not the unicycle/load dynamics. It places
+the stability boundary at $\sigmadyn$, treated hereafter as an externally specified threshold
+that $\sigmastar=\sigmadyn+\delta$ satisfies.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
@@ -215,7 +205,7 @@ $\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ and
 $\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))\ge\LamE$.
 
 \begin{theorem}[Price and the free/costly/impossible trichotomy]\label{thm:price}
-$\Price$ is nondecreasing and convex on its domain, and
+$\Price$ is a nondecreasing, proper extended-value convex function, and
 \begin{equation}
 \Price(\sigma)=
 \begin{cases}
@@ -225,10 +215,10 @@ $\Price$ is nondecreasing and convex on its domain, and
 \end{cases}
 \label{eq:trichotomy}
 \end{equation}
-Under a Slater point of $\{z\in X_{\mathrm f}:\lamtwo\ge\sigma\}$, the optimal multiplier
-$\pi^{\star}$ of the connectivity constraint satisfies
-$\pi^{\star}\in\partial\Price(\sigma)$: the marginal productive price of one unit of
-connectivity, in the units of $V$.
+At any $\sigma<\LamX$ admitting a strictly feasible point ($\exists z\in X_{\mathrm f}$ with
+$\lamtwo(\Lap(z))>\sigma$, i.e.\ Slater holds), the optimal multiplier $\pi^{\star}$ of the
+connectivity constraint satisfies $\pi^{\star}\in\partial\Price(\sigma)$: the marginal
+productive price of one unit of connectivity, in the units of $V$.
 \end{theorem}
 \begin{proof}
 The set $\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigma\}$ is a super-level set of the
@@ -284,6 +274,6 @@ guarantee: it does not assert an integer $\hat z$ within radius $r$ exists. Best
 rounding \emph{searches} for one and re-certifies it against~\eqref{eq:margins} (a search,
 not a proof; no $O(1/N)$ claim). On the $N=12$ demonstration a single randomized-rounding
 draw re-certifies $66\%$ of seeds and $30$ draws re-certify all $30$ (argmax rounding
-$67\%$); an exact integer oracle bounds the residual integrality gap
+$67\%$); the residual welfare gap $V_{\mathrm{relax}}-V_{\mathrm{int}}$ is measured directly
 (Section~\ref{sec:exp}).
 \end{remark}

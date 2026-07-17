@@ -39,6 +39,8 @@
 \newcommand{\PoE}{\mathrm{PoE}}
 \newcommand{\Emanifold}{\mathcal{E}}          % optimal composition fiber (level set of the aggregate map)
 \newcommand{\Ess}{\mathcal{E}_{\mathrm{ss}}}  % self-sustaining subset
+\newcommand{\Essrel}{\mathcal{E}_{\mathrm{ss}}^{\mathrm{rel}}} % relaxed self-sustaining set
+\newcommand{\Essint}{\mathcal{E}_{\mathrm{ss}}^{\mathbb Z}}    % integer self-sustaining set
 \newcommand{\Lammax}{\Lambda^{\star}}         % max algebraic connectivity over E
 \newcommand{\LamE}{\Lambda_{\Emanifold}}      % max lambda_2 over the optimal fiber E
 \newcommand{\LamX}{\Lambda_{X}}               % max lambda_2 over the feasible set X_f
@@ -52,8 +54,8 @@
 
 \begin{document}
 
-\title{WISE: Connectivity-Sustaining Equilibrium Selection\\
-for Heterogeneous Multi-Robot Transport}
+\title{WISE: Zero-Cost Connectivity Selection on Wrench-Feasible\\
+Assignment Fibers for Heterogeneous Multi-Robot Transport}
 
 \author{\IEEEauthorblockN{Jorge Luis Mayorga Taborda}
 \IEEEauthorblockA{\textit{Universidad Internacional de Valencia (VIU)}\\
@@ -63,25 +65,24 @@ jl.mayorga236@gmail.com}}
 \maketitle
 
 \begin{abstract}
-Distributed equilibrium-seeking controllers for multi-robot systems commonly assume
-that the communication graph is available independently of the assignment being
-computed. In cooperative transport, however, committing robots to lifting and relay
-roles changes the graph itself. We formulate a relaxed heterogeneous
-task-assignment model in which the wrench-feasible compositions that produce the same
-optimal served aggregate form an \emph{equilibrium fiber}. A \emph{wrench- and
-information-self-sustaining equilibrium} (WISE) is a point on this fiber whose
-decision-induced candidate-site Laplacian $\Lap(z)$ meets a robust
-algebraic-connectivity requirement. We characterize the fiber dimension on its
-active face, cast relaxed WISE existence and selection as a semidefinite program, and
-give a sufficient small-gain condition relating the connectivity requirement to
-exponential stability of the coupled served-aggregate/estimator subsystem. A
-lexicographic selector preserves the productive optimum exactly while maximizing
-connectivity. In the evaluated instances, compositions with identical productive value
-and wrench feasibility span algebraic connectivities from $\approx0$ (disconnected) to
-$0.78$, while the relaxed WISE SDP certifies all $30$ paired cases; a single
-randomized-rounding draw re-certifies $66\%$ of the $30$ seeds and up to $30$ draws
-re-certify all of them. The study separates wrench from communication infeasibility and
-quantifies the heuristic attainment gap.
+Heterogeneous multi-robot transport couples physical task allocation with the
+communication structure needed to coordinate it. We show that when productive utility
+depends on a low-dimensional served aggregate, its unique optimum can correspond to a
+\emph{positive-dimensional fiber} of wrench-feasible robot compositions---an unexploited
+resource for communication design.
+We characterize the fiber on its active face and give a tangent-cone condition for
+improving algebraic connectivity without moving the optimal served aggregate, including
+the case of a repeated Fiedler eigenvalue. A wrench- and information-self-sustaining
+equilibrium (WISE) is then selected lexicographically by a semidefinite program, and the
+resulting spectral capacities separate \emph{zero-cost}, \emph{costly}, and
+\emph{impossible} connectivity requirements through a price of self-sustainability
+$\Price(\sigma)$ whose subgradient prices connectivity in units of utility. For finite
+teams we derive explicit margins under which an integer recovery preserves both wrench
+and connectivity feasibility. Simulations with heterogeneous teams exhibit a zero-cost
+connectivity plateau ($\lamtwo$ spanning $\approx0$ to $0.78$ at fixed productive value) and
+quantify the integrality gap of rounding. The guarantees concern the affine
+communication-backbone relaxation;
+distributed online realization over a changing geometric network remains future work.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -97,6 +98,11 @@ algebraic connectivity, semidefinite programming.
 \input{sections/06_conclusion}
 
 \bibliographystyle{IEEEtran}
+% Slightly tighten inter-reference spacing to keep references within the six-page limit.
+\let\oldthebibliography\thebibliography
+\renewcommand{\thebibliography}[1]{%
+  \oldthebibliography{#1}%
+  \setlength{\itemsep}{-1.5pt}\setlength{\parsep}{0pt}}
 \bibliography{references}
 
 \end{document}
