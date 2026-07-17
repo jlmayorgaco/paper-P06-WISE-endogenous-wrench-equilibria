@@ -1,0 +1,35 @@
+{
+  "c_L": 2.0,
+  "c_S": 1.0,
+  "F_L": 2.0,
+  "F_S": 1.0,
+  "served_aggregate_bad": [
+    3.0,
+    3.0
+  ],
+  "served_aggregate_wise": [
+    3.0,
+    3.0
+  ],
+  "delta_Bz": [
+    0.0,
+    0.0
+  ],
+  "delta_V": 0.0,
+  "wrench_feasible": {
+    "bad_load1": true,
+    "bad_load2": true,
+    "wise_load1": true,
+    "wise_load2": true
+  },
+  "wrench_identical": true,
+  "n_active_bad": 6,
+  "n_active_wise": 6,
+  "delta_n_active": 0,
+  "long_active_bad": 2,
+  "long_active_wise": 2,
+  "lambda2_bad": 4.448778422826949e-16,
+  "lambda2_wise": 0.41471026389978366,
+  "delta_lambda2": 0.4147102638997832,
+  "neutral": true
+}

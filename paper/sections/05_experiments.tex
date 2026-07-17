@@ -13,28 +13,29 @@ validation. The primary metric is the \emph{certified service rate}: served only
 wrench-feasible \emph{and} $\lamtwo-\sigmastar\ge0$. Every instance is seeded and reproduces
 exactly.
 
-\begin{figure*}[t]\centering
-\includegraphics[width=0.52\textwidth]{fig_central.pdf}
-\caption{Productively equivalent compositions with different information feasibility.
-\textbf{(a)} Along a certified productive-nullspace direction ($\dim\Emanifold=59$), $V$ and
-$Bz$ stay invariant ($<10^{-8}$) while $\lamtwo(\Lap(z(\alpha)))$ crosses $\sigmastar$.
-\textbf{(b,c)} A neutral role-specialization exchange between a matched long/short pair
-(capacities equalized) from the pipeline $z^{\star}\!\to\!$ rounding $\to$ pose
-$\to\Lgeo(q)$, sharing $Bz=y^{\star}$,
-$V^{\star}$ and wrench: (b) long lifts, short relays, $\lamtwo(\Lgeo)\approx0$; (c) short
-lifts, long relays, $\lamtwo(\Lgeo)=0.78\ge\sigmastar$.}
-\label{fig:central}
-\end{figure*}
+\begin{figure}[t]\centering
+\includegraphics[width=\columnwidth]{fig_flagship.pdf}
+\caption{A \emph{non-trivial} composition exchange: the scarce type $L$ is the best lifter
+($c_L=2c_S$, $F_L=2F_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$,
+$R_L\!\gg\!R_S$), and a torque-critical load ties one $L$ down. \textbf{(a)} both $L$ lift, so
+the productive optimum is disconnected ($\lamtwo\approx0$); \textbf{(b)} WISE frees one $L$ to
+the central relay and replaces its capacity with two $S$, bridging the regions
+($\lamtwo=0.41$). The move $1L_{\mathrm{lift}}{+}2S_{\mathrm{relay}}\!\to\!
+1L_{\mathrm{relay}}{+}2S_{\mathrm{lift}}$ is exactly neutral---$\Delta Bz=0$ ($-c_L{+}2c_S=0$),
+$\Delta w=0$, $\Delta n_{\mathrm{active}}=0$, $\Delta V=0$---yet $D\lamtwo[d]>0$. Triangles:
+long; circles: short; red: lift; green: relay; diamond: relay site.}
+\label{fig:flagship}
+\end{figure}
 
-\paragraph*{E1 --- Fiber neutrality and role exchange (Fig.~\ref{fig:central})}
-At an interior optimum $\dim\mathcal N_p=72-13=59$; along it $V,Bz$ hold to $<10^{-8}$ while
-$\lamtwo$ crosses $\sigmastar$ (Fig.~\ref{fig:central}a), so the connectivity-feasible set
-lies strictly inside the fiber. Concretely (Fig.~\ref{fig:central}b,c), a matched long/short
-pair (capacities equalized) swaps roles at fixed $Bz=y^{\star}$, $V^{\star}$, zero wrench
-residual: the productive composition (long lifts, short relays) leaves the clusters unbridged
-($\lamtwo(\Lgeo)\approx0$), whereas WISE (short lifts, long relays) bridges them
-($\lamtwo(\Lgeo)=0.78$). A scalarized $V+\varepsilon\lamtwo$ instead moves the aggregate,
-whereas the lexicographic form holds both value and aggregate at zero loss.
+\paragraph*{E1 --- Non-trivial composition exchange (Fig.~\ref{fig:flagship})}
+The flagship instance ($N=12$, $c_L=2c_S$) certifies a genuine comparative-advantage
+reorganization, not a swap of equals: releasing one long lifter, compensating its capacity
+with two short lifters, and moving it to the relay holds $Bz=(3,3)=y^{\star}$, both wrenches
+(inner-polygon LP), $V=V^{\star}$ and $n_{\mathrm{active}}=6$ (two long, four short) exactly
+fixed, while $\lamtwo(\Lgeo)$ rises from $\approx0$ to $0.41$---materializing
+Prop.~\ref{prop:freeconn} with $D\lamtwo[d]>0$. More broadly, at an interior optimum
+$\dim\mathcal N_p=72-13=59$ and moving along the fiber holds $V,Bz$ to $<10^{-8}$ while
+$\lamtwo$ crosses $\sigmastar$ (\texttt{exp\_fiber}).
 
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$ a single randomized-rounding draw re-certifies a fluid optimum with probability
