@@ -112,7 +112,47 @@ def main(n_seeds: int = 30, sigma_req: float = C.SIGMA_REQ):
 
     (GEN / "robot_statistical_report.json").write_text(json.dumps(report, indent=2),
                                                        encoding="utf-8")
+
+    # ---- surrogate conservatism and the tube condition (paper Sec. V) ---------
+    cons = []
+    for m in methods:
+        vals = list(by[m].values())
+        cons.append({
+            "method": m,
+            "n_worlds": len(vals),
+            "operational_steps_per_world": int(vals[0]["n_operational_steps"]),
+            "min_transfer_margin": float(min(v["min_transfer_margin"] for v in vals)),
+            "p05_transfer_margin": float(np.median([v["p05_transfer_margin"] for v in vals])),
+            "median_transfer_margin": float(np.median(
+                [v["median_transfer_margin"] for v in vals])),
+            "n_transfer_violations": int(sum(v["n_transfer_violations"] for v in vals)),
+            "n_steps_outside_tube": int(sum(v["n_steps_outside_tube"] for v in vals)),
+            "n_worlds_with_tube_violation": int(sum(
+                1 for v in vals if v["n_steps_outside_tube"] > 0)),
+        })
+    with (GEN / "geometric_conservatism_summary.csv").open("w", newline="",
+                                                           encoding="utf-8") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(cons[0]))
+        w.writeheader()
+        w.writerows(cons)
+    (GEN / "tube_invariance_audit.json").write_text(json.dumps({
+        "claim": ("the geometric transfer is CONDITIONAL on q(t) staying in the "
+                  "pre-certified pose tubes; the simulation verifies this at every "
+                  "recorded sample, but the controller does not enforce forward "
+                  "invariance of the tubes"),
+        "tolerance_tau_eig": C.TAU_EIG,
+        "per_method": cons,
+        "total_operational_steps_checked": int(sum(
+            c["n_worlds"] * c["operational_steps_per_world"] for c in cons)),
+        "total_tube_violations": int(sum(c["n_steps_outside_tube"] for c in cons)),
+        "total_transfer_violations": int(sum(c["n_transfer_violations"] for c in cons)),
+    }, indent=2), encoding="utf-8")
+
     print(json.dumps(report["success_counts"], indent=2))
+    for c in cons:
+        print(f"{c['method']:<13} Delta_geo min {c['min_transfer_margin']:+.4f} "
+              f"p05 {c['p05_transfer_margin']:+.4f} med {c['median_transfer_margin']:+.4f} "
+              f"viol {c['n_transfer_violations']} tube-out {c['n_steps_outside_tube']}")
     return report
 
 

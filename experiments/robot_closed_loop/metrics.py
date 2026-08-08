@@ -94,9 +94,16 @@ def summarize(res, cert, sigma_req: float, pert: C.SeedPerturbation) -> dict:
         "wrench_certified": all(cert.wrench_ok.values()),
         # communication
         "min_lambda2_geo": float(lam_geo.min()),
+        # conservatism of the surrogate: Delta_geo(t) = lam2(L_geo(q(t))) - lam2(Lbar)
         "min_transfer_margin": float(_op(res, "transfer_margin").min()),
+        "p05_transfer_margin": float(np.percentile(_op(res, "transfer_margin"), 5)),
+        "median_transfer_margin": float(np.median(_op(res, "transfer_margin"))),
+        "n_transfer_violations": int(np.count_nonzero(
+            _op(res, "transfer_margin") < -C.TAU_EIG)),
+        "n_operational_steps": int(op.sum()),
         "min_loewner_eig": float(_op(res, "loewner_min_eig").min()),
         "max_tube_violation": float(_op(res, "tube_violation").max()),
+        "n_steps_outside_tube": int(np.count_nonzero(_op(res, "tube_violation") > 1e-9)),
         # information layer
         "alpha_certified": float(alpha_cert),
         "alpha_at_lambda2_bar": float(C.alpha_rate(lam_bar)),

@@ -106,7 +106,7 @@ def main():
     _, chosen, _ = RF.select()
     runs = {m: sim.simulate(m, chosen[m], S.lbar(chosen[m])) for m in ("PROD", "WISE")}
 
-    fig = plt.figure(figsize=(7.16, 1.20))
+    fig = plt.figure(figsize=(7.16, 1.08))
     gs = fig.add_gridspec(2, 3, wspace=0.34, hspace=0.52,
                           width_ratios=[1.42, 1.0, 1.0])
     ax_a1, ax_a2 = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0])

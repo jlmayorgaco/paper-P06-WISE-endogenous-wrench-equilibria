@@ -3,14 +3,13 @@
 
 Cooperative transport by a heterogeneous robot team couples two decisions usually studied
 apart: which robots apply force to a load, and which relay the information that lets the team
-agree on that force. Distributed equilibrium-seeking and population-game methods coordinate
-such teams by having each agent revise its strategy from locally communicated aggregates,
-converging to an equilibrium of a constrained potential game~\cite{martinezpiazuelo2022}. All
-rest on one premise: the communication graph needed to \emph{compute} the equilibrium is
-available while it is being reached. For a mobile team that cannot be assumed---the robots that
-compute the equilibrium are the robots whose placement forms the graph. An assignment can be
-productively optimal, delivering the demanded wrench, yet commit every robot to lifting and
-leave none to relay, so connectivity collapses and the estimator loses its channel.
+agree on that force. Methods that coordinate such teams from locally communicated
+aggregates~\cite{martinezpiazuelo2022} rest on one premise: the graph needed to \emph{compute}
+the assignment is available while it is being computed. For a mobile team that cannot be
+assumed---the robots that compute it are the robots whose placement forms the graph. An
+assignment can be productively optimal, delivering the demanded wrench, yet commit every robot
+to lifting and leave none to relay, so connectivity collapses and the estimator loses its
+channel.
 
 Population-game and distributed Nash-seeking formulations take the interaction graph as given.
 Communication-aware task allocation couples the two, trading utility against assignment-induced
@@ -25,28 +24,32 @@ the payoff couples only through aggregates, the productive optimum fixes the ser
 but leaves an aggregate-invariant fiber of wrench-feasible compositions
 (Theorem~\ref{thm:degeneracy}), over which connectivity is selected lexicographically.
 
-\emph{What is and is not new.} The mechanics are standard---concavity of $\lamtwo$ in affine
-weights~\cite{fiedler1973,ghosh2006growing}, derivatives of a repeated minimum
-eigenvalue~\cite{lewis1996spectral}, LMI connectivity design. The contribution is the object
-they are applied to: the wrench-feasible productive-optimum set is a positive-dimensional
-polytope whose tangent cone carries the entire zero-loss question, condensed into one scalar.
-\emph{Scope:} equilibrium-set geometry and centralized selection, not distributed Nash seeking.
+\emph{What is and is not new.} Exploiting redundancy for a free secondary objective is an old
+and good idea: null-space task-priority control lets lower-priority behaviors use kinematic
+redundancy without perturbing a primary task~\cite{antonelli2010nsb}. Here the redundancy is
+not a kinematic Jacobian but a \emph{wrench-constrained assignment-optimum polytope}; the
+secondary objective is the \emph{nonsmooth} algebraic connectivity; and
+$\Gamma_{\Emanifold}=0$ is equivalent to \emph{global} connectivity optimality over the whole
+fiber, repeated Fiedler eigenvalues included. The remaining mechanics are
+standard---concavity of $\lamtwo$ in affine weights~\cite{fiedler1973,ghosh2006growing},
+derivatives of a repeated minimum eigenvalue~\cite{lewis1996spectral}, LMI connectivity
+design---so we claim novelty only for that fiber, the local--global certificate on it, and its
+relaxed/integer attainability. \emph{Scope:} equilibrium-set geometry and planner-side
+selection, not distributed Nash seeking.
 
 \emph{Contributions.} \textbf{(i) Optimal-fiber networkability}
-(Thms.~\ref{thm:degeneracy},~\ref{thm:networkability}): the optimal served aggregate is unique
-but the equal-payoff assignments form a fiber whose dimension is the local loss of strong
-monotonicity, and one scalar $\Gamma_{\Emanifold}$ is positive iff a strictly better-connected
-optimum exists \emph{anywhere} on it, zero iff the point is globally connectivity-optimal
-(repeated Fiedler eigenvalues included). \textbf{(ii) Selection, price and what it buys}
-(Thm.~\ref{thm:existence}, Cor.~\ref{thm:price}, Prop.~\ref{thm:stability},
-Cor.~\ref{cor:tv}): WISE is a lexicographic refinement of the productive
-variational-equilibrium set computed by SDP; $\LamE\le\LamX$ separate \emph{free},
-\emph{costly} and \emph{impossible} requirements; and clearing the derived threshold
-$\sigmadyn$ gives exponential stability of a reduced information layer, with the same certified
-lower rate bound under a moving physical graph. \textbf{(iii) Finite-team and closed-loop
-assessment}: an exact small-team oracle, directly re-certified recovery, and a planar
-closed-loop transport simulation with rigidly attached robots in which productively identical
-assignments succeed and fail. Distributed realization remains future work.
+(Thms.~\ref{thm:degeneracy},~\ref{thm:networkability}): the optimal aggregate is unique but the
+equal-payoff assignments form a fiber whose dimension is the local loss of strong monotonicity,
+and one scalar $\Gamma_{\Emanifold}$ is positive iff a strictly better-connected optimum exists
+\emph{anywhere} on it, zero iff the point is globally connectivity-optimal (repeated Fiedler
+eigenvalues included). \textbf{(ii) Selection, price, and the budget it buys}
+(Thms.~\ref{thm:existence}, Cors.~\ref{thm:price},~\ref{cor:budget},~\ref{cor:tv}): WISE is a
+lexicographic refinement computed by SDP; $\LamE\le\LamX$ separate \emph{free}, \emph{costly}
+and \emph{impossible} requirements; clearing $\sigmadyn$ stabilizes a reduced information-layer
+interface at a rate bound that survives a moving graph; and the reserve is a certified
+relay-degradation budget WISE maximizes. \textbf{(iii) Finite-team and closed-loop assessment}:
+an exact small-team oracle, re-certified recovery, and a planar closed-loop transport
+simulation with rigidly attached robots.
 
 % Concept figure removed for the six-page limit (was uncited); source preserved in
 % sections/fig_concept.tex and restorable for the extended/repository version.

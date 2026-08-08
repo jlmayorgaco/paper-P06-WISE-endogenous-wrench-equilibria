@@ -4,13 +4,12 @@
 Stage~1 computes $z^{\mathrm{prod}}\in\arg\max_{X_{\mathrm f}}V$ and fixes
 $y^{\star}=Bz^{\mathrm{prod}}$; the Stage-2 SDP~\eqref{eq:sdp} returns $\LamE$ and the selector
 $z^{\star}_{\mathrm{WISE}}$, with $\LamE\ge\sigmastar$ the relaxed existence test.
-\emph{Structured recovery:} one draw of \emph{occupancy-aware sequential randomized rounding}
-processes robots in random order, robot $i$ sampling from $z^{\star}_i$ restricted to the
-currently available unit-capacity actions and renormalizing after each update, so every draw
-meets one action per robot and all capacities exactly. A greedy \emph{repair} then searches
-single-robot moves $e_{ir}{-}e_{ia}$ to free relays, admitting one only if the wrench
-LP~\eqref{eq:tensor} stays feasible and $\lamtwo$ strictly increases (so it cannot cycle), and
-re-certifies the result directly. Repair trades productive value for connectivity ($Bd\neq0$),
-so a recovered team is integer self-sustaining but seldom \emph{exactly} zero-cost; for small
-teams the integer optimum can instead be enumerated exactly (Sec.~\ref{sec:exp}). A distributed
-realization needs a convergence guarantee on a decision-dependent graph and is future work.
+\emph{Structured recovery:} \emph{occupancy-aware sequential randomized rounding} processes
+robots in random order, robot $i$ sampling from $z^{\star}_i$ restricted to the currently
+available unit-capacity actions, so every draw meets one action per robot and all capacities
+exactly. A greedy \emph{repair} then searches single-robot moves $e_{ir}{-}e_{ia}$ to free
+relays, admitting one only if the wrench LP~\eqref{eq:tensor} stays feasible and $\lamtwo$
+strictly increases (so it cannot cycle), and re-certifies directly. Repair trades productive
+value for connectivity ($Bd\neq0$), so a recovered team is seldom \emph{exactly} zero-cost; for
+small teams the integer optimum can instead be enumerated exactly (Sec.~\ref{sec:exp}). A
+distributed realization is future work.

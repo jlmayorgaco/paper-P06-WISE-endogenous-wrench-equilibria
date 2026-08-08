@@ -1,0 +1,39 @@
+{
+  "sigma_req": 0.3,
+  "sigma_dyn": 0.25,
+  "methods": {
+    "PROD": {
+      "lambda2_bar": 2.2422879115109017e-16,
+      "lambda2_L0": 2.2422879115109017e-16,
+      "certified_rho": null,
+      "clears_nominally": false,
+      "min_concavity_slack": 0.0,
+      "at_rho": 0.0,
+      "bound_holds": true,
+      "observed_last_rho_clearing_sigma_req": null
+    },
+    "HARD": {
+      "lambda2_bar": 0.3364609100182326,
+      "lambda2_L0": 2.6219428491313354e-16,
+      "certified_rho": 0.10836596149091089,
+      "clears_nominally": true,
+      "min_concavity_slack": 0.0,
+      "at_rho": 0.0,
+      "bound_holds": true,
+      "observed_last_rho_clearing_sigma_req": 0.11,
+      "certified_is_conservative": true
+    },
+    "WISE": {
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_L0": 2.293087594806842e-16,
+      "certified_rho": 0.24788680175269626,
+      "clears_nominally": true,
+      "min_concavity_slack": 0.0,
+      "at_rho": 0.0,
+      "bound_holds": true,
+      "observed_last_rho_clearing_sigma_req": 0.27,
+      "certified_is_conservative": true
+    }
+  },
+  "claim": "WISE maximizes lambda2(Lbar) over the productive-optimum fiber, hence maximizes the certified zero-productive-loss attenuation budget rho_cert = 1 - sigma_req/lambda2(Lbar) when lambda2(L0) = 0"
+}

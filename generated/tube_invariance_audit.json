@@ -1,0 +1,64 @@
+{
+  "claim": "the geometric transfer is CONDITIONAL on q(t) staying in the pre-certified pose tubes; the simulation verifies this at every recorded sample, but the controller does not enforce forward invariance of the tubes",
+  "tolerance_tau_eig": 1e-09,
+  "per_method": [
+    {
+      "method": "PROD",
+      "n_worlds": 30,
+      "operational_steps_per_world": 6401,
+      "min_transfer_margin": -1.0442264687108984e-15,
+      "p05_transfer_margin": -4.3001149276942374e-16,
+      "median_transfer_margin": -2.3225080910717145e-17,
+      "n_transfer_violations": 0,
+      "n_steps_outside_tube": 0,
+      "n_worlds_with_tube_violation": 0
+    },
+    {
+      "method": "HARD",
+      "n_worlds": 30,
+      "operational_steps_per_world": 6401,
+      "min_transfer_margin": 0.0346757329456826,
+      "p05_transfer_margin": 0.03917863683012826,
+      "median_transfer_margin": 0.062463298374846654,
+      "n_transfer_violations": 0,
+      "n_steps_outside_tube": 0,
+      "n_worlds_with_tube_violation": 0
+    },
+    {
+      "method": "WISE",
+      "n_worlds": 30,
+      "operational_steps_per_world": 6401,
+      "min_transfer_margin": 0.030924886104063742,
+      "p05_transfer_margin": 0.03680415579770435,
+      "median_transfer_margin": 0.06516414700009021,
+      "n_transfer_violations": 0,
+      "n_steps_outside_tube": 0,
+      "n_worlds_with_tube_violation": 0
+    },
+    {
+      "method": "SCALAR",
+      "n_worlds": 30,
+      "operational_steps_per_world": 6401,
+      "min_transfer_margin": 0.030924886104063742,
+      "p05_transfer_margin": 0.03680415579770435,
+      "median_transfer_margin": 0.06516414700009021,
+      "n_transfer_violations": 0,
+      "n_steps_outside_tube": 0,
+      "n_worlds_with_tube_violation": 0
+    },
+    {
+      "method": "RANDOM-FIBER",
+      "n_worlds": 30,
+      "operational_steps_per_world": 6401,
+      "min_transfer_margin": -4.873764154780011e-16,
+      "p05_transfer_margin": -6.511778898279747e-17,
+      "median_transfer_margin": 2.46609466143082e-16,
+      "n_transfer_violations": 0,
+      "n_steps_outside_tube": 0,
+      "n_worlds_with_tube_violation": 0
+    }
+  ],
+  "total_operational_steps_checked": 960150,
+  "total_tube_violations": 0,
+  "total_transfer_violations": 0
+}

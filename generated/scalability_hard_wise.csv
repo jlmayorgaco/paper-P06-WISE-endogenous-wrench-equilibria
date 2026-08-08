@@ -1,0 +1,2 @@
+N,seed,n_vars,psd_cone_dim,n_support_rows,stage1_ms,stage1_ok,hard_ms,hard_ok,wise_stage2_ms,wise_stage2_ok,gamma_closed_ms,gamma_closed_ok,gamma_sdp_ms,gamma_sdp_ok
+12,3,72,11,10,718.8061000197195,True,54.98099996475503,True,58.32890002056956,True,6.750700005795807,True,18.16450001206249,True

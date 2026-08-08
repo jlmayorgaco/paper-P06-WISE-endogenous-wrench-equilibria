@@ -1,0 +1,81 @@
+{
+  "question": "where do the active inequality rows G_I used by Gamma_E come from, and which wrench-feasible set does the selection layer optimize over?",
+  "answer_path": "A -- explicit H-representation, no facet enumeration",
+  "selection_set": "X_f^sup = {z : H_w z >= d}, the finite-direction support relaxation with M*P rows; G_I = active nonnegativity rows plus active H_w rows, both read off directly",
+  "relation_to_lemma_1": "X_f^sup is an OUTER relaxation of the exact reachable inner-zonotope set: zonotope membership needs the support inequality in every direction, only P are tested. It is not the exact projection of the lifted system.",
+  "how_the_gap_is_closed": "downstream: every reported assignment is re-certified by the exact inner-zonotope LP (wrench_tensor.certify_membership_lp) before it is accepted; the selection layer proposes, the exact LP disposes",
+  "n_seeds": 5,
+  "n_seeds_with_strict_relaxation_witness": 0,
+  "rows": [
+    {
+      "seed": 3,
+      "n_decision_vars": 72,
+      "n_support_rows": 10,
+      "n_directions_P": 10,
+      "explicit_H_representation": true,
+      "facet_enumeration_required": false,
+      "support_relaxation_witness": null,
+      "support_is_strict_relaxation": false,
+      "n_active_rows_total": 0,
+      "n_active_wrench_rows": 0,
+      "min_support_slack_at_zbar": 4.2,
+      "exact_lp_feasible_at_zbar": true
+    },
+    {
+      "seed": 5,
+      "n_decision_vars": 72,
+      "n_support_rows": 10,
+      "n_directions_P": 10,
+      "explicit_H_representation": true,
+      "facet_enumeration_required": false,
+      "support_relaxation_witness": null,
+      "support_is_strict_relaxation": false,
+      "n_active_rows_total": 0,
+      "n_active_wrench_rows": 0,
+      "min_support_slack_at_zbar": 4.199999999999993,
+      "exact_lp_feasible_at_zbar": true
+    },
+    {
+      "seed": 7,
+      "n_decision_vars": 72,
+      "n_support_rows": 10,
+      "n_directions_P": 10,
+      "explicit_H_representation": true,
+      "facet_enumeration_required": false,
+      "support_relaxation_witness": null,
+      "support_is_strict_relaxation": false,
+      "n_active_rows_total": 0,
+      "n_active_wrench_rows": 0,
+      "min_support_slack_at_zbar": 4.199999999999998,
+      "exact_lp_feasible_at_zbar": true
+    },
+    {
+      "seed": 11,
+      "n_decision_vars": 72,
+      "n_support_rows": 10,
+      "n_directions_P": 10,
+      "explicit_H_representation": true,
+      "facet_enumeration_required": false,
+      "support_relaxation_witness": null,
+      "support_is_strict_relaxation": false,
+      "n_active_rows_total": 0,
+      "n_active_wrench_rows": 0,
+      "min_support_slack_at_zbar": 4.199999999999996,
+      "exact_lp_feasible_at_zbar": true
+    },
+    {
+      "seed": 13,
+      "n_decision_vars": 72,
+      "n_support_rows": 10,
+      "n_directions_P": 10,
+      "explicit_H_representation": true,
+      "facet_enumeration_required": false,
+      "support_relaxation_witness": null,
+      "support_is_strict_relaxation": false,
+      "n_active_rows_total": 0,
+      "n_active_wrench_rows": 0,
+      "min_support_slack_at_zbar": 4.200000000000002,
+      "exact_lp_feasible_at_zbar": true
+    }
+  ]
+}
