@@ -42,7 +42,7 @@ Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f
 \varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
 $L_{ir}\succeq0$ (robot-indexed, fixed), symmetric; \emph{(iii)} $\nabla\lamtwo$ is used only
 where $\lamtwo$ is simple, else the eigenspace directional derivative
-(Prop.~\ref{prop:freeconn}); the SDP~\eqref{eq:lmi} stays exact regardless (no genericity
+(Def.~\ref{def:gamma}); the SDP~\eqref{eq:lmi} stays exact regardless (no genericity
 assumed); \emph{(iv)} the physical graph decomposes additively as
 $\Lgeo(q,\hat z)=L_0^{\mathrm{geo}}(q)+\sum_{i,r}\hat z_{ir}L_{ir}^{\mathrm{geo}}(q)$ with
 $L_0^{\mathrm{geo}}(q)\succeq L_0$ and $L_{ir}^{\mathrm{geo}}(q)\succeq L_{ir}$ for every
@@ -51,6 +51,14 @@ link is double-counted).
 \end{assumption}
 
 \subsection{Wrench feasibility}
+We assume \emph{quasi-static planar transport with rigid (bilateral) robot--load attachment},
+so a robot at a contact slot may push \emph{and} pull along the modelled directions;
+unilateral pushing, friction cones and contact-mode transitions are outside this model. The
+capacity weight $c_\tau$ entering the productive aggregate $Bz$ is a scheduling coefficient
+and is \emph{distinct} from the actuation data $(F_\tau,G_\tau,A_{kh})$ that determine wrench
+feasibility: a type may be productively preferable without dominating another in wrench
+capacity, and vice versa.
+
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned
 ellipse $U_\tau(\phi)$ with semi-axes $F_\tau$, $\kappa F_\tau$ ($\kappa\le1$,
 anisotropic actuation factor). Not tracking headings, we certify against the heading-independent \emph{inner zonotope}
@@ -63,7 +71,8 @@ $\wdem_k\in\R^3$ the demanded wrench of load $k$. The reachable population wrenc
 the scaled Minkowski sum
 $\Wmap(C_k)=\bigoplus_{\tau,h}z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$.
 
-\begin{lemma}[Exact feasibility of the inner-zonotope relaxation]\label{prop:membership}
+\begin{lemma}[Exact lifted representation of the inner-zonotope actuation model]
+\label{prop:membership}
 $\wdem_k\in\Wmap(C_k)$ iff there exist generator coefficients $\xi_{\tau kh}$ with
 \begin{equation}
 \sum_{\tau,h}A_{kh}G_\tau\,\xi_{\tau kh}=\wdem_k,
@@ -137,9 +146,16 @@ a sum of PSD terms with no link double-counted. Restricting to $\mathbf 1^{\perp
 monotonicity gives $\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$. Hence a certificate
 $\lamtwo(\Lap(\hat z))\ge\sigmastar$ ($\sigmastar>\sigmadyn$ specified externally) yields
 $\lamtwo(\Lgeo(q))\ge\sigmadyn$ \emph{a priori}, for every admissible pose---no post-hoc
-mismatch term. Every certificate is re-evaluated in double precision, so solver tolerance does
-not enter the guarantee; a future distributed estimator would add $\varepsilon_{\mathrm{est}}$,
-zero here.
+mismatch term.
 \end{lemma}
+Every candidate is \emph{independently re-evaluated} in double precision and accepted only
+when equality residuals, inequality slacks, wrench feasibility and the spectral margin all
+clear prescribed tolerances (Section~\ref{sec:exp}); this removes dependence on the
+solver-reported status, but is not exact-arithmetic certification. If the exact dominance
+\eqref{eq:mismatch} is weakened to a bounded mismatch
+$\|Q^{\top}(\Lgeo-\Lap)Q\|_2\le\varepsilon_{\mathrm{geo}}$, Weyl's inequality still gives
+$\lamtwo(\Lgeo)\ge\lamtwo(\Lap)-\varepsilon_{\mathrm{geo}}$, so it suffices to require
+$\sigmastar\ge\sigmadyn+\varepsilon_{\mathrm{geo}}+\varepsilon_{\mathrm{num}}$; the
+lower-bound construction above is the case $\varepsilon_{\mathrm{geo}}=0$.
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap$ and transfers to
 $\Lgeo$ through the Loewner bound \eqref{eq:mismatch} at the integer recovery $\hat z$.

@@ -1,0 +1,28 @@
+{
+ "n_instances": 30,
+ "draws_per_instance": 30,
+ "total_draws": 900,
+ "unit_of_analysis": "instance (draws are nested within instance)",
+ "pooled_successes": 895,
+ "micro_rate_pooled": 0.9944444444444445,
+ "macro_rate_mean_of_instances": 0.9944444444444444,
+ "instance_rate_median": 1.0,
+ "instance_rate_iqr": [
+  1.0,
+  1.0
+ ],
+ "instance_rate_min": 0.8333333333333334,
+ "instance_rate_max": 1.0,
+ "cluster_bootstrap_95ci": [
+  0.9833333333333333,
+  1.0
+ ],
+ "bootstrap_resamples": 20000,
+ "bootstrap_seed": 20260807,
+ "instances_with_ge1_success": 30,
+ "pooled_wilson_95ci_ANTICONSERVATIVE": [
+  0.9870610435898539,
+  0.9976247686144084
+ ],
+ "note": "The pooled Wilson interval treats 900 nested draws as independent and is reported only for contrast; the cluster bootstrap over instances is the defensible interval."
+}

@@ -1,50 +1,52 @@
 {
-  "0.00": {
-    "rho": 0.0,
-    "eps_L_measured_median": 0.0,
-    "eps_L_measured_max": 0.0,
-    "apriori_bound_median": 0.0,
-    "lambda2_geo_min": 0.17868098141033173,
-    "preserved_frac": 1.0
-  },
   "0.02": {
     "rho": 0.02,
-    "eps_L_measured_median": 0.016259609116904994,
-    "eps_L_measured_max": 0.0312632181973268,
-    "apriori_bound_median": 0.44,
-    "lambda2_geo_min": 0.17681385584425666,
-    "preserved_frac": 0.847
+    "draws": 2000,
+    "spectral_margin_min": 0.0016709949207004693,
+    "spectral_margin_median": 0.005883234095746551,
+    "spectral_margin_nonneg_frac": 1.0,
+    "psd_gap_min": 0.0014765412866117361,
+    "psd_nonneg_frac": 1.0,
+    "lambda2_lb_min": 0.1751428609235562
   },
   "0.05": {
     "rho": 0.05,
-    "eps_L_measured_median": 0.040603911164140874,
-    "eps_L_measured_max": 0.07481096986588288,
-    "apriori_bound_median": 1.1,
-    "lambda2_geo_min": 0.17459607721670356,
-    "preserved_frac": 0.8485
+    "draws": 2000,
+    "spectral_margin_min": 0.00460599673326309,
+    "spectral_margin_median": 0.014406097022689995,
+    "spectral_margin_nonneg_frac": 1.0,
+    "psd_gap_min": 0.0033842156973606864,
+    "psd_nonneg_frac": 1.0,
+    "lambda2_lb_min": 0.1699666071161724
   },
   "0.10": {
     "rho": 0.1,
-    "eps_L_measured_median": 0.08059563933659167,
-    "eps_L_measured_max": 0.15099427373971605,
-    "apriori_bound_median": 2.2,
-    "lambda2_geo_min": 0.16938114509504024,
-    "preserved_frac": 0.8445
+    "draws": 2000,
+    "spectral_margin_min": 0.006903195263144063,
+    "spectral_margin_median": 0.027939106026594163,
+    "spectral_margin_nonneg_frac": 1.0,
+    "psd_gap_min": 0.004216924368252411,
+    "psd_nonneg_frac": 1.0,
+    "lambda2_lb_min": 0.1616772378714561
   },
   "0.20": {
     "rho": 0.2,
-    "eps_L_measured_median": 0.16063879473328913,
-    "eps_L_measured_max": 0.29902202365953434,
-    "apriori_bound_median": 4.4,
-    "lambda2_geo_min": 0.1615510004798068,
-    "preserved_frac": 0.8555
+    "draws": 2000,
+    "spectral_margin_min": 0.015259386009011944,
+    "spectral_margin_median": 0.05314773446255022,
+    "spectral_margin_nonneg_frac": 1.0,
+    "psd_gap_min": 0.008964425038467136,
+    "psd_nonneg_frac": 1.0,
+    "lambda2_lb_min": 0.14629161447079486
   },
   "0.30": {
     "rho": 0.3,
-    "eps_L_measured_median": 0.23485560150384432,
-    "eps_L_measured_max": 0.4337157528790713,
-    "apriori_bound_median": 6.6,
-    "lambda2_geo_min": 0.15749804341787027,
-    "preserved_frac": 0.8545
+    "draws": 2000,
+    "spectral_margin_min": 0.02512791669980466,
+    "spectral_margin_median": 0.07594087191635825,
+    "spectral_margin_nonneg_frac": 1.0,
+    "psd_gap_min": 0.012809783973043797,
+    "psd_nonneg_frac": 1.0,
+    "lambda2_lb_min": 0.1323701267180656
   }
 }
