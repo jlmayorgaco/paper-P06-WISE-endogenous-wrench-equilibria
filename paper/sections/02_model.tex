@@ -13,10 +13,10 @@ $\mathcal R$, and the common action set
 with $\mathrm o$ idle; $a\in\mathcal A$ denotes a generic action, $(k,h)$ a load--slot,
 $r$ a relay.
 
-The \emph{assignment state} is the relaxed \emph{per-robot} occupancy matrix
-$z=(z_{ia})\in\R_{\ge0}^{N\times|\mathcal A|}$: $z_{ia}\in[0,1]$ relaxes robot $i$'s single
-integer action. Each robot spends a unit budget, and each slot or relay site is held by at
-most one robot,
+The \emph{assignment state} is the relaxed per-robot occupancy matrix
+$z=(z_{ia})\in\R_{\ge0}^{N\times|\mathcal A|}$, $z_{ia}\in[0,1]$ relaxing robot $i$'s single
+integer action: each robot spends a unit budget, each slot or relay site holds at most one
+robot,
 \begin{equation}
 \begin{aligned}
 &\textstyle\sum_{a\in\mathcal A} z_{ia}=1\ \ \forall i,
@@ -28,22 +28,18 @@ most one robot,
 \end{equation}
 Type aggregates $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enter the productive and
 wrench layers; the communication layer uses the per-robot relay occupancies $z_{ir}$. The
-feasible set
-$\mathcal X=\{z\in\R_{\ge0}^{N\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a compact
-convex polytope in $\R^{n}$, $n=N|\mathcal A|$ \emph{ambient} decision coordinates; the $N$
-budget equalities reduce its affine dimension (to $N(|\mathcal A|-1)$ absent active facets),
-and Theorem~\ref{thm:degeneracy} gives the face-specific dimension through the
-active-constraint matrix. A finite team instantiates $z$ by rounding to
-one action per robot (Remark~\ref{rem:integer}); the poses $q\in(\mathrm{SE}(2))^N$ enter
-only the geometric instantiation (Section~\ref{sec:exp}).
+feasible set $\mathcal X=\{z\in\R_{\ge0}^{N\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a
+compact convex polytope in $\R^{n}$, $n=N|\mathcal A|$ ambient coordinates;
+Theorem~\ref{thm:degeneracy} gives the face-specific dimension. A finite team instantiates $z$
+by rounding to one action per robot (Sec.~\ref{sec:exp}); poses
+$q\in(\mathrm{SE}(2))^N$ enter only the geometric instantiation.
 
 \begin{assumption}[Standing hypotheses]\label{as:standing}
-Throughout: \emph{(i)} $\mathcal X$ is compact convex and $\mathcal X_{\mathrm f}\neq
-\varnothing$; \emph{(ii)} $\Lap(z)$ of \eqref{eq:laplacian} is affine in $z$ with each
-$L_{ir}\succeq0$ (robot-indexed, fixed), symmetric; \emph{(iii)} $\nabla\lamtwo$ is used only
-where $\lamtwo$ is simple, else the eigenspace directional derivative
-(Def.~\ref{def:gamma}); the SDP~\eqref{eq:lmi} stays exact regardless (no genericity
-assumed); \emph{(iv)} the physical graph decomposes additively as
+Throughout: \emph{(i)} $\mathcal X$ is compact convex, $\mathcal X_{\mathrm f}\neq
+\varnothing$; \emph{(ii)} $\Lap(z)$ is affine in $z$ with each $L_{ir}\succeq0$ symmetric and
+fixed; \emph{(iii)} $\nabla\lamtwo$ is used only where $\lamtwo$ is simple, else the eigenspace
+derivative (Def.~\ref{def:gamma}), the SDP~\eqref{eq:lmi} staying exact regardless;
+\emph{(iv)} the physical graph decomposes additively as
 $\Lgeo(q,\hat z)=L_0^{\mathrm{geo}}(q)+\sum_{i,r}\hat z_{ir}L_{ir}^{\mathrm{geo}}(q)$ with
 $L_0^{\mathrm{geo}}(q)\succeq L_0$ and $L_{ir}^{\mathrm{geo}}(q)\succeq L_{ir}$ for every
 admissible pose (edge supports shared by several relays add; otherwise they are disjoint, so no
@@ -52,12 +48,11 @@ link is double-counted).
 
 \subsection{Wrench feasibility}
 We assume \emph{quasi-static planar transport with rigid (bilateral) robot--load attachment},
-so a robot at a contact slot may push \emph{and} pull along the modelled directions;
-unilateral pushing, friction cones and contact-mode transitions are outside this model. The
-capacity weight $c_\tau$ entering the productive aggregate $Bz$ is a scheduling coefficient
-and is \emph{distinct} from the actuation data $(F_\tau,G_\tau,A_{kh})$ that determine wrench
-feasibility: a type may be productively preferable without dominating another in wrench
-capacity, and vice versa.
+so a robot may push \emph{and} pull along the modelled directions; unilateral pushing,
+friction cones and contact-mode transitions are outside this model. The capacity weight
+$c_\tau$ in $Bz$ is a scheduling coefficient, \emph{distinct} from the actuation data
+$(F_\tau,G_\tau,A_{kh})$ setting wrench feasibility: a type may be productively preferable
+without dominating another in wrench capacity.
 
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned
 ellipse $U_\tau(\phi)$ with semi-axes $F_\tau$, $\kappa F_\tau$ ($\kappa\le1$,
@@ -87,21 +82,19 @@ its projection onto $z$, $X_{\mathrm f}=\{z\in\mathcal X:H_w z\ge d\}$, is a pol
 The scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ superpose (giving
 \eqref{eq:tensor}); eliminating $\xi$ leaves the polytope $X_{\mathrm f}$.
 \end{proof}
-By $U_\tau^{\mathrm{in}}\subseteq U_\tau(\phi)$ a certified wrench is feasible in this
-heading-robust model; we study assignment and communication feasibility, not actuator-level
-realization.
+A certified wrench is thus feasible in this heading-robust model; we study assignment and
+communication feasibility, not actuator-level realization.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
 robot identity: actions choose \emph{edges} at a node, not nodes (an idle robot still occupies
 its node). A fixed base graph $L_0\succeq0$ carries the always-on short-range conductances;
-when robot $i$ commits to relay site $r$ it \emph{gates on} its predefined long-range links
+when robot $i$ commits to relay $r$ it \emph{gates on} its predefined long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
-weighted by the tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$. The
-tube $\mathcal Q_{ir}$---robot $i$ at relay $r$ and all admissible positions of the robots it
-reaches---is fixed before optimization, so each $L_{ir}$ is decision-independent and the SDP
-stays affine (zero-infimum links are excluded, a more conservative backbone). Both $L_0$ and
-every $L_{ir}$ are lower-bound Laplacians, giving $\Lgeo(q)\succeq\Lap(\hat z)$
+weighted by the tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$ over
+the tube $\mathcal Q_{ir}$ of admissible positions, fixed before optimization---so each
+$L_{ir}$ is decision-independent, the SDP stays affine, and both $L_0$ and every $L_{ir}$ are
+lower-bound Laplacians giving $\Lgeo(q)\succeq\Lap(\hat z)$
 (Assumption~\ref{as:standing}(iv)). Thus, directly in the per-robot occupancy,
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
@@ -119,9 +112,8 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $z$, with PSD dual $Y\succeq0$; for $Y\neq0$, $\pi=\operatorname{tr}Y>0$ and
-$Z=Y/\pi$ ($\operatorname{tr}Z=1$) separate the connectivity price $\pi$ from the modal
-direction $Z$, while $Y=0$ ($\pi=0$) leaves $Z$ immaterial. The threshold $\sigmadyn$ is
+affine in $z$, with PSD dual $Y\succeq0$ whose trace $\pi=\operatorname{tr}Y$ is the
+connectivity price and $Z=Y/\pi$ the modal direction. The threshold $\sigmadyn$ is
 \emph{derived} in Prop.~\ref{thm:stability}; $\sigmastar>\sigmadyn$ is a design choice of margin.
 
 Since $\lamtwo(\Lap(z))=\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ is a pointwise

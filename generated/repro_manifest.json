@@ -1,7 +1,7 @@
 {
  "python": "3.13.9",
  "platform": "Windows-11-10.0.26200-SP0",
- "git_commit": "655c5427ee339bbd0e3c4e6acd0b4dc250d03d00",
+ "git_commit": "a7a0a34344faf716e0340cdce99ffd251a010e95",
  "git_branch": "wise-best-paper",
  "lockfile": "requirements-lock.txt",
  "artifacts": [
@@ -78,5 +78,12 @@
    2,
    3
   ]
+ },
+ "paper": {
+  "pages": 6,
+  "limit": "LARS 4-6",
+  "references": 8,
+  "undefined": 0,
+  "overfull": 0
  }
 }

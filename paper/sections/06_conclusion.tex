@@ -1,16 +1,12 @@
 \section{Conclusion}
 \label{sec:conclusion}
 
-Composition degeneracy is a resource: when the productive optimum fixes the served aggregate
-but not its composition (Theorem~\ref{thm:degeneracy}), a tangent-cone criterion certifies
-zero-cost connectivity gains and, when it vanishes, global connectivity optimality on the
-whole fiber (Thm.~\ref{thm:networkability}); a lexicographic SDP selects the most-connected
-optimum (Thm.~\ref{thm:existence}), the capacities $\LamE\le\LamX$ price the requirement
-(Cor.~\ref{thm:price}), and clearing $\sigmadyn$ buys certified information-layer stability
-(Prop.~\ref{thm:stability}) at $\Delta V=0$.
-
-\paragraph*{Limitations and future work}
-The guarantees hold for the affine relaxation ($\Lgeo\succeq\Lap$ by lower-bound
-Laplacians, Lemma~\ref{lem:bridge}; integers re-certified, Prop.~\ref{prop:integer}); actuator-level
-realization and closed-loop transport are outside this study. A distributed realization with a
-convergence guarantee, a scalable oracle beyond $N=8$, and hardware validation remain open.
+Composition degeneracy is a resource. When the productive optimum fixes the served aggregate
+but not its composition (Thm.~\ref{thm:degeneracy}), a single scalar decides whether free
+connectivity remains and, when it vanishes, certifies global connectivity optimality over the
+whole fiber (Thm.~\ref{thm:networkability}); a lexicographic SDP selects that optimum
+(Thm.~\ref{thm:existence}), the capacities $\LamE\le\LamX$ price the requirement
+(Cor.~\ref{thm:price}), and clearing $\sigmadyn$ buys certified information-layer stability at
+$\Delta V=0$. The guarantees hold for the affine relaxation, transferring to the geometric
+graph only at a re-certified integer assignment; actuator realization, closed-loop transport,
+a distributed realization, and hardware validation remain open.

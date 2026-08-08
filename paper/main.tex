@@ -17,6 +17,14 @@
 
 \graphicspath{{figures/}}
 
+% ---- float placement (full-width figures otherwise drift to the last pages) ----
+\renewcommand{\topfraction}{0.92}
+\renewcommand{\bottomfraction}{0.7}
+\renewcommand{\textfraction}{0.06}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{4}
+
 % ---- theorem environments ----
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
@@ -74,18 +82,17 @@ compositions---a resource for communication design. We characterize the fiber on
 face and derive a free-networkability modulus $\Gamma_{\Emanifold}$ whose positivity is
 necessary \emph{and sufficient} for a strictly better-connected composition to exist anywhere
 on the fiber, so that $\Gamma_{\Emanifold}=0$ certifies global connectivity optimality;
-the criterion covers a repeated Fiedler eigenvalue. A wrench- and information-self-sustaining equilibrium
-(WISE) is then selected lexicographically by a semidefinite program, and the resulting
-spectral capacities separate \emph{zero-cost}, \emph{costly}, and \emph{impossible}
-connectivity requirements through a price of self-sustainability $\Price(\sigma)$ whose
-subgradient prices connectivity in units of utility. For finite teams a conservative margin
-test preserves joint wrench and connectivity feasibility after integer recovery. Simulations
-exhibit a zero-cost plateau ($\lamtwo$ rises $\approx0\!\to\!0.41$ at fixed productive value);
-an exact oracle measures the integrality gap for $N\le8$, and structured rounding attains
-re-certified integer self-sustaining assignments in $895/900$ random-order draws at
-$N=12$ (all $30$ instances succeeding on $\ge1$ draw; no optimality claim). Zero-cost is exact on the relaxed optimal fiber; finite-team integerization
-may incur a separately quantified recovery loss. The guarantees concern the affine
-communication-backbone relaxation; distributed online realization remains future work.
+the criterion covers a repeated Fiedler eigenvalue. A wrench- and
+information-self-sustaining equilibrium (WISE) is selected lexicographically by a semidefinite
+program, and the resulting spectral capacities separate \emph{zero-cost}, \emph{costly} and
+\emph{impossible} requirements through a price of self-sustainability whose subgradient prices
+connectivity in units of utility. Clearing the derived threshold buys exponential stability of
+a reduced information layer at a certified rate: on the flagship, two assignments with
+identical served aggregate and productive value sit on opposite sides of it, one diverging and
+one decaying. An exact oracle measures the integer gap for $N\le8$, and structured rounding
+attains re-certified integer assignments in $895/900$ draws at $N=12$. Zero-cost is exact on
+the relaxed fiber; finite-team integerization may incur a separately quantified recovery loss,
+and distributed online realization remains future work.
 \end{abstract}
 
 \begin{IEEEkeywords}
