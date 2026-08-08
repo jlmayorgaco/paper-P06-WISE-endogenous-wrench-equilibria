@@ -5,13 +5,12 @@ Cooperative transport by a heterogeneous robot team couples two decisions usuall
 apart: which robots apply force to a load, and which relay the information that lets the team
 agree on that force. Distributed equilibrium-seeking and population-game methods coordinate
 such teams by having each agent revise its strategy from locally communicated aggregates,
-converging to an equilibrium of a constrained potential game~\cite{martinezpiazuelo2022}. These
-methods rest on one premise: the communication graph needed to \emph{compute} the equilibrium
-is available while the equilibrium is being reached. For a mobile team that cannot be taken for
-granted---the robots that compute the equilibrium are the robots whose placement forms the
-graph. An assignment can be productively optimal, delivering the demanded wrench, yet commit
-every robot to lifting and leave none to relay, so connectivity collapses and the estimator
-loses its consensus channel.
+converging to an equilibrium of a constrained potential game~\cite{martinezpiazuelo2022}. All
+rest on one premise: the communication graph needed to \emph{compute} the equilibrium is
+available while it is being reached. For a mobile team that cannot be assumed---the robots that
+compute the equilibrium are the robots whose placement forms the graph. An assignment can be
+productively optimal, delivering the demanded wrench, yet commit every robot to lifting and
+leave none to relay, so connectivity collapses and the estimator loses its channel.
 
 Population-game and distributed Nash-seeking formulations take the interaction graph as given.
 Communication-aware task allocation couples the two, trading utility against assignment-induced
@@ -47,8 +46,7 @@ $\sigmadyn$ gives exponential stability of a reduced information layer, with the
 lower rate bound under a moving physical graph. \textbf{(iii) Finite-team and closed-loop
 assessment}: an exact small-team oracle, directly re-certified recovery, and a planar
 closed-loop transport simulation with rigidly attached robots in which productively identical
-assignments succeed and fail. Guarantees are for the affine relaxation; distributed realization
-remains future work.
+assignments succeed and fail. Distributed realization remains future work.
 
 % Concept figure removed for the six-page limit (was uncited); source preserved in
 % sections/fig_concept.tex and restorable for the extended/repository version.

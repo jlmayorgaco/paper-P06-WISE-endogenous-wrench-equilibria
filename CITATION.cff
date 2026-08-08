@@ -1,35 +1,46 @@
 cff-version: 1.2.0
-message: "If you use this software or the WISE equilibrium concept, please cite the paper below."
-title: "WISE: Wrench- and Information-Self-Sustaining Equilibria for Heterogeneous Multi-Robot Coalitions"
+message: "If you use this software or the WISE selection concept, please cite the paper below."
+title: "WISE: Zero-Cost Connectivity within Wrench-Feasible Assignment Fibers for Heterogeneous Robot Transport"
 abstract: >-
-  WISE introduces the Wrench-and-Information Self-Sustaining Equilibrium, a
-  refinement of the generalized variational equilibrium in which a coalition is
-  operationally meaningful only if it is strategically stable, physically
-  wrench-feasible, and able to sustain the induced communication graph needed to
-  compute and maintain the equilibrium. The formulation couples a directional
-  wrench tensor with an endogenous Laplacian under shared constraints, yielding
-  physical and information certification prices.
+  Heterogeneous multi-robot transport couples physical task allocation with the
+  communication structure needed to coordinate it. When productive utility depends on a
+  low-dimensional served aggregate, the unique optimal aggregate can correspond to a
+  positive-dimensional fiber of wrench-feasible compositions. A free-networkability
+  modulus Gamma_E, whose positivity is necessary and sufficient for a strictly
+  better-connected composition to exist anywhere on that fiber, turns a local directional
+  test into a global connectivity-optimality certificate, repeated Fiedler eigenvalues
+  included. WISE is the lexicographic refinement of the productive variational-equilibrium
+  set computed by a semidefinite program; the spectral capacities separate zero-cost,
+  costly and impossible requirements. Clearing the derived threshold gives exponential
+  stability of a reduced information layer, with the same certified lower rate bound under
+  a moving physical graph, and a planar closed-loop transport simulation makes the
+  consequence physical. Scope: equilibrium-set geometry and centralized selection, not
+  distributed Nash seeking.
 type: software
 authors:
   - family-names: "Mayorga Taborda"
     given-names: "Jorge Luis"
     email: jl.mayorga236@gmail.com
+    affiliation: "Universidad Internacional de Valencia (VIU)"
 keywords:
   - multi-robot systems
+  - cooperative transport
+  - task allocation
+  - variational equilibria
   - aggregative games
-  - generalized variational equilibrium
-  - wrench feasibility
   - algebraic connectivity
-  - coalition formation
+  - semidefinite programming
+  - wrench feasibility
 license: MIT
 repository-code: "https://github.com/jlmayorgaco/paper-P06-WISE-endogenous-wrench-equilibria"
-version: "0.1.0"
-date-released: "2026-07-11"
+version: "1.0-wise"
+date-released: "2026-08-08"
 preferred-citation:
   type: conference-paper
-  title: "WISE: Wrench- and Information-Self-Sustaining Equilibria for Heterogeneous Multi-Robot Coalitions"
+  title: "WISE: Zero-Cost Connectivity within Wrench-Feasible Assignment Fibers for Heterogeneous Robot Transport"
   authors:
     - family-names: "Mayorga Taborda"
       given-names: "Jorge Luis"
+      affiliation: "Universidad Internacional de Valencia (VIU)"
   collection-title: "Latin American Robotics Symposium (LARS)"
   year: 2026

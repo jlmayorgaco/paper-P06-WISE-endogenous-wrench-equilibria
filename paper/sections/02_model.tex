@@ -22,8 +22,8 @@ $n=N|\mathcal A|$; poses $q\in(\mathrm{SE}(2))^N$ enter only the geometric insta
 Throughout: \emph{(i)} $\mathcal X$ is compact convex, $\mathcal X_{\mathrm f}\neq\varnothing$;
 \emph{(ii)} $\Lap(z)$ is affine in $z$ with each $L_{ir}\succeq0$ symmetric and fixed;
 \emph{(iii)} $\nabla\lamtwo$ is used only where $\lamtwo$ is simple, else the eigenspace
-derivative (Def.~\ref{def:gamma}), the SDP~\eqref{eq:lmi} staying exact regardless;
-\emph{(iv)} the physical graph decomposes additively as
+derivative (Def.~\ref{def:gamma}), \eqref{eq:lmi} staying exact regardless; \emph{(iv)} the
+physical graph decomposes additively as
 $\Lgeo(q,\hat z)=L_0^{\mathrm{geo}}(q)+\sum_{i,r}\hat z_{ir}L_{ir}^{\mathrm{geo}}(q)$ with
 $L_0^{\mathrm{geo}}(q)\succeq L_0$ and $L_{ir}^{\mathrm{geo}}(q)\succeq L_{ir}$ at every
 admissible pose, no link double-counted.
@@ -92,10 +92,10 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \end{equation}
 affine in $z$, with PSD dual $Y\succeq0$ whose trace $\pi=\operatorname{tr}Y$ is the
 connectivity price and $Z=Y/\pi$ the modal direction; $\sigmadyn$ is \emph{derived} in
-Prop.~\ref{thm:stability} and $\sigmastar>\sigmadyn$ is a design margin. Since
+Prop.~\ref{thm:stability} and $\sigmastar>\sigmadyn$ is a design margin. As
 $\lamtwo(\Lap(z))=\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ is a pointwise minimum of
-functions affine in $z$~\cite{fiedler1973}, it is \emph{concave}, so \eqref{eq:lmi} defines a
-convex set~\cite{ghosh2006growing}; we use this repeatedly.
+affine functions~\cite{fiedler1973} it is \emph{concave}, so \eqref{eq:lmi} is
+convex~\cite{ghosh2006growing}; we use this repeatedly.
 
 \begin{lemma}[A priori geometric transfer by graph monotonicity]\label{lem:bridge}
 Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $q$ any admissible pose. By

@@ -163,9 +163,15 @@ def build_manifest(bl: A.Baselines, certs: dict) -> dict:
                        "tau_eig": C.TAU_EIG, "tau_q": C.TAU_Q, "tau_s": C.TAU_S,
                        "tau_w": C.TAU_W},
         "enumeration": {
+            "scope": ("integer capacities only: maxima over the integer points of E, i.e. "
+                      "Lambda_E^Z <= Lambda_E. The relaxed Stage-2 SDP is NOT applicable "
+                      "to this instance -- its tube infima depend on the actions of both "
+                      "endpoints of an edge, so Lbar is bilinear, not affine, in z."),
             "n_integer_maps": S.N_ACTIONS ** S.N_ROBOTS,
             "n_feasible": len(bl.feasible),
             "n_on_fiber": len(bl.fiber),
+            "lambda2_star_fiber_integer": bl.lam_star_fiber,
+            "lambda2_star_feasible_integer": bl.lam_star_feasible,
             "lambda2_star_fiber": bl.lam_star_fiber,
             "lambda2_star_feasible": bl.lam_star_feasible,
             "distinct_lambda2_on_fiber": sorted({round(bl.lam_bar[a], 9)

@@ -1,86 +1,145 @@
-# P06 — WISE: Endogenous Wrench Equilibria
+# WISE — Zero-Cost Connectivity within Wrench-Feasible Assignment Fibers
 
-**WISE: Wrench- and Information-Self-Sustaining Equilibria for Heterogeneous
-Multi-Robot Coalitions**
+Code, data and manuscript for
 
-Target venue: **LARS 2026** (IEEE format, 4–6 pages, English).
+> **WISE: Zero-Cost Connectivity within Wrench-Feasible Assignment Fibers for
+> Heterogeneous Robot Transport**
+> Jorge Luis Mayorga Taborda, Universidad Internacional de Valencia (VIU).
+> Latin American Robotics Symposium (LARS) 2026, 6 pages, IEEE format.
+
+Release **`v1.0-wise`** · code and data commit **`14fa38a3`** · MIT licence.
 
 ---
 
-## The core claim
+## The question
 
-> A Nash-stable coalition is not operationally meaningful if it cannot generate
-> the required wrench, or if its own spatial deployment destroys the
-> communication network needed to compute and maintain that equilibrium.
+A heterogeneous team must decide two things at once: which robots push the load, and
+which relay the information that lets the team agree on the push. An assignment can be
+productively optimal — it delivers the demanded wrench — and still commit every robot to
+lifting, leaving none to relay. Connectivity collapses, and the estimator that computes
+the assignment loses its channel.
 
-This motivates a new equilibrium concept:
+## The answer
 
-**WISE — Wrench-and-Information Self-Sustaining Equilibrium.** A profile is WISE
-when it is simultaneously
+When productive utility depends only on a low-dimensional **served aggregate** `y = Bz`,
+the optimal aggregate `y*` is unique but the optimal *set* is a
+**positive-dimensional polytope** — a fiber `E = {z ∈ X_f : Bz = y*}` of
+wrench-feasible compositions that all earn `V*`. Connectivity can then be bought inside
+that fiber at exactly zero productive loss, or not at all, and one scalar decides which.
 
-1. **strategically stable** (a generalized variational equilibrium),
-2. **wrench-feasible** — every coalition produces the demanded force and torque,
-3. **information self-sustaining** — the *induced* communication graph keeps
-   enough algebraic connectivity to estimate the aggregates and prices that
-   define the equilibrium.
-
-> A WISE equilibrium can both **execute itself** and **compute itself**.
-
-## The three technical objects
+**Free-networkability modulus.** For `z̄ ∈ E`, with `T_E(z̄)` the tangent cone,
 
 ```
-WISE equilibrium =  strategic stability
-                  + wrench feasibility
-                  + information self-sustainability
-
-built from      =  directional wrench tensor   W[i,k,h,l]
-                  + endogenous Laplacian        L(x) = sum_e a_e(x) L_e
-                  + shared-constraint vGNE
-                  + physical & information prices  (mu*, pi*)
+Gamma_E(z̄) = max { D lambda_2(z̄)[d] : d ∈ T_E(z̄), ||d||_2 <= 1 }
 ```
 
-- **Directional wrench tensor** `W[i,k,h,l] = h_{U_i}(A_kh^T eta_kl)` — robot ×
-  load × contact-slot × wrench-direction. Directional capacity
-  `s_kl(x) = sum_{i,h} W[i,k,h,l] x_ikh`; feasibility `s_kl(x) >= d_kl`.
-- **Endogenous Laplacian** `L(x) = sum_e a_e(x) L_e` with affine edge weights
-  `a_e(x) = sum_{i,r} C_ire x_ir`. The information constraint
-  `lambda_2(L(x)) >= sigma*` is a convex super-level set (Fiedler value is
-  concave in the Laplacian weights).
-- **Nash-seeking threshold** `sigma* = theta^2 / (c * m_F)`.
-
-## Repository layout
+**Main theorem (local test ⇒ global certificate).**
 
 ```
-paper/          IEEE conference manuscript (main.tex + sections/)
-src/wise_mr/    core library (wrench lifting, endogenous graph, equilibrium, SDP)
-experiments/    reproduce.py + certificates and experiments (fiber, phase, methods)
-generated/      regenerated certificates (*.json) and experiment data (*.csv)
-tests/          unit + property tests (lifting, SDP, Fiedler gradient, feasibility)
-paper/          IEEEtran manuscript and figures
+Gamma_E(z̄) > 0  <=>  ∃ z' ∈ E with lambda_2(Lbar(z')) > lambda_2(Lbar(z̄))
+Gamma_E(z̄) = 0  <=>  lambda_2(Lbar(z̄)) = Lambda_E
 ```
+
+A single directional test at one point certifies global connectivity optimality over the
+whole fiber. The criterion is stated on `Q^T Lbar Q`, so it covers a **repeated** Fiedler
+eigenvalue, not just the simple case.
+
+**WISE** is then the *lexicographic refinement* of the productive variational-equilibrium
+set: first `max V`, then `max lambda_2` on the resulting fiber, computed by a Stage-2 SDP.
+The capacities `Lambda_E <= Lambda_X` split requirements into **free / costly /
+impossible**, and the multiplier prices connectivity in units of utility.
+
+**What clearing the threshold buys.** Above `sigma_dyn = t1·t2/(c·m_y)` the reduced
+information layer is exponentially stable at rate `alpha(lambda_2)`, and — new in this
+release — a common Lyapunov function gives the **same certified lower rate bound while
+the physical graph moves**:
+
+```
+V_c = (t2||a||^2 + t1||b||^2)/2 ,  Q^T L_geo(q(t)) Q >= sigma_req I  for all t
+  =>  dV_c/dt <= -2 alpha(sigma_req) V_c ,   alpha exactly the frozen-graph rate.
+```
+
+## Scope, honestly
+
+* **Centralized selection of an equilibrium set**, not distributed Nash seeking. No
+  equilibrium-seeking dynamics are claimed or run.
+* Guarantees hold for the **affine relaxation**; they transfer to the physical graph
+  `L_geo(q)` only at a **re-certified integer** assignment, via a Loewner lower bound.
+* Wrench feasibility is **nominal, assignment-level** certification in a quasi-static
+  planar model with rigid (bilateral) attachment and a heading-independent inner
+  zonotope. Unilateral contact, friction cones and contact-mode transitions are outside
+  the model.
+* The closed-loop study is a **planar transport simulation with rigidly attached
+  robots** — load dynamics, contact forces, the moving communication graph and the
+  reduced information layer. It is *not* a nonlinear robot–load stability theorem, not
+  hardware, and it does not simulate individual robot locomotion.
+* No packet loss, delay or link failure model — so nothing is claimed about them.
+
+## What is in the paper
+
+| | |
+|---|---|
+| **E1** | The `N=6` flagship: an exhaustively verified **integer** zero-cost assignment. All `\|A\|^N = 12^6 = 2.99e6` maps enumerated; 3864 wrench-feasible, 1032 on the fiber, `Lambda_E^Z = 0.399`. |
+| **E2** | Planar closed-loop transport of two rigid loads. PROD / HARD / WISE share dynamics, controller, allocator, gains, disturbance and initial state. 30 paired worlds: **30/30** success for the selectors clearing `sigma_req`, **0/30** for the productive-only optimum and a random fiber point. |
+| **E3** | Structured integer recovery at `N=12` and an exact oracle for `N<=8`. |
+| **E4** | Regime map over `(nu, tau_d)`, the price `P(sigma)`, and scalarization controls. |
 
 ## Reproduce
 
 ```bash
-pip install -e ".[dev,opt,viz]"   # numpy/scipy + cvxpy (SDP) + matplotlib
-make reproduce                    # tests -> certificates -> experiments -> paper -> checks
+pip install -e ".[dev,opt,viz]"     # numpy/scipy + cvxpy (SDP) + matplotlib
+make reproduce                      # tests -> certificates -> experiments -> paper -> gates
+make robot                          # E2: PHASE-R0 audit + deterministic closed-loop run
 ```
 
-`make reproduce` runs the test suite, regenerates every certificate
-(`generated/*.json`) and experiment (`generated/*.csv`, `paper/figures/*.pdf`),
-rebuilds `paper/main.pdf`, and asserts the paper is exactly six pages with no
-undefined references or overfull boxes. `make reproduce-fast` runs the same
-pipeline with smaller sweeps for a quick smoke test.
+`make reproduce` runs the test suite, regenerates every certificate (`generated/*.json`)
+and experiment (`generated/*.csv`, `paper/figures/*.pdf`), rebuilds `paper/main.pdf` and
+asserts the gates. `make robot` re-runs the closed-loop experiment of E2 from one command.
 
-Individual pieces:
+Individual targets:
 
 ```bash
-make test                              # unit + property tests
-python experiments/exp_fiber.py        # E-fiber: V flat, lambda2 varying (Example 1)
-python experiments/exp_phase.py        # phase diagram with the exact SDP boundary
-python experiments/exp_methods.py      # 7-method comparison, 30 seeds, bootstrap CI
-make paper                             # build paper/main.pdf
+make test          # unit + property tests
+make robot-test    # the closed-loop invariant tests
+make robot-mc      # 30 paired Monte-Carlo worlds       (SEEDS=30)
+make robot-sweep   # predeclared relay-attenuation sweep
+make robot-fig     # paper hero figure + supplementary figure
+make robot-video   # PROD | HARD | WISE side-by-side animation
+make paper         # build paper/main.pdf
+python paper/checkbuild.py 6        # build gates: pages, refs, overfull boxes, stray markers
 ```
+
+## Artifact map
+
+```
+paper/                    IEEEtran manuscript (main.tex + sections/) and figures
+paper/checkbuild.py       build gates: 6 pages, 0 undefined refs, 0 overfull boxes
+src/wise_mr/              core library: wrench lifting, endogenous graph, SDP, dynamics
+experiments/              certificates and experiments E1, E3, E4 + reproduce.py
+experiments/robot_closed_loop/   E2: the planar closed-loop transport study
+docs/ROBOT_EXPERIMENT_DESIGN.md  E2 design, declared parameters, hypotheses, findings
+docs/TIME_VARYING_STABILITY_PROOF.md   the moving-graph corollary and its checks
+generated/                every number the paper reports, as JSON/CSV manifests
+figures/, videos/         inspection renders and the side-by-side animation
+tests/                    unit + property tests for the core library
+```
+
+### Where each reported number lives
+
+| Paper | Manifest |
+|---|---|
+| flagship aggregate, wrenches, `lambda_2` | `generated/flagship.json`, `generated/robot_experiment_input_manifest.json` |
+| E2 deterministic run | `generated/robot_flagship_summary.json`, `generated/robot_flagship_timeseries.csv` |
+| E2 Monte Carlo | `generated/robot_monte_carlo_runs.csv`, `generated/robot_statistical_report.json` |
+| E2 attenuation sweep | `generated/robot_margin_sweep.json`, `generated/robot_margin_sweep_runs.csv` |
+| certified service rate | `generated/methods_comparison.csv` |
+| fiber dimension, `Gamma_E` | `generated/fiber_certificate.json`, `generated/gamma_certificate.json` |
+| regimes and price | `generated/regime_grid.csv`, `generated/regime_summary.json`, `generated/price_sweep.csv` |
+| integer recovery, oracle | `generated/rounding.csv`, `generated/oracle_benchmark.csv` |
+
+## Citing
+
+See [`CITATION.cff`](CITATION.cff).
 
 ## License
 

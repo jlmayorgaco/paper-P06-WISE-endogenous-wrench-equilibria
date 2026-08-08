@@ -14,9 +14,8 @@ V(z)=\phi(Bz),\qquad
 so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ ($H=\alpha I\succ0$,
 $y_{\mathrm{ref}}=v/\alpha$), strictly concave, pinning down a unique optimal aggregate: a
 constrained \emph{identical-interest aggregative game} with pseudo-gradient
-$[F(z)]_{ia}=-[B^{\top}\nabla\phi(Bz)]_{ia}$, wrench feasibility entering as a \emph{hard}
-shared constraint through $X_{\mathrm f}$ (Lemma~\ref{prop:membership}). The novelty lies in
-what $V$ leaves undetermined.
+$[F(z)]_{ia}=-[B^{\top}\nabla\phi(Bz)]_{ia}$, wrench feasibility a \emph{hard} shared constraint
+through $X_{\mathrm f}$. The novelty lies in what $V$ leaves undetermined.
 
 \begin{definition}[Productive variational equilibrium]\label{def:ve}
 A profile $z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
@@ -222,7 +221,7 @@ This diagonalises a \emph{fixed} Laplacian, whereas a moving team drives
 \eqref{eq:interconnection} with $Q^{\top}\Lgeo(q(t))Q$, whose eigenbasis rotates. A common
 Lyapunov function restores the guarantee \emph{at the same rate}.
 
-\begin{corollary}[Moving graph, unchanged rate]\label{cor:tv}
+\begin{corollary}[Moving graph, unchanged certified lower-rate bound]\label{cor:tv}
 Let \eqref{eq:interconnection} be driven by $\Lgeo(q(t))$ with
 $Q^{\top}\Lgeo(q(t))Q\succeq\sigmastar I$ for every $t$ of the operational window. Then, with
 $\mathcal V_c=\tfrac12(\vt_2\|a\|^2+\vt_1\|b\|^2)$ and $\|\cdot\|_P=\sqrt{2\mathcal V_c}$,
@@ -253,11 +252,11 @@ $z^{\star}_{\mathrm{WISE}}$, and covers the reduced information layer only.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
-The lexicographic selector is exact, whereas a scalarized $V+\varepsilon\lamtwo$ is guaranteed
-to recover it only as $\varepsilon\to0$: Tikhonov~\cite{facchinei2003fvi} bounds
+The lexicographic selector is exact, whereas a scalarized $V+\varepsilon\lamtwo$ recovers it
+only as $\varepsilon\to0$: Tikhonov~\cite{facchinei2003fvi} bounds
 $\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\,\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)/
-\alpha}$, an upper bound on the drift rather than a guarantee that it vanishes at finite
-$\varepsilon$ (Sec.~\ref{sec:exp}). Beyond the free fiber the requirement carries a cost: with
+\alpha}$---an upper bound on the drift, not a guarantee that it vanishes at finite
+$\varepsilon$. Beyond the free fiber the requirement carries a cost: with
 $\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigma\}$
 ($+\infty$ if infeasible) and $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$,
 

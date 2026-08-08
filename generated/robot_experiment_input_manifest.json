@@ -1,5 +1,5 @@
 {
-  "git_rev": "5c1538a00c632e3c19c028703c602f955f425d6e",
+  "git_rev": "75dd7f4244250a3d367ea8207aa4f0a7f17159b5",
   "python": "3.13.9",
   "platform": "Windows-11-10.0.26200-SP0",
   "numpy": "2.3.5",
@@ -400,9 +400,12 @@
     "tau_w": 0.35
   },
   "enumeration": {
+    "scope": "integer capacities only: maxima over the integer points of E, i.e. Lambda_E^Z <= Lambda_E. The relaxed Stage-2 SDP is NOT applicable to this instance -- its tube infima depend on the actions of both endpoints of an edge, so Lbar is bilinear, not affine, in z.",
     "n_integer_maps": 2985984,
     "n_feasible": 3864,
     "n_on_fiber": 1032,
+    "lambda2_star_fiber_integer": 0.3988761275551456,
+    "lambda2_star_feasible_integer": 0.3988761275551456,
     "lambda2_star_fiber": 0.3988761275551456,
     "lambda2_star_feasible": 0.3988761275551456,
     "distinct_lambda2_on_fiber": [
