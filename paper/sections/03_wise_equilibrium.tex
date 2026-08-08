@@ -2,110 +2,87 @@
 \label{sec:wise}
 
 \subsection{Productive value and the optimal composition fiber}
-The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each
-load its physical service, and the productive value allocates total served capacity through
-the \emph{served-capacity} aggregate $y=Bz$, $y_k=\sum_{i,h}c_{\tau(i)} z_{ikh}$ (distinct
-from the wrench aggregate $H_wz$; $y_k$ is the reserve for load $k$ beyond the wrench floor, a
-proxy for admissible throughput):
+The active load set is fixed: wrench feasibility ($z\in X_{\mathrm f}$) guarantees each load
+its physical service, and the productive value allocates served capacity through the
+\emph{served-capacity} aggregate $y=Bz$, $y_k=\sum_{i,h}c_{\tau(i)} z_{ikh}$ (distinct from the
+wrench aggregate $H_wz$; $y_k$ is load $k$'s reserve beyond the wrench floor):
 \begin{equation}
 V(z)=\phi(Bz),\qquad
 \phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
 \label{eq:value}
 \end{equation}
 so $\phi(y)=-\tfrac12\|y-y_{\mathrm{ref}}\|_H^2+\mathrm{const}$ ($H=\alpha I\succ0$,
-$y_{\mathrm{ref}}=v/\alpha$), strictly concave, pinning down a unique optimal aggregate. This
-is a constrained \emph{identical-interest aggregative game} with pseudo-gradient
-$[F(z)]_{ia}=-[B^{\top}\nabla\phi(Bz)]_{ia}$; the novelty lies in what $V$ leaves
-undetermined. Wrench feasibility is a \emph{hard} shared constraint through $X_{\mathrm f}$
-(Lemma~\ref{prop:membership}), with $H_w$ kept distinct from the Hessian $H$.
+$y_{\mathrm{ref}}=v/\alpha$), strictly concave, pinning down a unique optimal aggregate: a
+constrained \emph{identical-interest aggregative game} with pseudo-gradient
+$[F(z)]_{ia}=-[B^{\top}\nabla\phi(Bz)]_{ia}$, wrench feasibility entering as a \emph{hard}
+shared constraint through $X_{\mathrm f}$ (Lemma~\ref{prop:membership}). The novelty lies in
+what $V$ leaves undetermined.
 
 \begin{definition}[Productive variational equilibrium]\label{def:ve}
 A profile $z^{\star}\in X_{\mathrm f}$ is a \emph{productive variational equilibrium} if
-$\langle F(z^{\star}),z-z^{\star}\rangle\ge0$ for all $z\in X_{\mathrm f}$, with $F=-\nabla V$.
-As $V=\phi(Bz)$ is concave on the convex $X_{\mathrm f}$, this holds iff
-$z^{\star}\in\arg\max_{X_{\mathrm f}}V$, i.e.\ the solution \emph{set} coincides with the
-productive optimal set, $\operatorname{SOL}(X_{\mathrm f},F)=\arg\max_{X_{\mathrm f}}V
-=\Emanifold$~\cite{facchinei2003fvi}. The aggregate $y^{\star}$ is unique but this set need not
-be a singleton; its degeneracy is Proposition~\ref{prop:fibermono}.
+$\langle F(z^{\star}),z-z^{\star}\rangle\ge0$ for all $z\in X_{\mathrm f}$, $F=-\nabla V$. As
+$V=\phi(Bz)$ is concave on the convex $X_{\mathrm f}$, this holds iff
+$z^{\star}\in\arg\max_{X_{\mathrm f}}V$: the solution \emph{set} coincides with the productive
+optimal set, $\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$~\cite{facchinei2003fvi}. The
+aggregate $y^{\star}$ is unique but this set need not be a singleton.
 \end{definition}
 
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
-Since $\phi$ is strictly concave on the compact convex $BX_{\mathrm f}$
-($H=\alpha I\succ0$), the productively optimal aggregate $y^{\star}=Bz^{\star}$ is unique;
-but the optimal set $\Emanifold=\{z\in X_{\mathrm f}:Bz=y^{\star}\}$ is a nonempty compact
-convex polytope whose local dimension at a relative-interior point $\bar z$ is
+Since $\phi$ is strictly concave on the compact convex $BX_{\mathrm f}$, the optimal aggregate
+$y^{\star}=Bz^{\star}$ is unique, but the optimal set
+$\Emanifold=\{z\in X_{\mathrm f}:Bz=y^{\star}\}$ is a compact convex polytope whose local
+dimension at a relative-interior point $\bar z$ is
 \begin{equation}
 \dim\Emanifold=\dim\!\big(\ker A\cap\ker B\cap\ker G_I\big)
 =n-\operatorname{rank}[A;B;G_I],
 \label{eq:dim}
 \end{equation}
-where $Az=b$ is budget conservation, $Bz=y^{\star}$ the served aggregate, $G_Iz=h_I$
-the inequalities of $X_{\mathrm f}$ active at $\bar z$ (nonnegativity, occupancy, active
-wrench), and $n=N|\mathcal A|$ is the ambient number of decision coordinates. Thus
-$\Emanifold$ is positive-dimensional iff the
-\emph{productive neutral space} $N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is nontrivial.
+where $Az=b$ is budget conservation, $Bz=y^{\star}$ the served aggregate, $G_Iz=h_I$ the
+inequalities of $X_{\mathrm f}$ active at $\bar z$, and $n=N|\mathcal A|$. Thus $\Emanifold$ is
+positive-dimensional iff the \emph{productive neutral space}
+$N_p(\bar z)=\ker A\cap\ker B\cap\ker G_I$ is nontrivial.
 \end{theorem}
 \begin{proof}[Proof sketch]
-Uniqueness of $y^{\star}$ is strict concavity of $\phi$; at
-$\bar z\in\operatorname{relint}\Emanifold$ the feasible perturbations are exactly $N_p(\bar z)$,
-so $\Emanifold$ locally coincides with $\bar z+N_p(\bar z)$ and \eqref{eq:dim} is rank--nullity
-(a general weighted $B$ can give $N_p=\{0\}$).
+At $\bar z\in\operatorname{relint}\Emanifold$ the feasible perturbations are exactly
+$N_p(\bar z)$, so $\Emanifold$ locally coincides with $\bar z+N_p(\bar z)$ and \eqref{eq:dim} is
+rank--nullity (a general weighted $B$ can give $N_p=\{0\}$).
 \end{proof}
-For the two-load flagship ($n=72$, $\operatorname{rank}[A;B]=14$, no active inequality) this
-gives $\dim\Emanifold=58$, certified by a relative-interior point with residuals $<10^{-15}$;
-a boundary optimum where wrench facets bind gives a smaller fiber.
+On the $N{=}12$ instances of Sec.~\ref{sec:exp} ($n=72$, $\operatorname{rank}[A;B]=13$, no
+active inequality) this gives $\dim\Emanifold=59$, certified to residuals $<10^{-15}$; a
+boundary optimum where wrench facets bind gives a smaller fiber.
 
 \begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
-Let $P_F$ have columns forming an orthonormal basis of the active-face tangent
-$\mathcal T_F=\ker A\cap\ker G_I$, assumed nontrivial ($\dim\mathcal T_F>0$; if
-$\mathcal T_F=\{0\}$ the face is a singleton, $\Emanifold=\{\bar z\}$ is trivially
-zero-dimensional and no selection remains). The pseudo-gradient
-$F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys $\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$,
-so $\mu_F=\lambda_{\min}(P_F^{\top}B^{\top}HBP_F)$ and
-$\mu_F=0\iff N_p(\bar z)\neq\{0\}$: strong monotonicity holds in the served aggregate but is
-\emph{lost} on the composition face---the degeneracy WISE exploits, unlike strongly
-contractive aggregative games~\cite{martinezpiazuelo2022}.
+Let $P_F$ span the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$, assumed nontrivial
+(otherwise the face is the singleton $\{\bar z\}$ and no selection remains). The
+pseudo-gradient $F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys
+$\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$, so
+$\mu_F=\lambda_{\min}(P_F^{\top}B^{\top}HBP_F)$ and $\mu_F=0\iff N_p(\bar z)\neq\{0\}$: strong
+monotonicity holds in the served aggregate but is \emph{lost} on the composition face---the
+degeneracy WISE exploits, unlike strongly contractive aggregative
+games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
-\begin{figure}[t]\centering
-  \resizebox{0.92\columnwidth}{!}{\input{sections/fig_flagship.tex}}
-  \caption{Comparative-advantage exchange: the scarce $L$ has the highest productive capacity
-  ($c_L=2c_S$) \emph{and} is the only bridge. Both $L$ lifting leaves the regions disconnected
-  (left); WISE frees one $L$ to the relay, bridging at $\lamtwo=0.41$ (right) along the
-  neutral move in the box.}
-  \label{fig:flagship}
-\end{figure}
-
-A comparative-advantage exchange makes this concrete (Fig.~\ref{fig:flagship}): with
-$c_\ell=2c_s$, moving one long lifter to the relay for two short lifters is neutral ($Bd=0$)
-while $\lamtwo$ strictly rises. Whether such a \emph{free} gain exists---and whether it has
-been exhausted---is decided by a single scalar.
-
-Orient every inequality of $X_{\mathrm f}$ uniformly as $Gz\ge h$ (negating the occupancy
-caps), and write $G_I$ for the rows active at $\bar z$.
+Figure~\ref{fig:hero}(a) makes this concrete: the long-for-two-short exchange is neutral
+($Bd=0$) while $\lamtwo$ strictly rises. Whether such a \emph{free} gain exists, and whether it
+is exhausted, is decided by one scalar. Orient every inequality of $X_{\mathrm f}$ as
+$Gz\ge h$, with $G_I$ the rows active at $\bar z$.
 
 \begin{definition}[Free-networkability modulus]\label{def:gamma}
 For $\bar z\in\Emanifold$ let $T_{\Emanifold}(\bar z)=\{d:Ad{=}0,\ Bd{=}0,\ G_Id\ge0\}$ be the
-tangent cone. Let $\widetilde L(\bar z)=Q^{\top}\Lap(\bar z)Q$ and let $\widetilde U_2$ have
-orthonormal columns spanning the \emph{minimum}-eigenvalue eigenspace of $\widetilde L(\bar z)$
-(note $\lambda_{\min}(\widetilde L)=\lamtwo(\Lap)$); set
-\begin{equation}
-U_2(\bar z)=Q\,\widetilde U_2\in\R^{N\times m},\qquad
-m=\dim\ker\!\big(\widetilde L(\bar z)-\lamtwo I\big),
-\label{eq:u2}
-\end{equation}
+tangent cone, and with $\widetilde L(\bar z)=Q^{\top}\Lap(\bar z)Q$ (so
+$\lambda_{\min}(\widetilde L)=\lamtwo(\Lap)$) let $\widetilde U_2$ span its
+minimum-eigenvalue eigenspace; set $U_2(\bar z)=Q\widetilde U_2\in\R^{N\times m}$,
+$m=\dim\ker(\widetilde L(\bar z)-\lamtwo I)$,
 so $U_2^{\top}\mathbf1=0$ \emph{by construction}---not cosmetic, since on a disconnected graph
-$\lamtwo(\Lap)=0$ is degenerate \emph{together with} the consensus mode and a basis of
-$\ker\Lap$ need not avoid $\mathbf1$. We call $\lamtwo$ \emph{simple} when $m=1$ for
-$\widetilde L$. As $\Lap$ is affine,
+$\lamtwo(\Lap)=0$ is degenerate \emph{together with} the consensus mode. As $\Lap$ is affine,
 $D\Lap[d]=\sum_{i,r}d_{ir}L_{ir}$ and the directional derivative is the spectral-function
 formula~\cite{lewis1996spectral}
 \begin{equation}
 D\lamtwo(\bar z)[d]=\lambda_{\min}\!\big(U_2^{\top}D\Lap[d]\,U_2\big),
 \label{eq:dirderiv}
 \end{equation}
-which reduces to $\langle g_\lambda,d\rangle$, $[g_\lambda]_{ir}=v^{\top}L_{ir}v$, when
-$m=1$ with Fiedler vector $v=U_2$. The \emph{free-networkability modulus} is
+reducing to $\langle g_\lambda,d\rangle$, $[g_\lambda]_{ir}=v^{\top}L_{ir}v$, when $m=1$ with
+Fiedler vector $v=U_2$. The \emph{free-networkability modulus} is
 \begin{equation}
 \Gamma_{\Emanifold}(\bar z)=\max\big\{D\lamtwo(\bar z)[d]:\
 d\in T_{\Emanifold}(\bar z),\ \|d\|_2\le1\big\}.
@@ -123,9 +100,8 @@ Theorem~\ref{thm:degeneracy}. Then $\Gamma_{\Emanifold}(\bar z)\ge0$ and
 \exists\,z'\in\Emanifold:\ \lamtwo(\Lap(z'))>\lamtwo(\Lap(\bar z)),
 \label{eq:iff}
 \end{equation}
-equivalently $\Gamma_{\Emanifold}(\bar z)=0\iff\lamtwo(\Lap(\bar z))=\LamE$: the
-\emph{local} directional test certifies \emph{global} connectivity optimality over the fiber,
-and quantifies the remaining gap,
+equivalently $\Gamma_{\Emanifold}(\bar z)=0\iff\lamtwo(\Lap(\bar z))=\LamE$: a \emph{local}
+test certifying \emph{global} connectivity optimality over the fiber, and bounding the gap,
 \begin{equation}
 \LamE-\lamtwo(\Lap(\bar z))\ \le\
 \Gamma_{\Emanifold}(\bar z)\,\|z^{\star}_{\mathrm{WISE}}-\bar z\|_2 .
@@ -133,49 +109,31 @@ and quantifies the remaining gap,
 \end{equation}
 At $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple, $T_{\Emanifold}=N_p$ and
 \eqref{eq:gamma} is closed-form, $\Gamma_{\Emanifold}(\bar z)=\|\Pi_{N_p}g_\lambda\|_2$ with
-optimal direction $d^{\star}=\Pi_{N_p}g_\lambda/\|\Pi_{N_p}g_\lambda\|_2$; no free gain exists
-$\iff g_\lambda\in N_{\Emanifold}(\bar z)=\{A^{\top}\alpha+B^{\top}\beta+G_I^{\top}\nu:
-\nu\le0\}$, the cone polar to $T_{\Emanifold}(\bar z)$. In general \eqref{eq:gamma} is a small
-convex SDP, $\max\{t:d\in T_{\Emanifold}(\bar z),\|d\|_2\le1,U_2^{\top}D\Lap[d]U_2\succeq
-tI\}$.
+$d^{\star}\propto\Pi_{N_p}g_\lambda$; no free gain exists iff $g_\lambda$ lies in the cone polar
+to $T_{\Emanifold}(\bar z)$. In general \eqref{eq:gamma} is a small convex SDP,
+$\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
 \end{theorem}
 \begin{proof}[Proof sketch]
 $\Gamma_{\Emanifold}\ge0$ since $d=0$ is admissible. As $f=\lamtwo\circ\Lap$ is finite and
-concave, $Df(\bar z)[\cdot]$ exists, is positively
-homogeneous, and overestimates increments: $f(z')-f(\bar z)\le Df(\bar z)[z'-\bar z]$;
-\eqref{eq:dirderiv} is the standard derivative of a minimum eigenvalue over its eigenspace.
+concave, $Df(\bar z)[\cdot]$ exists, is positively homogeneous and overestimates increments;
+\eqref{eq:dirderiv} is the standard eigenvalue derivative over its eigenspace.
 ($\Leftarrow$) An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with
-$Df(\bar z)[d_0]\ge f(z')-f(\bar z)>0$, rescaled by homogeneity. ($\Rightarrow$) If
-$Df(\bar z)[d]>0$ for some $d\in T_{\Emanifold}(\bar z)$, polyhedrality gives
-$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, already closed, so
-$\bar z+td\in\Emanifold$ improves $f$ for all small $t>0$. The second equivalence is the
-contrapositive. For \eqref{eq:gammabound} put
-$\delta=z^{\star}_{\mathrm{WISE}}-\bar z$; concavity gives
-$\LamE-f(\bar z)\le Df(\bar z)[\delta]$, positive homogeneity gives
-$Df(\bar z)[\delta]=\|\delta\|_2\,Df(\bar z)[\delta/\|\delta\|_2]$, and
-$\delta/\|\delta\|_2$ is a unit vector of $T_{\Emanifold}(\bar z)$, so the last factor is at
-most $\Gamma_{\Emanifold}(\bar z)$ by definition~\eqref{eq:gamma}. Since
-$\|\delta\|_2\le\operatorname{diam}\Emanifold$, the pose-independent bound
-$\LamE-f(\bar z)\le\Gamma_{\Emanifold}(\bar z)\operatorname{diam}\Emanifold$ also holds.
+$Df(\bar z)[d_0]>0$. ($\Rightarrow$) If $Df(\bar z)[d]>0$ for some $d$, polyhedrality gives
+$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, closed, so
+$\bar z+td\in\Emanifold$ improves $f$ for small $t>0$; the second equivalence is the
+contrapositive. For \eqref{eq:gammabound}, concavity and homogeneity give
+$\LamE-f(\bar z)\le\|\delta\|_2Df(\bar z)[\delta/\|\delta\|_2]\le\|\delta\|_2
+\Gamma_{\Emanifold}(\bar z)$, $\delta=z^{\star}_{\mathrm{WISE}}-\bar z$; replacing
+$\|\delta\|_2$ by $\operatorname{diam}\Emanifold$ gives a pose-independent bound.
 \end{proof}
 
 \begin{remark}[Degeneracy versus \emph{network-visible} degeneracy]\label{rem:dnet}
-$\dim\Emanifold$ counts productively neutral directions, but only those the communication
-layer can see at all are a candidate design resource. Define the \emph{network-visible neutral
-dimension} $d_{\mathrm{net}}=\operatorname{rank}\big(D\Lap|_{N_p}\big)$; then
-\begin{equation}
-d_{\mathrm{net}}\le\min\big\{\dim N_p,\ N|\mathcal R|,\
-\dim\operatorname{span}\{L_{ir}\}_{i,r}\big\},
-\label{eq:dnet}
-\end{equation}
-since only the $N|\mathcal R|$ relay coordinates enter $\Lap$ and its range lies in the span of
-the $L_{ir}$. Visibility is necessary but not sufficient for a gain \emph{at $\bar z$}: a
-direction can move $\Lap$ without moving the active Fiedler mode, so
-$\Gamma_{\Emanifold}(\bar z)>0\Rightarrow d_{\mathrm{net}}>0$ but not conversely---%
-$\Gamma_{\Emanifold}$, not $d_{\mathrm{net}}$, is the usability test. Empirically the two
-scales differ by an order of magnitude (E1b): $\dim\Emanifold=59$ while
-$d_{\mathrm{net}}\in[10,12]$ on those single-aggregate instances ($|\mathcal R|=1$, so
-$d_{\mathrm{net}}\le N=12$ binds); the two-load flagship has $\dim\Emanifold=58$.
+Only neutral directions the communication layer can see are a candidate resource: with
+$d_{\mathrm{net}}=\operatorname{rank}(D\Lap|_{N_p})\le\min\{\dim N_p,\,N|\mathcal R|,\,
+\dim\operatorname{span}\{L_{ir}\}\}$, visibility is necessary but not sufficient for a gain
+\emph{at $\bar z$}---a direction can move $\Lap$ without moving the active Fiedler mode, so
+$\Gamma_{\Emanifold}(\bar z)>0\Rightarrow d_{\mathrm{net}}>0$ but not conversely. The two
+scales differ by an order of magnitude in practice (Sec.~\ref{sec:exp}).
 \end{remark}
 
 \subsection{The WISE refinement}
@@ -190,76 +148,58 @@ $V_{\mathbb Z}^{\mathrm{ss}}$, and the \emph{zero-cost integer WISE}
 $\Essint=\mathcal F_{\mathbb Z}\cap\{z:Bz=y^{\star}\}$ (nonempty iff
 $V_{\mathbb Z}^{\mathrm{ss}}=V^{\star}$). As $\mathcal F_{\mathbb Z}$ imposes connectivity as
 well as integrality, $g_{\mathbb Z}^{\mathrm{ss}}=V^{\star}-V_{\mathbb Z}^{\mathrm{ss}}$ is the
-\emph{integer self-sustaining gap}, not a pure productive integrality gap. \emph{Zero-cost}
-means $B\hat z=y^{\star}$ (numerically $\le\tau_B=10^{-8}$); an integer self-sustaining
-assignment need not be zero-cost. Every WISE \emph{is} a productive variational equilibrium: connectivity acts as a
-\emph{lexicographic refinement} of $\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$, not as an
-extra strategic condition. Equivalently $z^{\star}_{\mathrm{WISE}}$ satisfies
-\begin{equation}
-0\in\partial\big[-\lamtwo(\Lap(z^{\star}_{\mathrm{WISE}}))\big]+N_{\Emanifold}
-(z^{\star}_{\mathrm{WISE}}),
-\label{eq:hier}
-\end{equation}
-whose primal test is $\Gamma_{\Emanifold}=0$ (Thm.~\ref{thm:networkability}). No distributed
-equilibrium-seeking dynamics are claimed.
+\emph{integer self-sustaining gap}, not a pure integrality gap; \emph{zero-cost} means
+$B\hat z=y^{\star}$ ($\le\tau_B=10^{-8}$), which such an assignment need not be. Every WISE
+\emph{is} a productive variational equilibrium: connectivity is a \emph{lexicographic
+refinement} of $\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$, not an extra strategic
+condition. Equivalently $z^{\star}_{\mathrm{WISE}}$ satisfies
+$0\in\partial[-\lamtwo(\Lap(z^{\star}_{\mathrm{WISE}}))]+N_{\Emanifold}
+(z^{\star}_{\mathrm{WISE}})$, whose primal test is $\Gamma_{\Emanifold}=0$
+(Thm.~\ref{thm:networkability}). No distributed equilibrium-seeking dynamics are claimed.
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
-Over the relaxation, \emph{Stage 1} fixes $y^{\star}=Bz^{\star}$
-(Theorem~\ref{thm:degeneracy}) and \emph{Stage 2} selects connectivity on the resulting fiber:
-$z^{\star}_{\mathrm{WISE}}\in\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ solves, in the lifted
-wrench variables (Lemma~\ref{prop:membership}, no facet enumeration),
+\emph{Stage 1} fixes $y^{\star}=Bz^{\star}$ (Theorem~\ref{thm:degeneracy}) and \emph{Stage 2}
+selects connectivity on the fiber: $z^{\star}_{\mathrm{WISE}}\in
+\arg\max_{\Emanifold}\lamtwo(\Lap(z))$ solves, in the lifted wrench variables
+(Lemma~\ref{prop:membership}, no facet enumeration),
 \begin{equation}
 \LamE=\max_{z,\,\xi,\,t}\ t\quad\text{s.t.}\quad
 z\in\mathcal X,\ Bz=y^{\star},\ \eqref{eq:tensor},\ Q^{\top}\Lap(z)\,Q\succeq tI,
 \label{eq:sdp}
 \end{equation}
-convex (affine constraints in $(z,\xi)$, concave
-$\lamtwo\!\circ\!\Lap$). Over the relaxation a \emph{relaxed} WISE exists iff the value
-clears the requirement,
+convex (affine constraints, concave $\lamtwo\!\circ\!\Lap$). A \emph{relaxed} WISE exists iff
+the value clears the requirement,
 \begin{equation}
 \Essrel\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
 \end{equation}
 and any maximiser preserves the productive optimum exactly, hence is itself a variational
-equilibrium with $V=V^{\star}$. When
-$\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the refinement is \emph{strict}. If the
-connectivity-optimal face $\Emanifold^{\star}:=\arg\max_{z\in\Emanifold}\lamtwo(\Lap(z))$
-(equivalently $\{z\in\Emanifold:\Gamma_{\Emanifold}(z)=0\}$ by
-Theorem~\ref{thm:networkability}) is non-singleton, the strongly convex tie-break
+equilibrium with $V=V^{\star}$; when $\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$ the
+refinement is \emph{strict}. If the connectivity-optimal face
+$\Emanifold^{\star}:=\arg\max_{\Emanifold}\lamtwo(\Lap(z))$ (equivalently
+$\{z\in\Emanifold:\Gamma_{\Emanifold}(z)=0\}$) is non-singleton, the strongly convex tie-break
 $\min_{\Emanifold^{\star}}\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ ($W\succ0$, least role change)
 fixes a \emph{unique} selector.
 \end{theorem}
 \begin{proof}[Proof sketch]
-The constraints are convex, so \eqref{eq:sdp} is an SDP with value
-$\LamE$ attained on the compact $\Emanifold$; $\Essrel\neq\varnothing$ iff $\LamE\ge\sigmastar$,
-and feasibility forces $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$.
+The constraints are convex, so \eqref{eq:sdp} is an SDP with value $\LamE$ attained on the
+compact $\Emanifold$, and feasibility forces $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$.
 \end{proof}
-
-\begin{figure}[t]\centering
-  \includegraphics[width=0.78\columnwidth]{fig_modal.pdf}
-  \caption{What that connectivity buys. Both assignments of Fig.~\ref{fig:flagship} share the
-  served aggregate and productive value, differing only in $\lamtwo$. The critical mode
-  of~\eqref{eq:modal} is propagated by exact matrix exponential from a common initial
-  condition, gains fixed beforehand ($\sigmadyn=0.25$). The productively optimal assignment is
-  not merely slow---it is \emph{unstable} ($\det A_{\lamtwo}<0$); WISE decays at the certified
-  $\alpha=0.128$.}
-  \label{fig:modal}
-\end{figure}
 
 \subsection{What connectivity buys: information-layer stability}
 \begin{proposition}[Threshold and guaranteed rate]\label{thm:stability}
-In the coordinates $a,b\in\R^{N-1}$ of $\mathbf1^{\perp}$, let a served-aggregate coordination
-error $a$ be driven by a consensus estimator error $b$ diffusing over
-$\widetilde L(z)=Q^{\top}\Lap(z)Q$:
+In the coordinates $a,b\in\R^{N-1}$ of $\mathbf1^{\perp}$, let a \emph{mode-aligned
+coordination error} $a$ be driven by a consensus estimator error $b$ diffusing over
+$\widetilde L(z)=Q^{\top}\Lap(z)Q$ ($a$ is not claimed to be the served-aggregate error):
 \begin{equation}
 \dot a=-\mF\,a+\vt_1 b,\qquad
 \dot b=\vt_2\,a-c\,\widetilde L(z)\,b,
 \label{eq:interconnection}
 \end{equation}
-with damping $\mF>0$, consensus gain $c>0$ and \emph{isotropic, mode-aligned} couplings
-$\vt_1I,\vt_2I$, so \eqref{eq:interconnection} block-diagonalises in the eigenbasis of
-$\widetilde L$: each eigenvalue $\lambda$ contributes an independent pair
+with damping $\mF>0$, consensus gain $c>0$ and \emph{isotropic} couplings $\vt_1I,\vt_2I$, so
+\eqref{eq:interconnection} block-diagonalises in the eigenbasis of $\widetilde L$: each
+eigenvalue $\lambda$ contributes an independent pair
 \begin{equation}
 \begin{bmatrix}\dot a_\lambda\\ \dot b_\lambda\end{bmatrix}
 =A_\lambda\begin{bmatrix}a_\lambda\\ b_\lambda\end{bmatrix},\qquad
@@ -274,29 +214,52 @@ $\lambda>\sigmadyn:=\vt_1\vt_2/(c\,\mF)$, and its decay rate is
 \sqrt{(\mF-c\lambda)^2+4\vt_1\vt_2}\Big).
 \label{eq:rate}
 \end{equation}
-$\alpha$ is strictly increasing ($\alpha'=\tfrac c2[1-(c\lambda-\mF)/
-\sqrt{(\mF-c\lambda)^2+4\vt_1\vt_2}]>0$) with $\alpha(\sigmadyn)=0$, so the whole
-interconnection is exponentially stable iff $\lamtwo>\sigmadyn$, at rate $\ge\alpha(\lamtwo)$.
+$\alpha$ is strictly increasing with $\alpha(\sigmadyn)=0$, so the interconnection is
+exponentially stable iff $\lamtwo>\sigmadyn$, at rate $\ge\alpha(\lamtwo)$.
 \end{proposition}
+
+This diagonalises a \emph{fixed} Laplacian, whereas a moving team drives
+\eqref{eq:interconnection} with $Q^{\top}\Lgeo(q(t))Q$, whose eigenbasis rotates. A common
+Lyapunov function restores the guarantee \emph{at the same rate}.
+
+\begin{corollary}[Moving graph, unchanged rate]\label{cor:tv}
+Let \eqref{eq:interconnection} be driven by $\Lgeo(q(t))$ with
+$Q^{\top}\Lgeo(q(t))Q\succeq\sigmastar I$ for every $t$ of the operational window. Then, with
+$\mathcal V_c=\tfrac12(\vt_2\|a\|^2+\vt_1\|b\|^2)$ and $\|\cdot\|_P=\sqrt{2\mathcal V_c}$,
+\begin{equation}
+\dot{\mathcal V}_c\le-2\alpha(\sigmastar)\mathcal V_c,\quad
+\|[a,b](t)\|_P\le e^{-\alpha(\sigmastar)t}\|[a,b](0)\|_P,
+\label{eq:tvrate}
+\end{equation}
+with $\alpha$ \emph{exactly} \eqref{eq:rate}, positive iff $\sigmastar>\sigmadyn$.
+\end{corollary}
+\begin{proof}[Proof sketch]
+Using $b^{\top}Q^{\top}\Lgeo Qb\ge\sigmastar\|b\|^2$,
+$\dot{\mathcal V}_c=-\vt_2\mF\|a\|^2+2\vt_1\vt_2a^{\top}b-\vt_1c\,b^{\top}Q^{\top}\Lgeo Qb
+\le-[a;b]^{\top}(M{\otimes}I)[a;b]$ with $M$ the $2\times2$ matrix of entries
+$(\vt_2\mF,-\vt_1\vt_2;-\vt_1\vt_2,\vt_1c\sigmastar)$, and
+$M\otimes I\succeq\lambda_{\min}(M,P)(P\otimes I)$ for $P=\operatorname{diag}(\vt_2,\vt_1)$.
+As $P^{-1/2}MP^{-1/2}$ has entries $(\mF,-\sqrt{\vt_1\vt_2};-\sqrt{\vt_1\vt_2},c\sigmastar)$,
+that generalized eigenvalue \emph{is} $\alpha(\sigmastar)$: the moving graph costs no rate,
+because $\mathcal V_c$ is what symmetrises $A_\lambda$.
+\end{proof}
 The two links must be kept apart. The relaxed selector gives a \emph{design and existence}
-certificate ($\LamE\ge\sigmastar$: the fiber contains a fractional composition meeting the
-requirement). The \emph{physical} guarantee attaches only to a realizable team: for integer
-$\hat z$ passing direct re-certification with $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$,
-Lemma~\ref{lem:bridge} yields $\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ at \emph{every}
-admissible pose, hence the uniform rate $\alpha(\sigmastar)>0$. Lemma~\ref{lem:bridge} is
-stated for integer $\hat z$ and is \emph{not} invoked at the fractional
-$z^{\star}_{\mathrm{WISE}}$. This is the reduced information layer---not robot, load or
-actuator dynamics.
+certificate ($\LamE\ge\sigmastar$); the \emph{physical} guarantee attaches only to a realizable
+team: for integer $\hat z$ passing direct re-certification with
+$\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$, Lemma~\ref{lem:bridge} yields
+$\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ at \emph{every} admissible pose, hence the uniform rate
+$\alpha(\sigmastar)>0$ of Cor.~\ref{cor:tv}. It is \emph{not} invoked at the fractional
+$z^{\star}_{\mathrm{WISE}}$, and covers the reduced information layer only.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
-The lexicographic selector is exact, whereas a scalarised $V+\varepsilon\lamtwo$ recovers it
-only as $\varepsilon\to0$ (Tikhonov~\cite{facchinei2003fvi}:
+The lexicographic selector is exact, whereas a scalarized $V+\varepsilon\lamtwo$ is guaranteed
+to recover it only as $\varepsilon\to0$: Tikhonov~\cite{facchinei2003fvi} bounds
 $\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\,\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)/
-\alpha}$, $\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)=\LamX-\min_{X_{\mathrm f}}\lamtwo$), so a
-finite $\varepsilon$ moves the aggregate (E6). Beyond the free fiber the requirement carries a
-cost: with $\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigma\}$
-($+\infty$ if infeasible) and the capacities $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$,
+\alpha}$, an upper bound on the drift rather than a guarantee that it vanishes at finite
+$\varepsilon$ (Sec.~\ref{sec:exp}). Beyond the free fiber the requirement carries a cost: with
+$\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigma\}$
+($+\infty$ if infeasible) and $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$,
 
 \begin{corollary}[Free/costly/impossible trichotomy]\label{thm:price}
 $\Price$ is nondecreasing, proper and convex, with $\Price=0$ for $\sigma\le\LamE$ (free),
@@ -308,17 +271,13 @@ connectivity requirement, in units of $V$.
 \begin{proof}[Proof sketch]
 The super-level set is convex and shrinks in $\sigma$, so $\Price$ is nondecreasing; $\sigma$
 enters linearly, making $\Price$ a convex perturbation value whose subdifferential is the
-optimal multiplier set. The cases are $\sigma\le\LamE$, $\sigma>\LamX$,
-and between.
+optimal multiplier set.
 \end{proof}
 
 \subsection{Finite-team recovery}
 Rounding \emph{searches} for an integer $\hat z$ and re-checks it \emph{directly} against
-budgets, occupancy, the lifted wrench LP~\eqref{eq:tensor} and $\lamtwo\ge\sigmastar$; if it
-also satisfies $B\hat z=y^{\star}$ it is a zero-cost integer WISE, otherwise it carries a
-\emph{recovery loss} $\ell(\hat z)=V^{\star}-V(\hat z)$, a quantity distinct from the integer
-self-sustaining gap $g_{\mathbb Z}^{\mathrm{ss}}$. A Weyl/row-slack radius
-$\|\hat z-z^{\star}\|_2<\min\{m_w/\kappa_w,\ m_\lambda/\kappa_L\}$ also certifies joint
-feasibility a priori, but it is a worst-case bound---on our instances it certifies $0/30$ of
-the recoveries that direct re-certification accepts---so we relegate it to the supplementary
-material and treat direct re-certification as the operative finite-team test.
+budgets, occupancy, the wrench LP~\eqref{eq:tensor} and $\lamtwo\ge\sigmastar$; if it also
+satisfies $B\hat z=y^{\star}$ it is a zero-cost integer WISE, otherwise it carries a
+\emph{recovery loss} $V^{\star}-V(\hat z)$, distinct from $g_{\mathbb Z}^{\mathrm{ss}}$. A
+Weyl/row-slack radius also certifies joint feasibility a priori, but it is a worst-case bound
+(Sec.~\ref{sec:exp}) and is relegated to the supplementary material.

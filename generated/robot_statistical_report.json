@@ -1,0 +1,217 @@
+{
+  "n_seeds": 30,
+  "sigma_dyn": 0.25,
+  "sigma_req": 0.3,
+  "unit": "seed/world (paired); no time-step pseudoreplication",
+  "success_counts": {
+    "PROD": 0,
+    "HARD": 30,
+    "WISE": 30,
+    "SCALAR": 30,
+    "RANDOM-FIBER": 0
+  },
+  "paired": {
+    "WISE_vs_PROD": {
+      "max_sync_err": {
+        "paired_median_WISE_minus_ref": -0.7333712623811582,
+        "bootstrap_ci95": [
+          -0.7491907834893028,
+          -0.7129555987952587
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 22
+      },
+      "terminal_sync_err": {
+        "paired_median_WISE_minus_ref": -0.7854945910636948,
+        "bootstrap_ci95": [
+          -0.7987083534151891,
+          -0.7698391729008187
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 24
+      },
+      "pose_rmse1": {
+        "paired_median_WISE_minus_ref": 0.003976434656017946,
+        "bootstrap_ci95": [
+          0.0038588894026267227,
+          0.004449182950906599
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 8
+      },
+      "pose_rmse2": {
+        "paired_median_WISE_minus_ref": -0.009989313178967205,
+        "bootstrap_ci95": [
+          -0.010326902972373025,
+          -0.009668591452315922
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 16
+      },
+      "settling_time": {
+        "paired_median_WISE_minus_ref": NaN,
+        "bootstrap_ci95": [
+          NaN,
+          NaN
+        ],
+        "n_finite_pairs": 0,
+        "worst_case_seed_for_WISE": 1
+      },
+      "peak_wrench_residual_quiet": {
+        "paired_median_WISE_minus_ref": -1.05225046441561e-07,
+        "bootstrap_ci95": [
+          -0.026921440730968357,
+          0.0
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 9
+      },
+      "alpha_fitted": {
+        "paired_median_WISE_minus_ref": 0.3651924090152839,
+        "bootstrap_ci95": [
+          0.3647341166745293,
+          0.3656963109379205
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 7
+      },
+      "info_norm_ratio": {
+        "paired_median_WISE_minus_ref": -528451.6728761278,
+        "bootstrap_ci95": [
+          -528451.6728762768,
+          -528451.6728759261
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 16
+      },
+      "control_effort": {
+        "paired_median_WISE_minus_ref": 0.19669183124524636,
+        "bootstrap_ci95": [
+          -0.6644338581982083,
+          4.955977676921627
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 6
+      },
+      "min_lambda2_geo": {
+        "paired_median_WISE_minus_ref": 0.435563403058178,
+        "bootstrap_ci95": [
+          0.43548404548666153,
+          0.4356182331154812
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 24
+      },
+      "min_transfer_margin": {
+        "paired_median_WISE_minus_ref": 0.03668727550303272,
+        "bootstrap_ci95": [
+          0.03660791793151632,
+          0.036742105560335934
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 24
+      }
+    },
+    "WISE_vs_HARD": {
+      "max_sync_err": {
+        "paired_median_WISE_minus_ref": 0.00016713280098937244,
+        "bootstrap_ci95": [
+          -0.00024521362789708956,
+          0.000552565200316657
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 11
+      },
+      "terminal_sync_err": {
+        "paired_median_WISE_minus_ref": 0.0,
+        "bootstrap_ci95": [
+          0.0,
+          0.0
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 1
+      },
+      "pose_rmse1": {
+        "paired_median_WISE_minus_ref": -7.336017774379946e-05,
+        "bootstrap_ci95": [
+          -8.355119847300654e-05,
+          -5.7510217645673385e-05
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 24
+      },
+      "pose_rmse2": {
+        "paired_median_WISE_minus_ref": -7.43752191074594e-05,
+        "bootstrap_ci95": [
+          -9.035743059352709e-05,
+          -5.5484735210547566e-05
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 24
+      },
+      "settling_time": {
+        "paired_median_WISE_minus_ref": 0.10000000000000142,
+        "bootstrap_ci95": [
+          0.0,
+          0.19999999999999574
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 11
+      },
+      "peak_wrench_residual_quiet": {
+        "paired_median_WISE_minus_ref": -2.069740524264572e-10,
+        "bootstrap_ci95": [
+          -1.5126089737714588e-09,
+          0.0
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 9
+      },
+      "alpha_fitted": {
+        "paired_median_WISE_minus_ref": 0.04777858623901166,
+        "bootstrap_ci95": [
+          0.0476083425639496,
+          0.04790249736637354
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 28
+      },
+      "info_norm_ratio": {
+        "paired_median_WISE_minus_ref": -0.00039423963223914234,
+        "bootstrap_ci95": [
+          -0.0003963738385425118,
+          -0.0003918892889481121
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 4
+      },
+      "control_effort": {
+        "paired_median_WISE_minus_ref": -0.6558799863457807,
+        "bootstrap_ci95": [
+          -0.8532390165101518,
+          -0.4634203541529516
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 20
+      },
+      "min_lambda2_geo": {
+        "paired_median_WISE_minus_ref": 0.060006174630848674,
+        "bootstrap_ci95": [
+          0.05990205188927053,
+          0.060072239156477414
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 23
+      },
+      "min_transfer_margin": {
+        "paired_median_WISE_minus_ref": -0.002409042906064196,
+        "bootstrap_ci95": [
+          -0.0025131656476423403,
+          -0.0023429783804354565
+        ],
+        "n_finite_pairs": 30,
+        "worst_case_seed_for_WISE": 23
+      }
+    }
+  }
+}

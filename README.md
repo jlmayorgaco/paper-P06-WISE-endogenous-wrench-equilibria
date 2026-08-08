@@ -1,4 +1,4 @@
-# P07 — WISE: Endogenous Wrench Equilibria
+# P06 — WISE: Endogenous Wrench Equilibria
 
 **WISE: Wrench- and Information-Self-Sustaining Equilibria for Heterogeneous
 Multi-Robot Coalitions**

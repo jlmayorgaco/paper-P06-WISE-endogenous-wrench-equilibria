@@ -1,63 +1,54 @@
 \section{Introduction}
 \label{sec:intro}
 
-Cooperative transport by a heterogeneous robot team couples two decisions usually
-studied apart: which robots apply force to a load, and which relay the information
-that lets the team agree on that force. Distributed equilibrium-seeking and
-population-game methods coordinate such teams by having each agent revise its
-strategy from locally communicated aggregates, converging to an equilibrium of a
-constrained potential game~\cite{martinezpiazuelo2022}. These methods rest on one premise:
-the communication graph needed to \emph{compute} the equilibrium is available while
-the equilibrium is being reached.
+Cooperative transport by a heterogeneous robot team couples two decisions usually studied
+apart: which robots apply force to a load, and which relay the information that lets the team
+agree on that force. Distributed equilibrium-seeking and population-game methods coordinate
+such teams by having each agent revise its strategy from locally communicated aggregates,
+converging to an equilibrium of a constrained potential game~\cite{martinezpiazuelo2022}. These
+methods rest on one premise: the communication graph needed to \emph{compute} the equilibrium
+is available while the equilibrium is being reached. For a mobile team that cannot be taken for
+granted---the robots that compute the equilibrium are the robots whose placement forms the
+graph. An assignment can be productively optimal, delivering the demanded wrench, yet commit
+every robot to lifting and leave none to relay, so connectivity collapses and the estimator
+loses its consensus channel.
 
-For a mobile team this cannot be taken for granted: the robots that compute the equilibrium
-are the robots whose placement forms the graph. An assignment can be productively
-optimal---delivering the demanded wrench---yet commit every robot to lifting, leaving none to
-relay, so connectivity collapses and the estimator loses its consensus channel.
-
-Population-game and distributed Nash-seeking formulations take the interaction graph as
-given. Communication-aware
-task allocation couples the two, trading task utility against assignment-induced
-connectivity~\cite{williams2017matroid,ghosh2006growing}; recent heterogeneous MRTA solves integer coalition
-allocation under physical constraints~\cite{calvo2025heterogeneous}, and communication-backbone
+Population-game and distributed Nash-seeking formulations take the interaction graph as given.
+Communication-aware task allocation couples the two, trading utility against assignment-induced
+connectivity~\cite{williams2017matroid,ghosh2006growing}; heterogeneous MRTA solves integer
+coalition allocation under physical constraints~\cite{calvo2025heterogeneous}, and backbone
 methods reconfigure the relay layer~\cite{santos2024backbone}. Each imposes connectivity as a
-\emph{constraint}, scalarises it against task utility, or repairs the backbone after the fact.
-To the best of our targeted review, none characterizes the geometry of the \emph{exact}
+\emph{constraint}, scalarises it against utility, or repairs the backbone after the fact; to
+the best of our targeted review, none characterizes the geometry of the \emph{exact}
 wrench-feasible productive-optimum set and uses its neutral directions to decide whether
-connectivity is attainable at exactly zero productive loss.
-We exploit a structural degeneracy: because
-the payoff couples only through aggregates, the productive
-optimum fixes the served aggregate but leaves an aggregate-invariant fiber of
-wrench-feasible compositions (Theorem~\ref{thm:degeneracy}), over which connectivity is
-selected lexicographically.
+connectivity is attainable at zero productive loss. We exploit a structural degeneracy: since
+the payoff couples only through aggregates, the productive optimum fixes the served aggregate
+but leaves an aggregate-invariant fiber of wrench-feasible compositions
+(Theorem~\ref{thm:degeneracy}), over which connectivity is selected lexicographically.
 
 \emph{What is and is not new.} The mechanics are standard---concavity of $\lamtwo$ in affine
 weights~\cite{fiedler1973,ghosh2006growing}, derivatives of a repeated minimum
-eigenvalue~\cite{lewis1996spectral}, LMI connectivity design, first-order optimality of a
-concave function over a convex set. The contribution is the object they are applied to: the
-wrench-feasible productive-optimum set is a positive-dimensional polytope whose tangent cone
-carries the entire zero-loss question, condensed into one scalar $\Gamma_{\Emanifold}$.
+eigenvalue~\cite{lewis1996spectral}, LMI connectivity design. The contribution is the object
+they are applied to: the wrench-feasible productive-optimum set is a positive-dimensional
+polytope whose tangent cone carries the entire zero-loss question, condensed into one scalar.
 \emph{Scope:} equilibrium-set geometry and centralized selection, not distributed Nash seeking.
 
-\paragraph*{Contributions}
-\begin{itemize}
-\item \textbf{Optimal-fiber networkability} (Thms.~\ref{thm:degeneracy},
-\ref{thm:networkability}): the optimal served aggregate is unique but the equal-payoff
-assignments form a fiber whose dimension is the local loss of strong monotonicity; a single
-scalar $\Gamma_{\Emanifold}$ is positive iff a strictly better-connected optimum exists
-\emph{anywhere} on that fiber, and zero iff the point is globally connectivity-optimal
-(repeated Fiedler eigenvalues included).
-\item \textbf{Selection, price and what it buys} (Thm.~\ref{thm:existence},
-Cor.~\ref{thm:price}, Prop.~\ref{thm:stability}): WISE is a lexicographic refinement of the
-productive variational-equilibrium set computed by SDP; the capacities $\LamE\le\LamX$
-separate \emph{free}, \emph{costly} and \emph{impossible} requirements, and clearing the
-derived threshold $\sigmadyn$ gives exponential stability of a reduced information layer at a
-certified rate.
-\item \textbf{Finite-team assessment}: an exact small-team oracle and directly re-certified
-structured recovery, quantifying integer attainability, recovery loss, and how far the
-worst-case radius falls short of the operative test.
-\end{itemize}
-Guarantees are for the affine relaxation; distributed online realization remains future work.
+\emph{Contributions.} \textbf{(i) Optimal-fiber networkability}
+(Thms.~\ref{thm:degeneracy},~\ref{thm:networkability}): the optimal served aggregate is unique
+but the equal-payoff assignments form a fiber whose dimension is the local loss of strong
+monotonicity, and one scalar $\Gamma_{\Emanifold}$ is positive iff a strictly better-connected
+optimum exists \emph{anywhere} on it, zero iff the point is globally connectivity-optimal
+(repeated Fiedler eigenvalues included). \textbf{(ii) Selection, price and what it buys}
+(Thm.~\ref{thm:existence}, Cor.~\ref{thm:price}, Prop.~\ref{thm:stability},
+Cor.~\ref{cor:tv}): WISE is a lexicographic refinement of the productive
+variational-equilibrium set computed by SDP; $\LamE\le\LamX$ separate \emph{free},
+\emph{costly} and \emph{impossible} requirements; and clearing the derived threshold
+$\sigmadyn$ gives exponential stability of a reduced information layer, with the same certified
+lower rate bound under a moving physical graph. \textbf{(iii) Finite-team and closed-loop
+assessment}: an exact small-team oracle, directly re-certified recovery, and a planar
+closed-loop transport simulation with rigidly attached robots in which productively identical
+assignments succeed and fail. Guarantees are for the affine relaxation; distributed realization
+remains future work.
 
 % Concept figure removed for the six-page limit (was uncited); source preserved in
 % sections/fig_concept.tex and restorable for the extended/repository version.

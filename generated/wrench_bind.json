@@ -1,0 +1,58 @@
+{
+ "taus": [
+  3.0,
+  4.0,
+  5.0,
+  6.0,
+  7.0,
+  8.0,
+  9.0,
+  10.0,
+  11.0,
+  12.0
+ ],
+ "seeds": [
+  3,
+  5,
+  7
+ ],
+ "active_tol": 0.001,
+ "first_binding": {
+  "3": {
+   "tau_d": 8.0,
+   "n_active": 1,
+   "dim_E_before": 59,
+   "dim_E_after": 59,
+   "Gamma_before": 1.03691469053368,
+   "Gamma_after": 1.0611729610061924,
+   "Lambda_E_before": 2.1552229643174035,
+   "Lambda_E_after": 1.7337684984511956
+  },
+  "5": {
+   "tau_d": 8.0,
+   "n_active": 1,
+   "dim_E_before": 59,
+   "dim_E_after": 59,
+   "Gamma_before": 0.89973246048672,
+   "Gamma_after": 0.9123055670375457,
+   "Lambda_E_before": 1.5924571264350187,
+   "Lambda_E_after": 1.4345193195096715
+  },
+  "7": {
+   "tau_d": 8.0,
+   "n_active": 1,
+   "dim_E_before": 59,
+   "dim_E_after": 59,
+   "Gamma_before": 0.9586731848569843,
+   "Gamma_after": 0.9765116637027084,
+   "Lambda_E_before": 1.7468712169790535,
+   "Lambda_E_after": 1.4878445196334522
+  }
+ },
+ "first_infeasible_tau": {
+  "3": 11.0,
+  "5": 11.0,
+  "7": 11.0
+ },
+ "note": "direction not assumed; reported as measured"
+}

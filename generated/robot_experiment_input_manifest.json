@@ -1,0 +1,697 @@
+{
+  "git_rev": "5c1538a00c632e3c19c028703c602f955f425d6e",
+  "python": "3.13.9",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "numpy": "2.3.5",
+  "source_of_truth": {
+    "flagship_script": "experiments/exp_flagship.py",
+    "flagship_record": "generated/flagship.json",
+    "wrench_certificate": "src/wise_mr/wrench_tensor.certify_membership_lp",
+    "information_gains": "experiments/exp_modal_stability.py (two_region defaults)"
+  },
+  "robot_types": {
+    "names": [
+      "L1",
+      "L2",
+      "S1",
+      "S2",
+      "S3",
+      "S4"
+    ],
+    "is_long": [
+      true,
+      true,
+      false,
+      false,
+      false,
+      false
+    ],
+    "comm_range": [
+      5.0,
+      5.0,
+      3.0,
+      3.0,
+      3.0,
+      3.0
+    ],
+    "relay_gain": [
+      1.0,
+      1.0,
+      0.2,
+      0.2,
+      0.2,
+      0.2
+    ],
+    "capacity_c_tau": [
+      2.0,
+      2.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "force_cap_F_tau": [
+      2.0,
+      2.0,
+      1.0,
+      1.0,
+      1.0,
+      1.0
+    ],
+    "short_range_R_S": 3.0,
+    "homes": [
+      [
+        0.0,
+        0.0
+      ],
+      [
+        8.0,
+        0.0
+      ],
+      [
+        0.0,
+        1.0
+      ],
+      [
+        0.0,
+        -1.0
+      ],
+      [
+        8.0,
+        1.0
+      ],
+      [
+        8.0,
+        -1.0
+      ]
+    ]
+  },
+  "action_set": {
+    "n_actions": 12,
+    "actions": [
+      [
+        "lift",
+        "0",
+        "0"
+      ],
+      [
+        "lift",
+        "0",
+        "1"
+      ],
+      [
+        "lift",
+        "0",
+        "2"
+      ],
+      [
+        "lift",
+        "0",
+        "3"
+      ],
+      [
+        "lift",
+        "1",
+        "0"
+      ],
+      [
+        "lift",
+        "1",
+        "1"
+      ],
+      [
+        "relay",
+        "C"
+      ],
+      [
+        "relay",
+        "W"
+      ],
+      [
+        "relay",
+        "E"
+      ],
+      [
+        "relay",
+        "N"
+      ],
+      [
+        "relay",
+        "S"
+      ],
+      [
+        "idle"
+      ]
+    ],
+    "relay_sites": {
+      "C": [
+        4.0,
+        0.0
+      ],
+      "W": [
+        3.2,
+        0.0
+      ],
+      "E": [
+        4.8,
+        0.0
+      ],
+      "N": [
+        4.0,
+        1.2
+      ],
+      "S": [
+        4.0,
+        -1.2
+      ]
+    },
+    "contact_slots_per_load": [
+      4,
+      2
+    ]
+  },
+  "wrench_model": {
+    "A_kh": [
+      [
+        [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            -0.0,
+            0.0
+          ]
+        ],
+        [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            -0.4,
+            0.0
+          ]
+        ],
+        [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.4,
+            0.0
+          ]
+        ],
+        [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.3,
+            0.0
+          ]
+        ]
+      ],
+      [
+        [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            0.5,
+            0.0
+          ]
+        ],
+        [
+          [
+            1.0,
+            0.0
+          ],
+          [
+            0.0,
+            1.0
+          ],
+          [
+            -0.0,
+            0.0
+          ]
+        ]
+      ]
+    ],
+    "slot_offsets_r_kh": [
+      [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.4
+        ],
+        [
+          0.0,
+          -0.4
+        ],
+        [
+          0.0,
+          -0.3
+        ]
+      ],
+      [
+        [
+          0.0,
+          -0.5
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    ],
+    "w_dem_certified": [
+      [
+        3.0,
+        0.0,
+        0.3
+      ],
+      [
+        3.0,
+        0.0,
+        1.0
+      ]
+    ],
+    "kappa": 1.0,
+    "m_sides": 12,
+    "nominal_demand_fraction": 0.55
+  },
+  "productive_layer": {
+    "alpha": 1.0,
+    "v": [
+      3.0,
+      3.0
+    ],
+    "y_star": [
+      3.0,
+      3.0
+    ],
+    "V_star": 9.0,
+    "flagship_served_aggregate": [
+      3.0,
+      3.0
+    ]
+  },
+  "information_layer": {
+    "m_y": 1.0,
+    "theta_1": 0.5,
+    "theta_2": 0.5,
+    "c": 1.0,
+    "sigma_dyn": 0.25,
+    "sigma_req": 0.3,
+    "delta_margin": 0.05,
+    "alpha_sigma_req": 0.039672219213314874
+  },
+  "mission": {
+    "paths": [
+      {
+        "start": [
+          0.9,
+          -0.6,
+          1.5707963267948966
+        ],
+        "travel": [
+          0.0,
+          1.2
+        ],
+        "bow": [
+          0.25,
+          0.0
+        ],
+        "arclength": 1.3847519551380723
+      },
+      {
+        "start": [
+          7.1,
+          0.6,
+          -1.5707963267948966
+        ],
+        "travel": [
+          0.0,
+          -1.2
+        ],
+        "bow": [
+          -0.25,
+          0.0
+        ],
+        "arclength": 1.3847519551380723
+      }
+    ],
+    "t_deploy": 6.0,
+    "t_end": 70.0,
+    "dt": 0.01,
+    "control_hz": 20.0,
+    "path_speed": 0.020833333333333332,
+    "disturbance": {
+      "t": 22.0,
+      "duration": 12.0,
+      "drag_multiplier": 2.6,
+      "load": 2,
+      "kind": "temporary scaling of load 2's resistance wrench"
+    },
+    "drag_eccentricity": [
+      -0.09999999999999999,
+      -0.3333333333333333
+    ],
+    "tubes": {
+      "rho_track": 0.12,
+      "rho_relay": 0.15,
+      "rho_idle": 0.15
+    }
+  },
+  "tolerances": {
+    "tau_B": 1e-08,
+    "tau_V": 1e-08,
+    "tau_Gamma": 1e-06,
+    "tau_eig": 1e-09,
+    "tau_q": 0.1,
+    "tau_s": 0.05,
+    "tau_w": 0.35
+  },
+  "enumeration": {
+    "n_integer_maps": 2985984,
+    "n_feasible": 3864,
+    "n_on_fiber": 1032,
+    "lambda2_star_fiber": 0.3988761275551456,
+    "lambda2_star_feasible": 0.3988761275551456,
+    "distinct_lambda2_on_fiber": [
+      0.0,
+      0.143648375,
+      0.214861753,
+      0.292188829,
+      0.33646091,
+      0.38772889,
+      0.398876128
+    ]
+  },
+  "assignments": {
+    "PROD": {
+      "name": "PROD",
+      "assignment": [
+        [
+          "lift",
+          "0",
+          "0"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "idle"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "idle"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 2.2422879115109017e-16,
+      "lambda2_nominal": 4.645476757589288e-16,
+      "margin_vs_sigma_req": -0.29999999999999977,
+      "deployment_cost": 1.9991158968206293,
+      "role_changes_vs_prod": 0,
+      "gamma_fiber_integer": 0.3988761275551454,
+      "extra": {}
+    },
+    "WISE": {
+      "name": "WISE",
+      "assignment": [
+        [
+          "relay",
+          "E"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_nominal": 0.23112548393078608,
+      "margin_vs_sigma_req": 0.09887612755514547,
+      "deployment_cost": 5.216415311632295,
+      "role_changes_vs_prod": 3,
+      "gamma_fiber_integer": 1.6653345369377348e-16,
+      "extra": {}
+    },
+    "HARD": {
+      "name": "HARD",
+      "assignment": [
+        [
+          "relay",
+          "W"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 0.3364609100182326,
+      "lambda2_nominal": 0.25563860722427023,
+      "margin_vs_sigma_req": 0.036460910018232595,
+      "deployment_cost": 4.896415311632295,
+      "role_changes_vs_prod": 3,
+      "gamma_fiber_integer": 0.06241521753691304,
+      "extra": {}
+    },
+    "SCALAR": {
+      "name": "SCALAR",
+      "assignment": [
+        [
+          "relay",
+          "E"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_nominal": 0.23112548393078608,
+      "margin_vs_sigma_req": 0.09887612755514547,
+      "deployment_cost": 5.216415311632295,
+      "role_changes_vs_prod": 3,
+      "gamma_fiber_integer": 1.6653345369377348e-16,
+      "extra": {}
+    },
+    "RANDOM-FIBER": {
+      "name": "RANDOM-FIBER",
+      "assignment": [
+        [
+          "idle"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": -7.954423143705765e-17,
+      "lambda2_nominal": 4.645476757589288e-16,
+      "margin_vs_sigma_req": -0.30000000000000004,
+      "deployment_cost": 4.765983106507691,
+      "role_changes_vs_prod": 4,
+      "gamma_fiber_integer": 0.3988761275551457,
+      "extra": {}
+    }
+  },
+  "flagship_lambda2_reproduction": {
+    "lambda2_prod_recomputed": 4.443342847265101e-16,
+    "lambda2_wise_recomputed": 0.41471026389978355,
+    "lambda2_prod_record": 4.448778422826949e-16,
+    "lambda2_wise_record": 0.41471026389978366,
+    "max_abs_difference": 1.1102230246251565e-16
+  },
+  "flagship_lambda2_single_position": {
+    "lambda2_wise_single_position": 0.2543929073169574,
+    "lambda2_prod_single_position": 4.443342847265101e-16
+  }
+}

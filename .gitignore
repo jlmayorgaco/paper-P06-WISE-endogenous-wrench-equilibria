@@ -41,3 +41,4 @@ build.log
 generated/*.png
 paper/log2.txt
 paper/*.py
+!paper/checkbuild.py

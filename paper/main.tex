@@ -35,6 +35,7 @@
 \newtheorem{remark}{Remark}
 \newtheorem{example}{Example}
 
+
 % ---- notation macros ----
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\Wten}{\mathcal{W}}          % (legacy alias; use \Wmap = support-capability map)
@@ -74,25 +75,27 @@ jl.mayorga236@gmail.com}}
 \maketitle
 
 \begin{abstract}
-Heterogeneous multi-robot transport couples physical task allocation with the
-communication structure needed to coordinate it. We show that when productive utility
-depends on a low-dimensional served aggregate, its unique optimal \emph{served aggregate}
-can correspond to a \emph{positive-dimensional fiber} of wrench-feasible robot
-compositions---a resource for communication design. We characterize the fiber on its active
-face and derive a free-networkability modulus $\Gamma_{\Emanifold}$ whose positivity is
-necessary \emph{and sufficient} for a strictly better-connected composition to exist anywhere
-on the fiber, so that $\Gamma_{\Emanifold}=0$ certifies global connectivity optimality;
-the criterion covers a repeated Fiedler eigenvalue. A wrench- and
-information-self-sustaining equilibrium (WISE) is selected lexicographically by a semidefinite
-program, and the resulting spectral capacities separate \emph{zero-cost}, \emph{costly} and
-\emph{impossible} requirements through a price of self-sustainability whose subgradient prices
-connectivity in units of utility. Clearing the derived threshold buys exponential stability of
-a reduced information layer at a certified rate: on the flagship, two assignments with
-identical served aggregate and productive value sit on opposite sides of it, one diverging and
-one decaying. An exact oracle measures the integer gap for $N\le8$, and structured rounding
-attains re-certified integer assignments in $895/900$ draws at $N=12$. Zero-cost is exact on
-the relaxed fiber; finite-team integerization may incur a separately quantified recovery loss,
-and distributed online realization remains future work.
+Heterogeneous multi-robot transport couples physical task allocation with the communication
+structure needed to coordinate it. We show that when productive utility depends on a
+low-dimensional served aggregate, its unique optimal \emph{served aggregate} can correspond to
+a \emph{positive-dimensional fiber} of wrench-feasible robot compositions---a resource for
+communication design. We characterize the fiber on its active face and derive a
+free-networkability modulus $\Gamma_{\Emanifold}$ whose positivity is necessary \emph{and
+sufficient} for a strictly better-connected composition to exist anywhere on the fiber, so
+that $\Gamma_{\Emanifold}=0$ certifies global connectivity optimality, repeated Fiedler
+eigenvalues included. A wrench- and information-self-sustaining equilibrium (WISE) is selected
+lexicographically by a semidefinite program, and the resulting spectral capacities separate
+\emph{zero-cost}, \emph{costly} and \emph{impossible} requirements through a price of
+self-sustainability whose subgradient prices connectivity in units of utility. Clearing the
+derived threshold buys exponential stability of a reduced information layer, and the same
+certified lower rate bound holds under a moving physical graph. A planar closed-loop transport
+experiment makes the distinction physical: relative to the productively identical but
+disconnected baseline, the WISE composition maintains the certified communication bound and
+resynchronizes both disturbed loads in $30/30$ paired worlds versus $0/30$, at the same served
+aggregate, productive value and certified wrenches. An exact oracle measures the integer
+self-sustaining gap for $N\le8$, and structured rounding attains re-certified integer
+assignments in $895/900$ draws at $N=12$. Zero-cost is exact on the relaxed fiber; finite-team
+integerization may incur a separately quantified recovery loss.
 \end{abstract}
 
 \begin{IEEEkeywords}

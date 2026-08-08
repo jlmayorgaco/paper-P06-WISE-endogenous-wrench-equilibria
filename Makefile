@@ -4,6 +4,7 @@ PY ?= python
 
 .PHONY: help install test lint fmt \
         fiber spatial central phase methods physical epsilon \
+        robot robot-mc robot-sweep robot-fig robot-video robot-test \
         reproduce reproduce-fast paper clean
 
 help: ## Show this help
@@ -42,6 +43,25 @@ physical: ## Closed-loop rigid-load transport
 
 epsilon: ## Lexicographic WISE vs. weighted-sum scalarization (Tikhonov bounds)
 	$(PY) experiments/exp_epsilon.py
+
+robot: ## E-Robot: PHASE-R0 audit + one deterministic closed-loop flagship run
+	$(PY) -m experiments.robot_closed_loop.run_flagship
+
+robot-mc: ## E-Robot: paired Monte-Carlo campaign (default 30 seeds)
+	$(PY) -m experiments.robot_closed_loop.run_monte_carlo $(SEEDS)
+
+robot-sweep: ## E-Robot: predeclared relay-attenuation robustness sweep
+	$(PY) -m experiments.robot_closed_loop.run_margin_sweep
+
+robot-fig: ## E-Robot: paper hero figure + supplementary four-panel figure
+	$(PY) -m experiments.robot_closed_loop.make_hero
+	$(PY) -m experiments.robot_closed_loop.make_figure
+
+robot-video: ## E-Robot: PROD | HARD | WISE side-by-side animation
+	$(PY) -m experiments.robot_closed_loop.render
+
+robot-test: ## E-Robot: the 12 invariant tests
+	$(PY) -m pytest experiments/robot_closed_loop/tests -q
 
 reproduce: ## Full pipeline: tests -> certificates -> experiments -> paper -> checks
 	$(PY) experiments/reproduce.py

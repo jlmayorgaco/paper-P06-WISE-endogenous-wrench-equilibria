@@ -1,0 +1,662 @@
+{
+  "seed": 0,
+  "sigma_dyn": 0.25,
+  "sigma_req": 0.3,
+  "V_star": 9.0,
+  "y_star": [
+    3.0,
+    3.0
+  ],
+  "assignments": {
+    "PROD": {
+      "L1": "lift(load1,h0)",
+      "L2": "lift(load2,h0)",
+      "S1": "idle",
+      "S2": "lift(load1,h3)",
+      "S3": "lift(load2,h1)",
+      "S4": "idle"
+    },
+    "WISE": {
+      "L1": "relay@E",
+      "L2": "lift(load2,h0)",
+      "S1": "lift(load1,h1)",
+      "S2": "lift(load1,h3)",
+      "S3": "lift(load2,h1)",
+      "S4": "lift(load1,h2)"
+    },
+    "HARD": {
+      "L1": "relay@W",
+      "L2": "lift(load2,h0)",
+      "S1": "lift(load1,h1)",
+      "S2": "lift(load1,h3)",
+      "S3": "lift(load2,h1)",
+      "S4": "lift(load1,h2)"
+    },
+    "SCALAR": {
+      "L1": "relay@E",
+      "L2": "lift(load2,h0)",
+      "S1": "lift(load1,h1)",
+      "S2": "lift(load1,h3)",
+      "S3": "lift(load2,h1)",
+      "S4": "lift(load1,h2)"
+    },
+    "RANDOM-FIBER": {
+      "L1": "idle",
+      "L2": "lift(load2,h0)",
+      "S1": "lift(load1,h1)",
+      "S2": "lift(load1,h3)",
+      "S3": "lift(load1,h2)",
+      "S4": "lift(load2,h1)"
+    }
+  },
+  "certificates": {
+    "PROD": {
+      "name": "PROD",
+      "assignment": [
+        [
+          "lift",
+          "0",
+          "0"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "idle"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "idle"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 2.2422879115109017e-16,
+      "lambda2_nominal": 4.645476757589288e-16,
+      "margin_vs_sigma_req": -0.29999999999999977,
+      "deployment_cost": 1.9991158968206293,
+      "role_changes_vs_prod": 0,
+      "gamma_fiber_integer": 0.3988761275551454,
+      "extra": {}
+    },
+    "WISE": {
+      "name": "WISE",
+      "assignment": [
+        [
+          "relay",
+          "E"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_nominal": 0.23112548393078608,
+      "margin_vs_sigma_req": 0.09887612755514547,
+      "deployment_cost": 5.216415311632295,
+      "role_changes_vs_prod": 3,
+      "gamma_fiber_integer": 1.6653345369377348e-16,
+      "extra": {}
+    },
+    "HARD": {
+      "name": "HARD",
+      "assignment": [
+        [
+          "relay",
+          "W"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 0.3364609100182326,
+      "lambda2_nominal": 0.25563860722427023,
+      "margin_vs_sigma_req": 0.036460910018232595,
+      "deployment_cost": 4.896415311632295,
+      "role_changes_vs_prod": 3,
+      "gamma_fiber_integer": 0.06241521753691304,
+      "extra": {}
+    },
+    "SCALAR": {
+      "name": "SCALAR",
+      "assignment": [
+        [
+          "relay",
+          "E"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_nominal": 0.23112548393078608,
+      "margin_vs_sigma_req": 0.09887612755514547,
+      "deployment_cost": 5.216415311632295,
+      "role_changes_vs_prod": 3,
+      "gamma_fiber_integer": 1.6653345369377348e-16,
+      "extra": {}
+    },
+    "RANDOM-FIBER": {
+      "name": "RANDOM-FIBER",
+      "assignment": [
+        [
+          "idle"
+        ],
+        [
+          "lift",
+          "1",
+          "0"
+        ],
+        [
+          "lift",
+          "0",
+          "1"
+        ],
+        [
+          "lift",
+          "0",
+          "3"
+        ],
+        [
+          "lift",
+          "0",
+          "2"
+        ],
+        [
+          "lift",
+          "1",
+          "1"
+        ]
+      ],
+      "integral": true,
+      "occupancy_ok": true,
+      "wrench_ok": {
+        "load1": true,
+        "load2": true
+      },
+      "y": [
+        3.0,
+        3.0
+      ],
+      "V": 9.0,
+      "aggregate_error": 0.0,
+      "value_error": 0.0,
+      "lambda2_bar": -7.954423143705765e-17,
+      "lambda2_nominal": 4.645476757589288e-16,
+      "margin_vs_sigma_req": -0.30000000000000004,
+      "deployment_cost": 4.765983106507691,
+      "role_changes_vs_prod": 4,
+      "gamma_fiber_integer": 0.3988761275551457,
+      "extra": {}
+    }
+  },
+  "summaries": {
+    "PROD": {
+      "method": "PROD",
+      "seed": 0,
+      "V_over_Vstar": 1.0,
+      "aggregate_error_inf": 0.0,
+      "value_error": 0.0,
+      "gamma_fiber_integer": 0.3988761275551454,
+      "lambda2_bar": 2.2422879115109017e-16,
+      "lambda2_nominal": 4.645476757589288e-16,
+      "margin_vs_sigma_req": -0.29999999999999977,
+      "wrench_certified": true,
+      "min_lambda2_geo": -7.548771250345867e-16,
+      "min_transfer_margin": -9.791059161856769e-16,
+      "min_loewner_eig": -5.191498815039497e-16,
+      "max_tube_violation": 0.0,
+      "alpha_certified": -0.20710678118654735,
+      "alpha_at_lambda2_bar": -0.20710678118654735,
+      "alpha_fitted": -0.20710678118651585,
+      "info_norm_ratio": 528451.6728891225,
+      "mission_info_norm_max": 47576.28662843326,
+      "pose_rmse1": 0.0002322359735119198,
+      "pose_rmse2": 0.019607445067075353,
+      "peak_wrench_residual": 3.265996983085133,
+      "peak_wrench_residual_quiet": 8.163532727208442e-08,
+      "min_actuation_slack": -4.440892098500626e-16,
+      "n_infeasible_steps": 240,
+      "n_infeasible_steps_quiet": 0,
+      "mission_completed": false,
+      "wrench_rmse1": 1.6163304202823447e-08,
+      "wrench_rmse2": 0.28008656893350026,
+      "max_sync_err": 0.7342665466632528,
+      "terminal_sync_err": 0.7342665466632528,
+      "terminal_pose_err": 0.03100070216707028,
+      "settling_time": NaN,
+      "control_effort": 116.10262546064449,
+      "t_complete1": NaN,
+      "t_complete2": 46.4,
+      "success": false
+    },
+    "HARD": {
+      "method": "HARD",
+      "seed": 0,
+      "V_over_Vstar": 1.0,
+      "aggregate_error_inf": 0.0,
+      "value_error": 0.0,
+      "gamma_fiber_integer": 0.06241521753691304,
+      "lambda2_bar": 0.3364609100182326,
+      "lambda2_nominal": 0.25563860722427023,
+      "margin_vs_sigma_req": 0.036460910018232595,
+      "wrench_certified": true,
+      "min_lambda2_geo": 0.3755945176260233,
+      "min_transfer_margin": 0.03913360760779072,
+      "min_loewner_eig": 0.03242399892756168,
+      "max_tube_violation": 0.0,
+      "alpha_certified": 0.039672219213314874,
+      "alpha_at_lambda2_bar": 0.06817126544240526,
+      "alpha_fitted": 0.10821824051241986,
+      "info_norm_ratio": 0.000406608760738583,
+      "mission_info_norm_max": 0.418049700860456,
+      "pose_rmse1": 0.008940493572137574,
+      "pose_rmse2": 0.009178428594910075,
+      "peak_wrench_residual": 0.8158372246762825,
+      "peak_wrench_residual_quiet": 5.6766948316036375e-08,
+      "min_actuation_slack": 0.0,
+      "n_infeasible_steps": 240,
+      "n_infeasible_steps_quiet": 0,
+      "mission_completed": true,
+      "wrench_rmse1": 1.467765904731549e-08,
+      "wrench_rmse2": 0.05641001551537675,
+      "max_sync_err": 0.05389730704347934,
+      "terminal_sync_err": 0.0,
+      "terminal_pose_err": 0.020916233045922362,
+      "settling_time": 2.25,
+      "control_effort": 120.37926982285023,
+      "t_complete1": 57.550000000000004,
+      "t_complete2": 57.050000000000004,
+      "success": true
+    },
+    "WISE": {
+      "method": "WISE",
+      "seed": 0,
+      "V_over_Vstar": 1.0,
+      "aggregate_error_inf": 0.0,
+      "value_error": 0.0,
+      "gamma_fiber_integer": 1.6653345369377348e-16,
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_nominal": 0.23112548393078608,
+      "margin_vs_sigma_req": 0.09887612755514547,
+      "wrench_certified": true,
+      "min_lambda2_geo": 0.4355885700175879,
+      "min_transfer_margin": 0.03671244246244243,
+      "min_loewner_eig": 0.03606246113834237,
+      "max_tube_violation": 0.0,
+      "alpha_certified": 0.039672219213314874,
+      "alpha_at_lambda2_bar": 0.11605356149303792,
+      "alpha_fitted": 0.1555663596451264,
+      "info_norm_ratio": 1.3116911136684932e-05,
+      "mission_info_norm_max": 0.36938538117643216,
+      "pose_rmse1": 0.00886723662085741,
+      "pose_rmse2": 0.009078899584744355,
+      "peak_wrench_residual": 0.8192991795379745,
+      "peak_wrench_residual_quiet": 5.543024853466424e-08,
+      "min_actuation_slack": 0.0,
+      "n_infeasible_steps": 240,
+      "n_infeasible_steps_quiet": 0,
+      "mission_completed": true,
+      "wrench_rmse1": 1.4657262069713865e-08,
+      "wrench_rmse2": 0.05615466275032014,
+      "max_sync_err": 0.05377369504421203,
+      "terminal_sync_err": 0.0,
+      "terminal_pose_err": 0.020897112773179318,
+      "settling_time": 2.3000000000000043,
+      "control_effort": 119.78577841181082,
+      "t_complete1": 57.7,
+      "t_complete2": 57.45,
+      "success": true
+    },
+    "SCALAR": {
+      "method": "SCALAR",
+      "seed": 0,
+      "V_over_Vstar": 1.0,
+      "aggregate_error_inf": 0.0,
+      "value_error": 0.0,
+      "gamma_fiber_integer": 1.6653345369377348e-16,
+      "lambda2_bar": 0.39887612755514545,
+      "lambda2_nominal": 0.23112548393078608,
+      "margin_vs_sigma_req": 0.09887612755514547,
+      "wrench_certified": true,
+      "min_lambda2_geo": 0.4355885700175879,
+      "min_transfer_margin": 0.03671244246244243,
+      "min_loewner_eig": 0.03606246113834237,
+      "max_tube_violation": 0.0,
+      "alpha_certified": 0.039672219213314874,
+      "alpha_at_lambda2_bar": 0.11605356149303792,
+      "alpha_fitted": 0.1555663596451264,
+      "info_norm_ratio": 1.3116911136684932e-05,
+      "mission_info_norm_max": 0.36938538117643216,
+      "pose_rmse1": 0.00886723662085741,
+      "pose_rmse2": 0.009078899584744355,
+      "peak_wrench_residual": 0.8192991795379745,
+      "peak_wrench_residual_quiet": 5.543024853466424e-08,
+      "min_actuation_slack": 0.0,
+      "n_infeasible_steps": 240,
+      "n_infeasible_steps_quiet": 0,
+      "mission_completed": true,
+      "wrench_rmse1": 1.4657262069713865e-08,
+      "wrench_rmse2": 0.05615466275032014,
+      "max_sync_err": 0.05377369504421203,
+      "terminal_sync_err": 0.0,
+      "terminal_pose_err": 0.020897112773179318,
+      "settling_time": 2.3000000000000043,
+      "control_effort": 119.78577841181082,
+      "t_complete1": 57.7,
+      "t_complete2": 57.45,
+      "success": true
+    },
+    "RANDOM-FIBER": {
+      "method": "RANDOM-FIBER",
+      "seed": 0,
+      "V_over_Vstar": 1.0,
+      "aggregate_error_inf": 0.0,
+      "value_error": 0.0,
+      "gamma_fiber_integer": 0.3988761275551457,
+      "lambda2_bar": -7.954423143705765e-17,
+      "lambda2_nominal": 4.645476757589288e-16,
+      "margin_vs_sigma_req": -0.30000000000000004,
+      "wrench_certified": true,
+      "min_lambda2_geo": -4.95256750861023e-16,
+      "min_transfer_margin": -4.157125194239654e-16,
+      "min_loewner_eig": -3.604815693432785e-16,
+      "max_tube_violation": 0.0,
+      "alpha_certified": -0.20710678118654763,
+      "alpha_at_lambda2_bar": -0.20710678118654763,
+      "alpha_fitted": -0.20710678118651576,
+      "info_norm_ratio": 376279.0831386078,
+      "mission_info_norm_max": 26657.70610753141,
+      "pose_rmse1": 0.0003163725170244654,
+      "pose_rmse2": 0.0195505868702772,
+      "peak_wrench_residual": 3.1291970110186753,
+      "peak_wrench_residual_quiet": 8.179161370728247e-08,
+      "min_actuation_slack": -4.440892098500626e-16,
+      "n_infeasible_steps": 240,
+      "n_infeasible_steps_quiet": 0,
+      "mission_completed": false,
+      "wrench_rmse1": 7.0891936002514525e-09,
+      "wrench_rmse2": 0.265479721256035,
+      "max_sync_err": 0.641457414396394,
+      "terminal_sync_err": 0.641457414396394,
+      "terminal_pose_err": 0.03100070210926418,
+      "settling_time": NaN,
+      "control_effort": 117.00499146173514,
+      "t_complete1": NaN,
+      "t_complete2": 46.4,
+      "success": false
+    }
+  },
+  "hypotheses": {
+    "H1_zero_productive_loss": {
+      "aggregate_error_inf": 0.0,
+      "tau_B": 1e-08,
+      "value_error": 0.0,
+      "tau_V": 1e-08,
+      "pass": true
+    },
+    "H2_free_networkability": {
+      "note": "Gamma reported here is the *integer-fiber* modulus max_{z' in E_Z} lambda2(Lbar(z')) - lambda2(Lbar(z)); the continuous Gamma_E of the networkability theorem is not recomputed in this experiment.",
+      "gamma_at_prod": 0.3988761275551454,
+      "gamma_at_wise": 1.6653345369377348e-16,
+      "tau_Gamma": 1e-06,
+      "pass": true
+    },
+    "H3_geometric_transfer": {
+      "PROD": {
+        "min_transfer_margin": -9.791059161856769e-16,
+        "min_loewner_eig": -5.191498815039497e-16,
+        "max_tube_violation": 0.0,
+        "pass": true
+      },
+      "HARD": {
+        "min_transfer_margin": 0.03913360760779072,
+        "min_loewner_eig": 0.03242399892756168,
+        "max_tube_violation": 0.0,
+        "pass": true
+      },
+      "WISE": {
+        "min_transfer_margin": 0.03671244246244243,
+        "min_loewner_eig": 0.03606246113834237,
+        "max_tube_violation": 0.0,
+        "pass": true
+      },
+      "SCALAR": {
+        "min_transfer_margin": 0.03671244246244243,
+        "min_loewner_eig": 0.03606246113834237,
+        "max_tube_violation": 0.0,
+        "pass": true
+      },
+      "RANDOM-FIBER": {
+        "min_transfer_margin": -4.157125194239654e-16,
+        "min_loewner_eig": -3.604815693432785e-16,
+        "max_tube_violation": 0.0,
+        "pass": true
+      },
+      "pass": true
+    },
+    "H4_information_stability": {
+      "PROD": {
+        "lambda2_bar": 2.2422879115109017e-16,
+        "sigma_req": 0.3,
+        "sigma_dyn": 0.25,
+        "alpha_certified": -0.20710678118654735,
+        "alpha_fitted": -0.20710678118651585,
+        "clears_sigma_req": false,
+        "decays_no_slower_than_certified": null
+      },
+      "HARD": {
+        "lambda2_bar": 0.3364609100182326,
+        "sigma_req": 0.3,
+        "sigma_dyn": 0.25,
+        "alpha_certified": 0.039672219213314874,
+        "alpha_fitted": 0.10821824051241986,
+        "clears_sigma_req": true,
+        "decays_no_slower_than_certified": true
+      },
+      "WISE": {
+        "lambda2_bar": 0.39887612755514545,
+        "sigma_req": 0.3,
+        "sigma_dyn": 0.25,
+        "alpha_certified": 0.039672219213314874,
+        "alpha_fitted": 0.1555663596451264,
+        "clears_sigma_req": true,
+        "decays_no_slower_than_certified": true
+      },
+      "SCALAR": {
+        "lambda2_bar": 0.39887612755514545,
+        "sigma_req": 0.3,
+        "sigma_dyn": 0.25,
+        "alpha_certified": 0.039672219213314874,
+        "alpha_fitted": 0.1555663596451264,
+        "clears_sigma_req": true,
+        "decays_no_slower_than_certified": true
+      },
+      "RANDOM-FIBER": {
+        "lambda2_bar": -7.954423143705765e-17,
+        "sigma_req": 0.3,
+        "sigma_dyn": 0.25,
+        "alpha_certified": -0.20710678118654763,
+        "alpha_fitted": -0.20710678118651576,
+        "clears_sigma_req": false,
+        "decays_no_slower_than_certified": null
+      },
+      "pass": true
+    },
+    "H5_robotic_consequence_vs_PROD": {
+      "max_sync_err": {
+        "WISE": 0.05377369504421203,
+        "PROD": 0.7342665466632528
+      },
+      "terminal_sync_err": {
+        "WISE": 0.0,
+        "PROD": 0.7342665466632528
+      },
+      "pose_rmse1": {
+        "WISE": 0.00886723662085741,
+        "PROD": 0.0002322359735119198
+      },
+      "pose_rmse2": {
+        "WISE": 0.009078899584744355,
+        "PROD": 0.019607445067075353
+      },
+      "success": {
+        "WISE": true,
+        "PROD": false
+      },
+      "pass": true
+    },
+    "H6_vs_HARD": {
+      "lambda2_bar": {
+        "WISE": 0.39887612755514545,
+        "HARD": 0.3364609100182326
+      },
+      "alpha_certified": {
+        "WISE": 0.039672219213314874,
+        "HARD": 0.039672219213314874
+      },
+      "alpha_fitted": {
+        "WISE": 0.1555663596451264,
+        "HARD": 0.10821824051241986
+      },
+      "max_sync_err": {
+        "WISE": 0.05377369504421203,
+        "HARD": 0.05389730704347934
+      },
+      "settling_time": {
+        "WISE": 2.3000000000000043,
+        "HARD": 2.25
+      },
+      "wise_faster_information_decay": true,
+      "wise_better_sync": true
+    }
+  },
+  "scope": "planar auditable simulation of the reduced information layer and rigid-load transport; not a nonlinear robot-load stability theorem, not hardware, not an actuator-level proof, not distributed assignment convergence"
+}
