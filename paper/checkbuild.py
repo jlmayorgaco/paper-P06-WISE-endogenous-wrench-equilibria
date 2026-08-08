@@ -33,7 +33,7 @@ def main(max_pages: int = 6) -> int:
 
     print(f"pages              : {n_pages}  (limit {max_pages})")
     print(f"undefined refs     : {len(undefined)}")
-    print(f"overfull hbox >5pt : {len(bad_over)}  {['%.1f' % x for x in bad_over[:6]]}")
+    print(f"overfull hbox >5pt : {len(bad_over)}  {[f'{x:.1f}' for x in bad_over[:6]]}")
     print(f"stray markers      : {stray if stray else 'none'}")
     ok = (n_pages <= max_pages and not undefined and not bad_over
           and (not stray or stray == ["<pdftotext unavailable>"]))
