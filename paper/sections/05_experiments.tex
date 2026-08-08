@@ -139,6 +139,20 @@ Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s, $N{=}12{\to}96$;
 CVXPY~1.9/CLARABEL~0.11, tol $10^{-7}$, single-threaded, no warm starts, $T,M,H,|\mathcal R|$
 fixed so this isolates spectral-LMI scaling in $N$, not full MRTA).
 
+\paragraph*{E7 --- When is connectivity free? ($6\times6\times4$ cells)}
+Solving both capacities per cell over a grid in the long-range fraction $\nu$ and the wrench
+demand $\tau_d$ isolates which mechanism governs the trichotomy. Wrench demand turns out to be
+\emph{inert} over the tested range: $\LamE$ is constant at $1.572$ across all six $\tau_d$
+values (no wrench facet binds; cf.\ the $0$ active-wrench seeds in E2), and $\LamX$ falls only
+from $2.020$ to $1.965$. The governing variable is the availability of the bridging type: as
+$\nu$ grows from $0.17$ to $0.67$, $\LamE$ rises $0.82\to2.48$, the free spectral reserve
+$R_{\mathrm{free}}=\LamE-\lamtwo(\Lap(z^{\mathrm{prod}}))$ rises $0.68\to1.70$, and the costly
+band $\LamX-\LamE$ widens $0.10\to0.97$. Scarcity of long-range robots therefore compresses
+\emph{both} the free regime and the region where connectivity is merely expensive rather than
+impossible. At the design requirement $\sigmastar=\sigmadyn=0.25$ every cell is free, so the
+trichotomy is exercised by sweeping $\sigma$ against the measured $(\LamE,\LamX)$ boundaries
+rather than by the structural grid.
+
 \paragraph*{E6 --- Why lexicographic and not a weighted sum ($8$ free-regime seeds)}
 Solving $\max_z V(z)+\varepsilon\lamtwo(\Lap(z))$ as a global SDP over the same feasible set
 and sweeping $\varepsilon\in[10^{-3},1]$ separates the two failure modes of scalarisation.

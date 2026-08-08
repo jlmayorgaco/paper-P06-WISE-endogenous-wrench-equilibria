@@ -186,3 +186,80 @@ def _figure(rows):
 
 if __name__ == "__main__":
     main()
+
+
+# --------------------------------------------------------------------------- #
+# Post-processing: the actual phase diagram, in (nu, sigma) rather than (nu, tau_d)
+# --------------------------------------------------------------------------- #
+
+def phase_map(csv_path=None, n_sigma: int = 40):
+    """Classify (nu, sigma) cells from the ALREADY-COMPUTED Lambda_E, Lambda_X.
+
+    The (nu, tau_d) sweep came out uniformly 'free' because sigma_req is fixed at
+    sigma_dyn = 0.25 while Lambda_E in [0.56, 3.30]: the grid never crosses a
+    boundary, and tau_d turns out not to move Lambda_E at all (the wrench facets
+    never bind in this range). The parameter that actually separates the regimes is
+    the requirement sigma itself, and the boundaries are exactly Lambda_E and
+    Lambda_X -- both already stored. No further SDP is needed.
+    """
+    import csv as _csv
+    p = Path(csv_path) if csv_path else GEN / "regime_grid.csv"
+    rows = [r for r in _csv.DictReader(p.open())
+            if r["regime"] in ("free", "costly", "impossible")]
+    nus = sorted({float(r["nu"]) for r in rows})
+    lamX_max = max(float(r["lambda_X"]) for r in rows)
+    sigmas = np.linspace(0.05, 1.05 * lamX_max, n_sigma)
+
+    M = np.zeros((n_sigma, len(nus)))
+    out = []
+    for j, nu in enumerate(nus):
+        cell = [r for r in rows if float(r["nu"]) == nu]
+        for i, sg in enumerate(sigmas):
+            tally = [classify(sg, float(r["lambda_E"]), float(r["lambda_X"]))
+                     for r in cell]
+            reg = max(set(tally), key=tally.count)
+            M[i, j] = {"free": 0, "costly": 1, "impossible": 2}[reg]
+            out.append(dict(nu=nu, sigma=float(sg), regime=reg,
+                            frac_free=tally.count("free") / len(tally),
+                            frac_costly=tally.count("costly") / len(tally),
+                            frac_impossible=tally.count("impossible") / len(tally)))
+    with (GEN / "phase_map.csv").open("w", newline="") as fh:
+        w = _csv.DictWriter(fh, fieldnames=list(out[0])); w.writeheader(); w.writerows(out)
+
+    counts = {k: sum(1 for r in out if r["regime"] == k)
+              for k in ("free", "costly", "impossible")}
+    print(f"phase map over (nu, sigma): {counts}")
+    for nu in nus:
+        c = [r for r in rows if float(r["nu"]) == nu]
+        print(f"  nu={nu:.2f}  Lambda_E={np.mean([float(r['lambda_E']) for r in c]):.3f}"
+              f"  Lambda_X={np.mean([float(r['lambda_X']) for r in c]):.3f}"
+              f"  costly width={np.mean([float(r['costly_width']) for r in c]):.3f}")
+
+    try:
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        from matplotlib.colors import ListedColormap, BoundaryNorm
+    except ImportError:
+        return out
+    cmap = ListedColormap(["#1e7a46", "#e08b1e", "#c0392b"])
+    fig, ax = plt.subplots(figsize=(3.1, 2.3))
+    ax.imshow(M, origin="lower", aspect="auto", cmap=cmap,
+              norm=BoundaryNorm([-0.5, 0.5, 1.5, 2.5], cmap.N),
+              extent=[-0.5, len(nus) - 0.5, sigmas[0], sigmas[-1]])
+    lamE = [np.mean([float(r["lambda_E"]) for r in rows if float(r["nu"]) == nu])
+            for nu in nus]
+    lamX = [np.mean([float(r["lambda_X"]) for r in rows if float(r["nu"]) == nu])
+            for nu in nus]
+    ax.plot(range(len(nus)), lamE, "k-", lw=1.2, label=r"$\Lambda_{\mathcal{E}}$")
+    ax.plot(range(len(nus)), lamX, "k--", lw=1.2, label=r"$\Lambda_{X}$")
+    ax.set_xticks(range(len(nus))); ax.set_xticklabels([f"{v:.2f}" for v in nus], fontsize=6)
+    ax.tick_params(labelsize=6)
+    ax.set_xlabel(r"long-range fraction $\nu$", fontsize=8)
+    ax.set_ylabel(r"requirement $\sigma$", fontsize=8)
+    ax.set_title("free / costly / impossible", fontsize=8)
+    ax.legend(fontsize=6, frameon=False, loc="upper left")
+    fig.tight_layout(pad=0.3)
+    fig.savefig(FIG / "fig_regime.pdf")
+    print(f"wrote {FIG / 'fig_regime.pdf'}")
+    return out
