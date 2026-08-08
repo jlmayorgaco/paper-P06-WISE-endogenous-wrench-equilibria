@@ -1,0 +1,82 @@
+{
+ "python": "3.13.9",
+ "platform": "Windows-11-10.0.26200-SP0",
+ "git_commit": "655c5427ee339bbd0e3c4e6acd0b4dc250d03d00",
+ "git_branch": "wise-best-paper",
+ "lockfile": "requirements-lock.txt",
+ "artifacts": [
+  "cluster_per_instance.csv",
+  "cluster_stats.json",
+  "dual_check.csv",
+  "epsilon_sweep.csv",
+  "fiber_certificate.json",
+  "fiber_sweep.csv",
+  "flagship.json",
+  "gamma_certificate.json",
+  "gamma_sweep.csv",
+  "generalize.json",
+  "geometric_bridge_certificate.json",
+  "integer_recovery.json",
+  "manifest.json",
+  "methods_comparison.csv",
+  "mismatch.json",
+  "modal_stability.csv",
+  "modal_stability.json",
+  "multiplicity.json",
+  "nullspace_certificate.json",
+  "oracle_benchmark.csv",
+  "phase_confusion.csv",
+  "phase_grid.csv",
+  "phase_map.csv",
+  "physical_run.csv",
+  "price_sweep.csv",
+  "regime_grid.csv",
+  "regime_summary.json",
+  "rounding.csv",
+  "scaling.csv",
+  "selectors.csv",
+  "spatial_pair.json"
+ ],
+ "experiments": {
+  "exp_gamma.py": "gamma_certificate.json, gamma_sweep.csv",
+  "exp_cluster_stats.py": "cluster_stats.json, cluster_per_instance.csv",
+  "exp_modal_stability.py": "modal_stability.json, modal_stability.csv, fig_modal.pdf",
+  "exp_regime.py": "regime_grid.csv, regime_summary.json, phase_map.csv, fig_regime.pdf",
+  "exp_epsilon.py": "epsilon_sweep.csv",
+  "exp_oracle.py": "oracle_benchmark.csv",
+  "exp_rounding.py": "rounding.csv",
+  "exp_flagship.py": "flagship.json"
+ },
+ "tolerances": {
+  "tau_B": 1e-08,
+  "wrench_residual": 0.05,
+  "solver_tol": 1e-07,
+  "EIG_TOL": 1e-07,
+  "NULL_TOL": 1e-08,
+  "regime_TOL": 1e-06
+ },
+ "seeds": {
+  "gamma": [
+   3,
+   5,
+   7,
+   11,
+   13,
+   17,
+   19,
+   23,
+   29,
+   31,
+   37,
+   41
+  ],
+  "recovery": "range(30) x 30 orders",
+  "cluster_bootstrap": 20260807,
+  "regime": [
+   0,
+   1,
+   2,
+   3
+  ]
+ }
+}

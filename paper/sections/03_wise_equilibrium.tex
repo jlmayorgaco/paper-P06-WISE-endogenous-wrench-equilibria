@@ -144,18 +144,16 @@ $\max\{t:d\in T_{\Emanifold}(\bar z),\ \|d\|_2\le1,\ U_2^{\top}D\Lap[d]U_2\succe
 convex since $d\mapsto\lambda_{\min}(U_2^{\top}D\Lap[d]U_2)$ is concave.
 \end{theorem}
 \begin{proof}[Proof sketch]
-$\Gamma_{\Emanifold}\ge0$ since $d=0$ is admissible. By Lemma~\ref{lem:convex},
+$\Gamma_{\Emanifold}\ge0$ since $d=0$ is admissible. By concavity of $\lamtwo\circ\Lap$,
 $f=\lamtwo\circ\Lap$ is finite and concave, so $Df(\bar z)[\cdot]$ exists, is positively
-homogeneous, and overestimates increments: $f(z')-f(\bar z)\le Df(\bar z)[z'-\bar z]$ for all
-$z'$; \eqref{eq:dirderiv} is the standard directional derivative of a minimum eigenvalue over
-its eigenspace. ($\Leftarrow$) If $z'\in\Emanifold$ improves $f$, then
-$d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ satisfies $Df(\bar z)[d_0]\ge f(z')-f(\bar z)>0$,
-and homogeneity rescales to $\|d_0\|_2\le1$. ($\Rightarrow$) If $Df(\bar z)[d]>0$ for some
-$d\in T_{\Emanifold}(\bar z)$, polyhedrality gives
-$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$ (already closed), so
-$\bar z+t_0d\in\Emanifold$ for some $t_0>0$; by definition of the directional derivative
-$f(\bar z+td)>f(\bar z)$ for all small $t\in(0,t_0]$, and $\bar z+td\in\Emanifold$ by
-convexity. The second equivalence is the contrapositive. For \eqref{eq:gammabound} put
+homogeneous, and overestimates increments: $f(z')-f(\bar z)\le Df(\bar z)[z'-\bar z]$;
+\eqref{eq:dirderiv} is the standard derivative of a minimum eigenvalue over its eigenspace.
+($\Leftarrow$) An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with
+$Df(\bar z)[d_0]\ge f(z')-f(\bar z)>0$, rescaled by homogeneity. ($\Rightarrow$) If
+$Df(\bar z)[d]>0$ for some $d\in T_{\Emanifold}(\bar z)$, polyhedrality gives
+$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, already closed, so
+$\bar z+td\in\Emanifold$ improves $f$ for all small $t>0$. The second equivalence is the
+contrapositive. For \eqref{eq:gammabound} put
 $\delta=z^{\star}_{\mathrm{WISE}}-\bar z$; concavity gives
 $\LamE-f(\bar z)\le Df(\bar z)[\delta]$, positive homogeneity gives
 $Df(\bar z)[\delta]=\|\delta\|_2\,Df(\bar z)[\delta/\|\delta\|_2]$, and
@@ -186,38 +184,29 @@ $d_{\mathrm{net}}\le N=12$ binds); the two-load flagship has $\dim\Emanifold=58$
 
 \subsection{The WISE refinement}
 \begin{definition}[WISE and its integer counterparts]\label{def:wise}
-A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and
-Information-Self-Sustaining Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$, i.e.\
-$z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$ over the fractional occupancy relaxation, where
-$\Cdelta=\{z\in X_{\mathrm f}:\lamtwo(\Lap(z))\ge\sigmastar\}$. For finite teams three
-integer notions differ: the \emph{self-sustaining feasible} set
-$\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\{0,1\}^{n}:\lamtwo(\Lap(z))\ge\sigmastar\}$
-(wrench- \emph{and} connectivity-feasible), its \emph{optimum}
+A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and Information-Self-Sustaining
+Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$, i.e.\
+$z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$, $\Cdelta=\{z\in X_{\mathrm f}:
+\lamtwo(\Lap(z))\ge\sigmastar\}$ (convex and closed by concavity). For finite teams three
+notions differ: the self-sustaining feasible set $\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}
+\cap\{0,1\}^{n}:\lamtwo(\Lap(z))\ge\sigmastar\}$, its optimum
 $V_{\mathbb Z}^{\mathrm{ss}}=\max_{\mathcal F_{\mathbb Z}}V$, and the \emph{zero-cost integer
 WISE} $\Essint=\mathcal F_{\mathbb Z}\cap\{z:Bz=y^{\star}\}$, nonempty iff
 $V_{\mathbb Z}^{\mathrm{ss}}=V^{\star}$. Since $\mathcal F_{\mathbb Z}$ imposes connectivity as
-well as integrality, $g_{\mathbb Z}^{\mathrm{ss}}=V^{\star}-V_{\mathbb Z}^{\mathrm{ss}}\ge0$ is
-the \emph{integer self-sustaining gap}, not a pure productive integrality gap; isolating the
-latter needs $V_{\mathbb Z}^{\mathrm{prod}}=\max_{X_{\mathrm f}\cap\{0,1\}^n}V$, which we do
-not compute here. \emph{Zero-cost} means exact aggregate
-preservation $B\hat z=y^{\star}$; numerically it is declared when
-$\|B\hat z-y^{\star}\|_\infty\le\tau_B$ ($\tau_B=10^{-8}$), an implementation criterion that
-does not alter this definition. An integer self-sustaining assignment need not be zero-cost. Since
-$\sigmastar>\sigmadyn$, any \emph{integer} member of $\mathcal F_{\mathbb Z}$ clears the
-information-layer threshold by the explicit margin $\sigmastar-\sigmadyn$
-(Prop.~\ref{thm:stability}), and Lemma~\ref{lem:bridge} then transfers it to every admissible
-geometric realization of that assignment; $\Cdelta$ is convex and closed
-(Lemma~\ref{lem:convex}). Every WISE \emph{is} a productive variational equilibrium;
-connectivity acts as a \emph{lexicographic refinement} of the set-valued solution
-$\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$, not as an additional strategic equilibrium
-condition. Equivalently, $z^{\star}_{\mathrm{WISE}}$ satisfies the two-level condition
+well as integrality, $g_{\mathbb Z}^{\mathrm{ss}}=V^{\star}-V_{\mathbb Z}^{\mathrm{ss}}$ is the
+\emph{integer self-sustaining gap}, not a pure productive integrality gap. \emph{Zero-cost}
+means $B\hat z=y^{\star}$, declared numerically when
+$\|B\hat z-y^{\star}\|_\infty\le\tau_B=10^{-8}$; an integer self-sustaining assignment need not
+be zero-cost. Every WISE \emph{is} a productive variational equilibrium: connectivity acts as a
+\emph{lexicographic refinement} of $\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$, not as an
+extra strategic condition. Equivalently $z^{\star}_{\mathrm{WISE}}$ satisfies
 \begin{equation}
 0\in\partial\big[-\lamtwo(\Lap(z^{\star}_{\mathrm{WISE}}))\big]+N_{\Emanifold}
-(z^{\star}_{\mathrm{WISE}}),\qquad \Emanifold=\operatorname{SOL}(X_{\mathrm f},F),
+(z^{\star}_{\mathrm{WISE}}),
 \label{eq:hier}
 \end{equation}
-whose primal test is exactly $\Gamma_{\Emanifold}=0$ (Theorem~\ref{thm:networkability}). No
-distributed equilibrium-seeking dynamics are claimed.
+whose primal test is $\Gamma_{\Emanifold}=0$ (Thm.~\ref{thm:networkability}). No distributed
+equilibrium-seeking dynamics are claimed.
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
@@ -232,7 +221,7 @@ variables (Lemma~\ref{prop:membership}, no facet enumeration of $X_{\mathrm f}$)
 z\in\mathcal X,\ Bz=y^{\star},\ \eqref{eq:tensor},\ Q^{\top}\Lap(z)\,Q\succeq tI,
 \label{eq:sdp}
 \end{equation}
-convex by Lemma~\ref{lem:convex} (affine constraints in $(z,\xi)$, concave
+convex (affine constraints in $(z,\xi)$, concave
 $\lamtwo\!\circ\!\Lap$). Over the relaxation a \emph{relaxed} WISE exists iff the value
 clears the requirement,
 \begin{equation}
@@ -250,7 +239,7 @@ $\min_{\Emanifold^{\star}}\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ ($W\succ0$, least
 fixes a \emph{unique} selector.
 \end{theorem}
 \begin{proof}[Proof sketch]
-The constraints are convex (Lemma~\ref{lem:convex}), so \eqref{eq:sdp} is an SDP with value
+The constraints are convex, so \eqref{eq:sdp} is an SDP with value
 $\LamE$ attained on the compact $\Emanifold$; $\Essrel\neq\varnothing$ iff $\LamE\ge\sigmastar$,
 and feasibility forces $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$.
 \end{proof}
@@ -287,65 +276,43 @@ $\alpha$ is strictly increasing ($\alpha'=\tfrac c2[1-(c\lambda-\mF)/
 \sqrt{(\mF-c\lambda)^2+4\vt_1\vt_2}]>0$) with $\alpha(\sigmadyn)=0$, so the whole
 interconnection is exponentially stable iff $\lamtwo>\sigmadyn$, at rate $\ge\alpha(\lamtwo)$.
 \end{proposition}
-Chaining this with the geometric transfer closes the loop from assignment to stability, but the
-two links must be kept apart. The relaxed selector supplies a \emph{design and existence}
-certificate: $\LamE\ge\sigmastar$ says the fiber contains a fractional composition meeting the
-requirement. The \emph{physical} guarantee attaches only to a realizable team: for any integer
-$\hat z\in\mathcal X\cap\{0,1\}^n$ that passes direct re-certification with
-$\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$, Lemma~\ref{lem:bridge} applies and yields
-$\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ for \emph{every} admissible pose, hence a uniform
-guaranteed rate $\alpha(\sigmastar)>0$. Lemma~\ref{lem:bridge} is stated for integer $\hat z$
-and is not invoked at the fractional $z^{\star}_{\mathrm{WISE}}$. This is a \emph{reduced
-information-layer} model---not robot, load or actuator dynamics---and no online distributed
-realization is analyzed here.
+The two links must be kept apart. The relaxed selector gives a \emph{design and existence}
+certificate ($\LamE\ge\sigmastar$: the fiber contains a fractional composition meeting the
+requirement). The \emph{physical} guarantee attaches only to a realizable team: for integer
+$\hat z$ passing direct re-certification with $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$,
+Lemma~\ref{lem:bridge} yields $\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ at \emph{every}
+admissible pose, hence the uniform rate $\alpha(\sigmastar)>0$. Lemma~\ref{lem:bridge} is
+stated for integer $\hat z$ and is \emph{not} invoked at the fractional
+$z^{\star}_{\mathrm{WISE}}$. This is the reduced information layer---not robot, load or
+actuator dynamics.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
-The lexicographic selector of Theorem~\ref{thm:existence} is exact; a scalarised
-$V_\varepsilon=V+\varepsilon\lamtwo$ recovers it only as $\varepsilon\to0$
-(Tikhonov~\cite{facchinei2003fvi}: $\|Bz_\varepsilon-y^{\star}\|\le
-\sqrt{2\varepsilon\,\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)/\alpha}$, with
-$\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)=\max_{X_{\mathrm f}}\lamtwo-\min_{X_{\mathrm f}}\lamtwo
-=\LamX-\min_{X_{\mathrm f}}\lamtwo$), so a finite $\varepsilon$ generally moves the
-aggregate---a Pareto scalarisation, not the lexicographic form.
+The lexicographic selector is exact, whereas a scalarised $V+\varepsilon\lamtwo$ recovers it
+only as $\varepsilon\to0$ (Tikhonov~\cite{facchinei2003fvi}:
+$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\,\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)/
+\alpha}$, $\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)=\LamX-\min_{X_{\mathrm f}}\lamtwo$), so a
+finite $\varepsilon$ moves the aggregate (E6). Beyond the free fiber the requirement carries a
+cost: with $\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigma\}$
+($+\infty$ if infeasible) and the capacities $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$,
 
-Beyond the free fiber the requirement carries a productive cost. Define the
-\emph{price of self-sustainability}
-\begin{equation}
-\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\ \lamtwo(\Lap(z))\ge\sigma\}
-\label{eq:price}
-\end{equation}
-($\Price(\sigma)=+\infty$ when the set is empty), and the two spectral capacities
-$\LamE=\max_{z\in\Emanifold}\lamtwo(\Lap(z))$ and
-$\LamX=\max_{z\in X_{\mathrm f}}\lamtwo(\Lap(z))\ge\LamE$.
-
-\begin{theorem}[Price and the free/costly/impossible trichotomy]\label{thm:price}
-$\Price$ is a nondecreasing, proper extended-value convex function, and
-\begin{equation}
-\Price(\sigma)=
-\begin{cases}
-0, & \sigma\le\LamE\ \ (\text{free}),\\[1pt]
-\text{finite}>0, & \LamE<\sigma\le\LamX\ \ (\text{costly}),\\[1pt]
-+\infty, & \sigma>\LamX\ \ (\text{impossible}).
-\end{cases}
-\label{eq:trichotomy}
-\end{equation}
-At any $\sigma<\LamX$ admitting a strictly feasible point ($\exists z\in X_{\mathrm f}$ with
-$\lamtwo(\Lap(z))>\sigma$, i.e.\ Slater holds), the optimal multiplier $\pi^{\star}$ of the
-connectivity constraint satisfies $\pi^{\star}\in\partial\Price(\sigma)$: the marginal
-productive price of one unit of connectivity, in the units of $V$.
-\end{theorem}
+\begin{corollary}[Free/costly/impossible trichotomy]\label{thm:price}
+$\Price$ is nondecreasing, proper and convex, with $\Price=0$ for $\sigma\le\LamE$ (free),
+finite and positive for $\LamE<\sigma\le\LamX$ (costly), and $+\infty$ for $\sigma>\LamX$
+(impossible). Under Slater the optimal multiplier satisfies
+$\pi^{\star}\in\partial\Price(\sigma)$: the local sensitivity of optimal productive loss to the
+connectivity requirement, in units of $V$.
+\end{corollary}
 \begin{proof}[Proof sketch]
-The super-level set (Lemma~\ref{lem:convex}) shrinks in $\sigma$, so $\Price$ is nondecreasing;
-$\sigma$ enters linearly, so $\Price$ is a convex perturbation value with subdifferential the
-optimal multiplier set under Slater~\cite{boyd2004convex}. The cases follow from
-$\sigma\le\LamE$ ($\Price=0$), $\sigma>\LamX$ (infeasible), and between.
+The super-level set is convex and shrinks in $\sigma$, so $\Price$ is nondecreasing; $\sigma$
+enters linearly, making $\Price$ a convex perturbation value whose subdifferential is the
+optimal multiplier set~\cite{boyd2004convex}. The cases are $\sigma\le\LamE$, $\sigma>\LamX$,
+and between.
 \end{proof}
 
 \subsection{Finite-team recovery}
-A sufficient margin test preserves \emph{joint feasibility} after integer recovery (it does
-not by itself preserve the aggregate). Let $z^{\star}$ be a relaxed WISE and define the
-wrench and connectivity slacks and the sensitivity constants
+A sufficient margin test preserves \emph{joint feasibility} after integer recovery (not the
+aggregate). With $z^{\star}$ a relaxed WISE, define slacks and sensitivities
 \begin{equation}
 \begin{aligned}
 &m_w=\min_j\big((H_wz^{\star})_j-d_j\big),\quad
@@ -376,10 +343,10 @@ $\Lap$ is affine, Weyl's inequality gives $\lamtwo(\Lap(\hat z))\ge\sigmastar+m_
 
 \begin{remark}[Rounding as a search]\label{rem:integer}
 Proposition~\ref{prop:integer} is a checkable sufficient condition, not an existence
-guarantee: best-of-$R$ rounding \emph{searches} for a feasible $\hat z$ and \emph{directly}
-re-checks it against budgets, occupancy, the lifted wrench LP and $\lamtwo\ge\sigmastar$ (no
-$O(1/N)$ claim). The radius~\eqref{eq:intmargin} is a separate \emph{worst-case} certificate,
-dominated by the spectral term $m_\lambda/\kappa_L$ (with $\kappa_L$ bounded by
-Cauchy--Schwarz, hence itself conservative); Section~\ref{sec:exp} reports how few recoveries
-it certifies, so direct re-certification is the operative finite-team test.
+guarantee: best-of-$R$ rounding \emph{searches} for a feasible $\hat z$ and re-checks it
+directly against budgets, occupancy, the lifted wrench LP and $\lamtwo\ge\sigmastar$. The
+radius~\eqref{eq:intmargin} is a separate worst-case certificate dominated by
+$m_\lambda/\kappa_L$ (with $\kappa_L$ itself bounded conservatively), and
+Section~\ref{sec:exp} shows it certifies almost nothing---direct re-certification is the
+operative finite-team test.
 \end{remark}

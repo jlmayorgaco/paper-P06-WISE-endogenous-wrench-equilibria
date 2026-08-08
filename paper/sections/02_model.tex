@@ -26,9 +26,9 @@ most one robot,
 \end{aligned}
 \label{eq:conservation}
 \end{equation}
-The type aggregates $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enter the productive
-\emph{and} wrench layers (both couple through types); the communication layer uses the
-per-robot relay occupancies $z_{ir}$ directly. The feasible set
+Type aggregates $z_{\tau a}=\sum_{i\in\mathcal N_\tau}z_{ia}$ enter the productive and
+wrench layers; the communication layer uses the per-robot relay occupancies $z_{ir}$. The
+feasible set
 $\mathcal X=\{z\in\R_{\ge0}^{N\times|\mathcal A|}:\eqref{eq:conservation}\}$ is a compact
 convex polytope in $\R^{n}$, $n=N|\mathcal A|$ \emph{ambient} decision coordinates; the $N$
 budget equalities reduce its affine dimension (to $N(|\mathcal A|-1)$ absent active facets),
@@ -93,26 +93,23 @@ realization.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
 The information graph has a \emph{fixed} node set $\mathcal V=\{1,\dots,N\}$, one node per
-robot \emph{identity}: every robot is always present (an \emph{idle} robot still occupies its
-node), and the action set chooses \emph{edges} at a node, not nodes. A fixed base graph
-$L_0\succeq0$ carries the always-on short-range conductances (itself a lower-bound Laplacian);
+robot identity: actions choose \emph{edges} at a node, not nodes (an idle robot still occupies
+its node). A fixed base graph $L_0\succeq0$ carries the always-on short-range conductances;
 when robot $i$ commits to relay site $r$ it \emph{gates on} its predefined long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
 weighted by the tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$. The
-tube $\mathcal Q_{ir}$---robot $i$ at relay $r$ and all \emph{admissible} positions of the
-robots it reaches---is fixed before optimization, so each $L_{ir}$ is decision-independent and
-the SDP stays affine (links of zero infimum weight are excluded, a more conservative backbone).
-Both $L_0$ and every $L_{ir}$ are lower-bound Laplacians, giving $\Lgeo(q)\succeq\Lap(\hat z)$
-(Assumption~\ref{as:standing}(iv), Lemma~\ref{lem:bridge}). Thus, \emph{directly in the
-per-robot occupancy},
+tube $\mathcal Q_{ir}$---robot $i$ at relay $r$ and all admissible positions of the robots it
+reaches---is fixed before optimization, so each $L_{ir}$ is decision-independent and the SDP
+stays affine (zero-infimum links are excluded, a more conservative backbone). Both $L_0$ and
+every $L_{ir}$ are lower-bound Laplacians, giving $\Lgeo(q)\succeq\Lap(\hat z)$
+(Assumption~\ref{as:standing}(iv)). Thus, directly in the per-robot occupancy,
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
 \end{equation}
-Each $L_{ir}$ being fixed and robot-indexed makes $\Lap$ \emph{unambiguously affine} in $z$,
-needing no matching or permutation (relay occupancy gates edges, not a bilinear pairwise
-graph). $\Lap(z)$ is a symmetric Laplacian, an affine surrogate for the physical $\Lgeo(q)$ on
-the \emph{same} $N$ robots (node $i$ is robot $i$), compared through Lemma~\ref{lem:bridge}.
+Each $L_{ir}$ being fixed and robot-indexed makes $\Lap$ unambiguously affine in $z$, with no
+matching or permutation needed: a symmetric Laplacian surrogate for the physical $\Lgeo(q)$ on
+the \emph{same} $N$ robots, compared through Lemma~\ref{lem:bridge}.
 
 Let $Q\in\R^{N\times(N-1)}$ be an orthonormal basis of $\mathbf 1^{\perp}$; the
 information constraint is the LMI
@@ -127,11 +124,9 @@ $Z=Y/\pi$ ($\operatorname{tr}Z=1$) separate the connectivity price $\pi$ from th
 direction $Z$, while $Y=0$ ($\pi=0$) leaves $Z$ immaterial. The threshold $\sigmadyn$ is
 \emph{derived} in Prop.~\ref{thm:stability}; $\sigmastar>\sigmadyn$ is a design choice of margin.
 
-\begin{lemma}[Convex information set]\label{lem:convex}
-$z\mapsto\lamtwo(\Lap(z))$ is concave (a pointwise minimum
-$\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ of functions affine in
-$z$~\cite{fiedler1973}), so \eqref{eq:lmi} defines a convex set~\cite{ghosh2006growing}.
-\end{lemma}
+Since $\lamtwo(\Lap(z))=\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ is a pointwise
+minimum of functions affine in $z$~\cite{fiedler1973}, it is \emph{concave}, so \eqref{eq:lmi}
+defines a convex set~\cite{ghosh2006growing}; we use this repeatedly.
 
 \begin{lemma}[A priori geometric transfer by graph monotonicity]\label{lem:bridge}
 Let $\hat z\in\mathcal X\cap\{0,1\}^{n}$ be an integer recovery and $q$ any admissible pose. By
