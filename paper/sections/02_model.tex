@@ -124,8 +124,8 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \end{equation}
 affine in $z$, with PSD dual $Y\succeq0$; for $Y\neq0$, $\pi=\operatorname{tr}Y>0$ and
 $Z=Y/\pi$ ($\operatorname{tr}Z=1$) separate the connectivity price $\pi$ from the modal
-direction $Z$, while $Y=0$ ($\pi=0$) leaves $Z$ immaterial. The requirement
-$\sigmastar>\sigmadyn$ is specified externally (Lemma~\ref{lem:bridge}).
+direction $Z$, while $Y=0$ ($\pi=0$) leaves $Z$ immaterial. The threshold $\sigmadyn$ is
+\emph{derived} in Prop.~\ref{thm:stability}; $\sigmastar>\sigmadyn$ is a design choice of margin.
 
 \begin{lemma}[Convex information set]\label{lem:convex}
 $z\mapsto\lamtwo(\Lap(z))$ is concave (a pointwise minimum
@@ -144,7 +144,7 @@ construction of $L_0,L_{ir}$,
 \end{equation}
 a sum of PSD terms with no link double-counted. Restricting to $\mathbf 1^{\perp}$, eigenvalue
 monotonicity gives $\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$. Hence a certificate
-$\lamtwo(\Lap(\hat z))\ge\sigmastar$ ($\sigmastar>\sigmadyn$ specified externally) yields
+$\lamtwo(\Lap(\hat z))\ge\sigmastar$ (with $\sigmastar>\sigmadyn$ of Prop.~\ref{thm:stability}) yields
 $\lamtwo(\Lgeo(q))\ge\sigmadyn$ \emph{a priori}, for every admissible pose---no post-hoc
 mismatch term.
 \end{lemma}
@@ -155,7 +155,7 @@ solver-reported status, but is not exact-arithmetic certification. If the exact 
 \eqref{eq:mismatch} is weakened to a bounded mismatch
 $\|Q^{\top}(\Lgeo-\Lap)Q\|_2\le\varepsilon_{\mathrm{geo}}$, Weyl's inequality still gives
 $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)-\varepsilon_{\mathrm{geo}}$, so it suffices to require
-$\sigmastar\ge\sigmadyn+\varepsilon_{\mathrm{geo}}+\varepsilon_{\mathrm{num}}$; the
-lower-bound construction above is the case $\varepsilon_{\mathrm{geo}}=0$.
+$\sigmastar\ge\sigmadyn+\varepsilon_{\mathrm{geo}}$; the lower-bound construction above is
+the case $\varepsilon_{\mathrm{geo}}=0$.
 The convex theory of Sections~\ref{sec:wise}--\ref{sec:algorithm} uses $\Lap$ and transfers to
 $\Lgeo$ through the Loewner bound \eqref{eq:mismatch} at the integer recovery $\hat z$.

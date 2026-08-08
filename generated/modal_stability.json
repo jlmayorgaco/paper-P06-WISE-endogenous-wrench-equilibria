@@ -1,0 +1,45 @@
+{
+ "source": "generated/flagship.json",
+ "gains": {
+  "theta_1": 0.5,
+  "theta_2": 0.5,
+  "c": 1.0,
+  "m_F": 1.0,
+  "provenance": "two_region scenario defaults, fixed before comparison"
+ },
+ "sigma_dyn": 0.25,
+ "initial_condition": [
+  0.7071067811865475,
+  0.7071067811865475
+ ],
+ "t_end": 30.0,
+ "solver": "scipy.linalg.expm (exact matrix exponential)",
+ "scope": "reduced information-layer interconnection only; no robot, load or actuator dynamics, no closed-loop transport claim",
+ "runs": {
+  "productive_only": {
+   "lambda2": 4.448778422826949e-16,
+   "det_A": -0.24999999999999956,
+   "trace_A": -1.0000000000000004,
+   "eig_max_real": 0.20710678118654713,
+   "alpha_analytic": -0.20710678118654713,
+   "alpha_observed": -0.20710678118654718,
+   "hurwitz": false,
+   "clears_sigma_dyn": false,
+   "norm_final": 461.2913521464466,
+   "norm_ratio_final": 461.2913521464467
+  },
+  "wise": {
+   "lambda2": 0.41471026389978366,
+   "det_A": 0.16471026389978366,
+   "trace_A": -1.4147102638997837,
+   "eig_max_real": -0.1280097955605624,
+   "alpha_analytic": 0.12800979556056247,
+   "alpha_observed": 0.12800979556056244,
+   "hurwitz": true,
+   "clears_sigma_dyn": true,
+   "norm_final": 0.02073853237338027,
+   "norm_ratio_final": 0.020738532373380275
+  }
+ },
+ "alpha_max_abs_error": 5.551115123125783e-17
+}

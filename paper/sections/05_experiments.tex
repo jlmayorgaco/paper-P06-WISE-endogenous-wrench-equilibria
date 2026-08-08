@@ -8,14 +8,15 @@ long-range type has both higher capacity ($c_\ell>c_s$) and relay gain
 it alone bridges. Integer assignments are embedded in a geometric simulator only to evaluate
 $\Lgeo(q)$; closed-loop dynamics are outside this validation. The primary metric is the
 \emph{certified service rate} (served only when wrench-feasible \emph{and}
-$\lamtwo\ge\sigmastar$). All experiments use fixed recorded seeds; code, instance
-manifests, solver settings and reproduction scripts accompany the paper.
+$\lamtwo\ge\sigmastar$). All experiments use fixed recorded seeds, and every reported number is written to a
+manifest by the script that produces it.
 
 \begin{figure*}[t]\centering
 \begin{subfigure}[b]{0.47\textwidth}\centering
   \resizebox{\textwidth}{!}{\input{sections/fig_flagship.tex}}
-  \caption{Non-trivial comparative-advantage exchange: the scarce $L$ is the best lifter
-  ($c_L=2c_S$) \emph{and} the only bridge ($\gamma_L\!\gg\!\gamma_S$). Both $L$ lifting leaves
+  \caption{Non-trivial comparative-advantage exchange: the scarce $L$ has the highest
+  productive capacity ($c_L=2c_S$) \emph{and} is the only bridge
+  ($\gamma_L\!\gg\!\gamma_S$). Both $L$ lifting leaves
   the regions disconnected (left); WISE frees one $L$ to the relay site, bridging at
   $\lamtwo=0.41$ (right), along the neutral move in the box. Task layer (loads, wrench
   $w^{\mathrm{dem}}$, torque-critical load) over the communication layer; markers keyed lower
@@ -62,6 +63,31 @@ magnitude (Remark~\ref{rem:dnet}): $\dim\Emanifold=59$ on these instances while
 $d_{\mathrm{net}}\in[10,12]$---most productively neutral directions are invisible to the
 communication layer.
 
+\begin{figure}[t]\centering
+\includegraphics[width=0.86\columnwidth]{fig_modal.pdf}
+\caption{E5 --- what connectivity buys, on the same flagship pair. Identical served
+aggregate $Bz=(3,3)$ and identical productive value $V=V^{\star}$; the two assignments differ
+only in $\lamtwo$. The critical mode of \eqref{eq:modal} is propagated by exact matrix
+exponential from a common initial condition, with the scenario's own gains
+($\vt_1{=}\vt_2{=}0.5$, $c{=}\mF{=}1$, hence $\sigmadyn=0.25$) fixed before either curve was
+computed. The productively optimal assignment is not merely slow---it is \emph{unstable}
+($\det A_{\lamtwo}<0$), while WISE clears $\sigmadyn$ and decays at the certified rate.}
+\label{fig:modal}
+\end{figure}
+
+\paragraph*{E5 --- Information-layer stability at zero productive cost (Fig.~\ref{fig:modal})}
+Reading $\lamtwo$ from the flagship record and using the scenario's own gains
+($\sigmadyn=\vt_1\vt_2/(c\mF)=0.25$), the two productively identical assignments fall on
+opposite sides of the threshold. The productive-only optimum has $\lamtwo=4.4\cdot10^{-16}$,
+so $\det A_{\lamtwo}=-0.25<0$ and $\alpha=-0.207$: the information layer \emph{diverges},
+growing $461\times$ over the horizon. WISE has $\lamtwo=0.415>\sigmadyn$, giving
+$\det A_{\lamtwo}=+0.165$ and a certified rate $\alpha=+0.128$, with
+$\|e(T)\|/\|e(0)\|=2.1\cdot10^{-2}$. The analytic rate~\eqref{eq:rate} matches the observed
+exponential slope to $5.6\cdot10^{-17}$ (exact matrix exponential, so no integrator error is
+mistaken for dynamics). This is the reduced information layer only---no robot, load or
+actuator dynamics, and no closed-loop transport claim---but it is the property $\sigmastar$ was
+introduced to secure, obtained here at $\Delta V=0$.
+
 \paragraph*{E2 --- Integer recovery and an exact oracle (Rem.~\ref{rem:integer}, Table~\ref{tab:oracle})}
 At $N=12$, \emph{structured} recovery (Sec.~\ref{sec:algorithm}) is robust across random
 processing orders: over $30$ instances $\times\,30$ independent draws ($900$ recoveries),
@@ -79,8 +105,10 @@ requiring $V(\hat z)\ge(1{-}\eta_{\max})V^{\star}$ still recovers $514/900$ draw
 $\eta_{\max}{=}5\%$ and $806/900$ at $10\%$ (both $29/30$ instances). The worst-case
 radius~\eqref{eq:intmargin} is far more conservative than direct re-certification: writing
 $\chi=\|\hat z-z^{\star}\|_2/r$ for the ratio of the achieved rounding distance to the
-certified radius, $\chi$ has median $191$, so $0/30$ instances are certified by
-Proposition~\ref{prop:integer} while $29/30$ pass direct re-certification (the row-normalized
+certified radius, $\chi$ has median $191$. In a separate single-recovery-per-seed run (one
+recovery from the relaxed optimum, not the best of $30$ orders), $0/30$ seeds are certified by
+the radius of Proposition~\ref{prop:integer} while $29/30$ pass direct re-certification; the
+$30/30$ above refers to instances succeeding on $\ge1$ of their $30$ draws (the row-normalized
 radius $r_w=\min_j(h_j^{\top}z^{\star}-d_j)/\|h_j\|_2$ changes nothing here: no wrench facet is
 active, and the spectral term $m_\lambda/\kappa_L$ binds). Proposition~\ref{prop:integer} is
 therefore a worst-case certificate, not the operative test. For $N\le8$ we enumerate
@@ -110,6 +138,19 @@ least-role-change $+0.38$. Stage-1 is $\sim\!10$\,ms; the
 Stage-2 SDP grows with the $(N{-}1)$-LMI ($29$\,ms$\to$$98$\,s, $N{=}12{\to}96$;
 CVXPY~1.9/CLARABEL~0.11, tol $10^{-7}$, single-threaded, no warm starts, $T,M,H,|\mathcal R|$
 fixed so this isolates spectral-LMI scaling in $N$, not full MRTA).
+
+\paragraph*{E6 --- Why lexicographic and not a weighted sum ($8$ free-regime seeds)}
+Solving $\max_z V(z)+\varepsilon\lamtwo(\Lap(z))$ as a global SDP over the same feasible set
+and sweeping $\varepsilon\in[10^{-3},1]$ separates the two failure modes of scalarisation.
+The aggregate drift $\|Bz_\varepsilon-y^{\star}\|$ is nonzero at \emph{every} tested
+$\varepsilon$ and grows essentially linearly ($2\cdot10^{-4}$ at $\varepsilon=10^{-3}$,
+$0.029$ at $0.1$, $0.284$ at $1$), while the productive loss stays numerically zero until
+$\varepsilon\approx0.1$ and reaches $4.7\%$ only at $\varepsilon=1$. The asymmetry is the
+point: at a maximiser $V$ is flat to \emph{second} order but the aggregate moves to
+\emph{first} order, so a small $\varepsilon$ buys apparent value-preservation while already
+displacing $y^{\star}$---and the displacement is invisible in $V$. The lexicographic selector
+attains $\|Bz_{\mathrm{WISE}}-y^{\star}\|=0$ and $V^{\star}-V=0$ exactly, with no weight to
+calibrate.
 
 \paragraph*{E4 --- Price of self-sustainability (Thm.~\ref{thm:price}, Fig.~\ref{fig:price})}
 Sweeping $\sigma$ traces $\Price(\sigma)$ over $40$ seeds: zero up to $\LamE$, positive on

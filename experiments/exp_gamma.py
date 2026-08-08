@@ -83,17 +83,23 @@ def dLbar(prob, d: np.ndarray) -> np.ndarray:
 
 
 def lam2_eigenspace(L: np.ndarray, tol: float = EIG_TOL):
-    """(lambda_2, U_2) with U_2 orthonormal basis of the lambda_2-eigenspace in 1^perp.
+    """(lambda_2, U_2, m) via the projected Laplacian Ltilde = Q^T L Q.
 
-    U_2 lives in R^{N x m}: eigenvectors of Lbar itself (all orthogonal to 1 for a
-    connected-or-not Laplacian since lambda_1 = 0 has eigenvector 1). This is exactly
-    what the repeated-Fiedler directional derivative formula needs.
+    U_2 = Q Utilde_2 with Utilde_2 spanning the MINIMUM-eigenvalue eigenspace of
+    Ltilde. Working through Q is not cosmetic: when the graph is disconnected,
+    lambda_2(L) = 0 is a repeated eigenvalue of L *together with* the consensus
+    mode 1, and `eigh` returns an arbitrary basis of that degenerate kernel -- so
+    selecting columns of the full-space eigenvectors can leak a component along 1.
+    Q^T L Q removes 1 structurally, so U_2 subset 1-perp holds by construction for
+    connected and disconnected graphs alike. Simplicity means m = 1 for Ltilde.
     """
-    w, V = np.linalg.eigh(L)
-    lam2 = float(w[1])
+    N = L.shape[0]
+    Q = complement_basis(N)
+    Lt = Q.T @ L @ Q
+    w, Vt = np.linalg.eigh(Lt)
+    lam2 = float(w[0])
     mask = np.abs(w - lam2) <= tol * max(1.0, abs(lam2))
-    mask[0] = False                      # never include the consensus mode
-    U2 = V[:, mask]
+    U2 = Q @ Vt[:, mask]
     return lam2, U2, int(mask.sum())
 
 
@@ -144,7 +150,7 @@ def gamma_projection(prob, z, Np: np.ndarray) -> float:
     lam2v, U2, mult = lam2_eigenspace(L)
     if mult != 1 or Np.shape[0] == 0:
         return float("nan")
-    v = U2[:, 0]
+    v = U2[:, 0]   # unit, in 1-perp by construction
     idx = relay_coords(prob)
     g = np.zeros(prob.N * prob.A)
     for i, j in enumerate(idx):

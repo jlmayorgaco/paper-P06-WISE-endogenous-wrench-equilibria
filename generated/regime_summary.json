@@ -1,0 +1,37 @@
+{
+ "grid": {
+  "nu": [
+   0.17,
+   0.25,
+   0.33,
+   0.42,
+   0.5,
+   0.67
+  ],
+  "tau_d": [
+   1.0,
+   1.6,
+   2.2,
+   2.8,
+   3.4,
+   4.0
+  ],
+  "seeds": [
+   0,
+   1,
+   2,
+   3
+  ]
+ },
+ "n_cells": 144,
+ "counts": {
+  "free": 144,
+  "costly": 0,
+  "impossible": 0,
+  "wrench_infeasible": 0
+ },
+ "R_free_median": 0.9879023223839936,
+ "costly_width_median": 0.2683000984703524,
+ "classification": "free: sigma<=Lambda_E; costly: Lambda_E<sigma<=Lambda_X; impossible: sigma>Lambda_X",
+ "tol": 1e-06
+}
