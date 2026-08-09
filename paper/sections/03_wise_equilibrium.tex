@@ -10,14 +10,13 @@ V(z)=\phi(Bz),\qquad
 \phi(y)=\sum_k\big(v_k\,y_k-\tfrac12\alpha\,y_k^2\big),
 \label{eq:value}
 \end{equation}
-so $\phi$ is strictly concave ($H=\alpha I\succ0$, $y_{\mathrm{ref}}=v/\alpha$), pinning down a
+so $\phi$ is strictly concave ($\alpha>0$, $y_{\mathrm{ref}}=v/\alpha$), pinning down a
 unique optimal aggregate. What $V$ leaves undetermined is the subject of this section.
 
 Because $V$ is concave on the convex $X_{\mathrm f}$, the variational solution set coincides
 with the optimal set, $\operatorname{SOL}(X_{\mathrm f},-\nabla V)=\arg\max_{X_{\mathrm f}}V
 =\Emanifold$~\cite{facchinei2003fvi}: a \emph{set-valued} productive equilibrium, unique in
-aggregate but not in composition. WISE refines it lexicographically; no strategic learning
-dynamics or distributed equilibrium seeking are claimed anywhere.
+aggregate but not in composition, which WISE refines lexicographically.
 
 \begin{theorem}[Composition degeneracy]\label{thm:degeneracy}
 Since $\phi$ is strictly concave on the compact convex $BX_{\mathrm f}$, the optimal aggregate
@@ -43,16 +42,13 @@ On the $N{=}12$ instances of Sec.~\ref{sec:exp} ($n=72$, $\operatorname{rank}[A;
 active inequality) this gives $\dim\Emanifold=59$, certified to residuals $<10^{-15}$; a
 boundary optimum where wrench facets bind gives a smaller fiber.
 
-\begin{proposition}[Fiber--monotonicity equivalence]\label{prop:fibermono}
-Let $P_F$ span the active-face tangent $\mathcal T_F=\ker A\cap\ker G_I$, assumed nontrivial
-(otherwise the face is the singleton $\{\bar z\}$ and no selection remains). The
-pseudo-gradient $F(z)=B^{\top}H(Bz-y_{\mathrm{ref}})$ obeys
-$\langle F(z{+}d)-F(z),d\rangle=\|H^{1/2}Bd\|^2$, so
-$\mu_F=\lambda_{\min}(P_F^{\top}B^{\top}HBP_F)$ and $\mu_F=0\iff N_p(\bar z)\neq\{0\}$: strong
-monotonicity holds in the served aggregate but is \emph{lost} on the composition face. This
-is the degeneracy WISE exploits, unlike strongly contractive aggregative
-games~\cite{martinezpiazuelo2022}.
-\end{proposition}
+That dimension is exactly a loss of strong monotonicity. With $P_F$ spanning the active-face
+tangent $\ker A\cap\ker G_I$ (nontrivial, else no selection remains), the pseudo-gradient
+$F(z)=\alpha B^{\top}(Bz-y_{\mathrm{ref}})$ obeys
+$\langle F(z{+}d)-F(z),d\rangle=\alpha\|Bd\|_2^2$, so
+$\mu_F=\alpha\lambda_{\min}(P_F^{\top}B^{\top}BP_F)$ and $\mu_F=0\iff N_p(\bar z)\neq\{0\}$:
+monotonicity holds in the served aggregate but is \emph{lost} on the composition face, unlike
+strongly contractive aggregative games~\cite{martinezpiazuelo2022}.
 
 Figure~\ref{fig:hero}(a) makes this concrete: the long-for-two-short exchange is neutral
 ($Bd=0$) while $\lamtwo$ strictly rises. One scalar decides whether such a \emph{free} gain
@@ -60,9 +56,12 @@ exists and whether it is exhausted. Orient every inequality of $X_{\mathrm f}$ a
 $Gz\ge h$, with $G_I$ the rows active at $\bar z$. The cone may equivalently be taken in the
 lifted variables at \emph{any} lift: for a polyhedron $T_{\widehat\Emanifold}(\hat x)=
 \operatorname{cone}(\widehat\Emanifold-\hat x)$, and a linear map commutes with the conic hull,
-so $\pi(T_{\widehat\Emanifold}(z,\xi))=\operatorname{cone}(\Emanifold-z)=T_{\Emanifold}(z)$
-\emph{exactly}. On the $\Gamma_{\Emanifold}$-validation instances of Sec.~\ref{sec:exp}
-$G_I$ is empty, so $T_{\Emanifold}(\bar z)=\ker A\cap\ker B$; E4 exercises a binding facet.
+so $\prz(T_{\widehat\Emanifold}(z,\xi))=\operatorname{cone}(\Emanifold-z)=T_{\Emanifold}(z)$
+\emph{exactly}, where $\widehat\Emanifold$ is the fiber lifted by \eqref{eq:tensor}. Hence
+$\Gamma_{\Emanifold}(\bar z)=\max\{\lambda_{\min}(U_2^{\top}D\Lap[d_z]U_2):
+(d_z,d_\xi)\in T_{\widehat\Emanifold}(\bar z,\xi),\ \|d_z\|_2\le1\}$ is exact in the lifted
+variables. On the $\Gamma_{\Emanifold}$-validation instances of Sec.~\ref{sec:exp} $G_I$ is
+empty, so $T_{\Emanifold}(\bar z)=\ker A\cap\ker B$; E4 exercises a binding facet.
 
 \begin{definition}[Free-networkability modulus]\label{def:gamma}
 For $\bar z\in\Emanifold$ let $T_{\Emanifold}(\bar z)=\{d:Ad{=}0,\ Bd{=}0,\ G_Id\ge0\}$ be the
@@ -105,36 +104,31 @@ test certifying \emph{global} connectivity optimality over the fiber, and boundi
 \label{eq:gammabound}
 \end{equation}
 At $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple, $T_{\Emanifold}=N_p$ and
-\eqref{eq:gamma} is closed-form, $\Gamma_{\Emanifold}(\bar z)=\|\Pi_{N_p}g_\lambda\|_2$ with
-$d^{\star}\propto\Pi_{N_p}g_\lambda$; no free gain exists iff $g_\lambda$ lies in the cone polar
-to $T_{\Emanifold}(\bar z)$. In general \eqref{eq:gamma} is a small convex SDP,
-$\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
+\eqref{eq:gamma} is closed-form, $\Gamma_{\Emanifold}(\bar z)=\|\Pi_{N_p}g_\lambda\|_2$; in
+general it is the small convex SDP $\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,
+U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
 \end{theorem}
 \begin{proof}[Proof sketch]
-$\Gamma_{\Emanifold}\ge0$ since $d=0$ is admissible. As $f=\lamtwo\circ\Lap$ is finite and
-concave, $Df(\bar z)[\cdot]$ exists, is positively homogeneous and overestimates increments;
-\eqref{eq:dirderiv} is the standard eigenvalue derivative over its eigenspace.
+$\Gamma_{\Emanifold}\ge0$ since $d=0$ is admissible, and $f=\lamtwo\circ\Lap$ is finite
+concave, so $Df(\bar z)[\cdot]$ exists, is positively homogeneous and overestimates increments.
 ($\Leftarrow$) An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with
-$Df(\bar z)[d_0]>0$. ($\Rightarrow$) If $Df(\bar z)[d]>0$ for some $d$, polyhedrality gives
-$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, closed, so
-$\bar z+td\in\Emanifold$ improves $f$ for small $t>0$; the second equivalence is the
-contrapositive. For \eqref{eq:gammabound}, concavity and homogeneity give
-$\LamE-f(\bar z)\le\|\delta\|_2Df(\bar z)[\delta/\|\delta\|_2]\le\|\delta\|_2
-\Gamma_{\Emanifold}(\bar z)$, $\delta=z^{\star}_{\mathrm{WISE}}-\bar z$; replacing
-$\|\delta\|_2$ by $\operatorname{diam}\Emanifold$ gives a pose-independent bound.
+$Df(\bar z)[d_0]>0$. ($\Rightarrow$) If $Df(\bar z)[d]>0$, polyhedrality gives
+$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, so $\bar z+td\in\Emanifold$
+improves $f$ for small $t>0$. For \eqref{eq:gammabound}, concavity and homogeneity give
+$\LamE-f(\bar z)\le\|\delta\|_2\Gamma_{\Emanifold}(\bar z)$,
+$\delta=z^{\star}_{\mathrm{WISE}}-\bar z$.
 \end{proof}
 
 \begin{figure*}[t]\centering
   \includegraphics[width=\textwidth]{fig_robot_hero.pdf}
-  \caption{Flagship ($N{=}6$), same productive optimum, three selectors. \textbf{(a)} The
-  PROD--WISE exchange: the scarce $L$ is both the highest productive-capacity type and the only
-  bridge, so swapping one $L$ for two
-  $S$ and relaying the released $L$ preserves $Bz=y^{\star}$, $V^{\star}$ and both wrench
-  certificates. \textbf{(b)} $\lamtwo(\Lap_\rho)$ under relay attenuation: certified budgets
-  \eqref{eq:budget} (dotted) against the last swept $\rho$ clearing $\sigmastar$ (circles).
-  \textbf{(c)} $\lamtwo(\Lgeo(q(t)))$ against its surrogate (thin). \textbf{(d)}
-  $\|[a,b]\|_P$ (left, log) and $|s_1{-}s_2|$ (right, faint).}
-  \label{fig:hero}
+  \caption{$N{=}6$ pair-dependent integer stress test. \textbf{(a)} The PROD--WISE
+  exchange: the scarce $L$ is both the highest productive-capacity type and the only bridge, so
+  swapping one $L$ for two $S$ and relaying the released $L$ preserves $Bz=y^{\star}$,
+  $V^{\star}$ and both wrench certificates. \textbf{(b)} $\lamtwo(\Lpair^{\rho})$ under relay
+  attenuation: certified bounds \eqref{eq:budget} (dotted), last passing ($\circ$) and first
+  failing ($\times$) points of the $0.01$ grid. \textbf{(c)} certified information-layer error;
+  PROD diverges. Line style encodes the selector, so the panels read in grayscale.}
+\label{fig:hero}
 \end{figure*}
 
 \subsection{The WISE refinement}
@@ -149,7 +143,7 @@ integer WISE} $\Essint=\mathcal F_{\mathbb Z}\cap\{Bz=y^{\star}\}$ differ. As
 $\mathcal F_{\mathbb Z}$ imposes connectivity as
 well as integrality, $g_{\mathbb Z}^{\mathrm{ss}}=V^{\star}-V_{\mathbb Z}^{\mathrm{ss}}$ is the
 \emph{integer self-sustaining gap}, not a pure integrality gap; \emph{zero-cost} means
-$B\hat z=y^{\star}$ ($\le\tau_B=10^{-8}$), which such an assignment need not satisfy. Every WISE
+$\|B\hat z-y^{\star}\|_\infty\le\tau_B=10^{-8}$, which such an assignment need not satisfy. Every WISE
 \emph{is} a productive variational equilibrium: connectivity is a \emph{lexicographic
 refinement} of $\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$, not an extra strategic
 condition. Equivalently $z^{\star}_{\mathrm{WISE}}$ satisfies
@@ -183,7 +177,7 @@ The constraints are convex, so \eqref{eq:sdp} is an SDP with value $\LamE$ attai
 compact $\Emanifold$, and feasibility forces $Bz^{\star}_{\mathrm{WISE}}=y^{\star}$.
 \end{proof}
 
-\subsection{What connectivity buys: information-layer stability}
+\subsection{Information-layer consequence}
 \begin{proposition}[Reduced information-layer interface threshold]\label{thm:stability}
 In the coordinates $a,b\in\R^{N-1}$ of $\mathbf1^{\perp}$, let a mode-aligned coordination
 error $a$ be driven by a consensus estimator error $b$ diffusing over
@@ -194,7 +188,7 @@ $\widetilde L(z)=Q^{\top}\Lap(z)Q$ ($a$ is not the served-aggregate error):
 \label{eq:interconnection}
 \end{equation}
 with damping $\mF>0$, consensus gain $c>0$ and \emph{isotropic} couplings $\vt_1I,\vt_2I$,
-$\vt_1,\vt_2>0$, so \eqref{eq:interconnection} block-diagonalises in the eigenbasis of
+$\vt_1,\vt_2>0$, so \eqref{eq:interconnection} block-diagonalizes in the eigenbasis of
 $\widetilde L$: each eigenvalue $\lambda$ contributes an independent pair
 \begin{equation}
 \begin{bmatrix}\dot a_\lambda\\ \dot b_\lambda\end{bmatrix}
@@ -210,12 +204,14 @@ Hurwitz \emph{iff} $\lambda>\sigmadyn:=\vt_1\vt_2/(c\mF)$, with decay rate
 \label{eq:rate}
 \end{equation}
 $\alpha$ is strictly increasing with $\alpha(\sigmadyn)=0$, so the interconnection is
-exponentially stable iff $\lamtwo>\sigmadyn$, at rate $\ge\alpha(\lamtwo)$.
+exponentially stable iff $\lamtwo>\sigmadyn$, at rate $\ge\alpha(\lamtwo)$. The fixed gains
+$(\mF,c,\vt_1,\vt_2)=(1,1,0.5,0.5)$ used throughout give $\sigmadyn=0.25$ and
+$\alpha(0.30)=0.0397$.
 \end{proposition}
 
-This diagonalises a \emph{fixed} Laplacian, whereas a moving team drives
-\eqref{eq:interconnection} with $Q^{\top}\Lgeo(q(t))Q$, whose eigenbasis rotates. A common
-Lyapunov function restores the guarantee \emph{at the same rate}.
+This assumes a \emph{fixed} Laplacian; a moving team drives \eqref{eq:interconnection} with
+$Q^{\top}\Lgeo(q(t))Q$, whose eigenbasis rotates. A common Lyapunov function restores the
+guarantee at the same rate.
 
 \begin{corollary}[Moving graph, unchanged certified lower-rate bound]\label{cor:tv}
 Let \eqref{eq:interconnection} be driven by $\Lgeo(q(t))$ with
@@ -260,13 +256,12 @@ $\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigm
 $\Price$ is nondecreasing, proper and convex, with $\Price=0$ for $\sigma\le\LamE$ (free),
 finite and positive for $\LamE<\sigma\le\LamX$ (costly), and $+\infty$ for $\sigma>\LamX$
 (impossible). Under Slater the optimal multiplier satisfies
-$\pi^{\star}\in\partial\Price(\sigma)$: the local sensitivity of optimal productive loss to the
+$\pilam^{\star}\in\partial\Price(\sigma)$: the local sensitivity of optimal productive loss to the
 connectivity requirement, in units of $V$.
 \end{corollary}
 \begin{proof}[Proof sketch]
-The super-level set is convex and shrinks in $\sigma$, so $\Price$ is nondecreasing; $\sigma$
-enters linearly, making $\Price$ a convex perturbation value whose subdifferential is the
-optimal multiplier set.
+The super-level set is convex and shrinks in $\sigma$, which enters linearly, so $\Price$ is a
+nondecreasing convex perturbation value whose subdifferential is the optimal multiplier set.
 \end{proof}
 
 The spectral reserve yields the following attenuation guarantee, a certified budget for
@@ -282,7 +277,9 @@ $\lamtwo(\Lap_\rho)\ge\sigmastar$ for every
 \frac{\lamtwo(\Lap(z))-\sigmastar}{\lamtwo(\Lap(z))-\lamtwo(L_0)},
 \label{eq:budget}
 \end{equation}
-reducing to $1-\sigmastar/\lamtwo(\Lap(z))$ when the base graph is disconnected. Nonuniform
+reducing to $1-\sigmastar/\lamtwo(\Lap(z))$ when the base graph is disconnected. The ratio is
+well defined when $\lamtwo(\Lap(z))>\lamtwo(L_0)$; if the two coincide, attenuation leaves the
+lower bound unchanged. Nonuniform
 $\rho_{ir}\le\rho$ obeys the same bound since $L_{ir}\succeq0$. For
 $\sigmastar>\lamtwo(L_0)$---the regime where relays are needed at all---$\rho_{\mathrm{cert}}$
 is increasing in $\lamtwo(\Lap(z))$, so \emph{WISE maximizes the certified degradation budget

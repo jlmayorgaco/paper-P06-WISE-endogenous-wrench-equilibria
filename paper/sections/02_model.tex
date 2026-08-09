@@ -60,12 +60,12 @@ Wrench feasibility of load $k$ is thus a linear feasibility problem in $(z,\xi)$
 The scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ superpose, giving
 \eqref{eq:tensor}.
 \end{proof}
-Write $\widehat X$ for the lifted set in $(z,\xi)$ and $\pi(z,\xi)=z$, so
-$X_{\mathrm f}=\pi(\widehat X)$: an explicit description, and Sec.~\ref{sec:wise} shows the
-relevant tangent cone projects from it \emph{exactly}, so no facet enumeration is required
-anywhere. A finite-direction support polytope $\{z:H_wz\ge d\}$ serves only as a fast \emph{outer}
-screen: candidates it admits are certified by \eqref{eq:tensor}. We study
-assignment and communication feasibility, not actuator-level realization.
+Write $\widehat X$ for the lifted set in $(z,\xi)$ and $\prz(z,\xi)=z$, so
+$X_{\mathrm f}=\prz(\widehat X)$: an \emph{extended formulation} rather than an inequality
+description in $z$. Sec.~\ref{sec:wise} shows the relevant tangent cone projects from it
+\emph{exactly}, so both Stage~2 and $\Gamma_{\Emanifold}$ avoid enumerating the projected
+wrench facets. A finite-direction support polytope $\{z:H_wz\ge d\}$ serves only as a fast \emph{outer}
+screen: candidates it admits are certified by \eqref{eq:tensor}.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
 The information graph has a \emph{fixed} node set, one node per robot identity: actions choose
@@ -75,10 +75,10 @@ long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
 weighted by tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$ over the
 tube $\mathcal Q_{ir}$ of admissible positions, fixed before optimization---so each $L_{ir}$ is
-decision-independent and the SDP stays affine. For $L_0$ the infimum must be over each robot's
-admissible positions \emph{across all its actions}, not its idle pose: otherwise a robot sent
-to a relay takes its short links with it and $L_0$ stops being a lower bound. With that reading both $L_0$ and every $L_{ir}$ are lower-bound Laplacians, giving
-$\Lgeo(q)\succeq\Lap(\hat z)$ (Assumption~\ref{as:standing}(iv)). Thus
+decision-independent and the SDP stays affine. For $L_0$ the infimum is over each robot's
+admissible positions \emph{across all its actions}, not its idle pose, so that both $L_0$ and
+every $L_{ir}$ are lower-bound Laplacians and $\Lgeo(q)\succeq\Lap(\hat z)$
+(Assumption~\ref{as:standing}(iv)). Thus
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
@@ -93,7 +93,7 @@ Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \lamtwo(\Lap(z))\ge\sigmastar,
 \label{eq:lmi}
 \end{equation}
-affine in $z$, with PSD dual $Y\succeq0$ whose trace $\pi=\operatorname{tr}Y$ is the
+affine in $z$, with PSD dual $Y\succeq0$ whose trace $\pilam=\operatorname{tr}Y$ is the
 connectivity price; $\sigmadyn$ is \emph{derived} in
 Prop.~\ref{thm:stability} and $\sigmastar>\sigmadyn$ is a design margin. As
 $\lamtwo(\Lap(z))=\min_{\|v\|=1,v\perp\mathbf1}v^{\top}\Lap(z)v$ is a pointwise minimum of
@@ -117,8 +117,6 @@ Every candidate is \emph{independently re-evaluated} in double precision, accept
 equality residuals, slacks, wrench feasibility and the spectral margin clear prescribed
 tolerances: no dependence on solver-reported status, but not exact-arithmetic certification.
 If \eqref{eq:mismatch} weakens to
-$\|Q^{\top}(\Lgeo-\Lap)Q\|_2\le\varepsilon_{\mathrm{geo}}$, Weyl's inequality still gives
+$\|Q^{\top}(\Lgeo-\Lap)Q\|_2\le\varepsilon_{\mathrm{geo}}$, Weyl's inequality gives
 $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)-\varepsilon_{\mathrm{geo}}$, so
-$\sigmastar\ge\sigmadyn+\varepsilon_{\mathrm{geo}}$ suffices; the construction above is the case
-$\varepsilon_{\mathrm{geo}}=0$. The convex theory of Section~\ref{sec:wise} uses $\Lap$ and
-transfers to $\Lgeo$ through \eqref{eq:mismatch} at the integer recovery $\hat z$.
+$\sigmastar\ge\sigmadyn+\varepsilon_{\mathrm{geo}}$ suffices.

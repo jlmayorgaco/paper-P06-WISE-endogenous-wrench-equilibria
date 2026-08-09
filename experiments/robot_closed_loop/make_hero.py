@@ -109,23 +109,28 @@ def _budget_panel(ax, sigma_req):
                                         float(r["lambda2_bar"])))
     budget = json.loads((GEN / "attenuation_budget.json").read_text(encoding="utf-8"))
 
+    grid = 0.01
     for m in ("HARD", "WISE"):
         xy = np.array(sorted(curves[m]))
-        ax.plot(xy[:, 0], xy[:, 1], color=COLORS[m], ls=STYLES[m], lw=1.15)
+        ax.plot(xy[:, 0], xy[:, 1], color=COLORS[m], ls=STYLES[m], lw=1.3, label=m)
         rec = budget["methods"][m]
-        rc, obs = rec["certified_rho"], rec["observed_last_rho_clearing_sigma_req"]
-        ax.axvline(rc, color=COLORS[m], ls=(0, (1, 1.4)), lw=0.7, alpha=0.85)
-        ax.plot([obs], [np.interp(obs, xy[:, 0], xy[:, 1])], marker="o", ms=2.6,
-                mfc="white", mec=COLORS[m], mew=0.8, zorder=6)
-        ax.text(rc, sigma_req + 0.012, rf"${100 * rc:.1f}\%$", fontsize=5.2, rotation=90,
-                ha="right", va="bottom", color=COLORS[m])
-    ax.axhline(sigma_req, color="#2c3e50", ls="--", lw=0.8)
-    ax.text(0.595, sigma_req, r"$\sigma_{\rm req}$", fontsize=5.6, ha="right", va="bottom",
-            color="#2c3e50")
+        rc, rho_pass = rec["certified_rho"], rec["observed_last_rho_clearing_sigma_req"]
+        rho_fail = round(rho_pass + grid, 4)
+        ax.axvline(rc, color=COLORS[m], ls=(0, (1, 1.4)), lw=0.8, alpha=0.9)
+        ax.plot([rho_pass], [np.interp(rho_pass, xy[:, 0], xy[:, 1])], marker="o", ms=3.4,
+                mfc="white", mec=COLORS[m], mew=1.0, zorder=6)
+        ax.plot([rho_fail], [np.interp(rho_fail, xy[:, 0], xy[:, 1])], marker="x", ms=3.6,
+                mec=COLORS[m], mew=1.0, zorder=6)
+        ax.text(rc - 0.008, 0.405, rf"${100 * rc:.1f}\%$", fontsize=6.0, rotation=90,
+                ha="right", va="top", color=COLORS[m])
+    ax.axhline(sigma_req, color="#2c3e50", ls="--", lw=0.9)
+    ax.text(0.592, sigma_req + 0.006, r"$\sigma_{\rm req}$", fontsize=6.4, ha="right",
+            va="bottom", color="#2c3e50")
     ax.set_xlim(0.0, 0.6)
-    ax.set_xlabel(r"relay attenuation $\rho$", fontsize=6.6, labelpad=1.5)
-    ax.set_title(r"(b) certified $\lambda_2(\bar L_\rho)$ budget", fontsize=6.4, pad=2.5)
-    ax.tick_params(labelsize=5.6)
+    ax.set_xlabel(r"relay attenuation $\rho$", fontsize=7.0, labelpad=1.5)
+    ax.set_ylabel(r"$\lambda_2(L_{\rm pair,\rho})$", fontsize=7.0, labelpad=1.5)
+    ax.set_title("(b) HARD vs. WISE relay attenuation", fontsize=6.6, pad=2.5)
+    ax.tick_params(labelsize=6.2)
     ax.grid(alpha=0.2, lw=0.35)
 
 
@@ -138,7 +143,7 @@ def main():
 
     ts = MF.load_timeseries()
     summary = json.loads((GEN / "robot_flagship_summary.json").read_text(encoding="utf-8"))
-    sigma_req, sigma_dyn = summary["sigma_req"], summary["sigma_dyn"]
+    sigma_req = summary["sigma_req"]
     methods = [m for m in ("PROD", "HARD", "WISE") if m in ts]
     lam = {m: summary["summaries"][m]["lambda2_bar"] for m in methods}
 
@@ -146,61 +151,41 @@ def main():
     runs = {m: sim.simulate(m, chosen[m], S.lbar(chosen[m])) for m in ("PROD", "WISE")}
 
     fig = plt.figure(figsize=(7.16, 1.08))
-    gs = fig.add_gridspec(2, 4, wspace=0.55, hspace=0.52,
-                          width_ratios=[1.42, 0.92, 1.0, 1.0])
+    gs = fig.add_gridspec(2, 3, wspace=0.42, hspace=0.52,
+                          width_ratios=[1.30, 1.34, 0.96])
     ax_a1, ax_a2 = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0])
     ax_f = fig.add_subplot(gs[:, 1])                       # (b) the certified budget
-    ax_c, ax_d = fig.add_subplot(gs[:, 2]), fig.add_subplot(gs[:, 3])
+    ax_d = fig.add_subplot(gs[:, 2])                       # (c) information-layer error
 
     # (a) the exchange, shown on the actual teams: composition + invariants + lambda_2
-    comp = {"PROD": "1L+1S|1L+1S, no relay", "WISE": "3S|1L+1S, L relays"}
+    comp = {"PROD": "no relay", "WISE": "L relays"}
     for ax, m, ttl, ann in ((ax_a1, "PROD", "(a) productive-only", False),
                             (ax_a2, "WISE", "WISE", True)):
         MF._scene_panel(ax, summary, ttl, m, runs[m], chosen[m], annotate=ann)
-        ax.set_title(rf"{ttl}:  {comp[m]},  $\lambda_2(\bar L)={lam[m]:.3f}$",
-                     fontsize=5.9, pad=2.5)
+        ax.set_title(rf"{ttl}:  {comp[m]},  $\lambda_2(L_{{\rm pair}})={lam[m]:.3f}$",
+                     fontsize=6.2, pad=2.5)
 
-    # (c) connectivity, (d) the two errors
+    # (c) the certified information-layer error
     for m in methods:
         d = ts[m]
         op = d["phase"] == "operational"
-        t = d["t"][op]
-        ax_c.plot(t, d["lam_geo"][op], color=COLORS[m], ls=STYLES[m], lw=1.15, label=m)
-        ax_c.axhline(lam[m], color=COLORS[m], lw=0.5, alpha=0.5)
-        ax_d.semilogy(t, np.maximum(d["info_norm_certified"][op], 1e-16),
-                      color=COLORS[m], ls=STYLES[m], lw=1.15)
-    ax_c.axhline(sigma_req, color="#2c3e50", ls="--", lw=0.8)
-    ax_c.axhline(sigma_dyn, color=RED, ls=":", lw=0.8)
-    ax_c.text(ax_c.get_xlim()[0], sigma_req, r"$\sigma_{\rm req}$", fontsize=5.6,
-              ha="left", va="bottom", color="#2c3e50")
-    ax_c.text(ax_c.get_xlim()[0], sigma_dyn, r"$\sigma_{\rm dyn}$", fontsize=5.6,
-              ha="left", va="top", color=RED)
-    ax_c.set_ylabel(r"$\lambda_2(L_{\rm geo}(q(t)))$", fontsize=6.6, labelpad=1.5)
-    ax_c.set_title(r"(c) realized vs. certified $\lambda_2(\bar L)$", fontsize=6.4, pad=2.5)
-    ax_d.set_ylabel(r"$\|[a,b]\|_P$", fontsize=6.6, labelpad=1.5)
-    ax_d.legend(handles=[plt.Line2D([], [], color=COLORS[m], ls=STYLES[m], lw=1.15,
-                                    label=m) for m in methods],
-                fontsize=5.4, frameon=False, loc="lower left", handlelength=1.6,
+        ax_d.semilogy(d["t"][op], np.maximum(d["info_norm_certified"][op], 1e-16),
+                      color=COLORS[m], ls=STYLES[m], lw=1.3)
+    ax_d.set_ylabel(r"$\|[a,b]\|_P$", fontsize=7.0, labelpad=1.5)
+    ax_d.legend(handles=[plt.Line2D([], [], color=COLORS[m], ls=STYLES[m], lw=1.3,
+                                    label=m + (" (diverges)" if m == "PROD" else ""))
+                         for m in methods],
+                fontsize=6.0, frameon=False, loc="lower left", handlelength=1.7,
                 borderpad=0.15, labelspacing=0.25)
-    ax_d.set_title("(d) information layer and sync. error", fontsize=6.4, pad=2.5)
-    ax_e = ax_d.twinx()
-    for m in methods:
-        d = ts[m]
-        op = d["phase"] == "operational"
-        ax_e.plot(d["t"][op], d["sync_err"][op], color=COLORS[m], ls=STYLES[m], lw=0.9,
-                  alpha=0.45)
-    ax_e.set_ylabel(r"$|s_1-s_2|$", fontsize=6.6, labelpad=1.5, color="#555555")
-    ax_e.tick_params(labelsize=5.6, colors="#555555")
-    ax_e.set_ylim(0, None)
+    ax_d.set_title("(c) information-layer error", fontsize=6.6, pad=2.5)
 
-    for ax in (ax_c, ax_d):
+    for ax in (ax_d,):
         ax.axvspan(C.T_DIST, C.T_DIST + C.DUR_DIST, color="#95a5a6", alpha=0.16, lw=0)
-        ax.set_xlabel("time [s]", fontsize=6.6, labelpad=1.5)
-        ax.tick_params(labelsize=5.6)
+        ax.set_xlabel("time [s]", fontsize=7.0, labelpad=1.5)
+        ax.tick_params(labelsize=6.2)
         ax.grid(alpha=0.2, lw=0.35)
-    ax_e.axvspan(C.T_DIST, C.T_DIST + C.DUR_DIST, color="#95a5a6", alpha=0.0, lw=0)
 
-    # (d) the operational reading of the reserve
+    # (b) the operational reading of the reserve
     _budget_panel(ax_f, sigma_req)
 
     fig.subplots_adjust(left=0.005, right=0.955, top=0.885, bottom=0.155)
