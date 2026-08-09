@@ -4,7 +4,7 @@ PY ?= python
 
 .PHONY: help install test lint fmt \
         fiber spatial central phase methods physical epsilon \
-        robot robot-mc robot-sweep robot-fig robot-video robot-test \
+        robot robot-mc robot-sweep robot-budget robot-fig robot-video robot-test \
         reproduce reproduce-fast paper clean
 
 help: ## Show this help
@@ -52,6 +52,10 @@ robot-mc: ## E-Robot: paired Monte-Carlo campaign (default 30 seeds)
 
 robot-sweep: ## E-Robot: predeclared relay-attenuation robustness sweep
 	$(PY) -m experiments.robot_closed_loop.run_margin_sweep
+
+robot-budget: ## E-Robot: certified attenuation budget + affine-surrogate scope audit
+	$(PY) -m experiments.robot_closed_loop.attenuation_budget
+	$(PY) -m experiments.robot_closed_loop.affine_surrogate_audit
 
 robot-fig: ## E-Robot: paper hero figure + supplementary four-panel figure
 	$(PY) -m experiments.robot_closed_loop.make_hero

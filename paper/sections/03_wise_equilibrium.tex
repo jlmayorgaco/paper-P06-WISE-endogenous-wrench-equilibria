@@ -55,14 +55,14 @@ games~\cite{martinezpiazuelo2022}.
 \end{proposition}
 
 Figure~\ref{fig:hero}(a) makes this concrete: the long-for-two-short exchange is neutral
-($Bd=0$) while $\lamtwo$ strictly rises. Whether such a \emph{free} gain exists, and whether it
-is exhausted, is decided by one scalar. Orient every inequality of $X_{\mathrm f}$ as
+($Bd=0$) while $\lamtwo$ strictly rises. One scalar decides whether such a \emph{free} gain
+exists and whether it is exhausted. Orient every inequality of $X_{\mathrm f}$ as
 $Gz\ge h$, with $G_I$ the rows active at $\bar z$. The cone may equivalently be taken in the
 lifted variables at \emph{any} lift: for a polyhedron $T_{\widehat\Emanifold}(\hat x)=
 \operatorname{cone}(\widehat\Emanifold-\hat x)$, and a linear map commutes with the conic hull,
 so $\pi(T_{\widehat\Emanifold}(z,\xi))=\operatorname{cone}(\Emanifold-z)=T_{\Emanifold}(z)$
-\emph{exactly}. On the instances reported here $G_I$ is empty, so
-$T_{\Emanifold}(\bar z)=\ker A\cap\ker B$ and both coincide numerically.
+\emph{exactly}. On the $\Gamma_{\Emanifold}$-validation instances of Sec.~\ref{sec:exp}
+$G_I$ is empty, so $T_{\Emanifold}(\bar z)=\ker A\cap\ker B$; E4 exercises a binding facet.
 
 \begin{definition}[Free-networkability modulus]\label{def:gamma}
 For $\bar z\in\Emanifold$ let $T_{\Emanifold}(\bar z)=\{d:Ad{=}0,\ Bd{=}0,\ G_Id\ge0\}$ be the
@@ -124,6 +124,18 @@ $\LamE-f(\bar z)\le\|\delta\|_2Df(\bar z)[\delta/\|\delta\|_2]\le\|\delta\|_2
 $\|\delta\|_2$ by $\operatorname{diam}\Emanifold$ gives a pose-independent bound.
 \end{proof}
 
+\begin{figure*}[t]\centering
+  \includegraphics[width=\textwidth]{fig_robot_hero.pdf}
+  \caption{Same productive optimum, three selectors. \textbf{(a)} The PROD--WISE exchange: the
+  scarce $L$ is both the highest-capacity type and the only bridge, so swapping one $L$ for two
+  $S$ and relaying the released $L$ preserves $Bz=y^{\star}$, $V^{\star}$ and both wrench
+  certificates. \textbf{(b)} $\lamtwo(\Lap_\rho)$ under relay attenuation: certified budgets
+  \eqref{eq:budget} (dotted) against the last swept $\rho$ clearing $\sigmastar$ (circles).
+  \textbf{(c)} $\lamtwo(\Lgeo(q(t)))$ against its surrogate (thin). \textbf{(d)}
+  $\|[a,b]\|_P$ (left, log) and $|s_1{-}s_2|$ (right, faint).}
+  \label{fig:hero}
+\end{figure*}
+
 \subsection{The WISE refinement}
 \begin{definition}[WISE and its integer counterparts]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and Information-Self-Sustaining
@@ -136,13 +148,13 @@ integer WISE} $\Essint=\mathcal F_{\mathbb Z}\cap\{Bz=y^{\star}\}$ differ. As
 $\mathcal F_{\mathbb Z}$ imposes connectivity as
 well as integrality, $g_{\mathbb Z}^{\mathrm{ss}}=V^{\star}-V_{\mathbb Z}^{\mathrm{ss}}$ is the
 \emph{integer self-sustaining gap}, not a pure integrality gap; \emph{zero-cost} means
-$B\hat z=y^{\star}$ ($\le\tau_B=10^{-8}$), which such an assignment need not be. Every WISE
+$B\hat z=y^{\star}$ ($\le\tau_B=10^{-8}$), which such an assignment need not satisfy. Every WISE
 \emph{is} a productive variational equilibrium: connectivity is a \emph{lexicographic
 refinement} of $\operatorname{SOL}(X_{\mathrm f},F)=\Emanifold$, not an extra strategic
 condition. Equivalently $z^{\star}_{\mathrm{WISE}}$ satisfies
 $0\in\partial[-\lamtwo(\Lap(z^{\star}_{\mathrm{WISE}}))]+N_{\Emanifold}
 (z^{\star}_{\mathrm{WISE}})$, whose primal test is $\Gamma_{\Emanifold}=0$
-(Thm.~\ref{thm:networkability}). No distributed equilibrium-seeking dynamics are claimed.
+(Thm.~\ref{thm:networkability}).
 \end{definition}
 
 \begin{theorem}[Relaxed WISE existence and selection as an SDP]\label{thm:existence}
@@ -161,9 +173,8 @@ the value clears the requirement,
 \label{eq:exist}
 \end{equation}
 and any maximiser preserves the productive optimum exactly, with $V=V^{\star}$; the refinement
-is \emph{strict} when $\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$. If the
-connectivity-optimal face $\arg\max_{\Emanifold}\lamtwo$ (equivalently
-$\{\Gamma_{\Emanifold}=0\}$) is non-singleton, the strongly convex least-role-change tie-break
+is \emph{strict} when $\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$. If $\arg\max_{\Emanifold}\lamtwo$ (equivalently $\{\Gamma_{\Emanifold}=0\}$) is
+non-singleton, the strongly convex least-role-change tie-break
 $\min\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ fixes a \emph{unique} selector.
 \end{theorem}
 \begin{proof}[Proof sketch]
@@ -217,17 +228,16 @@ $\mathcal V_c=\tfrac12(\vt_2\|a\|^2+\vt_1\|b\|^2)$ and $\|\cdot\|_P=\sqrt{2\math
 with $\alpha$ \emph{exactly} \eqref{eq:rate}, positive iff $\sigmastar>\sigmadyn$.
 \end{corollary}
 \begin{proof}[Proof sketch]
-Using $b^{\top}Q^{\top}\Lgeo Qb\ge\sigmastar\|b\|^2$, $\dot{\mathcal V}_c\le
--[a;b]^{\top}(M{\otimes}I)[a;b]$ with $M$ of entries
-$(\vt_2\mF,-\vt_1\vt_2;-\vt_1\vt_2,\vt_1c\sigmastar)$, and $M\otimes I\succeq
-\lambda_{\min}(M,P)(P\otimes I)$, $P=\operatorname{diag}(\vt_2,\vt_1)$. Since $P^{-1/2}MP^{-1/2}$
-has entries $(\mF,-\sqrt{\vt_1\vt_2};-\sqrt{\vt_1\vt_2},c\sigmastar)$, that generalized
-eigenvalue \emph{is} $\alpha(\sigmastar)$: the moving graph costs no rate, because
-$\mathcal V_c$ symmetrises $A_\lambda$.
+With $b^{\top}Q^{\top}\Lgeo Qb\ge\sigmastar\|b\|^2$, $\dot{\mathcal V}_c\le
+-[a;b]^{\top}(M{\otimes}I)[a;b]$, $M=(\vt_2\mF,-\vt_1\vt_2;-\vt_1\vt_2,\vt_1c\sigmastar)$ and
+$M\succeq\lambda_{\min}(M,P)P$, $P=\operatorname{diag}(\vt_2,\vt_1)$; as
+$P^{-1/2}MP^{-1/2}=(\mF,-\sqrt{\vt_1\vt_2};-\sqrt{\vt_1\vt_2},c\sigmastar)$ that generalized
+eigenvalue \emph{is} $\alpha(\sigmastar)$---$\mathcal V_c$ symmetrises $A_\lambda$, so the
+moving graph costs no rate.
 \end{proof}
 The two links must be kept apart. The relaxed selector gives a \emph{design and existence}
 certificate ($\LamE\ge\sigmastar$); the \emph{physical} guarantee attaches only to a realizable
-team: for integer $\hat z$ passing direct re-certification with
+team: for integer $\hat z$ passing re-certification with
 $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$, Lemma~\ref{lem:bridge} yields
 $\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ at \emph{every} admissible pose, hence the uniform rate
 $\alpha(\sigmastar)>0$ of Cor.~\ref{cor:tv}. It is \emph{not} invoked at the fractional
@@ -272,9 +282,10 @@ $\lamtwo(\Lap_\rho)\ge\sigmastar$ for every
 \label{eq:budget}
 \end{equation}
 reducing to $1-\sigmastar/\lamtwo(\Lap(z))$ when the base graph is disconnected. Nonuniform
-$\rho_{ir}\le\rho$ obeys the same bound since $L_{ir}\succeq0$. As $\rho_{\mathrm{cert}}$ is
-increasing in $\lamtwo(\Lap(z))$, \emph{WISE maximizes the certified degradation budget over
-the whole productive-optimum fiber.}
+$\rho_{ir}\le\rho$ obeys the same bound since $L_{ir}\succeq0$. For
+$\sigmastar>\lamtwo(L_0)$---the regime where relays are needed at all---$\rho_{\mathrm{cert}}$
+is increasing in $\lamtwo(\Lap(z))$, so \emph{WISE maximizes the certified degradation budget
+over the whole productive-optimum fiber.}
 \end{corollary}
 
 \subsection{Finite-team recovery}

@@ -1,0 +1,74 @@
+{
+  "sigma_req": 0.3,
+  "lambda2_L0_affine": 0.0,
+  "methods": {
+    "PROD": {
+      "lambda2_action_pair": 2.2422879115109017e-16,
+      "lambda2_strictly_affine": 0.0,
+      "affine_clears_sigma_req": false
+    },
+    "WISE": {
+      "lambda2_action_pair": 0.39887612755514545,
+      "lambda2_strictly_affine": -7.166984140620843e-33,
+      "affine_clears_sigma_req": false
+    },
+    "HARD": {
+      "lambda2_action_pair": 0.3364609100182326,
+      "lambda2_strictly_affine": 0.0,
+      "affine_clears_sigma_req": false
+    },
+    "SCALAR": {
+      "lambda2_action_pair": 0.39887612755514545,
+      "lambda2_strictly_affine": -7.166984140620843e-33,
+      "affine_clears_sigma_req": false
+    },
+    "RANDOM-FIBER": {
+      "lambda2_action_pair": -7.954423143705765e-17,
+      "lambda2_strictly_affine": 0.0,
+      "affine_clears_sigma_req": false
+    }
+  },
+  "gated_links": [
+    {
+      "relay": 0,
+      "partner": 1,
+      "d_chosen": 2.1673665961010276,
+      "d_sup_over_partner_actions": 4.611658669218482,
+      "range_gate": 5.0,
+      "gated_off": false
+    },
+    {
+      "relay": 0,
+      "partner": 2,
+      "d_chosen": 4.611658669218482,
+      "d_sup_over_partner_actions": 5.203060268852505,
+      "range_gate": 5.0,
+      "gated_off": true
+    },
+    {
+      "relay": 0,
+      "partner": 3,
+      "d_chosen": 3.9196575181789313,
+      "d_sup_over_partner_actions": 5.203060268852505,
+      "range_gate": 5.0,
+      "gated_off": true
+    },
+    {
+      "relay": 0,
+      "partner": 4,
+      "d_chosen": 2.6469728648009423,
+      "d_sup_over_partner_actions": 4.611658669218482,
+      "range_gate": 5.0,
+      "gated_off": false
+    },
+    {
+      "relay": 0,
+      "partner": 5,
+      "d_chosen": 3.8210561809129406,
+      "d_sup_over_partner_actions": 4.611658669218482,
+      "range_gate": 5.0,
+      "gated_off": false
+    }
+  ],
+  "conclusion": "The strictly affine (action-independent) tube surrogate disconnects the flagship for every assignment, so the N=6 instance is reported as an exact integer illustration under an action-pair-dependent graph, outside Assumption 1(ii), Theorem 2 and the Stage-2 SDP; those are validated on the affine N=12 instances. Lemma 2, Cor. 2 and Cor. 3 hold at a fixed assignment and are unaffected."
+}

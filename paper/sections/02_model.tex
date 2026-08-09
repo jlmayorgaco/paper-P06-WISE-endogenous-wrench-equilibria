@@ -37,7 +37,7 @@ coefficient, \emph{distinct} from the actuation data $(F_\tau,G_\tau,A_{kh})$ se
 feasibility.
 
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned ellipse
-$U_\tau(\phi)$ with semi-axes $F_\tau,\kappa F_\tau$ ($\kappa\le1$). Not tracking headings, we
+$U_\tau(\phi)$, semi-axes $F_\tau,\kappa F_\tau$ ($\kappa\le1$). Not tracking headings, we
 certify against the heading-independent \emph{inner zonotope}
 $U_\tau^{\mathrm{in}}=\{G_\tau u:\|u\|_\infty\le1\}$ inscribed in
 $\mathrm{disk}(\kappa F_\tau)\subseteq U_\tau(\phi)$: \emph{conservative}, no false positive.
@@ -63,9 +63,8 @@ The scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ superpose, giving
 Write $\widehat X$ for the lifted set in $(z,\xi)$ and $\pi(z,\xi)=z$, so
 $X_{\mathrm f}=\pi(\widehat X)$: an explicit description, and Sec.~\ref{sec:wise} shows the
 relevant tangent cone projects from it \emph{exactly}, so no facet enumeration is required
-anywhere. For fast screening we also use the support polytope $\{z:H_wz\ge d\}$,
-$[H_w]_{(k\ell),(ikh)}=h_{U_\tau^{\mathrm{in}}}(A_{kh}^{\top}\eta_{k\ell})$, a
-finite-direction \emph{outer} relaxation: it proposes, \eqref{eq:tensor} disposes. We study
+anywhere. A finite-direction support polytope $\{z:H_wz\ge d\}$ serves only as a fast \emph{outer}
+screen: it proposes, \eqref{eq:tensor} disposes. We study
 assignment and communication feasibility, not actuator-level realization.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
@@ -76,18 +75,17 @@ long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
 weighted by tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$ over the
 tube $\mathcal Q_{ir}$ of admissible positions, fixed before optimization---so each $L_{ir}$ is
-decision-independent and the SDP stays affine. For $L_0$ the infimum must be taken over each
-robot's admissible positions \emph{across all its actions}, not over its idle pose: otherwise a
-robot the decision sends to a relay site takes its short links with it and $L_0$ stops being a
-lower bound. With that reading both $L_0$ and every $L_{ir}$ are lower-bound Laplacians, giving
+decision-independent and the SDP stays affine. For $L_0$ the infimum must be over each robot's
+admissible positions \emph{across all its actions}, not its idle pose: otherwise a robot sent
+to a relay takes its short links with it and $L_0$ stops being a lower bound. With that reading both $L_0$ and every $L_{ir}$ are lower-bound Laplacians, giving
 $\Lgeo(q)\succeq\Lap(\hat z)$ (Assumption~\ref{as:standing}(iv)). Thus
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
 \end{equation}
-Each $L_{ir}$ being fixed and robot-indexed makes $\Lap$ affine in $z$ with no matching or
-permutation needed: a symmetric surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$
-robots, compared through Lemma~\ref{lem:bridge}. With $Q\in\R^{N\times(N-1)}$ an orthonormal
+Each $L_{ir}$ fixed and robot-indexed makes $\Lap$ affine in $z$, no matching or permutation
+needed: a surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$ robots, compared
+through Lemma~\ref{lem:bridge}. With $Q\in\R^{N\times(N-1)}$ an orthonormal
 basis of $\mathbf 1^{\perp}$, the information constraint is the LMI
 \begin{equation}
 Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
@@ -115,10 +113,10 @@ $\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$, so a certificate
 $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$ yields $\lamtwo(\Lgeo(q))\ge\sigmadyn$
 \emph{a priori} at every admissible pose---no post-hoc mismatch term.
 \end{lemma}
-Every candidate is \emph{independently re-evaluated} in double precision and accepted only when
+Every candidate is \emph{independently re-evaluated} in double precision, accepted only when
 equality residuals, slacks, wrench feasibility and the spectral margin clear prescribed
-tolerances; this removes dependence on the solver-reported status, but is not exact-arithmetic
-certification. If \eqref{eq:mismatch} weakens to
+tolerances: no dependence on solver-reported status, but not exact-arithmetic certification.
+If \eqref{eq:mismatch} weakens to
 $\|Q^{\top}(\Lgeo-\Lap)Q\|_2\le\varepsilon_{\mathrm{geo}}$, Weyl's inequality still gives
 $\lamtwo(\Lgeo)\ge\lamtwo(\Lap)-\varepsilon_{\mathrm{geo}}$, so
 $\sigmastar\ge\sigmadyn+\varepsilon_{\mathrm{geo}}$ suffices; the construction above is the case
