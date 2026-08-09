@@ -52,16 +52,16 @@ strongly contractive aggregative games~\cite{martinezpiazuelo2022}.
 
 Figure~\ref{fig:hero}(a) makes this concrete: the long-for-two-short exchange is neutral
 ($Bd=0$) while $\lamtwo$ strictly rises. One scalar decides whether such a \emph{free} gain
-exists and whether it is exhausted. Orient every inequality of $X_{\mathrm f}$ as
-$Gz\ge h$, with $G_I$ the rows active at $\bar z$. The cone may equivalently be taken in the
-lifted variables at \emph{any} lift: for a polyhedron $T_{\widehat\Emanifold}(\hat x)=
-\operatorname{cone}(\widehat\Emanifold-\hat x)$, and a linear map commutes with the conic hull,
-so $\prz(T_{\widehat\Emanifold}(z,\xi))=\operatorname{cone}(\Emanifold-z)=T_{\Emanifold}(z)$
-\emph{exactly}, where $\widehat\Emanifold$ is the fiber lifted by \eqref{eq:tensor}. Hence
+exists and whether it is exhausted. Orient every inequality of $X_{\mathrm f}$ as $Gz\ge h$,
+with $G_I$ the rows active at $\bar z$. The cone may be taken in the lifted variables at
+\emph{any} lift: for the polyhedron $\widehat\Emanifold$ lifted by \eqref{eq:tensor},
+$T_{\widehat\Emanifold}(\hat x)=\operatorname{cone}(\widehat\Emanifold-\hat x)$ and a linear
+map commutes with the conic hull, so
+$\prz(T_{\widehat\Emanifold}(z,\xi))=T_{\Emanifold}(z)$ \emph{exactly}; hence
 $\Gamma_{\Emanifold}(\bar z)=\max\{\lambda_{\min}(U_2^{\top}D\Lap[d_z]U_2):
-(d_z,d_\xi)\in T_{\widehat\Emanifold}(\bar z,\xi),\ \|d_z\|_2\le1\}$ is exact in the lifted
-variables. On the $\Gamma_{\Emanifold}$-validation instances of Sec.~\ref{sec:exp} $G_I$ is
-empty, so $T_{\Emanifold}(\bar z)=\ker A\cap\ker B$; E4 exercises a binding facet.
+(d_z,d_\xi)\in T_{\widehat\Emanifold}(\bar z,\xi),\ \|d_z\|_2\le1\}$ is exact there. On the
+$\Gamma_{\Emanifold}$-validation instances of Sec.~\ref{sec:exp} $G_I$ is empty, so
+$T_{\Emanifold}(\bar z)=\ker A\cap\ker B$; E4 exercises a binding facet.
 
 \begin{definition}[Free-networkability modulus]\label{def:gamma}
 For $\bar z\in\Emanifold$ let $T_{\Emanifold}(\bar z)=\{d:Ad{=}0,\ Bd{=}0,\ G_Id\ge0\}$ be the
@@ -97,13 +97,9 @@ Theorem~\ref{thm:degeneracy}. Then $\Gamma_{\Emanifold}(\bar z)\ge0$ and
 \label{eq:iff}
 \end{equation}
 equivalently $\Gamma_{\Emanifold}(\bar z)=0\iff\lamtwo(\Lap(\bar z))=\LamE$: a \emph{local}
-test certifying \emph{global} connectivity optimality over the fiber, and bounding the gap,
-\begin{equation}
-\LamE-\lamtwo(\Lap(\bar z))\ \le\
-\Gamma_{\Emanifold}(\bar z)\,\|z^{\star}_{\mathrm{WISE}}-\bar z\|_2 .
-\label{eq:gammabound}
-\end{equation}
-At $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple, $T_{\Emanifold}=N_p$ and
+test certifying \emph{global} connectivity optimality over the fiber, and bounding the gap by
+$\LamE-\lamtwo(\Lap(\bar z))\le\Gamma_{\Emanifold}(\bar z)\|z^{\star}_{\mathrm{WISE}}-\bar
+z\|_2$. At $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple, $T_{\Emanifold}=N_p$ and
 \eqref{eq:gamma} is closed-form, $\Gamma_{\Emanifold}(\bar z)=\|\Pi_{N_p}g_\lambda\|_2$; in
 general it is the small convex SDP $\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,
 U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
@@ -114,8 +110,7 @@ concave, so $Df(\bar z)[\cdot]$ exists, is positively homogeneous and overestima
 ($\Leftarrow$) An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with
 $Df(\bar z)[d_0]>0$. ($\Rightarrow$) If $Df(\bar z)[d]>0$, polyhedrality gives
 $T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, so $\bar z+td\in\Emanifold$
-improves $f$ for small $t>0$. For \eqref{eq:gammabound}, concavity and homogeneity give
-$\LamE-f(\bar z)\le\|\delta\|_2\Gamma_{\Emanifold}(\bar z)$,
+improves $f$ for small $t>0$. The gap bound is concavity plus homogeneity along
 $\delta=z^{\star}_{\mathrm{WISE}}-\bar z$.
 \end{proof}
 
@@ -287,7 +282,12 @@ over the whole productive-optimum fiber.}
 \end{corollary}
 
 \subsection{Finite-team recovery}
-Rounding \emph{searches} for an integer $\hat z$ and re-checks it \emph{directly} against
-budgets, occupancy, the wrench LP~\eqref{eq:tensor} and $\lamtwo\ge\sigmastar$; if it also
-satisfies $B\hat z=y^{\star}$ it is a zero-cost integer WISE, otherwise it carries a
-\emph{recovery loss} $V^{\star}-V(\hat z)$, distinct from $g_{\mathbb Z}^{\mathrm{ss}}$.
+Three quantities must not be conflated: the \emph{relaxed} fiber optimum, where
+Thm.~\ref{thm:existence} gives $\Delta V=0$ exactly; the \emph{attainable integer} optimum,
+whose shortfall is $g_{\mathbb Z}^{\mathrm{ss}}$; and the \emph{recovery loss}
+$V^{\star}-V(\hat z)$ of one rounding heuristic. So \eqref{eq:sdp} certifies existence on the
+fractional fiber and sets a target for recovery, but does \emph{not} guarantee integer
+attainability: Sec.~\ref{sec:exp} exhibits adversarial instances where it fails. Rounding
+searches for an integer $\hat z$ and re-checks it directly against budgets, occupancy,
+\eqref{eq:tensor} and $\lamtwo\ge\sigmastar$; if $B\hat z=y^{\star}$ too it is a zero-cost
+integer WISE.
