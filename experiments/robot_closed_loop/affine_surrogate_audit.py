@@ -76,6 +76,54 @@ def lbar_affine(assignment: tuple) -> np.ndarray:
     return L
 
 
+def fiber_spectrum_affine() -> dict:
+    """lambda2 over the whole integer productive fiber under the strictly affine surrogate.
+
+    The point of this sweep: the surrogate is so coarse that only the centre relay site
+    survives worst-case gating, so *every* assignment clearing any viable requirement attains
+    the same lambda2. HARD and WISE then coincide and the reserve comparison disappears --
+    the flagship's HARD/WISE gap exists precisely because its graph is action-pair dependent.
+    """
+    from experiments.robot_closed_loop import assignments as A
+
+    feasible = A.enumerate_feasible()
+    values = {a: A.productive_value(A.served_aggregate(a)) for a in feasible}
+    v_max = max(values.values())
+    fiber = [a for a in feasible if abs(values[a] - v_max) <= 1e-12]
+
+    L0 = L0_affine()
+    cache: dict = {}
+
+    def lam(a):
+        L = L0.copy()
+        for i, act in enumerate(a):
+            if act[0] == "relay":
+                key = (i, act[1])
+                if key not in cache:
+                    cache[key] = L_ir_affine(i, act[1])
+                L = L + cache[key]
+        return S.lambda2(L)
+
+    lams = {a: lam(a) for a in fiber}
+    prod = min(fiber, key=lambda a: A._tie_break(a, None))
+    wise = min(fiber, key=lambda a: (-round(lams[a], 12),) + A._tie_break(a, prod))
+    levels = sorted({round(v, 6) for v in lams.values()})
+
+    rows = []
+    for sreq in (0.10, 0.15, 0.18, 0.19):
+        pool = [a for a in fiber if lams[a] >= sreq - 1e-12]
+        hard = min(pool, key=lambda a: A._tie_break(a, prod)) if pool else None
+        rows.append({"sigma_req": sreq, "n_clearing": len(pool),
+                     "lambda2_hard": lams[hard] if hard else None,
+                     "lambda2_wise": lams[wise], "hard_equals_wise": bool(hard == wise)})
+    return {"n_fiber": len(fiber), "distinct_lambda2_levels": levels,
+            "lambda2_wise": lams[wise], "lambda2_prod": lams[prod],
+            "requirement_sweep": rows,
+            "note": ("Under the affine surrogate HARD coincides with WISE at every viable "
+                     "requirement, so the certified-budget comparison cannot be posed on "
+                     "this scenario at all.")}
+
+
 def main() -> dict:
     _, chosen, _ = RF.select()
     out = {"sigma_req": C.SIGMA_REQ, "lambda2_L0_affine": S.lambda2(L0_affine()),
@@ -104,6 +152,14 @@ def main() -> dict:
             if rec["gated_off"]:
                 print(f"  gated off: relay {i} -- robot {j}: worst case {d_sup:.2f} > "
                       f"R={S.R_RANGE[i]:.1f} (chosen pose {rec['d_chosen']:.2f})")
+
+    out["fiber_spectrum"] = fiber_spectrum_affine()
+    fs = out["fiber_spectrum"]
+    print(f"\naffine fiber spectrum: {len(fs['distinct_lambda2_levels'])} distinct levels "
+          f"{fs['distinct_lambda2_levels']} over {fs['n_fiber']} fiber points")
+    for r in fs["requirement_sweep"]:
+        print(f"  sigma_req={r['sigma_req']:.2f}: {r['n_clearing']:4d} clearing, "
+              f"HARD==WISE: {r['hard_equals_wise']}")
 
     out["conclusion"] = (
         "The strictly affine (action-independent) tube surrogate disconnects the flagship for "

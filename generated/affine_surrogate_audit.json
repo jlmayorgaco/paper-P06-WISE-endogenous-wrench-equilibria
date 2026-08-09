@@ -70,5 +70,46 @@
       "gated_off": false
     }
   ],
+  "fiber_spectrum": {
+    "n_fiber": 1032,
+    "distinct_lambda2_levels": [
+      0.0,
+      0.197564,
+      0.228923
+    ],
+    "lambda2_wise": 0.22892323685294638,
+    "lambda2_prod": 0.0,
+    "requirement_sweep": [
+      {
+        "sigma_req": 0.1,
+        "n_clearing": 144,
+        "lambda2_hard": 0.22892323685294638,
+        "lambda2_wise": 0.22892323685294638,
+        "hard_equals_wise": true
+      },
+      {
+        "sigma_req": 0.15,
+        "n_clearing": 144,
+        "lambda2_hard": 0.22892323685294638,
+        "lambda2_wise": 0.22892323685294638,
+        "hard_equals_wise": true
+      },
+      {
+        "sigma_req": 0.18,
+        "n_clearing": 144,
+        "lambda2_hard": 0.22892323685294638,
+        "lambda2_wise": 0.22892323685294638,
+        "hard_equals_wise": true
+      },
+      {
+        "sigma_req": 0.19,
+        "n_clearing": 144,
+        "lambda2_hard": 0.22892323685294638,
+        "lambda2_wise": 0.22892323685294638,
+        "hard_equals_wise": true
+      }
+    ],
+    "note": "Under the affine surrogate HARD coincides with WISE at every viable requirement, so the certified-budget comparison cannot be posed on this scenario at all."
+  },
   "conclusion": "The strictly affine (action-independent) tube surrogate disconnects the flagship for every assignment, so the N=6 instance is reported as an exact integer illustration under an action-pair-dependent graph, outside Assumption 1(ii), Theorem 2 and the Stage-2 SDP; those are validated on the affine N=12 instances. Lemma 2, Cor. 2 and Cor. 3 hold at a fixed assignment and are unaffected."
 }

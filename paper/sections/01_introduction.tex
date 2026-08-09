@@ -16,25 +16,27 @@ Communication-aware task allocation couples the two, trading utility against ass
 connectivity~\cite{williams2017matroid,ghosh2006growing}; heterogeneous MRTA solves integer
 coalition allocation under physical constraints~\cite{calvo2025heterogeneous}, and backbone
 methods reconfigure the relay layer~\cite{santos2024backbone}. Each imposes connectivity as a
-\emph{constraint}, scalarises it against utility, or repairs the backbone after the fact;
-none characterizes the geometry of the \emph{exact} wrench-feasible productive-optimum set, or
-uses its neutral directions to decide whether connectivity is free. We exploit a structural
+\emph{constraint}, scalarizes it against utility, or repairs the backbone after the fact. We
+are not aware of a formulation that characterizes the geometry of the \emph{exact}
+wrench-feasible productive-optimum set and uses its neutral directions to decide whether
+connectivity is free. Throughout, \emph{zero-cost} means zero loss of the productive utility
+$V$, not zero energy, time, communication or role change. We exploit a structural
 degeneracy: the payoff couples only through aggregates, so the productive optimum fixes the
 served aggregate but leaves an aggregate-invariant fiber of wrench-feasible compositions
 (Thm.~\ref{thm:degeneracy}), over which connectivity is selected lexicographically.
 
-\emph{What is and is not new.} Exploiting redundancy for a free secondary objective is an old
-and good idea: null-space task-priority control lets lower-priority behaviors use kinematic
-redundancy without perturbing a primary task~\cite{antonelli2010nsb}. Here the redundancy is
-not a kinematic Jacobian but a \emph{wrench-constrained assignment-optimum polytope}; the
-secondary objective is the \emph{nonsmooth} algebraic connectivity; and
+\emph{Relation to task-priority control.} Exploiting redundancy for a free secondary objective
+is an established idea: null-space task-priority control lets lower-priority behaviors use
+kinematic redundancy without perturbing a primary task~\cite{antonelli2010nsb}. Here the
+redundancy is not a kinematic Jacobian but a \emph{wrench-constrained assignment-optimum
+polytope}, the secondary objective is the \emph{nonsmooth} algebraic connectivity, and
 $\Gamma_{\Emanifold}=0$ is equivalent to \emph{global} connectivity optimality over the whole
-fiber, repeated Fiedler eigenvalues included. The remaining mechanics are
-standard---concavity of $\lamtwo$ in affine weights~\cite{fiedler1973,ghosh2006growing},
-derivatives of a repeated minimum eigenvalue~\cite{lewis1996spectral}, LMI connectivity
-design---so novelty is claimed only for that fiber, the local--global certificate on it, and
-its attainability. \emph{Scope:} equilibrium-set geometry and planner-side
-selection, not distributed Nash seeking.
+fiber, repeated Fiedler eigenvalues included. The analysis builds on established results:
+concavity of $\lamtwo$ in affine weights~\cite{fiedler1973,ghosh2006growing}, derivatives of a
+repeated minimum eigenvalue~\cite{lewis1996spectral}, and LMI connectivity design. Novelty is
+claimed only for that fiber, the local--global certificate on it, and its attainability.
+\emph{Scope:} equilibrium-set geometry and planner-side selection, not distributed Nash
+seeking, actuator-level realization or hardware.
 
 \emph{Contributions.} \textbf{(i) Optimal-fiber networkability}
 (Thms.~\ref{thm:degeneracy},~\ref{thm:networkability}): the optimal aggregate is unique but the

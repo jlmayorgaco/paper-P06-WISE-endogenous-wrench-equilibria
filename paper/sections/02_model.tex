@@ -30,7 +30,7 @@ admissible pose, no link double-counted.
 
 \subsection{Wrench feasibility}
 We assume \emph{quasi-static planar transport with rigid (bilateral) robot--load attachment},
-so a robot may push \emph{and} pull along the modelled directions; unilateral pushing, friction
+so a robot may push \emph{and} pull along the modeled directions; unilateral pushing, friction
 cones and contact-mode transitions are outside this
 model~\cite{murray1994manipulation}. The capacity weight $c_\tau$ in $Bz$ is a scheduling
 coefficient, \emph{distinct} from the actuation data $(F_\tau,G_\tau,A_{kh})$ setting wrench
@@ -64,7 +64,7 @@ Write $\widehat X$ for the lifted set in $(z,\xi)$ and $\pi(z,\xi)=z$, so
 $X_{\mathrm f}=\pi(\widehat X)$: an explicit description, and Sec.~\ref{sec:wise} shows the
 relevant tangent cone projects from it \emph{exactly}, so no facet enumeration is required
 anywhere. A finite-direction support polytope $\{z:H_wz\ge d\}$ serves only as a fast \emph{outer}
-screen: it proposes, \eqref{eq:tensor} disposes. We study
+screen: candidates it admits are certified by \eqref{eq:tensor}. We study
 assignment and communication feasibility, not actuator-level realization.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
