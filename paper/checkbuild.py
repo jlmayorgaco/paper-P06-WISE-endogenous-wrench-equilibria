@@ -10,7 +10,22 @@ import sys
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
-STRAY = [r"\bef\{", r"efsec:", r"\?\?", r"Sections III--III"]
+STRAY = [r"\bef\{", r"efsec:", r"\?\?", r"Sections III--III",
+         # a backslash eaten by a shell/Python escape leaves the command's tail as prose
+         r"\barepsilon", r"(?<![A-Za-z])lpha[^-A-Za-z]", r"\bambda_", r"\bigma_\{"]
+# control characters that a mangled \v \a \t \b \f leaves behind in a .tex source
+CTRL = "\x07\x08\x09\x0b\x0c"
+
+
+def _control_chars() -> list[str]:
+    hits = []
+    for f in sorted((HERE / "sections").glob("*.tex")) + [HERE / "main.tex"]:
+        t = f.read_text(encoding="utf-8", errors="replace")
+        # tabs are legal in tabular sources; only flag them inside inline math runs
+        n = sum(t.count(c) for c in "\x07\x08\x0b\x0c")
+        if n:
+            hits.append(f"{f.name}:{n}")
+    return hits
 
 
 def main(max_pages: int = 6) -> int:
@@ -34,8 +49,10 @@ def main(max_pages: int = 6) -> int:
     print(f"pages              : {n_pages}  (limit {max_pages})")
     print(f"undefined refs     : {len(undefined)}")
     print(f"overfull hbox >5pt : {len(bad_over)}  {[f'{x:.1f}' for x in bad_over[:6]]}")
+    ctrl = _control_chars()
     print(f"stray markers      : {stray if stray else 'none'}")
-    ok = (n_pages <= max_pages and not undefined and not bad_over
+    print(f"control chars      : {ctrl if ctrl else 'none'}")
+    ok = (n_pages <= max_pages and not undefined and not bad_over and not ctrl
           and (not stray or stray == ["<pdftotext unavailable>"]))
     print("GATES:", "PASS" if ok else "FAIL")
     return 0 if ok else 1

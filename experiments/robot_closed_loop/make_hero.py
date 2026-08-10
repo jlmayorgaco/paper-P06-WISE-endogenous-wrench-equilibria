@@ -29,9 +29,6 @@ for p in (str(ROOT / "src"), str(ROOT / "experiments"), str(ROOT)):
 
 from experiments.robot_closed_loop import config as C  # noqa: E402
 from experiments.robot_closed_loop import make_figure as MF  # noqa: E402
-from experiments.robot_closed_loop import run_flagship as RF  # noqa: E402
-from experiments.robot_closed_loop import scenario as S  # noqa: E402
-from experiments.robot_closed_loop import simulator as sim  # noqa: E402
 
 GEN = ROOT / "generated"
 FIGDIR = ROOT / "figures"
@@ -64,25 +61,26 @@ def _exchange_panel(ax, lifters1, lifters2, relay_long, title, lam):
         for x, is_long in zip(xs, lift, strict=True):
             ax.plot([x, x], [LIFT_Y + 0.14, LOAD_Y - LH / 2], color=LOAD_EC, lw=0.6,
                     ls=(0, (2, 1.5)), zorder=1)
-            ax.scatter(x, LIFT_Y, marker="^" if is_long else "o", s=64 if is_long else 26,
+            ax.scatter(x, LIFT_Y, marker="^" if is_long else "o", s=95 if is_long else 40,
                        c=RED, edgecolors="k", lw=0.35, zorder=5)
-    ax.text(xB + 0.92, LOAD_Y + 0.28, r"$w^{\rm dem}_k$", fontsize=5.2, ha="left", color=INK)
-    ax.scatter(xR, RELAY_Y, marker="D", s=120, facecolors="none", edgecolors="#9aa0a6",
+    ax.text(xB + 0.85, LOAD_Y + 0.30, r"$w^{\rm dem}_k$", fontsize=6.6, ha="left", color=INK)
+    ax.scatter(xR, RELAY_Y, marker="D", s=150, facecolors="none", edgecolors="#9aa0a6",
                lw=0.7, zorder=2)
     if relay_long:
         for cx in (xA, xB):
-            ax.plot([cx, xR], [LIFT_Y, RELAY_Y], color=GREEN, lw=1.5, zorder=1)
-        ax.scatter(xR, RELAY_Y, marker="^", s=64, c=GREEN, edgecolors="k", lw=0.35, zorder=5)
+            ax.plot([cx, xR], [LIFT_Y, RELAY_Y], color=GREEN, lw=1.7, zorder=1)
+        ax.scatter(xR, RELAY_Y, marker="^", s=95, c=GREEN, edgecolors="k", lw=0.35, zorder=5)
+        ax.text(xR, RELAY_Y - 0.72, "relay", fontsize=6.6, color=GREEN, ha="center")
     else:
-        ax.plot([xR - 0.45, xR + 0.45], [RELAY_Y, RELAY_Y], color=RED, lw=1.1,
+        ax.plot([xR - 0.45, xR + 0.45], [RELAY_Y, RELAY_Y], color=RED, lw=1.2,
                 ls=(0, (1, 1.2)), zorder=1)
-        ax.text(xR, RELAY_Y - 0.62, "gap", fontsize=5.4, color=RED, ha="center")
-    ax.text(xA, LIFT_Y - 0.78, "3S" if len(lifters1) == 3 else "1L+1S",
-            fontsize=5.6, ha="center", color=INK)
-    ax.text(xB, LIFT_Y - 0.78, "1L+1S", fontsize=5.6, ha="center", color=INK)
-    ax.set_title(rf"{title}:  $\lambda_2(\bar L)={lam:.3f}$", fontsize=6.6, pad=4)
+        ax.text(xR, RELAY_Y - 0.72, "no bridge", fontsize=6.6, color=RED, ha="center")
+    ax.text(xA, LIFT_Y - 0.85, "3S" if len(lifters1) == 3 else "1L+1S",
+            fontsize=7.0, ha="center", color=INK)
+    ax.text(xB, LIFT_Y - 0.85, "1L+1S", fontsize=7.0, ha="center", color=INK)
+    ax.set_title(rf"{title}:  $\lambda_2(L_{{\rm pair}})={lam:.3f}$", fontsize=7.2, pad=3)
     ax.set_xlim(-1.75, 6.4)
-    ax.set_ylim(-2.00, 2.60)
+    ax.set_ylim(-2.15, 2.30)
     ax.set_aspect("equal")
     ax.set_xticks([])
     ax.set_yticks([])
@@ -112,8 +110,7 @@ def _budget_panel(ax, sigma_req):
     grid = 0.01
     for m in ("HARD", "WISE"):
         xy = np.array(sorted(curves[m]))
-        ax.plot(xy[:, 0], xy[:, 1], color=COLORS[m], ls=STYLES[m], lw=1.5,
-                label={"WISE": "pair-WISE"}.get(m, m))
+        ax.plot(xy[:, 0], xy[:, 1], color=COLORS[m], ls=STYLES[m], lw=1.7)
         rec = budget["methods"][m]
         rc, rho_pass = rec["certified_rho"], rec["observed_last_rho_clearing_sigma_req"]
         rho_fail = round(rho_pass + grid, 4)
@@ -122,16 +119,23 @@ def _budget_panel(ax, sigma_req):
                 mfc="white", mec=COLORS[m], mew=1.0, zorder=6)
         ax.plot([rho_fail], [np.interp(rho_fail, xy[:, 0], xy[:, 1])], marker="x", ms=3.6,
                 mec=COLORS[m], mew=1.0, zorder=6)
-        ax.text(rc - 0.008, 0.405, rf"${100 * rc:.1f}\%$", fontsize=6.0, rotation=90,
-                ha="right", va="top", color=COLORS[m])
+        ax.annotate(rf"${100 * rc:.1f}\%$ certified", xy=(rc, sigma_req),
+                    xytext=(rc + 0.035, sigma_req + 0.055 + 0.030 * (m == "WISE")),
+                    fontsize=7.0, color=COLORS[m],
+                    arrowprops=dict(arrowstyle="->", color=COLORS[m], lw=0.8))
+        # name each curve just under its left end, where the two are furthest apart
+        ax.text(0.012, xy[0, 1] - 0.010, {"WISE": "pair-WISE"}.get(m, m), fontsize=7.0,
+                color=COLORS[m], ha="left", va="top")
     ax.axhline(sigma_req, color="#2c3e50", ls="--", lw=0.9)
-    ax.text(0.592, sigma_req + 0.006, r"$\sigma_{\rm req}$", fontsize=6.4, ha="right",
+    ax.text(0.592, sigma_req + 0.006, r"$\sigma_{\rm req}$", fontsize=7.0, ha="right",
             va="bottom", color="#2c3e50")
+    ax.text(0.592, 0.150, "$\\circ$ last passing   $\\times$ first failing",
+            fontsize=6.6, ha="right", va="bottom", color="#5b6470")
     ax.set_xlim(0.0, 0.6)
     ax.set_xlabel(r"relay attenuation $\rho$", fontsize=7.0, labelpad=1.5)
     ax.set_ylabel(r"$\lambda_2(L_{\rm pair,\rho})$", fontsize=7.0, labelpad=1.5)
     ax.set_title("(b) HARD vs. pair-WISE relay attenuation", fontsize=7.4, pad=3.0)
-    ax.tick_params(labelsize=6.2)
+    ax.tick_params(labelsize=6.8)
     ax.grid(alpha=0.2, lw=0.35)
 
 
@@ -148,23 +152,19 @@ def main():
     methods = [m for m in ("PROD", "HARD", "WISE") if m in ts]
     lam = {m: summary["summaries"][m]["lambda2_bar"] for m in methods}
 
-    _, chosen, _ = RF.select()
-    runs = {m: sim.simulate(m, chosen[m], S.lbar(chosen[m])) for m in ("PROD", "WISE")}
-
     fig = plt.figure(figsize=(7.16, 2.16))
-    gs = fig.add_gridspec(2, 3, wspace=0.34, hspace=0.42,
-                          width_ratios=[1.30, 1.34, 0.96])
+    gs = fig.add_gridspec(2, 3, wspace=0.30, hspace=0.46,
+                          width_ratios=[0.30, 0.45, 0.25])
     ax_a1, ax_a2 = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0])
     ax_f = fig.add_subplot(gs[:, 1])                       # (b) the certified budget
     ax_d = fig.add_subplot(gs[:, 2])                       # (c) information-layer error
 
-    # (a) the exchange, shown on the actual teams: composition + invariants + lambda_2
-    comp = {"PROD": "no relay", "WISE": "L relays"}
-    for ax, m, ttl, ann in ((ax_a1, "PROD", "(a) productive-only", False),
-                            (ax_a2, "WISE", "pair-WISE", True)):
-        MF._scene_panel(ax, summary, ttl, m, runs[m], chosen[m], annotate=ann)
-        ax.set_title(rf"{ttl}:  {comp[m]},  $\lambda_2(L_{{\rm pair}})={lam[m]:.3f}$",
-                     fontsize=7.0, pad=3.0)
+    # (a) the exchange as a schematic: which robot lifts, which relays, what it costs.
+    # A didactic diagram beats a rendered scene at print size.
+    _exchange_panel(ax_a1, [True, False], [True, False], False,
+                    "(a) productive-only", lam["PROD"])
+    _exchange_panel(ax_a2, [False, False, False], [True, False], True,
+                    "pair-WISE", lam["WISE"])
 
     # (c) the certified information-layer error
     t0 = None
@@ -183,12 +183,17 @@ def main():
               rf"certified $e^{{-{alpha_cert:.4f}t}}$", fontsize=5.8, color="#7f8c8d",
               ha="right", va="bottom")
     ax_d.set_ylabel(r"$\|[a,b]\|_P$", fontsize=7.0, labelpad=1.5)
-    lbl = {"PROD": "PROD (diverges)", "HARD": "HARD", "WISE": "pair-WISE"}
-    ax_d.legend(handles=[plt.Line2D([], [], color=COLORS[m], ls=STYLES[m], lw=1.3,
-                                    label=lbl[m])
-                         for m in methods],
-                fontsize=6.0, frameon=False, loc="lower left", handlelength=1.7,
-                borderpad=0.15, labelspacing=0.25)
+    # label each curve where it ends: no legend box sitting on top of the data
+    lbl = {"PROD": "PROD", "HARD": "HARD", "WISE": "pair-WISE"}
+    for m in methods:
+        d = ts[m]
+        op = d["phase"] == "operational"
+        tv, yv = d["t"][op], np.maximum(d["info_norm_certified"][op], 1e-16)
+        # PROD rises off the top, so anchor its label mid-curve instead of at the end
+        j = int(0.62 * len(tv)) if m == "PROD" else len(tv) - 1
+        ax_d.annotate(lbl[m], xy=(tv[j], yv[j]), xytext=(-3, -4 if m == "PROD" else 3),
+                      textcoords="offset points", fontsize=6.6, color=COLORS[m],
+                      ha="right", va="top" if m == "PROD" else "bottom", zorder=7)
     ax_d.set_title("(c) information-layer error", fontsize=7.4, pad=3.0)
 
     for ax in (ax_d,):
