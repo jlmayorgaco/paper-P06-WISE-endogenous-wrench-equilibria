@@ -12,12 +12,12 @@ to lifting and leave none to relay, so connectivity collapses and the estimator 
 channel.
 
 Population-game and distributed Nash-seeking formulations take the interaction graph as given.
-Communication-aware task allocation couples the two, trading utility against assignment-induced
-connectivity~\cite{williams2017matroid,ghosh2006growing}; heterogeneous MRTA solves integer
-coalition allocation under physical constraints~\cite{calvo2025heterogeneous}, and backbone
-methods reconfigure the relay layer~\cite{santos2024backbone}. Each imposes connectivity as a
-\emph{constraint}, scalarizes it against utility, or repairs the backbone after the fact. We
-are not aware of a formulation that characterizes the geometry of the \emph{exact}
+Topology-constrained multi-robot allocation~\cite{williams2017matroid} and spectral graph
+design~\cite{ghosh2006growing} address related components; heterogeneous MRTA adds physical
+coalition constraints~\cite{calvo2025heterogeneous}, and backbone methods reconfigure the relay
+layer~\cite{santos2024backbone}. Each imposes connectivity as a \emph{constraint}, scalarizes
+it against utility, or repairs the backbone after the fact. To the best of our targeted review
+we are not aware of a formulation that characterizes the geometry of the \emph{exact}
 wrench-feasible productive-optimum set and uses its neutral directions to decide whether
 connectivity is free. Throughout, \emph{zero-cost} means zero loss of the productive utility
 $V$, not zero energy, time, communication or role change. We exploit a structural
@@ -41,10 +41,12 @@ seeking, actuator-level realization or hardware.
 \emph{Contributions.} \textbf{(i) Optimal-fiber networkability}
 (Thms.~\ref{thm:degeneracy},~\ref{thm:networkability}): the optimal aggregate is unique but the
 equal-payoff assignments form a fiber whose dimension is the local loss of strong monotonicity,
-and one scalar $\Gamma_{\Emanifold}$ is positive iff a strictly better-connected optimum exists
-\emph{anywhere} on it, zero iff the point is globally connectivity-optimal.
+whose positive dimension is \emph{equivalent} to loss of strong monotonicity on the active
+composition face, and one scalar $\Gamma_{\Emanifold}$ is positive iff a strictly
+better-connected optimum exists \emph{anywhere} on it, zero iff the point is globally
+connectivity-optimal.
 \textbf{(ii) Selection, price and operational attenuation bound}
-(Thm.~\ref{thm:existence} and Cors.~\ref{cor:tv}--\ref{cor:budget}): WISE is a lexicographic
+(Thm.~\ref{thm:existence}, Cors.~\ref{cor:tv} and~\ref{cor:budget}): WISE is a lexicographic
 refinement computed by SDP, $\LamE\le\LamX$ separate \emph{free}, \emph{costly} and
 \emph{impossible} requirements, clearing $\sigmadyn$ stabilizes a reduced information-layer
 interface at a rate bound that survives a moving graph, and the reserve is a certified

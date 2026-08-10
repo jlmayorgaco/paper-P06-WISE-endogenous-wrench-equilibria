@@ -112,7 +112,8 @@ def _budget_panel(ax, sigma_req):
     grid = 0.01
     for m in ("HARD", "WISE"):
         xy = np.array(sorted(curves[m]))
-        ax.plot(xy[:, 0], xy[:, 1], color=COLORS[m], ls=STYLES[m], lw=1.3, label=m)
+        ax.plot(xy[:, 0], xy[:, 1], color=COLORS[m], ls=STYLES[m], lw=1.5,
+                label={"WISE": "pair-WISE"}.get(m, m))
         rec = budget["methods"][m]
         rc, rho_pass = rec["certified_rho"], rec["observed_last_rho_clearing_sigma_req"]
         rho_fail = round(rho_pass + grid, 4)
@@ -129,7 +130,7 @@ def _budget_panel(ax, sigma_req):
     ax.set_xlim(0.0, 0.6)
     ax.set_xlabel(r"relay attenuation $\rho$", fontsize=7.0, labelpad=1.5)
     ax.set_ylabel(r"$\lambda_2(L_{\rm pair,\rho})$", fontsize=7.0, labelpad=1.5)
-    ax.set_title("(b) HARD vs. WISE relay attenuation", fontsize=6.6, pad=2.5)
+    ax.set_title("(b) HARD vs. pair-WISE relay attenuation", fontsize=7.4, pad=3.0)
     ax.tick_params(labelsize=6.2)
     ax.grid(alpha=0.2, lw=0.35)
 
@@ -150,8 +151,8 @@ def main():
     _, chosen, _ = RF.select()
     runs = {m: sim.simulate(m, chosen[m], S.lbar(chosen[m])) for m in ("PROD", "WISE")}
 
-    fig = plt.figure(figsize=(7.16, 1.08))
-    gs = fig.add_gridspec(2, 3, wspace=0.42, hspace=0.52,
+    fig = plt.figure(figsize=(7.16, 2.16))
+    gs = fig.add_gridspec(2, 3, wspace=0.34, hspace=0.42,
                           width_ratios=[1.30, 1.34, 0.96])
     ax_a1, ax_a2 = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0])
     ax_f = fig.add_subplot(gs[:, 1])                       # (b) the certified budget
@@ -160,24 +161,35 @@ def main():
     # (a) the exchange, shown on the actual teams: composition + invariants + lambda_2
     comp = {"PROD": "no relay", "WISE": "L relays"}
     for ax, m, ttl, ann in ((ax_a1, "PROD", "(a) productive-only", False),
-                            (ax_a2, "WISE", "WISE", True)):
+                            (ax_a2, "WISE", "pair-WISE", True)):
         MF._scene_panel(ax, summary, ttl, m, runs[m], chosen[m], annotate=ann)
         ax.set_title(rf"{ttl}:  {comp[m]},  $\lambda_2(L_{{\rm pair}})={lam[m]:.3f}$",
-                     fontsize=6.2, pad=2.5)
+                     fontsize=7.0, pad=3.0)
 
     # (c) the certified information-layer error
+    t0 = None
     for m in methods:
         d = ts[m]
         op = d["phase"] == "operational"
-        ax_d.semilogy(d["t"][op], np.maximum(d["info_norm_certified"][op], 1e-16),
-                      color=COLORS[m], ls=STYLES[m], lw=1.3)
+        y = np.maximum(d["info_norm_certified"][op], 1e-16)
+        ax_d.semilogy(d["t"][op], y, color=COLORS[m], ls=STYLES[m], lw=1.3)
+        if t0 is None:
+            t0, y0 = d["t"][op], float(y[0])
+    # the certified lower-rate bound of Cor. 2: an envelope, not a fitted curve
+    alpha_cert = float(summary["summaries"]["WISE"]["alpha_certified"])
+    ax_d.semilogy(t0, y0 * np.exp(-alpha_cert * (t0 - t0[0])), color="#7f8c8d",
+                  ls=(0, (5, 2)), lw=1.0, zorder=1)
+    ax_d.text(t0[-1], y0 * np.exp(-alpha_cert * (t0[-1] - t0[0])),
+              rf"certified $e^{{-{alpha_cert:.4f}t}}$", fontsize=5.8, color="#7f8c8d",
+              ha="right", va="bottom")
     ax_d.set_ylabel(r"$\|[a,b]\|_P$", fontsize=7.0, labelpad=1.5)
+    lbl = {"PROD": "PROD (diverges)", "HARD": "HARD", "WISE": "pair-WISE"}
     ax_d.legend(handles=[plt.Line2D([], [], color=COLORS[m], ls=STYLES[m], lw=1.3,
-                                    label=m + (" (diverges)" if m == "PROD" else ""))
+                                    label=lbl[m])
                          for m in methods],
                 fontsize=6.0, frameon=False, loc="lower left", handlelength=1.7,
                 borderpad=0.15, labelspacing=0.25)
-    ax_d.set_title("(c) information-layer error", fontsize=6.6, pad=2.5)
+    ax_d.set_title("(c) information-layer error", fontsize=7.4, pad=3.0)
 
     for ax in (ax_d,):
         ax.axvspan(C.T_DIST, C.T_DIST + C.DUR_DIST, color="#95a5a6", alpha=0.16, lw=0)
@@ -188,7 +200,7 @@ def main():
     # (b) the operational reading of the reserve
     _budget_panel(ax_f, sigma_req)
 
-    fig.subplots_adjust(left=0.005, right=0.955, top=0.885, bottom=0.155)
+    fig.subplots_adjust(left=0.005, right=0.965, top=0.930, bottom=0.095)
     FIGDIR.mkdir(exist_ok=True)
     fig.savefig(PAPERFIG / "fig_robot_hero.pdf", bbox_inches="tight",
                 metadata={"CreationDate": None})

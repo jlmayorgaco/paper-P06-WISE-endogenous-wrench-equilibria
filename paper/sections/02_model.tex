@@ -3,11 +3,10 @@
 
 \subsection{Assignment state (relaxed per-robot occupancy $z$)}
 A team of $N$ robots has $T$ types (heterogeneous in force and range), $\tau(i)$ the type of
-robot $i$; there are $M$ loads with $H$ contact slots each, relay sites $\mathcal R$, and the
-action set $\mathcal A=\{(k,h)\}\cup\mathcal R\cup\{\mathrm o\}$ with $\mathrm o$ idle. The
-\emph{assignment state} is the relaxed per-robot occupancy
-$z=(z_{ia})\in[0,1]^{N\times|\mathcal A|}$: each robot spends a unit budget, each slot or relay
-site holds at most one robot,
+robot $i$, $M$ loads with $H$ contact slots each, relay sites $\mathcal R$, and action set
+$\mathcal A=\{(k,h)\}\cup\mathcal R\cup\{\mathrm o\}$ ($\mathrm o$ idle). The \emph{assignment
+state} is the relaxed per-robot occupancy $z=(z_{ia})\in[0,1]^{N\times|\mathcal A|}$: each
+robot spends a unit budget, each slot or relay site holds at most one robot,
 \begin{equation}
 \textstyle\sum_{a} z_{ia}=1\ \forall i,\quad
 \sum_i z_{i,kh}\le1\ \forall(k,h),\quad \sum_i z_{i,r}\le1\ \forall r.
@@ -40,9 +39,9 @@ A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-ali
 $U_\tau(\phi)$, semi-axes $F_\tau,\kappa F_\tau$ ($\kappa\le1$). Not tracking headings, we
 certify against the heading-independent \emph{inner zonotope}
 $U_\tau^{\mathrm{in}}=\{G_\tau u:\|u\|_\infty\le1\}$ inscribed in
-$\mathrm{disk}(\kappa F_\tau)\subseteq U_\tau(\phi)$: \emph{conservative}, no false positive.
-With $A_{kh}$ the contact-to-wrench map at slot $(k,h)$ and $\wdem_k$ the demanded wrench, the
-reachable set is $\Wmap(C_k)=\bigoplus_{\tau,h}z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$.
+$\mathrm{disk}(\kappa F_\tau)\subseteq U_\tau(\phi)$: conservative, no false positive. With
+$A_{kh}$ the contact-to-wrench map and $\wdem_k$ the demand,
+$\Wmap(C_k)=\bigoplus_{\tau,h}z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$.
 
 \begin{lemma}[Exact lifted representation of the inner-zonotope actuation model]
 \label{prop:membership}
@@ -53,13 +52,10 @@ $\wdem_k\in\Wmap(C_k)$ iff there exist generator coefficients $\xi_{\tau kh}$ wi
 -z_{\tau kh}\mathbf 1\le\xi_{\tau kh}\le z_{\tau kh}\mathbf 1 .
 \label{eq:tensor}
 \end{equation}
-Wrench feasibility of load $k$ is thus a linear feasibility problem in $(z,\xi)$---the
-\emph{exact} membership test, and the one every reported assignment is re-certified against.
+Wrench feasibility of load $k$ is thus a linear feasibility problem in $(z,\xi)$: the
+\emph{exact} membership test, against which every reported assignment is re-certified. It
+follows by superposition of the scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$.
 \end{lemma}
-\begin{proof}[Proof sketch]
-The scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$ superpose, giving
-\eqref{eq:tensor}.
-\end{proof}
 Write $\widehat X$ for the lifted set in $(z,\xi)$ and $\prz(z,\xi)=z$, so
 $X_{\mathrm f}=\prz(\widehat X)$: an \emph{extended formulation} rather than an inequality
 description in $z$. Sec.~\ref{sec:wise} shows the relevant tangent cone projects from it
@@ -73,20 +69,17 @@ The information graph has a \emph{fixed} node set, one node per robot identity: 
 short-range conductances; when robot $i$ commits to relay $r$ it \emph{gates on} its predefined
 long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
-weighted by tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$ over the
-tube $\mathcal Q_{ir}$ of admissible positions, fixed before optimization---so each $L_{ir}$ is
-decision-independent and the SDP stays affine. For $L_0$ the infimum is over each robot's
-admissible positions \emph{across all its actions}, not its idle pose, so that both $L_0$ and
-every $L_{ir}$ are lower-bound Laplacians and $\Lgeo(q)\succeq\Lap(\hat z)$
+weighted by tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$ fixed before
+optimization, so each $L_{ir}$ is decision-independent and the SDP stays affine. For $L_0$ the
+infimum is over each robot's admissible positions \emph{across all its actions}, so both $L_0$
+and every $L_{ir}$ are lower-bound Laplacians and $\Lgeo(q)\succeq\Lap(\hat z)$
 (Assumption~\ref{as:standing}(iv)). Thus
 \begin{equation}
 \Lap(z)=L_0+\sum_{i,r}\,z_{ir}\,L_{ir}\ \in\R^{N\times N}.
 \label{eq:laplacian}
 \end{equation}
-Each $L_{ir}$ fixed and robot-indexed makes $\Lap$ affine in $z$, no matching or permutation
-needed: a surrogate for the physical $\Lgeo(q)$ on the \emph{same} $N$ robots, compared
-through Lemma~\ref{lem:bridge}. With $Q\in\R^{N\times(N-1)}$ an orthonormal
-basis of $\mathbf 1^{\perp}$, the information constraint is the LMI
+With $Q\in\R^{N\times(N-1)}$ an orthonormal basis of $\mathbf 1^{\perp}$, the information
+constraint is the LMI
 \begin{equation}
 Q^{\top}\Lap(z)\,Q\succeq\sigmastar I
 \;\Longleftrightarrow\;
@@ -108,10 +101,10 @@ Assumption~\ref{as:standing}(iv) and the lower-bound construction of $L_0,L_{ir}
 (L_{ir}^{\mathrm{geo}}{-}L_{ir})\succeq0,
 \label{eq:mismatch}
 \end{equation}
-a sum of PSD terms. Restricting to $\mathbf 1^{\perp}$, eigenvalue monotonicity gives
-$\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$, so a certificate
+a sum of PSD terms, so on $\mathbf 1^{\perp}$ eigenvalue monotonicity gives
+$\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$: a certificate
 $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$ yields $\lamtwo(\Lgeo(q))\ge\sigmadyn$
-\emph{a priori} at every admissible pose---no post-hoc mismatch term.
+\emph{a priori} at every admissible pose.
 \end{lemma}
 Every candidate is \emph{independently re-evaluated} in double precision, accepted only when
 equality residuals, slacks, wrench feasibility and the spectral margin clear prescribed

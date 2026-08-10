@@ -97,11 +97,14 @@ lexicographically by a semidefinite program, and the spectral capacities separat
 requirements. The resulting margin is an \emph{operational budget}: attenuating every relay
 conductance by $\rho$ preserves the certificate up to an explicit $\rho_{\mathrm{cert}}$,
 equal to $1-\sigmastar/\lamtwo$ when the base graph is disconnected, which WISE maximizes over
-the fiber. In a planar closed-loop transport study a hard-threshold selector and WISE both
-preserve $V^{\star}$ and finish the nominal mission indistinguishably, yet their certified
-budgets are $10.8\%$ against $24.8\%$. On the tested $N\le8$ instances exact enumeration puts
-the attainable integer self-sustaining gap below $0.06\%$ of $V^{\star}$, reported separately
-from the loss of a rounding heuristic.
+the fiber. The affine formulation is validated on $N{=}12$ instances, where the directional
+certificate vanishes at every SDP selector tested. A \emph{separate} $N{=}6$ pair-dependent
+integer stress test, solved by exhaustive enumeration, illustrates the composition exchange and
+the fixed-assignment attenuation guarantee: a hard-threshold selector and pair-WISE preserve
+the same productive value and finish the nominal mission indistinguishably, yet certify
+$10.8\%$ against $24.8\%$ relay attenuation. On the tested $N\le8$ instances exact enumeration
+puts the attainable integer self-sustaining gap below $0.06\%$ of $V^{\star}$, reported
+separately from the loss of a rounding heuristic.
 \end{abstract}
 
 \begin{IEEEkeywords}

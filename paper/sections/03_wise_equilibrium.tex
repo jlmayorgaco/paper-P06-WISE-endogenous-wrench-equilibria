@@ -42,8 +42,10 @@ On the $N{=}12$ instances of Sec.~\ref{sec:exp} ($n=72$, $\operatorname{rank}[A;
 active inequality) this gives $\dim\Emanifold=59$, certified to residuals $<10^{-15}$; a
 boundary optimum where wrench facets bind gives a smaller fiber.
 
-That dimension is exactly a loss of strong monotonicity. With $P_F$ spanning the active-face
-tangent $\ker A\cap\ker G_I$ (nontrivial, else no selection remains), the pseudo-gradient
+Positive fiber dimension is \emph{equivalent} to loss of strong monotonicity on the active
+composition face. Let $P_F\in\R^{n\times d_F}$ have \emph{orthonormal} columns spanning the
+active-face tangent $\ker A\cap\ker G_I$ (nontrivial, else no selection remains); the
+pseudo-gradient
 $F(z)=\alpha B^{\top}(Bz-y_{\mathrm{ref}})$ obeys
 $\langle F(z{+}d)-F(z),d\rangle=\alpha\|Bd\|_2^2$, so
 $\mu_F=\alpha\lambda_{\min}(P_F^{\top}B^{\top}BP_F)$ and $\mu_F=0\iff N_p(\bar z)\neq\{0\}$:
@@ -69,10 +71,9 @@ tangent cone, and with $\widetilde L(\bar z)=Q^{\top}\Lap(\bar z)Q$ (so
 $\lambda_{\min}(\widetilde L)=\lamtwo(\Lap)$) let $\widetilde U_2$ span its
 minimum-eigenvalue eigenspace; set $U_2(\bar z)=Q\widetilde U_2\in\R^{N\times m}$,
 $m=\dim\ker(\widetilde L(\bar z)-\lamtwo I)$,
-so $U_2^{\top}\mathbf1=0$ \emph{by construction}. This matters because on a disconnected
+so $U_2^{\top}\mathbf1=0$ \emph{by construction}, which matters because on a disconnected
 graph $\lamtwo(\Lap)=0$ is degenerate \emph{with} the consensus mode. As $\Lap$ is affine,
-$D\Lap[d]=\sum_{i,r}d_{ir}L_{ir}$ and the directional derivative is the spectral-function
-formula~\cite{lewis1996spectral}
+$D\Lap[d]=\sum_{i,r}d_{ir}L_{ir}$ and~\cite{lewis1996spectral} gives
 \begin{equation}
 D\lamtwo(\bar z)[d]=\lambda_{\min}\!\big(U_2^{\top}D\Lap[d]\,U_2\big),
 \label{eq:dirderiv}
@@ -105,13 +106,12 @@ general it is the small convex SDP $\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,
 U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
 \end{theorem}
 \begin{proof}[Proof sketch]
-$\Gamma_{\Emanifold}\ge0$ since $d=0$ is admissible, and $f=\lamtwo\circ\Lap$ is finite
-concave, so $Df(\bar z)[\cdot]$ exists, is positively homogeneous and overestimates increments.
-($\Leftarrow$) An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with
-$Df(\bar z)[d_0]>0$. ($\Rightarrow$) If $Df(\bar z)[d]>0$, polyhedrality gives
-$T_{\Emanifold}(\bar z)=\operatorname{cone}(\Emanifold-\bar z)$, so $\bar z+td\in\Emanifold$
-improves $f$ for small $t>0$. The gap bound is concavity plus homogeneity along
-$\delta=z^{\star}_{\mathrm{WISE}}-\bar z$.
+$\Gamma_{\Emanifold}\ge0$ as $d=0$ is admissible, and $f=\lamtwo\circ\Lap$ is finite concave,
+so $Df(\bar z)[\cdot]$ is positively homogeneous and overestimates increments. ($\Leftarrow$)
+An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with $Df(\bar z)[d_0]>0$.
+($\Rightarrow$) polyhedrality gives $T_{\Emanifold}(\bar z)=\operatorname{cone}
+(\Emanifold-\bar z)$, so $\bar z+td\in\Emanifold$ improves $f$ for small $t>0$; the gap bound
+is concavity plus homogeneity.
 \end{proof}
 
 \begin{figure*}[t]\centering
@@ -119,10 +119,13 @@ $\delta=z^{\star}_{\mathrm{WISE}}-\bar z$.
   \caption{$N{=}6$ pair-dependent integer stress test. \textbf{(a)} The PROD--WISE
   exchange: the scarce $L$ is both the highest productive-capacity type and the only bridge, so
   swapping one $L$ for two $S$ and relaying the released $L$ preserves $Bz=y^{\star}$,
-  $V^{\star}$ and both wrench certificates. \textbf{(b)} $\lamtwo(\Lpair^{\rho})$ under relay
+  $V^{\star}$ and both \emph{nominal} wrench-feasibility certificates. \textbf{(b)}
+  $\lamtwo(\Lpair^{\rho})$ under relay
   attenuation: certified bounds \eqref{eq:budget} (dotted), last passing ($\circ$) and first
-  failing ($\times$) points of the $0.01$ grid. \textbf{(c)} certified information-layer error;
-  PROD diverges. Line style encodes the selector, so the panels read in grayscale.}
+  failing ($\times$) points of the $0.01$ grid. \textbf{(c)} \emph{simulated} information-layer
+  norm $\|[a,b]\|_P$: HARD and pair-WISE decay faster than the certified envelope
+  $\propto e^{-\alpha(\sigmastar)t}$, $\alpha(\sigmastar)=0.0397$ (grey), whereas PROD diverges.
+  Line style encodes the selector, so the panels read in grayscale.}
 \label{fig:hero}
 \end{figure*}
 
@@ -185,12 +188,8 @@ $\widetilde L(z)=Q^{\top}\Lap(z)Q$ ($a$ is not the served-aggregate error):
 with damping $\mF>0$, consensus gain $c>0$ and \emph{isotropic} couplings $\vt_1I,\vt_2I$,
 $\vt_1,\vt_2>0$, so \eqref{eq:interconnection} block-diagonalizes in the eigenbasis of
 $\widetilde L$: each eigenvalue $\lambda$ contributes an independent pair
-\begin{equation}
-\begin{bmatrix}\dot a_\lambda\\ \dot b_\lambda\end{bmatrix}
-=A_\lambda\begin{bmatrix}a_\lambda\\ b_\lambda\end{bmatrix},\qquad
-A_\lambda=\begin{bmatrix}-\mF&\vt_1\\ \vt_2&-c\lambda\end{bmatrix}.
-\label{eq:modal}
-\end{equation}
+$[\dot a_\lambda;\dot b_\lambda]=A_\lambda[a_\lambda;b_\lambda]$ with
+$A_\lambda=\big(\begin{smallmatrix}-\mF&\vt_1\\ \vt_2&-c\lambda\end{smallmatrix}\big)$.
 As $\operatorname{tr}A_\lambda<0$ and $\det A_\lambda=c\mF\lambda-\vt_1\vt_2$, $A_\lambda$ is
 Hurwitz \emph{iff} $\lambda>\sigmadyn:=\vt_1\vt_2/(c\mF)$, with decay rate
 \begin{equation}
@@ -212,52 +211,41 @@ guarantee at the same rate.
 Let \eqref{eq:interconnection} be driven by $\Lgeo(q(t))$ with
 $Q^{\top}\Lgeo(q(t))Q\succeq\sigmastar I$ for every $t$ of the operational window. Then, with
 $\mathcal V_c=\tfrac12(\vt_2\|a\|^2+\vt_1\|b\|^2)$ and $\|\cdot\|_P=\sqrt{2\mathcal V_c}$,
-\begin{equation}
-\dot{\mathcal V}_c\le-2\alpha(\sigmastar)\mathcal V_c,\quad
-\|[a,b](t)\|_P\le e^{-\alpha(\sigmastar)t}\|[a,b](0)\|_P,
-\label{eq:tvrate}
-\end{equation}
-with $\alpha$ \emph{exactly} \eqref{eq:rate}, positive iff $\sigmastar>\sigmadyn$.
+$\dot{\mathcal V}_c\le-2\alpha(\sigmastar)\mathcal V_c$, i.e.\
+$\|[a,b](t)\|_P\le e^{-\alpha(\sigmastar)t}\|[a,b](0)\|_P$, with $\alpha$ \emph{exactly}
+\eqref{eq:rate}, positive iff $\sigmastar>\sigmadyn$.
 \end{corollary}
 \begin{proof}[Proof sketch]
-With $b^{\top}Q^{\top}\Lgeo Qb\ge\sigmastar\|b\|^2$, $\dot{\mathcal V}_c\le
--[a;b]^{\top}(M{\otimes}I)[a;b]$, $M=(\vt_2\mF,-\vt_1\vt_2;-\vt_1\vt_2,\vt_1c\sigmastar)$ and
-$M\succeq\lambda_{\min}(M,P)P$, $P=\operatorname{diag}(\vt_2,\vt_1)$; as
-$P^{-1/2}MP^{-1/2}=(\mF,-\sqrt{\vt_1\vt_2};-\sqrt{\vt_1\vt_2},c\sigmastar)$ that generalized
-eigenvalue \emph{is} $\alpha(\sigmastar)$---$\mathcal V_c$ symmetrizes $A_\lambda$, so the
+With $b^{\top}Q^{\top}\Lgeo Qb\ge\sigmastar\|b\|^2$ and $P=\operatorname{diag}(\vt_2,\vt_1)$,
+$\dot{\mathcal V}_c\le-[a;b]^{\top}(M{\otimes}I)[a;b]\le-2\lambda_{\min}(M,P)\mathcal V_c$ for
+$M=(\vt_2\mF,-\vt_1\vt_2;-\vt_1\vt_2,\vt_1c\sigmastar)$; as
+$P^{-1/2}MP^{-1/2}=(\mF,-\sqrt{\vt_1\vt_2};-\sqrt{\vt_1\vt_2},c\sigmastar)$, that generalized
+eigenvalue \emph{is} $\alpha(\sigmastar)$: $\mathcal V_c$ symmetrizes $A_\lambda$, so the
 moving graph costs no rate.
 \end{proof}
-The two links differ. The relaxed selector gives a \emph{design and existence}
-certificate ($\LamE\ge\sigmastar$); the \emph{physical} guarantee attaches only to a realizable
-team: for integer $\hat z$ passing re-certification with
+The relaxed and physical guarantees apply at different stages. The selector gives a
+\emph{design and existence} certificate ($\LamE\ge\sigmastar$); the \emph{physical} guarantee
+attaches only to a realizable team: for integer $\hat z$ passing re-certification with
 $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$, Lemma~\ref{lem:bridge} yields
 $\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ at \emph{every} admissible pose, hence the uniform rate
-$\alpha(\sigmastar)>0$ of Cor.~\ref{cor:tv}. It is \emph{not} invoked at the fractional
+$\alpha(\sigmastar)>0$ of Cor.~\ref{cor:tv}, never invoked at the fractional
 $z^{\star}_{\mathrm{WISE}}$. Equation~\eqref{eq:interconnection} is an assumed \emph{interface
 abstraction} turning a spectral lower bound into an information-layer rate, not a model derived
 here from any revision protocol or distributed estimator.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
-The lexicographic selector is exact, whereas a scalarized $V+\varepsilon\lamtwo$ recovers it
-only as $\varepsilon\to0$: Tikhonov~\cite{facchinei2003fvi} bounds
-$\|Bz_\varepsilon-y^{\star}\|\le\sqrt{2\varepsilon\,\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)/
-\alpha}$, an upper bound on the drift rather than a guarantee that it vanishes at finite
-$\varepsilon$. Beyond the free fiber the requirement carries a cost: with
+The lexicographic selector is exact, whereas a scalarized $V+arepsilon\lamtwo$ recovers it
+only as $arepsilon	o0$: Tikhonov~\cite{facchinei2003fvi} bounds the aggregate drift by
+$\sqrt{2arepsilon\,\mathrm{osc}_{X_{\mathrm f}}(\lamtwo)/lpha}$, an upper bound rather
+than a guarantee that it vanishes at finite $arepsilon$. Beyond the free fiber the
+requirement carries a cost. With
 $\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigma\}$
-($+\infty$ if infeasible) and $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$,
-
-\begin{corollary}[Free/costly/impossible trichotomy]\label{thm:price}
-$\Price$ is nondecreasing, proper and convex, with $\Price=0$ for $\sigma\le\LamE$ (free),
-finite and positive for $\LamE<\sigma\le\LamX$ (costly), and $+\infty$ for $\sigma>\LamX$
-(impossible). Under Slater the optimal multiplier satisfies
-$\pilam^{\star}\in\partial\Price(\sigma)$: the local sensitivity of optimal productive loss to the
-connectivity requirement, in units of $V$.
-\end{corollary}
-\begin{proof}[Proof sketch]
-The super-level set is convex and shrinks in $\sigma$, which enters linearly, so $\Price$ is a
-nondecreasing convex perturbation value whose subdifferential is the optimal multiplier set.
-\end{proof}
+($+\infty$ if infeasible) and $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$, the super-level
+set is convex and shrinks in $\sigma$, which enters linearly, so $\Price$ is a nondecreasing
+convex perturbation value: zero for $\sigma\le\LamE$ (\emph{free}), finite and positive for
+$\LamE<\sigma\le\LamX$ (\emph{costly}) and $+\infty$ beyond (\emph{impossible}), with
+$\pilam^{\star}\in\partial\Price(\sigma)$ under Slater pricing connectivity in units of $V$.
 
 The spectral reserve yields the following attenuation guarantee, a certified budget for
 degradation of the relays themselves.
