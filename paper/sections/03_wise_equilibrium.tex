@@ -48,9 +48,11 @@ pseudo-gradient $F(z)=\alpha B^{\top}(Bz-y_{\mathrm{ref}})$ gives
 $\mu_F=\alpha\lambda_{\min}(P_F^{\top}B^{\top}BP_F)$, so $\mu_F=0\iff N_p(\bar z)\neq\{0\}$,
 unlike strongly contractive aggregative games~\cite{martinezpiazuelo2022}.
 
-Figure~\ref{fig:hero}(a) makes this concrete: the long-for-two-short exchange is neutral
-($Bd=0$) while $\lamtwo$ strictly rises. The sign of $\Gamma_{\Emanifold}$ determines
-whether such a \emph{free} gain exists. Orient every inequality of $X_{\mathrm f}$ as $Gz\ge h$,
+Figure~\ref{fig:concept} depicts the affine geometry underlying
+Thm.~\ref{thm:networkability}; Fig.~\ref{fig:hero}(a) illustrates an analogous exchange in a
+\emph{separate} pair-dependent stress test and does not validate the directional certificate.
+For the affine model the sign of $\Gamma_{\Emanifold}$ decides whether a
+connectivity-improving neutral direction exists. Orient every inequality of $X_{\mathrm f}$ as $Gz\ge h$,
 with $G_I$ the rows active at $\bar z$. The cone may be taken in the lifted variables at
 \emph{any} lift: for the polyhedron $\widehat\Emanifold$ lifted by \eqref{eq:tensor},
 $T_{\widehat\Emanifold}(\hat x)=\operatorname{cone}(\widehat\Emanifold-\hat x)$ and a linear
@@ -159,7 +161,7 @@ the value clears the requirement,
 \Essrel\neq\varnothing\iff\LamE\ge\sigmastar,
 \label{eq:exist}
 \end{equation}
-and any maximiser preserves the productive optimum exactly, with $V=V^{\star}$; the refinement
+and any maximizer preserves the productive optimum exactly, with $V=V^{\star}$; the refinement
 is \emph{strict} when $\min_{\Emanifold}\lamtwo<\sigmastar\le\LamE$. If $\arg\max_{\Emanifold}\lamtwo$ (equivalently $\{\Gamma_{\Emanifold}=0\}$) is
 non-singleton, the strongly convex least-role-change tie-break
 $\min\tfrac12\|z-z_{\mathrm{prev}}\|_W^2$ fixes a \emph{unique} selector.

@@ -33,7 +33,7 @@ INK, MUTED, PAPER = "#222222", "#7f8c8d", "#f2f4f6"
 def build(plt):
     from matplotlib.patches import FancyArrowPatch, FancyBboxPatch, Polygon
 
-    fig = plt.figure(figsize=(7.16, 1.20))
+    fig = plt.figure(figsize=(7.16, 0.96))
     gs = fig.add_gridspec(1, 2, width_ratios=[1.02, 1.0], wspace=0.06)
     axG, axP = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[0, 1])
 
@@ -41,44 +41,43 @@ def build(plt):
     face = np.array([[0.05, 0.13], [0.99, 0.09], [0.93, 0.90], [0.11, 0.83]])
     poly = Polygon(face, closed=True, fc=PAPER, ec="#9aa0a6", lw=1.0, zorder=1)
     axG.add_patch(poly)
-    axG.text(0.075, 0.175, r"$X_{\rm f}$: wrench-feasible", fontsize=6.0, color=MUTED)
+    # the polytope needs no separate label: the fiber caption already names $X_{\rm f}$
 
     # lambda_2 contours, clipped to the polytope so they read as level sets of it
     for c, a in zip(np.linspace(0.15, 0.95, 5), np.linspace(0.10, 0.30, 5), strict=True):
         ln, = axG.plot([c - 0.05, c + 0.42], [0.86, 0.10], color=GREEN, lw=0.7,
                        alpha=a, zorder=2)
         ln.set_clip_path(poly)
-    axG.text(0.815, 0.715, r"$\lambda_2$ increases", fontsize=6.0, color=GREEN,
+    axG.text(0.90, 0.245, r"$\lambda_2$ increases", fontsize=6.0, color=GREEN,
              rotation=-58, ha="center", va="center")
 
     p0, p1 = np.array([0.22, 0.46]), np.array([0.74, 0.60])
     axG.plot([p0[0], p1[0]], [p0[1], p1[1]], color=INK, lw=2.2, zorder=4,
              solid_capstyle="round")
-    axG.text(0.47, 0.695, r"fiber $\mathcal{E}=\{z\in X_{\rm f}: Bz=y^\star\}$",
+    axG.text(0.47, 0.745, r"fiber $\mathcal{E}=\{z\in X_{\rm f}: Bz=y^\star\}$",
              fontsize=6.4, color=INK, ha="center")
-    axG.text(0.47, 0.635, r"every point: same $y^\star$, same $V^\star$",
-             fontsize=5.8, color=MUTED, ha="center")
 
     axG.add_patch(FancyArrowPatch(p0 + 0.10 * (p1 - p0), p1 - 0.10 * (p1 - p0),
                                   arrowstyle="-|>", mutation_scale=10, lw=1.8,
                                   color=GREEN, zorder=5))
     axG.scatter(*p0, s=44, c=RED, edgecolors="k", lw=0.4, zorder=6)
     axG.scatter(*p1, s=44, c=GREEN, edgecolors="k", lw=0.4, zorder=6)
-    axG.text(p0[0] - 0.015, p0[1] - 0.045, r"$z^{\rm prod}$" "\n" r"$\Gamma_{\mathcal{E}}>0$",
-             fontsize=6.2, color=RED, ha="center", va="top")
-    axG.text(p1[0] + 0.02, p1[1] - 0.045, r"$z^\star_{\rm WISE}$" "\n"
-             r"$\Gamma_{\mathcal{E}}=0$", fontsize=6.2, color=GREEN, ha="center", va="top")
-    axG.text(0.47, 0.245, r"$d^\star$: $Bd^\star=0$ (free) and $D\lambda_2[d^\star]>0$",
-             fontsize=6.2, color=GREEN, ha="center")
+    axG.text(p0[0] - 0.055, p0[1] + 0.015, r"$z^{\rm prod}$, $\Gamma_{\mathcal{E}}>0$",
+             fontsize=6.2, color=RED, ha="right", va="center")
+    axG.text(p1[0] + 0.05, p1[1] + 0.015, r"$z^\star_{\rm WISE}$, $\Gamma_{\mathcal{E}}=0$",
+             fontsize=6.2, color=GREEN, ha="left", va="center")
+    axG.text(0.47, 0.285, r"$d^\star$: $Bd^\star=0$ (free), $D\lambda_2[d^\star]>0$",
+             fontsize=6.2, color=GREEN, ha="center", va="top")
 
-    axG.set_xlim(0.0, 1.06)
+    axG.set_xlim(-0.15, 1.22)
     axG.set_ylim(0.06, 0.99)
     axG.axis("off")
 
     # ------------------------------------------------------------------ pipeline
     boxes = [("Stage 1", r"$\max V$ on $X_{\rm f}$", r"gives $y^\star$", False),
              ("fiber $\\mathcal{E}$", r"$Bz=y^\star$", "equally optimal", False),
-             (r"$\Gamma_{\mathcal{E}}$", "directional test", "local, but global", True),
+             (r"$\Gamma_{\mathcal{E}}$", "directional test",
+              r"local $\Rightarrow$ global", True),
              ("Stage 2", r"$\max\lambda_2$ on $\mathcal{E}$", r"$\Delta V=0$", True),
              ("recovery", "round, repair,", "re-certify", False)]
     w, h, gap, y = 0.183, 0.30, 0.024, 0.50
@@ -105,16 +104,9 @@ def build(plt):
     axP.add_patch(FancyArrowPatch((x_g + w / 2, y - 0.01), (x_g + w / 2, y - 0.115),
                                   arrowstyle="-|>", mutation_scale=7, lw=0.9, color=GREEN))
     axP.text(x_g + w / 2 + 0.012, y - 0.145,
-             r"$\Gamma_{\mathcal{E}}>0$: a better-connected productive optimum exists"
-             "\n"
-             r"$\Gamma_{\mathcal{E}}=0$: this point maximises $\lambda_2$ over all of "
-             r"$\mathcal{E}$",
+             r"$\Gamma_{\mathcal{E}}>0$: a better-connected optimum exists;   "
+             r"$=0$: this point maximizes $\lambda_2$ on $\mathcal{E}$",
              fontsize=6.0, color=GREEN, ha="center", va="top")
-    axP.text(2 * (w + gap) + w / 2, y + h + 0.055,
-             "affine model (Assumption 1(ii)); the $N{=}6$ study of Sec. IV is a separate, "
-             "non-affine stress test",
-             fontsize=5.4, color=MUTED, ha="center", va="bottom")
-
     axP.set_xlim(-0.02, 5 * w + 4 * gap + 0.02)
     axP.set_ylim(0.02, 1.02)
     axP.axis("off")

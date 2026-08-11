@@ -2,35 +2,36 @@
 \label{sec:exp}
 
 Two families are used (Table~\ref{tab:glance}): the affine $N{=}12$ family validates the WISE
-SDP and the local--global certificate, while a separate $N{=}6$ pair-dependent integer stress
-test, solved by enumeration, illustrates the physical exchange and the fixed-assignment
-attenuation guarantee. Seeds are fixed and every number is written to a manifest by the script
-producing it.\footnote{Code, manifests and every generated number:
+SDP and the local--global certificate; a separate $N{=}6$ pair-dependent integer stress test,
+solved by enumeration, illustrates the physical exchange and the fixed-assignment attenuation
+guarantee. Seeds are fixed and every number is manifest-backed.\footnote{Code, manifests and every generated number:
 \url{https://github.com/jlmayorgaco/paper-P06-WISE-endogenous-wrench-equilibria}, tag
 \texttt{v1.0-wise}; \texttt{make reproduce} rebuilds them all, \texttt{make robot} reruns E2.}
 
 \begin{table}[t]\centering\scriptsize
-\caption{Both families. \textbf{A} validates the affine method; \textbf{B} is the
-pair-dependent stress test, \emph{not} an instance of the Stage-2 SDP ($\sigmastar=0.30$).
-$\rho_{\mathrm{cert}}$ is the certified bound \eqref{eq:budget} and the grid column its last
-passing / first failing $0.01$-grid point; rates are \emph{fitted}, the guaranteed bound being
-$\alpha(\sigmastar)=0.0397$. Interior $\Gamma_{\Emanifold}\in[0.45,1.78]$; repeated-eigenvalue
-median error $1.3\cdot10^{-6}$.}
+\caption{Both families ($\sigmastar=0.30$). \textbf{A} validates the affine method;
+\textbf{B} is the pair-dependent stress test, \emph{not} an instance of the Stage-2 SDP.
+``re-check'' is an independent primal, wrench, aggregate and spectral re-evaluation of the
+\emph{relaxed} selector, \emph{not} integer re-certification; $\rho_{\mathrm{cert}}$ is the
+certified bound \eqref{eq:budget}, ``pass\,/\,fail'' its last passing and first failing
+$0.01$-grid points, and ``obs.\ decay'' an observed fitted rate against the guaranteed
+$\alpha(\sigmastar)=0.0397$. Interior $\Gamma_{\Emanifold}\in[0.45,1.78]$. The margins in
+\textbf{A} and \textbf{B} are not comparable in absolute scale.}
 \label{tab:glance}
 \setlength{\tabcolsep}{3pt}
 \begin{tabular}{lcccccc}
 \hline
 \multicolumn{7}{l}{\textbf{A. Affine family ($N{=}12$): the WISE SDP and $\Gamma_{\Emanifold}$}}\\
 \hline
-Selector & $V/V^{\star}$ & $m_\lambda$ & $\Gamma_{\Emanifold}$ at selector &
-\eqref{eq:iff} & re-cert.\ & time\\
+Selector & $V/V^{\star}$ & $m_\lambda$ & $\Gamma_{\Emanifold}$ &
+\eqref{eq:iff} & re-check & time\\
 HARD & $1.00$ & $+0.15$ & --- & --- & $30/30$ & $16$\,ms\\
 WISE-SDP & $1.00$ & $\mathbf{+2.55}$ & $\le3.4\cdot10^{-6}$ & $12/12$ & $30/30$ & $26$\,ms\\
 \hline
 \multicolumn{7}{l}{\textbf{B. Pair-dependent stress test ($N{=}6$), by enumeration}}\\
 \hline
 Selector & $V/V^{\star}$ & $\lamtwo(\Lpair)$ & $\rho_{\mathrm{cert}}$ &
-grid pass/fail & fit.\ rate & mission\\
+pass / fail & obs.\ decay & mission\\
 PROD & $1.00$ & $0$ & --- & --- & diverges & $0/30$\\
 HARD & $1.00$ & $0.3365$ & $10.8\%$ & $0.11/0.12$ & $0.108$ & $30/30$\\
 pair-WISE & $1.00$ & $0.3989$ & $24.8\%$ & $0.27/0.28$ & $0.156$ & $30/30$\\
@@ -43,9 +44,9 @@ Relay sites here are anchored and every relay-gated link uses a precomputed tube
 all admissible receiver positions, so each $L_{ir}$ is fixed before optimization and
 independent of the other robots' actions: Assumption~\ref{as:standing}(ii) holds exactly. With
 $n=72$ and $\dim\Emanifold=59$ (residuals $<10^{-15}$), Table~\ref{tab:glance}A reports the
-local--global equivalence, the modulus at the selector, direct re-certification at
-$V=V^{\star}$, and the margin $m_\lambda$ that separates WISE from the hard-threshold selector
-\emph{inside} the model the theorem covers.
+local--global equivalence, the modulus at the selector, the relaxed re-check, and the margin
+$m_\lambda$ separating WISE from the hard-threshold selector \emph{inside} the model the
+theorem covers.
 
 \paragraph*{E2 --- Pair-dependent integer stress test ($N{=}6$, Fig.~\ref{fig:hero}(a))}
 Here tube infima depend on \emph{both} endpoints' actions, so the induced graph $\Lpair(z)$ is
@@ -53,55 +54,53 @@ Here tube infima depend on \emph{both} endpoints' actions, so the induced graph 
 Thm.~\ref{thm:networkability} and \eqref{eq:sdp}, and no claim below invokes them. Replacing one long lifter by two short ones and sending the released
 long robot to a relay site holds $Bz=(3,3)=y^{\star}$ and $V=V^{\star}$ exactly, with both
 nominal wrench certificates granted by \eqref{eq:tensor}, while $\lamtwo(\Lpair)$ rises
-$0\to0.399$ at no loss of $V$. Exhaustive enumeration of all $|\mathcal A|^N=12^6=2.99\cdot10^6$
-maps leaves $3864$ wrench-feasible and $1032$ on $\Emanifold$, and proves the \emph{integer}
-capacity $\Lambda^{\mathbb Z}_{\Emanifold,\mathrm{pair}}
-=\max\{\lamtwo(\Lpair(z)):z\in\Emanifold\cap\{0,1\}^n\}=0.3989$; it does not bound the relaxed
-affine $\LamE$. For this geometry the action-independent lower bound removes the two discriminatory relay
-links (worst-case separation $5.20$ against the $5.0$ range), leaving every clearing assignment
-at one common $\lamtwo$, so HARD and WISE coincide.
+$0\to0.399$ at no loss of $V$. Exhaustive enumeration of all $|\mathcal A|^N=12^6$ maps leaves $3864$ wrench-feasible and
+$1032$ on $\Emanifold$, proving the \emph{integer} capacity
+$\Lambda^{\mathbb Z}_{\Emanifold,\mathrm{pair}}
+=\max_{\Emanifold\cap\{0,1\}^n}\lamtwo(\Lpair)=0.3989$, which does not bound the relaxed affine
+$\LamE$. Imposing the action-independent affine surrogate instead deletes the two links that
+distinguish relay choices, their worst-case separation $5.20$ exceeding the $5.0$ range; under
+that conservative surrogate every clearing assignment has the same $\lamtwo$, so the affine
+model cannot separate HARD from pair-WISE \emph{in this geometry}, which is why we report it
+only as an exact integer stress test.
 
 \paragraph*{E3 --- Planar closed-loop transport (Fig.~\ref{fig:hero}(b),(c))}
 \emph{Setup.} Two rigid loads with $M_k\dot\nu_k+D_k\nu_k=\sum_{i\in\mathcal C_k}A_{kh(i)}f_i
-+d_k(t)$ follow curved paths and must resynchronize after a prescribed drag disturbance. At
-each $20$\,Hz step a trajectory-PD wrench demand is met by a minimum-effort allocator
-restricted to the \emph{same} $U_{\tau(i)}^{\mathrm{in}}$ the certificate uses, while
++d_k(t)$ follow curved paths and resynchronize after a prescribed drag disturbance. At each
+$20$\,Hz step a trajectory-PD demand is met by a minimum-effort allocator restricted to the
+\emph{same} $U_{\tau(i)}^{\mathrm{in}}$ the certificate uses, while
 $\Lgeo(q(t))$, rebuilt from the simulated poses, drives \eqref{eq:interconnection}, whose
-state sets each coalition's progress rate
-$\dot s_k=v_0h_k(t)\,\mathrm{mean}_{i\in\mathcal C_k}\mathrm{sat}_{[0,2]}(u_0-k_a[Qa]_i)$ with
-$v_0=1/48$\,s$^{-1}$, $u_0=k_a=1$ and $h_k$ a first-order progress governor. Both selectors are exact optima over the
-same enumerated integer fiber $\Emanifold_{\mathbb Z}$, declared before the sweep:
+state sets each coalition's progress rate $\dot s_k=v_0h_k(t)\,\mathrm{mean}_{i\in\mathcal C_k}
+\mathrm{sat}_{[0,2]}(u_0-k_a[Qa]_i)$, $v_0=1/48$\,s$^{-1}$, $u_0=k_a=1$, $h_k$ a first-order
+governor. Both selectors are exact optima over the same enumerated integer fiber
+$\Emanifold_{\mathbb Z}$, declared before the sweep:
 $z_{\mathrm{HARD}}\in\arg\min\{c_{\mathrm{role}}(z,z^{\mathrm{prod}}):z\in\Emanifold_{\mathbb Z},
 \lamtwo(\Lpair(z))\ge\sigmastar\}$ and
-$z_{\text{pair-WISE}}\in\arg\max_{\Emanifold_{\mathbb Z}}\lamtwo(\Lpair(z))$, where
-$c_{\mathrm{role}}$ counts role changes from $z^{\mathrm{prod}}$, ties broken by deployment
-cost then action index. All else is shared.
+$z_{\text{pair-WISE}}\in\arg\max_{\Emanifold_{\mathbb Z}}\lamtwo(\Lpair(z))$, with
+$c_{\mathrm{role}}$ counting role changes from $z^{\mathrm{prod}}$ and ties broken by
+deployment cost then action index.
 
 \emph{Certified.} All three hold $V=V^{\star}$ and both nominal wrench certificates, differing
-only in reserve. Cor.~\ref{cor:budget} applies here even though $\Lpair$ is not affine in $z$,
-because it needs only the attenuation path $\Lpair^{\rho}=(1{-}\rho)\Lpair+\rho L_0$ to be
-affine in $\rho$ at a \emph{fixed} assignment. With $\lamtwo(L_0)=0$ it reads
-$\rho_{\mathrm{cert}}=1-\sigmastar/\lamtwo(\Lpair)$, giving $10.8\%$ for HARD against $24.8\%$
-for WISE (Table~\ref{tab:glance}).
+only in reserve. Cor.~\ref{cor:budget} applies although $\Lpair$ is not affine in $z$, needing
+only $\Lpair^{\rho}=(1{-}\rho)\Lpair+\rho L_0$ affine in $\rho$ at a \emph{fixed} assignment;
+with $\lamtwo(L_0)=0$ it gives $10.8\%$ against $24.8\%$ (Table~\ref{tab:glance}).
 
-\emph{Observed.} On the predeclared $0.01$ grid of $\Lpair^{\rho}$ with assignments, gains and
-everything else fixed, the observed curves stay above $\sigmastar$ beyond those certified lower
-bounds: HARD through $\rho=0.11$ and WISE through $\rho=0.27$, first falling below at
-$\rho=0.12$ and $0.28$. Feasibility is re-checked at \emph{every} control step: the demand is
-met to $6\cdot10^{-8}$ outside the disturbance window, and inside it the team saturates (peak
-residual $0.82$\,N) while the governor slows the load. Geometric transfer holds
+\emph{Observed.} On the predeclared $0.01$ grid of $\Lpair^{\rho}$, everything else fixed, the
+curves stay above $\sigmastar$ beyond those bounds, first falling below at $\rho=0.12$ and
+$0.28$ (Table~\ref{tab:glance}). Feasibility is re-checked at \emph{every} control step: the
+demand is met to $6\cdot10^{-8}$ outside the disturbance window, and inside it the team
+saturates (peak residual $0.82$\,N) while the governor slows the load. Geometric transfer holds
 \emph{conditionally on the tubes}: over $9.6\cdot10^{5}$ samples
 $\lamtwo(\Lgeo)-\lamtwo(\Lpair(\hat z))$ has median $+0.065$ and minimum $+0.031$ with zero
 tube exits, though the controller does not enforce invariance. The information layer decays at
 observed fitted rates $0.156$ (WISE) and $0.108$ (HARD), both above $\alpha(\sigmastar)=0.0397$
-(Cor.~\ref{cor:tv}), whereas PROD \emph{grows} by $5.3\cdot10^{5}$. Over $30$ paired worlds
-(mass $\pm10\%$, damping $\pm15\%$, initial pose, disturbance amplitude and onset; the
-seed/world is the unit, all parametric variations of the \emph{same} structural scenario)
-HARD and WISE both succeed $30/30$ against $0/30$ for PROD and for a
-random fiber point. WISE's paired median peak synchronization error is a reduction of $0.733$
-$[0.713,0.749]$ against PROD but $+1.7\cdot10^{-4}$ $[-2.5,5.5]\cdot10^{-4}$ against HARD, so
-the two are indistinguishable at mission level; what WISE adds is the larger certified
-degradation reserve and the faster information-layer decay.
+(Cor.~\ref{cor:tv}), whereas PROD \emph{grows} by $5.3\cdot10^{5}$. Over $30$ paired worlds (mass $\pm10\%$, damping $\pm15\%$, initial pose, disturbance
+amplitude and onset; the seed is the unit, all parametric variations of the \emph{same}
+structural scenario) HARD and WISE succeed $30/30$ against $0/30$ for PROD and a random fiber
+point. WISE's paired median peak synchronization error is a reduction of $0.733$
+$[0.713,0.749]$ against PROD but $+1.7\cdot10^{-4}$ $[-2.5,5.5]\cdot10^{-4}$ against HARD:
+indistinguishable at mission level, the gain being the larger certified reserve and the faster
+information-layer decay.
 
 \paragraph*{E4 --- Integer recovery, oracle, regimes and price ($N{=}12$ unless stated)}
 On the tested $N\le8$ instances an exact oracle enumerates \emph{every} $|\mathcal A|^N$ map,
@@ -110,10 +109,8 @@ occurs at the design requirement ($0/23$); at $\sigma=0.97\LamE$ relaxed feasibi
 imply integer feasibility in $13/50$ tested $N{=}6$ instances and in $0/50$ at $N{=}7,8$.
 Separately, at $N=12$ structured rounding is jointly feasible in $895/900$ draws after repair
 with median loss $4.2\%$, a per-instance rate of $99.4\%$ under a cluster bootstrap treating
-the instance, not the draw, as the unit. Sweeping the long-range-type fraction
-$\nu\in[0.17,0.67]$ against the wrench-demand tightness $\tau_d\in[1,4]$ ($6\times6$ cells,
-$4$ seeds) activates no wrench facet, so $\LamE$ is invariant along $\tau_d$ while its
-per-$\nu$ mean rises $0.82\to2.48$; at $\tau_d=8$ the first facet binds and $\Price$ traces
-the predicted shape, its dual matching the finite difference ($r=0.996$). A scalarized
-$V+\varepsilon\lamtwo$ drifts the aggregate by up to $0.284$ over
-$\varepsilon\in[10^{-3},1]$.
+the instance, not the draw, as the unit. Sweeping the long-range-type fraction $\nu$ against the wrench-demand tightness $\tau_d$
+($6\times6$ cells, $4$ seeds) activates no wrench facet and leaves $\LamE$ invariant along
+$\tau_d$; at $\tau_d=8$ the first facet binds and $\Price$ traces the predicted trichotomy,
+its dual matching the finite difference ($r=0.996$). A scalarized $V+\varepsilon\lamtwo$
+drifts the aggregate by up to $0.284$ over $\varepsilon\in[10^{-3},1]$.

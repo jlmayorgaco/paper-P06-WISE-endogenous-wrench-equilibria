@@ -32,8 +32,9 @@ polytope}, the secondary objective is the \emph{nonsmooth} algebraic connectivit
 $\Gamma_{\Emanifold}=0$ is equivalent to \emph{global} connectivity optimality over the whole
 fiber, repeated Fiedler eigenvalues included. The analysis builds on established results:
 concavity of $\lamtwo$ in affine weights~\cite{fiedler1973,ghosh2006growing}, derivatives of a
-repeated minimum eigenvalue~\cite{lewis1996spectral}, and LMI connectivity design. Novelty is
-claimed only for that fiber, the local--global certificate on it, and its attainability.
+repeated minimum eigenvalue~\cite{lewis1996spectral}, and LMI connectivity design. Our contribution is the
+wrench-feasible optimal fiber, its local--global networkability certificate, and the
+separation between relaxed and finite-team attainability.
 \emph{Scope:} equilibrium-set geometry and planner-side selection, not distributed Nash
 seeking, actuator-level realization or hardware.
 
@@ -53,11 +54,11 @@ re-certified recovery, and a planar closed-loop transport simulation.
 
 \begin{figure*}[t]\centering
   \includegraphics[width=\textwidth]{fig_concept.pdf}
-  \caption{Geometry and pipeline. Stage~1 fixes the unique aggregate $y^{\star}$, leaving the
-  fiber $\Emanifold$ on which every composition has the same $V^{\star}$; a direction
-  $d^{\star}\in T_{\Emanifold}$ with $Bd^{\star}=0$ raises connectivity for free.
-  $\Gamma_{\Emanifold}$ detects whether one exists, and its vanishing certifies the maximum
-  over the \emph{whole} fiber.}
+  \caption{Geometry and pipeline. Stage~1 fixes $y^{\star}$, leaving the fiber $\Emanifold$ on
+  which every composition has the same $V^{\star}$; a direction $d^{\star}$ with $Bd^{\star}=0$
+  raises connectivity for free, and $\Gamma_{\Emanifold}$ certifies the maximum over the
+  \emph{whole} fiber. Both refer to the affine model of Assumption~\ref{as:standing}(ii); the
+  $N{=}6$ experiment of Fig.~\ref{fig:hero} is a separate pair-dependent stress test.}
   \label{fig:concept}
 \end{figure*}
 

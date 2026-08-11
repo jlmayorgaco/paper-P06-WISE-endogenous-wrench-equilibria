@@ -152,7 +152,7 @@ def main():
     methods = [m for m in ("PROD", "HARD", "WISE") if m in ts]
     lam = {m: summary["summaries"][m]["lambda2_bar"] for m in methods}
 
-    fig = plt.figure(figsize=(7.16, 2.16))
+    fig = plt.figure(figsize=(7.16, 2.00))
     gs = fig.add_gridspec(2, 3, wspace=0.30, hspace=0.46,
                           width_ratios=[0.30, 0.45, 0.25])
     ax_a1, ax_a2 = fig.add_subplot(gs[0, 0]), fig.add_subplot(gs[1, 0])
@@ -163,6 +163,8 @@ def main():
     # A didactic diagram beats a rendered scene at print size.
     _exchange_panel(ax_a1, [True, False], [True, False], False,
                     "(a) productive-only", lam["PROD"])
+    ax_a1.text(0.5, 1.30, "pair-dependent integer stress test", transform=ax_a1.transAxes,
+               fontsize=6.4, color="#7f8c8d", ha="center", va="bottom")
     _exchange_panel(ax_a2, [False, False, False], [True, False], True,
                     "pair-WISE", lam["WISE"])
 
@@ -187,6 +189,9 @@ def main():
 
     for ax in (ax_d,):
         ax.axvspan(C.T_DIST, C.T_DIST + C.DUR_DIST, color="#95a5a6", alpha=0.16, lw=0)
+        lo, hi = ax.get_ylim()
+        ax.text(C.T_DIST + C.DUR_DIST / 2, hi, "drag\ndisturbance", fontsize=6.0,
+                color="#5b6470", ha="center", va="top")
         ax.set_xlabel("time [s]", fontsize=7.0, labelpad=1.5)
         ax.tick_params(labelsize=6.2)
         ax.grid(alpha=0.2, lw=0.35)
