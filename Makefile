@@ -58,6 +58,7 @@ robot-budget: ## E-Robot: certified attenuation budget + affine-surrogate scope 
 	$(PY) -m experiments.robot_closed_loop.affine_surrogate_audit
 
 robot-fig: ## E-Robot: paper hero figure + explanatory diagrams (slides/extended)
+	$(PY) -m experiments.robot_closed_loop.make_concept
 	$(PY) -m experiments.robot_closed_loop.make_hero
 	$(PY) -m experiments.robot_closed_loop.make_explainers
 	$(PY) -m experiments.robot_closed_loop.make_figure

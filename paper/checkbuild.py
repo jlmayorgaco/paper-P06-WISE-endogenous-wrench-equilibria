@@ -12,17 +12,20 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 STRAY = [r"\bef\{", r"efsec:", r"\?\?", r"Sections III--III",
          # a backslash eaten by a shell/Python escape leaves the command's tail as prose
-         r"\barepsilon", r"(?<![A-Za-z])lpha[^-A-Za-z]", r"\bambda_", r"\bigma_\{"]
-# control characters that a mangled \v \a \t \b \f leaves behind in a .tex source
-CTRL = "\x07\x08\x09\x0b\x0c"
+         r"\barepsilon", r"(?<![A-Za-z])lpha[^-A-Za-z]", r"\bambda_", r"\bigma_\{",
+         r"extbf\{", r"extit\{", r"(?<![A-Za-z])imes(?![A-Za-z])",
+         r"(?<![A-Za-z])ho\}", r"(?<![A-Za-z])au_", r"(?<![A-Za-z])ho\)"]
+# A backslash eaten by \a \b \f \v \t \r leaves the control byte itself in the source.
+# Tabs and CR are included: LaTeX silently accepts both, so only this gate catches them.
+CTRL = "\x07\x08\x09\x0b\x0c\r"
 
 
 def _control_chars() -> list[str]:
     hits = []
     for f in sorted((HERE / "sections").glob("*.tex")) + [HERE / "main.tex"]:
-        t = f.read_text(encoding="utf-8", errors="replace")
-        # tabs are legal in tabular sources; only flag them inside inline math runs
-        n = sum(t.count(c) for c in "\x07\x08\x0b\x0c")
+        raw = f.read_bytes().replace(b"\r\n", b"\n")      # tolerate CRLF line endings
+        t = raw.decode("utf-8", errors="replace")
+        n = sum(t.count(c) for c in CTRL)
         if n:
             hits.append(f"{f.name}:{n}")
     return hits

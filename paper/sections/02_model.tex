@@ -2,11 +2,11 @@
 \label{sec:model}
 
 \subsection{Assignment state (relaxed per-robot occupancy $z$)}
-A team of $N$ robots has $T$ types (heterogeneous in force and range), $\tau(i)$ the type of
-robot $i$, $M$ loads with $H$ contact slots each, relay sites $\mathcal R$, and action set
+$N$ robots of $T$ types ($\tau(i)$ the type of robot $i$), $M$ loads with $H$ contact slots
+each, relay sites $\mathcal R$, action set
 $\mathcal A=\{(k,h)\}\cup\mathcal R\cup\{\mathrm o\}$ ($\mathrm o$ idle). The \emph{assignment
-state} is the relaxed per-robot occupancy $z=(z_{ia})\in[0,1]^{N\times|\mathcal A|}$: each
-robot spends a unit budget, each slot or relay site holds at most one robot,
+state} is the relaxed occupancy $z=(z_{ia})\in[0,1]^{N\times|\mathcal A|}$: each robot spends a
+unit budget, each slot or relay site holds at most one robot,
 \begin{equation}
 \textstyle\sum_{a} z_{ia}=1\ \forall i,\quad
 \sum_i z_{i,kh}\le1\ \forall(k,h),\quad \sum_i z_{i,r}\le1\ \forall r.
@@ -30,10 +30,9 @@ admissible pose, no link double-counted.
 \subsection{Wrench feasibility}
 We assume \emph{quasi-static planar transport with rigid (bilateral) robot--load attachment},
 so a robot may push \emph{and} pull along the modeled directions; unilateral pushing, friction
-cones and contact-mode transitions are outside this
-model~\cite{murray1994manipulation}. The capacity weight $c_\tau$ in $Bz$ is a scheduling
-coefficient, \emph{distinct} from the actuation data $(F_\tau,G_\tau,A_{kh})$ setting wrench
-feasibility.
+cones and contact-mode transitions are outside this model~\cite{murray1994manipulation}. The
+capacity weight $c_\tau$ in $Bz$ is a scheduling coefficient, \emph{distinct} from the
+actuation data $(F_\tau,G_\tau,A_{kh})$.
 
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned ellipse
 $U_\tau(\phi)$, semi-axes $F_\tau,\kappa F_\tau$ ($\kappa\le1$). Not tracking headings, we
@@ -106,6 +105,6 @@ $\lamtwo(\Lgeo(q))\ge\lamtwo(\Lap(\hat z))$: a certificate
 $\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$ yields $\lamtwo(\Lgeo(q))\ge\sigmadyn$
 \emph{a priori} at every admissible pose.
 \end{lemma}
-Every candidate is \emph{independently re-evaluated} in double precision, accepted only when
-equality residuals, slacks, wrench feasibility and the spectral margin clear prescribed
-tolerances: no dependence on solver-reported status, but not exact-arithmetic certification.
+Every candidate is \emph{independently re-evaluated} in double precision against equality
+residuals, slacks, wrench feasibility and the spectral margin: no dependence on
+solver-reported status, but not exact-arithmetic certification.

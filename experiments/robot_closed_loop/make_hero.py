@@ -166,35 +166,24 @@ def main():
     _exchange_panel(ax_a2, [False, False, False], [True, False], True,
                     "pair-WISE", lam["WISE"])
 
-    # (c) the certified information-layer error
-    t0 = None
-    for m in methods:
-        d = ts[m]
-        op = d["phase"] == "operational"
-        y = np.maximum(d["info_norm_certified"][op], 1e-16)
-        ax_d.semilogy(d["t"][op], y, color=COLORS[m], ls=STYLES[m], lw=1.3)
-        if t0 is None:
-            t0, y0 = d["t"][op], float(y[0])
-    # the certified lower-rate bound of Cor. 2: an envelope, not a fitted curve
-    alpha_cert = float(summary["summaries"]["WISE"]["alpha_certified"])
-    ax_d.semilogy(t0, y0 * np.exp(-alpha_cert * (t0 - t0[0])), color="#7f8c8d",
-                  ls=(0, (5, 2)), lw=1.0, zorder=1)
-    ax_d.text(t0[-1], y0 * np.exp(-alpha_cert * (t0[-1] - t0[0])),
-              rf"certified $e^{{-{alpha_cert:.4f}t}}$", fontsize=5.8, color="#7f8c8d",
-              ha="right", va="bottom")
-    ax_d.set_ylabel(r"$\|[a,b]\|_P$", fontsize=7.0, labelpad=1.5)
-    # label each curve where it ends: no legend box sitting on top of the data
+    # (c) the mission outcome: the physical consequence, not the assumed interface state
     lbl = {"PROD": "PROD", "HARD": "HARD", "WISE": "pair-WISE"}
     for m in methods:
         d = ts[m]
         op = d["phase"] == "operational"
-        tv, yv = d["t"][op], np.maximum(d["info_norm_certified"][op], 1e-16)
-        # PROD rises off the top, so anchor its label mid-curve instead of at the end
-        j = int(0.62 * len(tv)) if m == "PROD" else len(tv) - 1
-        ax_d.annotate(lbl[m], xy=(tv[j], yv[j]), xytext=(-3, -4 if m == "PROD" else 3),
+        ax_d.plot(d["t"][op], d["sync_err"][op], color=COLORS[m], ls=STYLES[m], lw=1.4)
+    ax_d.set_ylabel(r"$|s_1-s_2|$", fontsize=7.0, labelpad=1.5)
+    for m, frac, dy in (("PROD", 0.50, 7), ("WISE", 0.42, 6), ("HARD", 0.73, 7)):
+        if m not in ts:
+            continue
+        d = ts[m]
+        op = d["phase"] == "operational"
+        tv, yv = d["t"][op], d["sync_err"][op]
+        j = int(frac * len(tv))
+        ax_d.annotate(lbl[m], xy=(tv[j], yv[j]), xytext=(0, dy),
                       textcoords="offset points", fontsize=6.6, color=COLORS[m],
-                      ha="right", va="top" if m == "PROD" else "bottom", zorder=7)
-    ax_d.set_title("(c) information-layer error", fontsize=7.4, pad=3.0)
+                      ha="center", va="bottom" if dy > 0 else "top", zorder=7)
+    ax_d.set_title("(c) mission: load synchronization", fontsize=7.4, pad=3.0)
 
     for ax in (ax_d,):
         ax.axvspan(C.T_DIST, C.T_DIST + C.DUR_DIST, color="#95a5a6", alpha=0.16, lw=0)

@@ -84,27 +84,22 @@ jl.mayorga236@gmail.com}}
 \maketitle
 
 \begin{abstract}
-Heterogeneous multi-robot transport couples physical task allocation with the communication
-structure needed to coordinate it. We show that when productive utility depends on a
-low-dimensional served aggregate, its unique optimal \emph{served aggregate} can correspond to
-a \emph{positive-dimensional fiber} of wrench-feasible robot compositions, a resource for
-communication design. We derive a free-networkability modulus $\Gamma_{\Emanifold}$ that is
-positive \emph{iff} a strictly better-connected composition exists anywhere on the fiber, so
-$\Gamma_{\Emanifold}=0$ certifies global connectivity optimality, repeated Fiedler eigenvalues
-included. A wrench- and information-self-sustaining equilibrium (WISE) is selected
-lexicographically by a semidefinite program, and the spectral capacities separate
-\emph{zero-cost} (zero loss of productive utility), \emph{costly} and \emph{impossible}
-requirements. The resulting margin is an \emph{operational budget}: attenuating every relay
-conductance by $\rho$ preserves the certificate up to an explicit $\rho_{\mathrm{cert}}$,
-equal to $1-\sigmastar/\lamtwo$ when the base graph is disconnected, which WISE maximizes over
-the fiber. The affine formulation is validated on $N{=}12$ instances, where the directional
-certificate vanishes at every SDP selector tested. A \emph{separate} $N{=}6$ pair-dependent
-integer stress test, solved by exhaustive enumeration, illustrates the composition exchange and
-the fixed-assignment attenuation guarantee: a hard-threshold selector and pair-WISE preserve
-the same productive value and finish the nominal mission indistinguishably, yet certify
-$10.8\%$ against $24.8\%$ relay attenuation. On the tested $N\le8$ instances exact enumeration
-puts the attainable integer self-sustaining gap below $0.06\%$ of $V^{\star}$, reported
-separately from the loss of a rounding heuristic.
+Heterogeneous multi-robot transport couples productive task allocation with the communication
+graph required to coordinate it. When utility depends on a low-dimensional served aggregate,
+the aggregate optimum may be unique while its wrench-feasible robot compositions form a
+\emph{positive-dimensional fiber}. We define a free-networkability modulus
+$\Gamma_{\Emanifold}$ whose positivity is necessary and sufficient for a better-connected point
+to exist on that fiber; its vanishing certifies global connectivity optimality, repeated
+Fiedler eigenvalues included. For an affine role-induced Laplacian, a wrench- and
+information-self-sustaining equilibrium (WISE) selects that point through a lifted semidefinite
+program while preserving the productive optimum exactly, and the resulting margin is an
+\emph{operational budget}: attenuating every relay conductance by $\rho$ preserves the
+certificate up to an explicit $\rho_{\mathrm{cert}}$. The affine method is validated on
+$N{=}12$ instances by directional, optimality and direct re-certification checks. A separate
+exact $N{=}6$ integer stress test shows what the reserve is worth: a hard-threshold selector
+and pair-WISE preserve the same productivity and finish the nominal mission indistinguishably,
+yet certify $10.8\%$ against $24.8\%$ relay attenuation. Exact small-team enumeration and
+structured recovery quantify integer attainability separately.
 \end{abstract}
 
 \begin{IEEEkeywords}

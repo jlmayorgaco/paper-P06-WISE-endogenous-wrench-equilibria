@@ -4,12 +4,11 @@
 Stage~1 computes $z^{\mathrm{prod}}\in\arg\max_{X_{\mathrm f}}V$ and fixes
 $y^{\star}=Bz^{\mathrm{prod}}$; the Stage-2 SDP~\eqref{eq:sdp} returns $\LamE$ and the selector
 $z^{\star}_{\mathrm{WISE}}$, with $\LamE\ge\sigmastar$ the relaxed existence test.
-\emph{Structured recovery:} \emph{occupancy-aware sequential randomized rounding} processes
-robots in random order, robot $i$ sampling from $z^{\star}_i$ restricted to the currently
-available unit-capacity actions, so every draw meets one action per robot and all capacities
-exactly. A greedy \emph{repair} then searches single-robot moves $e_{ir}{-}e_{ia}$ to free
-relays, admitting one only if the wrench LP~\eqref{eq:tensor} stays feasible and $\lamtwo$
-strictly increases (so it cannot cycle), and re-certifies directly. Repair trades productive
+\emph{Structured recovery:} occupancy-aware sequential randomized rounding samples robot $i$
+from $z^{\star}_i$ restricted to the still-available unit-capacity actions, so every draw meets
+one action per robot and all capacities exactly; a greedy repair then admits single-robot moves
+$e_{ir}{-}e_{ia}$ only when \eqref{eq:tensor} stays feasible and $\lamtwo$ strictly increases
+(so it cannot cycle), and re-certifies directly. Repair trades productive
 value for connectivity ($Bd\neq0$), so a recovered team is seldom \emph{exactly} zero-cost; for
 small teams the integer optimum can instead be enumerated exactly (Sec.~\ref{sec:exp}).
 \emph{Cost:} the Stage-2 SDP carries a single PSD cone of size $N{-}1$; at $N{=}12$ it solves in
