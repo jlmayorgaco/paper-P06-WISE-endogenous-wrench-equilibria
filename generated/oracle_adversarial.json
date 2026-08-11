@@ -1,0 +1,40 @@
+{
+  "sigma": "0.97 * Lambda_E",
+  "seeds_per_size": 50,
+  "by_N": [
+    {
+      "N": 6,
+      "relaxed_feasible": 50,
+      "false_positive": 13,
+      "wilson95": [
+        0.15871379651367384,
+        0.3955342198899992
+      ]
+    },
+    {
+      "N": 7,
+      "relaxed_feasible": 50,
+      "false_positive": 0,
+      "wilson95": [
+        0.0,
+        0.07135003417431873
+      ]
+    },
+    {
+      "N": 8,
+      "relaxed_feasible": 50,
+      "false_positive": 0,
+      "wilson95": [
+        0.0,
+        0.07135003417431873
+      ]
+    }
+  ],
+  "total_false_positive": 13,
+  "total_relaxed_feasible": 150,
+  "total_wilson95": [
+    0.05134668856955886,
+    0.1426294531242353
+  ],
+  "reading": "false_positive counts relaxed-feasible instances with NO integer self-sustaining point, i.e. failures of relaxed => integer"
+}

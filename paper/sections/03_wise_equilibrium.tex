@@ -52,16 +52,8 @@ Figure~\ref{fig:concept} depicts the affine geometry underlying
 Thm.~\ref{thm:networkability}; Fig.~\ref{fig:hero}(a) illustrates an analogous exchange in a
 \emph{separate} pair-dependent stress test and does not validate the directional certificate.
 For the affine model the sign of $\Gamma_{\Emanifold}$ decides whether a
-connectivity-improving neutral direction exists. Orient every inequality of $X_{\mathrm f}$ as $Gz\ge h$,
-with $G_I$ the rows active at $\bar z$. The cone may be taken in the lifted variables at
-\emph{any} lift: for the polyhedron $\widehat\Emanifold$ lifted by \eqref{eq:tensor},
-$T_{\widehat\Emanifold}(\hat x)=\operatorname{cone}(\widehat\Emanifold-\hat x)$ and a linear
-map commutes with the conic hull, so
-$\prz(T_{\widehat\Emanifold}(z,\xi))=T_{\Emanifold}(z)$ \emph{exactly}; hence
-$\Gamma_{\Emanifold}(\bar z)=\max\{\lambda_{\min}(U_2^{\top}D\Lap[d_z]U_2):
-(d_z,d_\xi)\in T_{\widehat\Emanifold}(\bar z,\xi),\ \|d_z\|_2\le1\}$ is exact there. On the
-$\Gamma_{\Emanifold}$-validation instances of Sec.~\ref{sec:exp} $G_I$ is empty, so
-$T_{\Emanifold}(\bar z)=\ker A\cap\ker B$; E4 exercises a binding facet.
+connectivity-improving neutral direction exists. Orient every inequality of $X_{\mathrm f}$ as
+$Gz\ge h$, with $G_I$ the rows active at $\bar z$.
 
 \begin{definition}[Free-networkability modulus]\label{def:gamma}
 For $\bar z\in\Emanifold$ let $T_{\Emanifold}(\bar z)=\{d:Ad{=}0,\ Bd{=}0,\ G_Id\ge0\}$ be the
@@ -69,15 +61,15 @@ tangent cone, and with $\widetilde L(\bar z)=Q^{\top}\Lap(\bar z)Q$ (so
 $\lambda_{\min}(\widetilde L)=\lamtwo(\Lap)$) let $\widetilde U_2$ span its
 minimum-eigenvalue eigenspace; set $U_2(\bar z)=Q\widetilde U_2\in\R^{N\times m}$,
 $m=\dim\ker(\widetilde L(\bar z)-\lamtwo I)$,
-so $U_2^{\top}\mathbf1=0$ \emph{by construction}, which matters because on a disconnected
-graph $\lamtwo(\Lap)=0$ is degenerate \emph{with} the consensus mode. As $\Lap$ is affine,
+so $U_2^{\top}\mathbf1=0$ \emph{by construction}: on a disconnected graph $\lamtwo(\Lap)=0$ is
+degenerate \emph{with} the consensus mode. As $\Lap$ is affine,
 $D\Lap[d]=\sum_{i,r}d_{ir}L_{ir}$ and~\cite{lewis1996spectral} gives
 \begin{equation}
 D\lamtwo(\bar z)[d]=\lambda_{\min}\!\big(U_2^{\top}D\Lap[d]\,U_2\big),
 \label{eq:dirderiv}
 \end{equation}
-reducing to $\langle g_\lambda,d\rangle$, $[g_\lambda]_{ir}=v^{\top}L_{ir}v$, when $m=1$ with
-Fiedler vector $v=U_2$. The \emph{free-networkability modulus} is
+reducing to $\langle g_\lambda,d\rangle$, $[g_\lambda]_{ir}=v^{\top}L_{ir}v$, when $m=1$
+($v=U_2$). The \emph{free-networkability modulus} is
 \begin{equation}
 \Gamma_{\Emanifold}(\bar z)=\max\big\{D\lamtwo(\bar z)[d]:\
 d\in T_{\Emanifold}(\bar z),\ \|d\|_2\le1\big\}.
@@ -98,10 +90,9 @@ Theorem~\ref{thm:degeneracy}. Then $\Gamma_{\Emanifold}(\bar z)\ge0$ and
 equivalently $\Gamma_{\Emanifold}(\bar z)=0\iff\lamtwo(\Lap(\bar z))=\LamE$: a \emph{local}
 test certifying \emph{global} connectivity optimality over the fiber, and bounding the gap by
 $\LamE-\lamtwo(\Lap(\bar z))\le\Gamma_{\Emanifold}(\bar z)\|z^{\star}_{\mathrm{WISE}}-\bar
-z\|_2$. At $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple, $T_{\Emanifold}=N_p$ and
-\eqref{eq:gamma} is closed-form, $\Gamma_{\Emanifold}(\bar z)=\|\Pi_{N_p}g_\lambda\|_2$; in
-general it is the small convex SDP $\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,
-U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
+z\|_2$. At $\bar z\in\operatorname{relint}\Emanifold$ with $\lamtwo$ simple,
+$\Gamma_{\Emanifold}(\bar z)=\|\Pi_{N_p}g_\lambda\|_2$ in closed form; in general it is the
+small SDP $\max\{t:d\in T_{\Emanifold},\|d\|_2\le1,U_2^{\top}D\Lap[d]U_2\succeq tI\}$.
 \end{theorem}
 \begin{proof}[Proof sketch]
 $\Gamma_{\Emanifold}\ge0$ as $d=0$ is admissible, and $f=\lamtwo\circ\Lap$ is finite concave,
@@ -112,9 +103,18 @@ An improving $z'$ gives $d_0=z'-\bar z\in T_{\Emanifold}(\bar z)$ with $Df(\bar 
 is concavity plus homogeneity.
 \end{proof}
 
+That SDP needs no projected wrench facets. For the lifted polyhedron $\widehat\Emanifold$ of
+\eqref{eq:tensor}, $T_{\widehat\Emanifold}(\hat x)=\operatorname{cone}(\widehat\Emanifold-\hat
+x)$ and $\prz$ commutes with the conic hull, so
+$\prz(T_{\widehat\Emanifold}(z,\xi))=T_{\Emanifold}(z)$ at \emph{any} lift; as the objective
+depends on $d_z$ only, it may equivalently be solved over
+$(d_z,d_\xi)\in T_{\widehat\Emanifold}$, $\|d_z\|_2\le1$. On the
+$\Gamma_{\Emanifold}$-validation instances $G_I$ is empty and
+$T_{\Emanifold}=\ker A\cap\ker B$; E4 exercises a binding facet.
+
 \begin{figure*}[t]\centering
   \includegraphics[width=\textwidth]{fig_robot_hero.pdf}
-  \caption{$N{=}6$ pair-dependent integer stress test. \textbf{(a)} The PROD--WISE
+  \caption{$N{=}6$ pair-dependent integer stress test. \textbf{(a)} The PROD--pair-WISE
   exchange: the scarce $L$ is both the highest productive-capacity type and the only bridge,
   so swapping one $L$ for two $S$ and relaying the released $L$ preserves $Bz=y^{\star}$,
   $V^{\star}$ and both \emph{nominal} wrench-feasibility certificates. \textbf{(b)}
@@ -130,11 +130,11 @@ is concavity plus homogeneity.
 \begin{definition}[WISE and its integer counterparts]\label{def:wise}
 A profile $z^{\star}\in\Emanifold$ is a \emph{Wrench- and Information-Self-Sustaining
 Equilibrium} if $\lamtwo(\Lap(z^{\star}))\ge\sigmastar$, i.e.\
-$z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$, $\Cdelta=\{z\in X_{\mathrm f}:
-\lamtwo(\Lap(z))\ge\sigmastar\}$ (convex and closed by concavity). For finite teams the
-self-sustaining feasible set $\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\{0,1\}^{n}:
-\lamtwo\ge\sigmastar\}$, its optimum $V_{\mathbb Z}^{\mathrm{ss}}$ and the \emph{zero-cost
-integer WISE} $\Essint=\mathcal F_{\mathbb Z}\cap\{Bz=y^{\star}\}$ differ. As $\mathcal F_{\mathbb Z}$ imposes connectivity as well as integrality,
+$z^{\star}\in\Essrel:=\Emanifold\cap\Cdelta$ with $\Cdelta=\{z\in X_{\mathrm f}:
+\lamtwo(\Lap(z))\ge\sigmastar\}$ convex and closed by concavity. For finite teams
+$\mathcal F_{\mathbb Z}=\{z\in X_{\mathrm f}\cap\{0,1\}^{n}:\lamtwo\ge\sigmastar\}$, its
+optimum $V_{\mathbb Z}^{\mathrm{ss}}$ and the \emph{zero-cost integer WISE}
+$\Essint=\mathcal F_{\mathbb Z}\cap\{Bz=y^{\star}\}$ differ. As $\mathcal F_{\mathbb Z}$ imposes connectivity as well as integrality,
 $g_{\mathbb Z}^{\mathrm{ss}}=V^{\star}-V_{\mathbb Z}^{\mathrm{ss}}$ is the \emph{integer
 self-sustaining gap}, not a pure integrality gap; \emph{zero-cost} means
 $\|B\hat z-y^{\star}\|_\infty\le\tau_B=10^{-8}$. Every WISE
@@ -216,28 +216,25 @@ With $b^{\top}Q^{\top}\Lgeo Qb\ge\sigmastar\|b\|^2$ and $P=\operatorname{diag}(\
 $\dot{\mathcal V}_c\le-[a;b]^{\top}(M{\otimes}I)[a;b]\le-2\lambda_{\min}(M,P)\mathcal V_c$ for
 $M=(\vt_2\mF,-\vt_1\vt_2;-\vt_1\vt_2,\vt_1c\sigmastar)$; as
 $P^{-1/2}MP^{-1/2}=(\mF,-\sqrt{\vt_1\vt_2};-\sqrt{\vt_1\vt_2},c\sigmastar)$, that generalized
-eigenvalue \emph{is} $\alpha(\sigmastar)$: $\mathcal V_c$ symmetrizes $A_\lambda$, so the
-moving graph costs no rate.
+eigenvalue \emph{is} $\alpha(\sigmastar)$, so the same certified lower-rate bound applies to
+the moving graph.
 \end{proof}
-The relaxed and physical guarantees apply at different stages. The selector gives a
-\emph{design and existence} certificate ($\LamE\ge\sigmastar$); the \emph{physical} guarantee
-attaches only to a realizable team: for integer $\hat z$ passing re-certification with
-$\lamtwo(\Lap(\hat z))\ge\sigmastar>\sigmadyn$, Lemma~\ref{lem:bridge} yields
-$\lamtwo(\Lgeo(q,\hat z))\ge\sigmastar$ at \emph{every} admissible pose, hence the uniform rate
-$\alpha(\sigmastar)>0$ of Cor.~\ref{cor:tv}, never invoked at the fractional
-$z^{\star}_{\mathrm{WISE}}$. Equation~\eqref{eq:interconnection} is an assumed \emph{interface
-abstraction}, not a model derived here from any revision protocol or estimator.
+The relaxed and physical guarantees apply at different stages: the selector certifies
+\emph{design and existence} ($\LamE\ge\sigmastar$), whereas the physical rate
+$\alpha(\sigmastar)>0$ attaches only to a re-certified integer $\hat z$, through
+Lemma~\ref{lem:bridge} and never at the fractional $z^{\star}_{\mathrm{WISE}}$.
+Equation~\eqref{eq:interconnection} is an assumed \emph{interface abstraction}, not a model
+derived here from any revision protocol or estimator.
 
 \subsection{The price of self-sustainability}
 \label{sec:price}
 A scalarized $V+\varepsilon\lamtwo$ recovers the lexicographic selector only as
-$\varepsilon\to0$~\cite{facchinei2003fvi}. Beyond the free fiber the requirement carries a
-cost: with $\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},
-\lamtwo(\Lap(z))\ge\sigma\}$ and $\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$, the super-level
-set is convex and shrinks in $\sigma$, which enters linearly, so $\Price$ is a nondecreasing
-convex perturbation value: $\Price=0$ for $\sigma\le\LamE$ (\emph{free}), finite and positive
-for $\LamE<\sigma\le\LamX$ (\emph{costly}), $+\infty$ beyond (\emph{impossible}), with
-$\pilam^{\star}\in\partial\Price(\sigma)$ under Slater.
+$\varepsilon\to0$~\cite{facchinei2003fvi}. Beyond the free fiber the requirement costs: with
+$\Price(\sigma)=V^{\star}-\max\{V(z):z\in X_{\mathrm f},\lamtwo(\Lap(z))\ge\sigma\}$ and
+$\LamE\le\LamX=\max_{X_{\mathrm f}}\lamtwo$, the super-level set is convex and shrinks in the
+linearly entering $\sigma$, so $\Price$ is a nondecreasing convex perturbation value: $0$ for
+$\sigma\le\LamE$ (\emph{free}), finite and positive up to $\LamX$ (\emph{costly}), $+\infty$
+beyond (\emph{impossible}), with $\pilam^{\star}\in\partial\Price(\sigma)$ under Slater.
 
 The spectral reserve yields the following attenuation guarantee, a certified budget for
 degradation of the relays themselves.

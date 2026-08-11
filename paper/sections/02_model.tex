@@ -31,8 +31,8 @@ admissible pose, no link double-counted.
 We assume \emph{quasi-static planar transport with rigid (bilateral) robot--load attachment},
 so a robot may push \emph{and} pull along the modeled directions; unilateral pushing, friction
 cones and contact-mode transitions are outside this model~\cite{murray1994manipulation}. The
-capacity weight $c_\tau$ in $Bz$ is a scheduling coefficient, \emph{distinct} from the
-actuation data $(F_\tau,G_\tau,A_{kh})$.
+capacity weight $c_\tau$ in $Bz$ is a scheduling coefficient, distinct from the actuation data
+$(F_\tau,G_\tau,A_{kh})$.
 
 A type-$\tau$ robot with heading $\phi$ exerts contact forces in the heading-aligned ellipse
 $U_\tau(\phi)$, semi-axes $F_\tau,\kappa F_\tau$ ($\kappa\le1$). Not tracking headings, we
@@ -52,7 +52,7 @@ $\wdem_k\in\Wmap(C_k)$ iff there exist generator coefficients $\xi_{\tau kh}$ wi
 \label{eq:tensor}
 \end{equation}
 Wrench feasibility of load $k$ is thus a linear feasibility problem in $(z,\xi)$: the
-\emph{exact} membership test, against which every reported assignment is re-certified. It
+\emph{exact} membership test used to independently re-evaluate every reported candidate. It
 follows by superposition of the scaled generators $z_{\tau kh}A_{kh}U_\tau^{\mathrm{in}}$.
 \end{lemma}
 Write $\widehat X$ for the lifted set in $(z,\xi)$ and $\prz(z,\xi)=z$, so
@@ -63,9 +63,9 @@ wrench facets. A finite-direction support polytope $\{z:H_wz\ge d\}$ serves only
 screen: candidates it admits are certified by \eqref{eq:tensor}.
 
 \subsection{Decision-induced robot-graph Laplacian $\Lap(z)$}
-The information graph has a \emph{fixed} node set, one node per robot identity: actions choose
+The information graph has a \emph{fixed} node set, one node per robot: actions choose
 \emph{edges} at a node, not nodes. A fixed base graph $L_0\succeq0$ carries the always-on
-short-range conductances; when robot $i$ commits to relay $r$ it \emph{gates on} its predefined
+short-range conductances; committing robot $i$ to relay $r$ \emph{gates on} its predefined
 long-range links
 $L_{ir}=\gamma_{\tau(i)r}\sum_{j}\underline w^{r}_{ij}(e_i{-}e_j)(e_i{-}e_j)^{\top}\succeq0$,
 weighted by tube infima $\underline w^{r}_{ij}=\inf_{q\in\mathcal Q_{ir}}w_{ij}(q)$ fixed before

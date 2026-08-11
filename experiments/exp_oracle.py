@@ -175,6 +175,35 @@ def run(sizes=(6, 7, 8), seeds=8, nu=0.5, tau_d=2.0, lift=3.0):
     return rows
 
 
+def adversarial_manifest(sizes=(6, 7, 8), seeds=50, frac=0.97):
+    """Run the boundary-adversarial oracle and WRITE the result.
+
+    The paper quotes this count ("relaxed feasibility fails to imply integer feasibility in
+    k/n instances"), so it must be manifest-backed like every other number. ``false_positive``
+    counts instances that are relaxed-feasible at sigma = frac * Lambda_E but have NO integer
+    self-sustaining point; it is a count of FAILURES of the implication, not of successes.
+    """
+    import json
+
+    rows, tot_fp, tot_rel = [], 0, 0
+    for N in sizes:
+        fp, rel, _ = adversarial(sizes=(N,), seeds=seeds, frac=frac)
+        lo, hi = _wilson(fp, rel)
+        rows.append({"N": N, "relaxed_feasible": rel, "false_positive": fp,
+                     "wilson95": [lo, hi]})
+        tot_fp += fp
+        tot_rel += rel
+    lo, hi = _wilson(tot_fp, tot_rel)
+    out = {"sigma": f"{frac} * Lambda_E", "seeds_per_size": seeds, "by_N": rows,
+           "total_false_positive": tot_fp, "total_relaxed_feasible": tot_rel,
+           "total_wilson95": [lo, hi],
+           "reading": ("false_positive counts relaxed-feasible instances with NO integer "
+                       "self-sustaining point, i.e. failures of relaxed => integer")}
+    (GEN / "oracle_adversarial.json").write_text(json.dumps(out, indent=2), encoding="utf-8")
+    print(f"wrote {GEN / 'oracle_adversarial.json'}")
+    return out
+
+
 def _wilson(k, n, z=1.96):
     if n == 0:
         return float("nan"), float("nan")
@@ -248,3 +277,4 @@ def _write_table(rows, seeds):
 
 if __name__ == "__main__":
     run()
+    adversarial_manifest()

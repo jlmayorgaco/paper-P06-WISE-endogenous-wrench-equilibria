@@ -55,6 +55,12 @@ def main() -> None:
         step("experiment: phase", [PY, "experiments/exp_phase.py"])
         step("experiment: methods", [PY, "experiments/exp_methods.py"])
         step("experiment: epsilon", [PY, "experiments/exp_epsilon.py"])
+    # the adversarial oracle backs the "relaxed does not imply integer" count quoted in E4;
+    # it is expensive, so the fast path skips it and leaves the stored manifest in place
+    if not args.fast:
+        step("experiment: adversarial oracle",
+             [PY, "-c", "import sys; sys.path.insert(0,'src'); sys.path.insert(0,'experiments'); "
+                        "import exp_oracle; exp_oracle.adversarial_manifest()"])
     # central paper figure (needs fiber + spatial outputs)
     step("figure: central", [PY, "experiments/make_central_fig.py"])
 
